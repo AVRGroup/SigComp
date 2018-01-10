@@ -1,0 +1,185 @@
+body {
+        margin:0;
+        padding:0;
+        font-family: Sans-Serif;
+        line-height: 1.5em;
+        color: white;
+}
+form {
+    color:green;
+}
+
+
+#cont{
+	position: relative;
+	height: 300px;
+	width:68%;
+	padding-left: 17%;
+	padding-right: 15%;
+
+}
+#cont2{
+	position: relative;
+	width:70%;
+	padding-left: 15%;
+	padding-right: 15%;
+
+}
+#cont3{
+	padding-left: 15%;
+	padding-right: 15%;
+
+}
+
+#nav {
+		position:fixed;
+        float: left;
+        height: 100%;
+        width: 230px;
+        margin-left: 0%;
+        background-color: gray;
+		z-index:1;
+}
+#nav h3 {
+        color:black;
+}
+
+#footer {
+        clear: left;
+        width: 100%;
+		margin-bottom: 100%;
+		height: 300px;
+        background: #ccc;
+        text-align: center;
+        padding: 4px 0;
+}
+
+
+#imgp{
+	position: absolute;
+	height: 300px;
+	width:30%;
+
+}
+#simgp{
+	position:absolute;
+	padding-top: 15px;
+	padding-left: 30%;
+	padding-right: 70%;
+
+}
+#infp{
+	position:absolute;
+	padding-left: 30%;
+	height: 600px;
+	width:40%;
+	text-align:left;
+	
+}
+
+#gp{
+	position: absolute;
+	height: 600px;
+	width:30%;
+
+}
+#sgp{
+	position: absolute;
+	height: 600px;
+	padding-top: 15px;
+	padding-left: 30%;
+	padding-right: 70%;
+
+}
+#infg{
+	position: absolute;
+	padding-left: 30%;
+	height: 600px;
+	width:40%;
+	text-align:left;
+	
+}
+
+#sinfg{
+	position: absolute;
+	height: 600px;
+	padding-top: 15px;
+	padding-left: 15%;
+
+
+}
+
+#sinfg table{
+	width: 400px;
+}
+
+.long{
+	width:300px;
+}
+
+
+#lin{
+	background: black;
+    height: 30px;
+	color: white;
+
+
+	
+}
+.cent{
+	padding-top: 100px;
+}
+
+#header {
+        background: #ccc;
+        height: 100px;
+}
+
+#header h1 {
+        margin: 0;
+        padding-top: 15px;
+        color: black;
+        
+}
+
+body {
+        margin:0;
+        padding:0;
+        font-family: Sans-Serif;
+        line-height: 1.5em;
+        background-color: black;
+        color: white;
+		background-image: linear-gradient(black, gray,black);
+}
+
+form {
+    color:green;
+}
+#wrapper {
+		height:100%;
+		width:100%;
+        overflow: hidden;
+}
+
+.innertube {
+        margin: 15px;
+        margin-top: 0;
+}
+
+nav{
+    color:darkgreen;
+}
+nav ul {
+        margin: 0;
+        padding: 0;
+}
+
+nav ul a {
+        color: darkgreen;
+        text-decoration: none;
+}
+
+td{
+    color: white;
+    
+}

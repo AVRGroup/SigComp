@@ -1,0 +1,90 @@
+<html>
+        <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+        <title></title>
+		<link rel="stylesheet" type="text/css" href="estilopag.css">
+
+
+</head>
+<body>		
+
+    <header id="header">
+		<center>
+        <h1>GAMIFICAÇÃO</h1>
+		</center>
+    </header>
+	<div id="wrapper">
+		<div id="cont">
+			<div id="imgp">
+				<div id="simgp">
+				<table border>
+				<tr><td><img src="uploads/<?php
+					session_start();
+		   
+					$matricula = $_SESSION['matricula'];
+					echo $matricula;
+				?>/perfil" height="250" width="auto"></td></tr>
+				</table>
+				</div>
+			</div>
+			<div id="infp">
+				<p class="cent"><h1>Nome do aluno, Título do aluno</h1></p>
+				<p ><h2>Classe, level</h2></p>
+			</div>
+		</div>
+
+        <div id="lin">
+			<center>Sobre fulano</center>
+		</div>
+		
+        <div id="cont3">
+			<div id="gp">
+				<div id="sgp">
+				<h2>Atributos<h2>
+				<table border>
+				<tr><td><img src="g_img.png" width="600px" height="auto"></td></tr>
+				</table>
+				</div>
+			</div>
+			<div id="infg">
+				<div id="sinfg">
+				<h2>Achievements<h2>
+				<table border>
+				<tr><td><img src="g_img.png" width="100px" height="100px"></td><td class="long"><p>Nome</p><p>Descrição da conquista</p></td></tr>
+				<tr><td><img src="g_img.png" width="100px" height="100px"></td><td class="long"><p>Nome</p><p>Descrição da conquista</p></td></tr>
+				<tr><td><img src="g_img.png" width="100px" height="100px"></td><td class="long"><p>Nome</p><p>Descrição da conquista</p></td></tr>
+				<tr><td><img src="g_img.png" width="100px" height="100px"></td><td class="long"><p>Nome</p><p>Descrição da conquista</p></td></tr>		
+				</table>
+				</div>
+			</div>
+		</div>
+
+       </div>
+	   <nav id="nav">
+            <div class="innertube">
+            <ul>
+                <?php
+                session_start();
+       
+                $nome = $_SESSION['Nome'];
+                $matricula = $_SESSION['matricula'];
+
+                echo "Olá, <br> Seus dados são:<br> ";
+                echo "";
+                echo "";
+				echo 'Nome: ' . $nome .'<br> matricula: ' . $matricula;
+                echo "<br><br><li><a href='alterar.php'>Alterar dados. </a><br></li>";
+                echo "<li><a href='index.php?logout=true'>Logout</a><br></li>";
+				echo "<li><a href='upfile.html'>Enviar Certificados</a><br></li>";
+				echo "<li><a href='upperfil.html'>Trocar Perfil</a><br></li>";
+                ?>
+            
+
+
+            </ul>
+            </div>
+
+            </nav>
+
+</body>
+</html>
