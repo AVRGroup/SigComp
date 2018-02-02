@@ -6,7 +6,7 @@
 
 
 		
-		require '/var/www/html/vendor/smarty/smarty/libs/SmartyBC.class.php';
+		require 'smarty/libs/SmartyBC.class.php';
 		$smarty = new SmartyBC;
 		
 		$smarty->display('consAtividade.tpl');

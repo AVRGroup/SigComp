@@ -14,21 +14,43 @@ switch ($_POST['form_operacao'])
 	{
 	case "alteracao":
 	try
-	{
-            
-		// recebe os dados do formulário
-		$senha = $_POST['senha'];
-                
+	{	
+		$senhaA = $_SESSION['senha'];
+		$senhaAC = $_POST['senhaA'];
+		$senha = $_POST['senhaN'];
+		$senhaC = $_POST['senhaC'];
+		if($senhaAC == $senhaA){
+			if ($senha == $senhaC){
+				
+						
+					// recebe os dados do formulário
+					//$senha = $_POST['senha'];
+							
 
-		$stmt = $conn->prepare('UPDATE aluno SET  
-		senha =:senha WHERE matricula = :matricula');
-		$stmt->bindValue(':senha', $senha);
-                $stmt->bindValue(':matricula', $matricula);
-		$stmt->execute();
-		echo "<script>alert('Usuário alterado com sucesso, por favor, logue novamente!');
-		window.location='index.php';</script>";
-		exit;
-		break;
+					$stmt = $conn->prepare('UPDATE aluno SET  
+					senha =:senha WHERE matricula = :matricula');
+					$stmt->bindValue(':senha', $senha);
+							$stmt->bindValue(':matricula', $matricula);
+					$stmt->execute();
+					echo "<script>alert('Usuário alterado com sucesso, por favor, logue novamente!');
+					window.location='index.php';</script>";
+					exit;
+					break;
+				
+			}
+			else{
+				echo "<script>alert('Senhas não correspondem!');
+			window.location='index.php';</script>";
+			exit;
+			break;
+			}
+		}
+		else{
+			echo "<script>alert('Senha Atual incorreta!". $senhaA.$senhaN.$senhaC."');
+			window.location='index.php';</script>";
+			exit;
+			break;
+		}
 	}
 	catch (PDOException $e)
 	{

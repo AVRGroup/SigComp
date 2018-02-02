@@ -1,3 +1,4 @@
+<script type="text/javascript" src="funcoes/slide.js"></script>
 <?php
 /**
  * Example Application
@@ -37,5 +38,7 @@ $smarty->assign("option_values", array("NY", "NE", "KS", "IA", "OK", "TX"));
 $smarty->assign("option_output", array("New York", "Nebraska", "Kansas", "Iowa", "Oklahoma", "Texas"));
 $smarty->assign("option_selected", "NE");
 */
+
+
  $smarty->display('index.tpl');
 ?>

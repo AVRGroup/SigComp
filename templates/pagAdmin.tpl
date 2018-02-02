@@ -10,10 +10,12 @@
             <input type="submit" value="Excluir aluno" id="excAluno" name="submit"><br>
             <input type="submit" value="Cadastrar atividade" id="btnCadAtividade" name="submit"><br>
             <input type="submit" value="Excluir atividade" id="btnExcAtividade" name="submit">
-        </form>
-		
+		</form>
 			<button onclick="window.location='consAluno.php';"> Consultar Alunos </button>		
-			<button onclick="window.location='consAtividade.php';"> Consultar Atividades </button>				
+			<button onclick="window.location='consAtividade.php';"> Consultar Atividades </button>	
+		<form method="POST" action="router.php">
+			<br><input type="submit" value="Logout" id="logout" name="submit">
+		</form>							
     </body> </h1> 
 	</center> 
 	{/block}

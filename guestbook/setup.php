@@ -1,7 +1,7 @@
 <?php
 
 // load Smarty library
-require '/var/www/html/vendor/smarty/smarty/libs/Smarty.class.php';
+require 'smarty/libs/Smarty.class.php';
 
 // The setup.php file is a good place to load
 // required application library files, and you

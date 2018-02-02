@@ -1,6 +1,6 @@
 <html> 
 	<head>
-	<meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html"; charset="utf-8"; content="width=device-width, initial-scale=1">
 	<title></title>
     <link rel="stylesheet" type="text/css" href="estilopag.css">
 	</head>

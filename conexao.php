@@ -1,7 +1,7 @@
 <?php
     $servername = "localhost";
     $username = "root";
-    $password = "gamifica";
+    $password = "";
     $dbname = "bd_gamificacurso";
 
 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

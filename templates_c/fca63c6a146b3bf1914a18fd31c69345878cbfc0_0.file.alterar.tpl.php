@@ -1,7 +1,49 @@
+<?php
+/* Smarty version 3.1.30, created on 2018-02-01 23:58:29
+  from "C:\wamp64\www\ProjetoGamificacao-master\templates\alterar.tpl" */
 
-{extends 'basepage.tpl'}
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a73a9a5db55d3_66493790',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'fca63c6a146b3bf1914a18fd31c69345878cbfc0' => 
+    array (
+      0 => 'C:\\wamp64\\www\\ProjetoGamificacao-master\\templates\\alterar.tpl',
+      1 => 1517529507,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:basepage.tpl' => 1,
+  ),
+),false)) {
+function content_5a73a9a5db55d3_66493790 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_loadInheritance();
+$_smarty_tpl->inheritance->init($_smarty_tpl, true);
+?>
 
-{block name = "lateral" }             
+
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_56245a73a9a5da6014_01175539', "lateral");
+?>
+
+
+<?php 
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_68655a73a9a5db22d7_57133800', "mid");
+$_smarty_tpl->inheritance->endChild();
+$_smarty_tpl->_subTemplateRender("file:basepage.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 2, false);
+}
+/* {block "lateral"} */
+class Block_56245a73a9a5da6014_01175539 extends Smarty_Internal_Block
+{
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+             
 <section>
 			<center>
 				<h1>Página do Aluno</h1>
@@ -16,10 +58,18 @@
 				
 				
 </section> 
-{/block}
-
-{block name = "mid" } 
-        <script LANGUAGE="JavaScript">
+<?php
+}
+}
+/* {/block "lateral"} */
+/* {block "mid"} */
+class Block_68655a73a9a5db22d7_57133800 extends Smarty_Internal_Block
+{
+public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
+?>
+ 
+        <?php echo '<script'; ?>
+ LANGUAGE="JavaScript">
           function define_operacao(operacao){
             if (operacao == "alt") {
                document.form_alteracao_exclusao_receitas.form_operacao.value = "alteracao";
@@ -29,7 +79,8 @@
             }
             document.form_alteracao_exclusao_receitas.submit();
           }
-          </script>
+          <?php echo '</script'; ?>
+>
 
 <center>
 			<div id="content">
@@ -71,4 +122,8 @@
 		  </tr>
 		  </table>
 	  </form>
-	  </center>{/block}
+	  </center><?php
+}
+}
+/* {/block "mid"} */
+}

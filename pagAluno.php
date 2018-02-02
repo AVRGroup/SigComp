@@ -2,7 +2,7 @@
 <?php
 
 		require 'guestbook/setup.php';
-		
+		require_once 'conexao.php';
 		$smarty = new Smarty;
         session_start();
         if((!isset ($_SESSION['login']) == true) and (!isset ($_SESSION['senha']) == true))
@@ -13,7 +13,7 @@
         }
         $logado = $_SESSION['login'];
 		
-		require_once 'conexao.php';
+		
 		foreach (glob("uploads/$logado/perfil.*") as $arquivo) $smarty->assign('foto',$arquivo);
         $stmt2 = $conn->prepare("SELECT nome, nivel FROM aluno WHERE matricula = '$logado'");
         $stmt2->execute();
