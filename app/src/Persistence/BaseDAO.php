@@ -31,7 +31,11 @@ abstract class BaseDAO
 
     public function persist($object)
     {
-        $this->em->persist($object);
+        try {
+            $this->em->persist($object);
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
     }
 
     public function flush()
@@ -45,6 +49,10 @@ abstract class BaseDAO
 
     public function clear()
     {
-        $this->em->clear();
+        try {
+            $this->em->clear();
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
     }
 }

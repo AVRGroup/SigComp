@@ -6,8 +6,6 @@ use App\Library\Integra\getUserInformation;
 use App\Library\Integra\login;
 use App\Library\Integra\logout;
 use App\Library\Integra\WSLogin;
-use App\Model\Usuario;
-use Interop\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -15,7 +13,7 @@ class UserController
 {
     private $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(\Container $container)
     {
         $this->container = $container;
     }
@@ -26,7 +24,7 @@ class UserController
             $loginCredentials = new login();
             $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
             $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
-            $loginCredentials->setAppToken($this->container->get('settings')['integra']['token']);
+            $loginCredentials->setAppToken($this->container->settings['integra']['token']);
             $WSLogin = new WSLogin();
 
             try {
@@ -42,8 +40,7 @@ class UserController
                 $matriculas[] = '200935027';
                 $matriculas[] = '200935040';
 
-                /** @var Usuario[] $usuarios */
-                $usuarios = $this->container->get('UsuarioDAO')->getByMatricula($matriculas);
+                $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
 
                 if (count($usuarios) != 0) {
                     $_SESSION['id'] = $usuarios[0]->getId();
@@ -60,32 +57,32 @@ class UserController
 
                         $usuario->setEmail($userInfoResponse->getEmailSiga());
                     }
-                    $this->container->get('UsuarioDAO')->flush();
+                    $this->container->usuarioDAO->flush();
 
-                    return $response->withRedirect($this->container->get('router')->pathFor('home'));
+                    return $response->withRedirect($this->container->router->pathFor('home'));
                 } else {
-                    $this->container->get('view')['error'] = 'Você não possui nenhuma matrícula válida!';
+                    $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
                 }
-            } catch (\SoapFault $e) {
-                $this->container->get('view')['error'] = $e->getMessage();
+            } catch (\Exception $e) {
+                $this->container->view['error'] = $e->getMessage();
             }
         }
 
-        return $this->container->get('view')->render($response, 'login.tpl');
+        return $this->container->view->render($response, 'login.tpl');
     }
 
     public function logoutAction(Request $request, Response $response, $args)
     {
         unset($_SESSION['id']);
 
-        return $response->withRedirect($this->container->get('router')->pathFor('login'));
+        return $response->withRedirect($this->container->router->pathFor('login'));
     }
 
     public function listProfilesAction(Request $request, Response $response, $args)
     {
-        $this->container->get('view')['profiles'] = $_SESSION['profiles'];
+        $this->container->view['profiles'] = $_SESSION['profiles'];
 
-        return $this->container->get('view')->render($response, 'changeProfile.tpl');
+        return $this->container->view->render($response, 'changeProfile.tpl');
     }
 
 }

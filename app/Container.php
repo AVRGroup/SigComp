@@ -1,0 +1,83 @@
+<?php
+
+use App\Persistence\DisciplinaDAO;
+use App\Persistence\NotaDAO;
+use App\Persistence\UsuarioDAO;
+use Slim\Views\Smarty;
+
+/**
+ * @property DisciplinaDAO disciplinaDAO
+ * @property NotaDAO notaDAO
+ * @property UsuarioDAO usuarioDAO
+ * @property Smarty view
+ * @property UsuarioDAO asfasf
+ */
+class Container extends \Slim\Container
+{
+    public function __construct(array $values = [])
+    {
+        parent::__construct($values);
+
+        $this->registerDependencies();
+    }
+
+    private function registerDependencies() {
+
+        $this['view'] = function () {
+            $settings = $this->settings;
+            $view = new \Slim\Views\Smarty($settings['view']['template_path'], $settings['view']['smarty']);
+
+            // Add Slim specific plugins
+            $smartyPlugins = new \Slim\Views\SmartyPlugins($this['router'], $this['request']->getUri());
+            $view->registerPlugin('function', 'path_for', [$smartyPlugins, 'pathFor']);
+            $view->registerPlugin('function', 'base_url', [$smartyPlugins, 'baseUrl']);
+
+            // Logged User set null
+            $view['loggedUser'] = null;
+
+            return $view;
+        };
+
+
+        //Not Found
+        $this['notFoundHandler'] = function ($container) {
+            return function ($request, $response) {
+                return $this->view->render($response, '404.tpl')->withStatus(404);
+            };
+        };
+
+        //Doctrine
+        $this['db'] = function ($container) {
+            $settings = $this->settings;
+
+            $config = new \Doctrine\ORM\Configuration();
+            $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
+            $driverImpl = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(new \Doctrine\Common\Annotations\AnnotationReader(),
+                $settings['doctrine']['model']);
+            \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+            $config->setMetadataDriverImpl($driverImpl);
+            $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
+            $config->setProxyDir($settings['doctrine']['cache_proxy']);
+            $config->setProxyNamespace('App\Cache\Proxies');
+
+            $config->setAutoGenerateProxyClasses(true);
+
+            return \Doctrine\ORM\EntityManager::create($settings['db'], $config);
+        };
+
+        //Doctrine DAOs
+        $this['disciplinaDAO'] = function ($container) {
+            return new \App\Persistence\DisciplinaDAO($container['db']);
+        };
+
+        $this['usuarioDAO'] = function ($container) {
+            return new \App\Persistence\UsuarioDAO($container['db']);
+        };
+
+        $this['notaDAO'] = function ($container) {
+            return new \App\Persistence\NotaDAO($container['db']);
+        };
+
+    }
+
+}
