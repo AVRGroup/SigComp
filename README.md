@@ -15,7 +15,7 @@
 1. Clone o código desse repositório para dentro da pasta ``www`` ou ``htdocs`` do seu servidor web com PHP 7 e MySQL
 1. Navegue até a pasta do projeto e execute ``composer install`` para instalar as dependências
 1. Crie um arquivo ``settings.php`` em ``/app/``, usando como base o ``/app/settings.template.php``
-1. Dê permissão de Leitura e Escrita(``chmod -R 777``) para a pasta ``/cache/``
+1. Dê permissão de Leitura e Escrita(``chmod -R 777``) para a pasta ``/cache/`` e a pasta de upload (padrão: ``/public/upload``) definida em ``settings.php``
 1. Supondo que todas as configurações estão corretas, da raiz da pasta do projeto, execute ``./vendor/bin/doctrine orm:schema-tool:create`` para subir o banco de dados
 1. O projeto estará acessivel em ``http://localhost/gameficacao/public/``
 
