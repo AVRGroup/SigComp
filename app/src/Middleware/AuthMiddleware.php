@@ -22,7 +22,7 @@ class AuthMiddleware
         }
 
         $this->container->view['loggedUser'] = $user;
-        $newRequest = $request->withAttribute('user', $user);
+        $newRequest = $request->withAttribute('usuario', $user);
 
         return $next($newRequest, $response);
     }

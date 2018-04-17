@@ -3,14 +3,17 @@
 use App\Persistence\DisciplinaDAO;
 use App\Persistence\NotaDAO;
 use App\Persistence\UsuarioDAO;
+use App\Persistence\CertificadoDAO;
+use \Doctrine\ORM\EntityManager;
 use Slim\Views\Smarty;
 
 /**
  * @property DisciplinaDAO disciplinaDAO
  * @property NotaDAO notaDAO
  * @property UsuarioDAO usuarioDAO
+ * @property CertificadoDAO certificadoDAO
  * @property Smarty view
- * @property UsuarioDAO asfasf
+ * @property EntityManager db
  */
 class Container extends \Slim\Container
 {
@@ -40,14 +43,14 @@ class Container extends \Slim\Container
 
 
         //Not Found
-        $this['notFoundHandler'] = function ($container) {
+        $this['notFoundHandler'] = function () {
             return function ($request, $response) {
                 return $this->view->render($response, '404.tpl')->withStatus(404);
             };
         };
 
         //Doctrine
-        $this['db'] = function ($container) {
+        $this['db'] = function () {
             $settings = $this->settings;
 
             $config = new \Doctrine\ORM\Configuration();
@@ -62,20 +65,24 @@ class Container extends \Slim\Container
 
             $config->setAutoGenerateProxyClasses(true);
 
-            return \Doctrine\ORM\EntityManager::create($settings['db'], $config);
+            return EntityManager::create($settings['db'], $config);
         };
 
         //Doctrine DAOs
-        $this['disciplinaDAO'] = function ($container) {
-            return new \App\Persistence\DisciplinaDAO($container['db']);
+        $this['disciplinaDAO'] = function () {
+            return new DisciplinaDAO($this->db);
         };
 
-        $this['usuarioDAO'] = function ($container) {
-            return new \App\Persistence\UsuarioDAO($container['db']);
+        $this['usuarioDAO'] = function () {
+            return new UsuarioDAO($this->db);
         };
 
-        $this['notaDAO'] = function ($container) {
-            return new \App\Persistence\NotaDAO($container['db']);
+        $this['notaDAO'] = function () {
+            return new NotaDAO($this->db);
+        };
+
+        $this['certificadoDAO'] = function () {
+            return new CertificadoDAO($this->db);
         };
 
     }

@@ -33,5 +33,11 @@ return [
             'token' => 'TOKEN_HERE',
         ],
 
+        //Upload Path
+        'upload' => [
+            'path' => __DIR__ . '/../public/upload',
+            'allowedExtensions' => ['jpg', 'jpeg', 'png'],
+            'maxBytesSize' => 2097152
+        ]
     ],
 ];

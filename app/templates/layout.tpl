@@ -22,17 +22,15 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 {if $loggedUser != null}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{path_for name="home"}">Início</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Exemplo
+                            Administrador
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="{path_for name="adminCertificates"}">Gerenciar Certificados</a>
                             <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
                 {else}
