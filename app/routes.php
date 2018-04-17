@@ -16,7 +16,9 @@ $app->group('', function () {
 
     $this->group('/admin', function () {
 
-        $this->get('/list-certificates', '\App\Controller\HomeController:indexAction')->setName('adminCertificates');
+        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminCertificates');
+        $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
+        $this->get('/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
 
     })->add('\App\Middleware\AdminMiddleware');
 

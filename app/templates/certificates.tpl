@@ -41,18 +41,19 @@
         {foreach $certificates as $certificate}
             <div class="card">
                 <a href="{base_url}/upload/{$certificate->getNome()}" target="_blank"><img class="card-img-top" src="{base_url}/upload/{$certificate->getNome()}"></a>
-                <div class="card-body">
+                <div class="card-body d-flex flex-column justify-content-end">
                     <p class="card-text text-center"><span class="badge badge-pill badge-dark">{$certificate->getNomeTipo()}</span><br/>
                         {if $certificate->getValido()}
-                            <span class="badge badge-success">Validado!</span>
+                            <span class="badge badge-success">Validado</span>
                         {else}
                             {if $certificate->isInReview()}
                                 <span class="badge badge-info">Aguardando aprovação</span>
                             {else}
                                 <span class="badge badge-warning">Invalidado</span>
                             {/if}
-                            <a href="{path_for name="deleteCertificate" data=["id" => $certificate->getId()]}" class="badge badge-danger">Excluir</a></p>
+                            <a href="{path_for name="deleteCertificate" data=["id" => $certificate->getId()]}" class="badge badge-danger">Excluir</a>
                         {/if}
+                    </p>
                 </div>
             </div>
         {foreachelse}

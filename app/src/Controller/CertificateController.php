@@ -71,11 +71,44 @@ class CertificateController
     {
         $certificado = $this->container->certificadoDAO->getById($args['id']);
 
-        if($certificado && $certificado->getUsuario()->getId() == $request->getAttribute('usuario')->getId()) {
+        if($certificado && $certificado->getUsuario()->getId() == $request->getAttribute('usuario')->getId()
+            && ($certificado->isInReview() || !$certificado->getValido())) {
             $this->container->certificadoDAO->delete($certificado);
             unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
         }
 
         return $response->withRedirect($this->container->router->pathFor('listCertificates'));
+    }
+
+    // Administração
+
+    public function adminDeleteAction(Request $request, Response $response, $args)
+    {
+        $certificado = $this->container->certificadoDAO->getById($args['id']);
+
+        if($certificado) {
+            $this->container->certificadoDAO->delete($certificado);
+            unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('adminCertificates'));
+    }
+
+    public function adminChangeAction(Request $request, Response $response, $args)
+    {
+        $certificado = $this->container->certificadoDAO->getById($args['id']);
+
+        if($certificado) {
+            $certificado->setValido($args['state'] == 'true'? true : false);
+            $this->container->certificadoDAO->save($certificado);
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('adminCertificates'));
+    }
+
+    public function adminListReviewAction(Request $request, Response $response, $args)
+    {
+        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
+        return $this->container->view->render($response, 'adminCertificates.tpl');
     }
 }
