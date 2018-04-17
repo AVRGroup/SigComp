@@ -29,8 +29,8 @@
                             Administrador
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{path_for name="adminCertificates"}">Gerenciar Certificados</a>
-                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                            <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                         </div>
                     </li>
                 {else}

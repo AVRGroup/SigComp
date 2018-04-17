@@ -23,7 +23,7 @@ class CertificateController
         $this->container = $container;
     }
 
-    public function indexAction(Request $request, Response $response, $args)
+    public function listAction(Request $request, Response $response, $args)
     {
         if ($request->isPost() && isset($request->getUploadedFiles()['certificate'])) {
             /** @var UploadedFile $uploadedFile */
@@ -40,7 +40,7 @@ class CertificateController
                 } else {
                     try {
                         $certificado = new Certificado();
-                        $certificado->setUsuario($request->getAttribute('usuario'));
+                        $certificado->setUsuario($request->getAttribute('user'));
                         $certificado->setExtensao($extension);
                         $certificado->setTipo($request->getParsedBodyParam('type'));
 
@@ -63,7 +63,7 @@ class CertificateController
         }
 
         $this->container->view['certTypes'] = Certificado::getAllTipos();
-        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllByUsuario($request->getAttribute('usuario'));
+        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllByUsuario($request->getAttribute('user'));
         return $this->container->view->render($response, 'certificates.tpl');
     }
 
@@ -71,7 +71,7 @@ class CertificateController
     {
         $certificado = $this->container->certificadoDAO->getById($args['id']);
 
-        if($certificado && $certificado->getUsuario()->getId() == $request->getAttribute('usuario')->getId()
+        if($certificado && $certificado->getUsuario()->getId() == $request->getAttribute('user')->getId()
             && ($certificado->isInReview() || !$certificado->getValido())) {
             $this->container->certificadoDAO->delete($certificado);
             unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
@@ -82,6 +82,12 @@ class CertificateController
 
     // Administração
 
+    public function adminListReviewAction(Request $request, Response $response, $args)
+    {
+        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
+        return $this->container->view->render($response, 'adminCertificates.tpl');
+    }
+
     public function adminDeleteAction(Request $request, Response $response, $args)
     {
         $certificado = $this->container->certificadoDAO->getById($args['id']);
@@ -89,9 +95,15 @@ class CertificateController
         if($certificado) {
             $this->container->certificadoDAO->delete($certificado);
             unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
+            $redirect = $this->container->router->pathFor('adminUser', ['id' => $certificado->getUsuario()->getId()]);
+        } else {
+            $redirect = $this->container->router->pathFor('adminListUsers');
         }
 
-        return $response->withRedirect($this->container->router->pathFor('adminCertificates'));
+        if(!is_null($request->getQueryParam('isReviewPage')))
+            $redirect = $this->container->router->pathFor('adminListReviewCertificates');
+
+        return $response->withRedirect($redirect);
     }
 
     public function adminChangeAction(Request $request, Response $response, $args)
@@ -101,14 +113,14 @@ class CertificateController
         if($certificado) {
             $certificado->setValido($args['state'] == 'true'? true : false);
             $this->container->certificadoDAO->save($certificado);
+            $redirect = $this->container->router->pathFor('adminUser', ['id' => $certificado->getUsuario()->getId()]);
+        } else {
+            $redirect = $this->container->router->pathFor('adminListUsers');
         }
 
-        return $response->withRedirect($this->container->router->pathFor('adminCertificates'));
-    }
+        if(!is_null($request->getQueryParam('isReviewPage')))
+            $redirect = $this->container->router->pathFor('adminListReviewCertificates');
 
-    public function adminListReviewAction(Request $request, Response $response, $args)
-    {
-        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
-        return $this->container->view->render($response, 'adminCertificates.tpl');
-    }
+        return $response->withRedirect($redirect);    }
+
 }

@@ -57,6 +57,12 @@ body {
 	opacity: 0.7;
 }
 
+#certificates .card-footer a:hover {
+	text-decoration: none;
+	opacity: 0.7;
+}
+
+
 .custom-file-label::after {
     content: "Navegar";
 }

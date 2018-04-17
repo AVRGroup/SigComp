@@ -21,14 +21,14 @@ class UsuarioDAO extends BaseDAO
     public function getById($id)
     {
         try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.id = :id");
+            $query = $this->em->createQuery("SELECT u,c FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c WHERE u.id = :id");
             $query->setParameter('id', $id);
-            $user = $query->getOneOrNullResult();
+            $usuario = $query->getOneOrNullResult();
         } catch (\Exception $e) {
-            $user = null;
+            $usuario = null;
         }
 
-        return $user;
+        return $usuario;
     }
 
     /**
@@ -40,12 +40,27 @@ class UsuarioDAO extends BaseDAO
         try {
             $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.matricula IN (:matriculas)");
             $query->setParameter('matriculas', $matriculas);
-            $users = $query->getResult();
+            $usuarios = $query->getResult();
         } catch (\Exception $e) {
-            $users = [];
+            $usuarios = [];
         }
 
-        return $users;
+        return $usuarios;
+    }
+
+    /**
+     * @return Usuario[] |null
+     */
+    public function getAll()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u");
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
     }
 
 }

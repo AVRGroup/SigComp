@@ -21,4 +21,22 @@ class UserController
         $this->container = $container;
     }
 
+    public function adminListAction(Request $request, Response $response, $args)
+    {
+        $this->container->view['users'] = $this->container->usuarioDAO->getAll();
+        return $this->container->view->render($response, 'adminListUsers.tpl');
+    }
+
+    public function adminUserAction(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getById($args['id']);
+
+        if(!$usuario) {
+            return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
+        }
+
+        $this->container->view['user'] = $usuario;
+        return $this->container->view->render($response, 'adminUser.tpl');
+    }
+
 }

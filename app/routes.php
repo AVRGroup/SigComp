@@ -11,12 +11,15 @@ $app->group('', function () {
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
 
-    $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:indexAction')->setName('listCertificates');
+    $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
 
     $this->group('/admin', function () {
 
-        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminCertificates');
+        $this->get('/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+        $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
+
+        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
         $this->get('/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
 
