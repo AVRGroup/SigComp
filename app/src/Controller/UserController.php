@@ -29,7 +29,7 @@ class UserController
 
     public function adminUserAction(Request $request, Response $response, $args)
     {
-        $usuario = $this->container->usuarioDAO->getById($args['id']);
+        $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
 
         if(!$usuario) {
             return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
@@ -39,4 +39,9 @@ class UserController
         return $this->container->view->render($response, 'adminUser.tpl');
     }
 
+    public function adminTestAction(Request $request, Response $response, $args)
+    {
+        $this->container->view['usuariosFull'] = $this->container->usuarioDAO->getAllFetched();
+        return $this->container->view->render($response, 'adminTest.tpl');
+    }
 }

@@ -54,8 +54,8 @@ class Usuario
 
     /**
      * 0: Aluno
-     * 2: Professor
-     * 3: Administrador
+     * 1: Professor
+     * 2: Administrador
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
