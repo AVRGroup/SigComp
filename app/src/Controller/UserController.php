@@ -9,6 +9,8 @@ use App\Library\Integra\logout;
 use App\Library\Integra\WSLogin;
 use App\Library\Integra\wsUserInfoResponse;
 use App\Model\Certificado;
+use App\Model\Nota;
+use App\Model\Usuario;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -41,7 +43,23 @@ class UserController
 
     public function adminTestAction(Request $request, Response $response, $args)
     {
-        $this->container->view['usuariosFull'] = $this->container->usuarioDAO->getAllFetched();
+        $allUsers = $this->container->usuarioDAO->getAllFetched();
+
+        /** @var Usuario $user */
+        foreach ($allUsers as $user) {
+            $exp = 0;
+            /** @var Nota $notas */
+            foreach ($user->getNotas() as $notas) {
+                $exp += $notas->getValor();
+            }
+
+            $user->setExperiencia($exp);
+        }
+
+        $this->container->usuarioDAO->flush();
+
+        $this->container->view['usuariosFull'] = $allUsers;
+
         return $this->container->view->render($response, 'adminTest.tpl');
     }
 }
