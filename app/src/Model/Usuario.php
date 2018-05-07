@@ -77,6 +77,36 @@ class Usuario
     protected $experiencia = 0;
 
     /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $inteligencia = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $sabedoria = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $destreza = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $forca = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $carisma = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $cultura = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="Certificado", mappedBy="usuario")
      * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
      */
@@ -286,6 +316,115 @@ class Usuario
     /**
      * @return mixed
      */
+    public function getInteligencia()
+    {
+        return $this->inteligencia;
+    }
+
+    /**
+     * @param mixed $inteligencia
+     * @return Usuario
+     */
+    public function setInteligencia($inteligencia)
+    {
+        $this->inteligencia = $inteligencia;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSabedoria()
+    {
+        return $this->sabedoria;
+    }
+
+    /**
+     * @param mixed $sabedoria
+     * @return Usuario
+     */
+    public function setSabedoria($sabedoria)
+    {
+        $this->sabedoria = $sabedoria;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDestreza()
+    {
+        return $this->destreza;
+    }
+
+    /**
+     * @param mixed $destreza
+     * @return Usuario
+     */
+    public function setDestreza($destreza)
+    {
+        $this->destreza = $destreza;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForca()
+    {
+        return $this->forca;
+    }
+
+    /**
+     * @param mixed $forca
+     * @return Usuario
+     */
+    public function setForca($forca)
+    {
+        $this->forca = $forca;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCarisma()
+    {
+        return $this->carisma;
+    }
+
+    /**
+     * @param mixed $carisma
+     * @return Usuario
+     */
+    public function setCarisma($carisma)
+    {
+        $this->carisma = $carisma;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCultura()
+    {
+        return $this->cultura;
+    }
+
+    /**
+     * @param mixed $cultura
+     * @return Usuario
+     */
+    public function setCultura($cultura)
+    {
+        $this->cultura = $cultura;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getCertificados()
     {
         return $this->certificados;
@@ -330,5 +469,7 @@ class Usuario
 
         return $this;
     }
+
+
 
 }

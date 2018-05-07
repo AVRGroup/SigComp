@@ -118,7 +118,7 @@ class Nota
     }
 
     /**
-     * @return mixed
+     * @return Disciplina
      */
     public function getDisciplina()
     {

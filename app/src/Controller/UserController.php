@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Library\CalculateAttributes;
 use App\Library\Integra\getUserInformation;
 use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
@@ -34,8 +35,10 @@ class UserController
         $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
 
         if(!$usuario) {
-            return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
+            return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
         }
+
+        CalculateAttributes::calculateUsuarioStatistics($usuario);
 
         $this->container->view['user'] = $usuario;
         return $this->container->view->render($response, 'adminUser.tpl');

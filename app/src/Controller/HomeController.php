@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Library\CalculateAttributes;
 use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Nota;
@@ -21,7 +22,12 @@ class HomeController
     public function indexAction(Request $request, Response $response, $args)
     {
         $user = $request->getAttribute('user');
-        $this->container->view['usuarioFull'] = $this->container->usuarioDAO->getByIdFetched($user->getId());
+        $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
+
+        CalculateAttributes::calculateUsuarioStatistics($usuario);
+
+        $this->container->view['usuario'] = $usuario;
+
         return $this->container->view->render($response, 'home.tpl');
     }
 
