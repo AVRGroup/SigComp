@@ -47,6 +47,15 @@ abstract class BaseDAO
         }
     }
 
+    public function remove($object)
+    {
+        try {
+            $this->em->remove($object);
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
+
     public function clear()
     {
         try {

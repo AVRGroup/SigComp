@@ -6,6 +6,10 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Helper
 {
+    /**
+     * @param $objList
+     * @return array
+     */
     public static function convertToIdArray($objList)
     {
         $array = array();

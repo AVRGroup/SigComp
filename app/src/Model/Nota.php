@@ -36,6 +36,11 @@ class Nota
     protected $valor;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $periodo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Disciplina", inversedBy="notas")
      * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
      */
@@ -116,6 +121,25 @@ class Nota
         $this->valor = $valor;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+
+    /**
+     * @param mixed $periodo
+     * @return Nota
+     */
+    public function setPeriodo($periodo)
+    {
+        $this->periodo = $periodo;
+        return $this;
+    }
+
 
     /**
      * @return Disciplina

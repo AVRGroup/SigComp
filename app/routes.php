@@ -2,7 +2,6 @@
 
 $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginAction')->setName('login');
 
-$app->get('/test', '\App\Controller\HomeController:testAction')->setName('test');
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 
 $app->group('', function () {
@@ -25,6 +24,7 @@ $app->group('', function () {
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
         $this->get('/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
 
+        $this->map(['GET', 'POST'], '/data-load', '\App\Controller\AdminController:dataLoadAction')->setName('adminDataLoad');
     })->add('\App\Middleware\AdminMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');

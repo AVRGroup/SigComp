@@ -7,7 +7,7 @@
             <li>{$usuario->getMatricula()} - {$usuario->getNome()}</li>
             <ul>
                 {foreach $usuario->getNotas() as $nota}
-                    <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()}) -> {$nota->getValor()} </li>
+                    <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()} - {$nota->getPeriodo()}) -> {$nota->getValor()} </li>
                 {/foreach}
             </ul>
         {/foreach}

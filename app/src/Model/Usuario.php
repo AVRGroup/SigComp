@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Library\ToIdArrayInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity()
  * @ORM\Table(name="usuario")
  */
-class Usuario
+class Usuario implements ToIdArrayInterface
 {
 
     const ALUNO = 0;
@@ -470,6 +471,20 @@ class Usuario
         return $this;
     }
 
+    /**
+     * @param Nota $nota
+     * @return Usuario
+     */
+    public function removeNota(Nota $nota)
+    {
+        $this->notas->removeElement($nota);
 
+        return $this;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->getMatricula();
+    }
 
 }

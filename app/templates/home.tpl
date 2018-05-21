@@ -42,7 +42,7 @@
                 <h4 class="text-center mt-3">Notas dos usuários</h4>
                 <ul>
                     {foreach $usuario->getNotas() as $nota}
-                        <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()}) -> {$nota->getValor()} </li>
+                        <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()} - {$nota->getPeriodo()}) -> {$nota->getValor()} </li>
                     {/foreach}
                 </ul>
             </div>

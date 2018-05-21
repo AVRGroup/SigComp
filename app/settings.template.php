@@ -26,6 +26,7 @@ return [
             'user' => 'USER',
             'password' => 'PASS',
             'dbname' => 'DBNAME',
+            'host' => 'localhost:3306'
         ],
 
         //Integra
@@ -36,7 +37,9 @@ return [
         //Upload Path
         'upload' => [
             'path' => __DIR__ . '/../public/upload',
-            'allowedExtensions' => ['jpg', 'jpeg', 'png'],
+            'allowedCertificationExtensions' => ['jpg', 'jpeg', 'png'],
+            'allowedPictureExtensions' => ['jpg', 'jpeg', 'png'],
+            'allowedDataLoadExtensions' => ['csv'],
             'maxBytesSize' => 2097152
         ]
     ],

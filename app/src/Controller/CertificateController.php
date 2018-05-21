@@ -35,7 +35,7 @@ class CertificateController
             } else {
                 $extension = mb_strtolower(pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
 
-                if(!in_array($extension, $this->container->settings['upload']['allowedExtensions']) || $uploadedFile->getSize() > $this->container->settings['upload']['maxBytesSize']) {
+                if(!in_array($extension, $this->container->settings['upload']['allowedCertificationExtensions']) || $uploadedFile->getSize() > $this->container->settings['upload']['maxBytesSize']) {
                     $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
                 } else {
                     try {
@@ -53,7 +53,6 @@ class CertificateController
 
                         $this->container->certificadoDAO->save($certificado);
                         $this->container->view['success'] = true;
-
                     } catch (\Exception $e) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
                         $this->container->view['error'] = 'Erro ao salvar certificado, tente novamente!';

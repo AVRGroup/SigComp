@@ -38,7 +38,7 @@ class UsuarioDAO extends BaseDAO
     public function getByIdFetched($id)
     {
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.id = :id ORDER BY c.valido ASC");
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.id = :id ORDER BY n.periodo ASC, c.valido ASC");
             $query->setParameter('id', $id);
             $usuario = $query->getOneOrNullResult();
         } catch (\Exception $e) {
@@ -54,7 +54,7 @@ class UsuarioDAO extends BaseDAO
     public function getAllFetched()
     {
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd");
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd ORDER BY n.periodo ASC");
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;

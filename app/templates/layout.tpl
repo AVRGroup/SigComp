@@ -31,6 +31,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                             <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
+                            <a class="dropdown-item" href="{path_for name="adminDataLoad"}">Carga de Dados</a>
                             <a class="dropdown-item" href="{path_for name="adminTest"}">Admin Test</a>
                         </div>
                     </li>
@@ -66,6 +67,25 @@
 <script src="{base_url}/js/bootstrap.min.js"></script>
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
+
+<script>
+    $(function() {
+        $("input[type=file]").change(function () {
+
+            var fieldVal = $(this).val();
+
+            // Change the node's value by removing the fake path (Chrome)
+            fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+
+            if (fieldVal !== undefined || fieldVal !== "") {
+                console.log("HEY");
+                console.log(fieldVal);
+                $(this).next(".custom-file-label").attr('data-content', fieldVal);
+                $(this).next(".custom-file-label").text(fieldVal);
+            }
+        });
+    });
+</script>
 
 {block name=javascript}{/block}
 </body>
