@@ -9,6 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{base_url}/css/croppie.css"/>
     <link rel="stylesheet" href="{base_url}/css/style.css"/>
 </head>
 
@@ -78,8 +79,6 @@
             fieldVal = fieldVal.replace("C:\\fakepath\\", "");
 
             if (fieldVal !== undefined || fieldVal !== "") {
-                console.log("HEY");
-                console.log(fieldVal);
                 $(this).next(".custom-file-label").attr('data-content', fieldVal);
                 $(this).next(".custom-file-label").text(fieldVal);
             }

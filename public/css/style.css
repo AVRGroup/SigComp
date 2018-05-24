@@ -1,67 +1,66 @@
 /* Matheus Marques */
 
 body {
-	background: url("../img/textured_paper.png") repeat;
+    background: url("../img/textured_paper.png") repeat;
 }
 
 .content {
-	width: 900px;
-	margin-top: 56px;
-	margin-bottom: 30px;
-	padding-top: 8px;
-	padding-bottom: 15px;
-	background: #fafafa;
-	-webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
-	-moz-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
-	box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
-	-webkit-border-bottom-right-radius: 10px;
-	-webkit-border-bottom-left-radius: 10px;
-	-moz-border-radius-bottomright: 10px;
-	-moz-border-radius-bottomleft: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	min-height: 250px;
+    width: 900px;
+    margin-top: 56px;
+    margin-bottom: 30px;
+    padding-top: 8px;
+    padding-bottom: 15px;
+    background: #fafafa;
+    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    min-height: 250px;
 }
 
 .login-form {
-	width: 100%;
-	max-width: 330px;
-	padding: 15px;
-	margin: 0 auto;
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
 }
 
 .login-form input[type="text"] {
-	margin-top: 20px;
-	margin-bottom: -1px;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
+    margin-top: 20px;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .login-form input[type="password"] {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 #certificates .card {
-	width: 277px;
-	margin: 0.4rem;
+    width: 277px;
+    margin: 0.4rem;
 }
 
-#certificates .card-body  {
+#certificates .card-body {
     padding: 0;
     padding-bottom: 4px;
 }
 
 #certificates img:hover {
-	opacity: 0.7;
+    opacity: 0.7;
 }
 
 #certificates .card-footer a:hover {
-	text-decoration: none;
-	opacity: 0.7;
+    text-decoration: none;
+    opacity: 0.7;
 }
-
 
 .custom-file-label::after {
     content: "Navegar";

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
-                    <img src="{base_url}/img/silhueta.jpg" class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
+                    <img src="{base_url}/img/silhueta.jpg" class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190" data-toggle="modal" data-target="#chagePhotoModal">
                     {$loggedUser->getNome()}
                 </div>
             </div>
@@ -49,4 +49,83 @@
 
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="chagePhotoModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Alterar Foto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="uploadPhoto" method="POST">
+                    <div class="modal-body">
+                        <div class="custom-file mb-2">
+                            <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*">
+                            <label class="custom-file-label" for="photo">Selecionar Foto</label>
+                        </div>
+                        <div id="image-cropper"></div>
+                        <input type="hidden" id="newPhoto" name="newPhoto"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Alterar Foto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name=javascript}
+    <script src="{base_url}/js/croppie.js"></script>
+    <script src="{base_url}/js/exif.js"></script>
+
+    <script>
+        var $uploadCrop;
+
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result
+                    });
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                console.log("Sorry - you're browser doesn't support the FileReader API");
+            }
+        }
+
+        $uploadCrop = $('#image-cropper').croppie({
+            viewport: { width: 190, height: 190 },
+            boundary: { width: 450, height: 300 },
+            enableExif: true
+        });
+
+        $('#photo').on('change', function () {
+            $('#newPhoto').val('');
+            readFile(this);
+        });
+
+        $('#uploadPhoto').submit(function() {
+            if($('#newPhoto').val() !== '') {
+                return true;
+            } else {
+                $uploadCrop.croppie('result', 'base64').then(function (base64) {
+                    $('#newPhoto').val(base64);
+                    $('#photo').val('');
+                    $('#uploadPhoto').submit();
+                });
+
+                return false;
+            }
+        });
+    </script>
 {/block}
