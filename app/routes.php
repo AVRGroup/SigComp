@@ -6,7 +6,7 @@ $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('abou
 
 $app->group('', function () {
 
-    $this->get('/', '\App\Controller\HomeController:indexAction')->setName('home');
+    $this->map(['GET', 'POST'],'/', '\App\Controller\HomeController:indexAction')->setName('home');
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
 

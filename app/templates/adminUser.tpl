@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
-                    <img src="{base_url}/img/silhueta.jpg" class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
+                    <img src="{base_url}/{if $user->getFoto()}upload/{$user->getFoto()}{else}img/silhueta.jpg{/if}" class="img-thumbnail" alt="{$user->getNome()}" width="190" height="190">
                     {$user->getNome()}
                 </div>
             </div>

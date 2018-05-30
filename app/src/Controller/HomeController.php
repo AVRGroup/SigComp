@@ -7,6 +7,7 @@ use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
+use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -21,11 +22,42 @@ class HomeController
 
     public function indexAction(Request $request, Response $response, $args)
     {
+        /** @var Usuario $user */
         $user = $request->getAttribute('user');
+
+        if ($request->isPost()) {
+            try {
+                $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
+                list(, $data) = explode(',', $newPhotoBase64);
+                $newPhoto = base64_decode($data);
+
+                $im = imagecreatefromstring($newPhoto);
+                if ($im !== false) {
+                    $lastFoto = $user->getFoto();
+
+                    do {
+                        $uuid4 = Uuid::uuid4();
+                        $user->setFoto($uuid4->toString() . '.png'); //Make sure we got an unique name
+                    } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto()));
+
+                    file_put_contents($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto(), $newPhoto);
+
+                    $this->container->usuarioDAO->save($user);
+                    imagedestroy($im);
+
+                    //Delet Last Foto
+                    if($lastFoto) {
+                        unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
+                    }
+                }
+            } catch (\Exception $e) {
+                echo $e->getTraceAsString();
+                // TODO Error message
+            }
+        }
+
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
-
         CalculateAttributes::calculateUsuarioStatistics($usuario);
-
         $this->container->view['usuario'] = $usuario;
 
         return $this->container->view->render($response, 'home.tpl');

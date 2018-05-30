@@ -54,6 +54,11 @@ class Usuario implements ToIdArrayInterface
     protected $email;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $foto;
+
+    /**
      * 0: Aluno
      * 1: Professor
      * 2: Administrador
@@ -241,6 +246,25 @@ class Usuario implements ToIdArrayInterface
         $this->email = $email;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * @param mixed $foto
+     * @return Usuario
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+        return $this;
+    }
+
 
     /**
      * @return mixed
