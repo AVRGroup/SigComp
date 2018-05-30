@@ -17,23 +17,23 @@
                 </div>
                 <p class="mb-0 mt-3"><b>Inteligência:</b> {$user->getInteligencia()}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getInteligencia())/($user->getInteligencia() +200 ) }%;">{((100 * $user->getInteligencia())/($user->getInteligencia() +200 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getInteligencia())/17 }%;">{((100 * $user->getInteligencia())/17)|string_format:"%.2f"}%</div>
                 </div>
                 <p class="mb-0 mt-3"><b>Sabedoria:</b> {$user->getSabedoria()}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getSabedoria())/($user->getSabedoria() +200 ) }%;">{((100 * $user->getSabedoria())/($user->getSabedoria() +200 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getSabedoria())/16}%;">{((100 * $user->getSabedoria())/16)|string_format:"%.2f"}%</div>
                 </div>
                 <p class="mb-0 mt-3"><b>Destreza:</b> {$user->getDestreza()}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getDestreza())/($user->getDestreza() +200 ) }%;">{((100 * $user->getDestreza())/($user->getDestreza() +200 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getDestreza())/14}%;">{((100 * $user->getDestreza())/14)|string_format:"%.2f"}%</div>
                 </div>
                 <p class="mb-0 mt-3"><b>Força:</b> {$user->getForca()}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getForca())/($user->getForca() +200 ) }%;">{((100 * $user->getForca())/($user->getForca() +200 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getForca())/11}%;">{((100 * $user->getForca())/11)|string_format:"%.2f"}%</div>
                 </div>
                 <p class="mb-0 mt-3"><b>Carisma:</b> {$user->getCarisma()}</p>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getCarisma())/($user->getCarisma() +200 ) }%;">{((100 * $user->getCarisma())/($user->getCarisma() +200 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getCarisma())/2}%;">{((100 * $user->getCarisma())/2)|string_format:"%.2f"}%</div>
                 </div>
                 <p class="mb-0 mt-3"><b>Cultura:</b> {$user->getCultura()}</p>
                 <div class="progress" style="height: 20px;">

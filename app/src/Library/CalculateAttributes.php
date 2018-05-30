@@ -46,11 +46,11 @@ class CalculateAttributes
             $disciplina = $nota->getDisciplina();
 
             $usuario->setExperiencia($usuario->getExperiencia() + $nota->getDisciplina()->getExperiencia())
-                ->setCarisma($usuario->getCarisma() + ($disciplina->getExperiencia() * ($disciplina->getFatorCarisma() / 100)))
-                ->setInteligencia($usuario->getInteligencia() + ($disciplina->getExperiencia() * ($disciplina->getFatorInteligencia() / 100)))
-                ->setSabedoria($usuario->getSabedoria() + ($disciplina->getExperiencia() * ($disciplina->getFatorSabedoria() / 100)))
-                ->setDestreza($usuario->getDestreza() + ($disciplina->getExperiencia() * ($disciplina->getFatorDestreza() / 100)))
-                ->setForca($usuario->getForca() + ($disciplina->getExperiencia() * ($disciplina->getFatorForca() / 100)));
+                ->setCarisma($usuario->getCarisma() + ($nota->getValor() * ($disciplina->getFatorCarisma() / 100)))
+                ->setInteligencia($usuario->getInteligencia() + ($nota->getValor() * ($disciplina->getFatorInteligencia() / 100)))
+                ->setSabedoria($usuario->getSabedoria() + ($nota->getValor() * ($disciplina->getFatorSabedoria() / 100)))
+                ->setDestreza($usuario->getDestreza() + ($nota->getValor() * ($disciplina->getFatorDestreza() / 100)))
+                ->setForca($usuario->getForca() + ($nota->getValor() * ($disciplina->getFatorForca() / 100)));
         }
 
         CalculateAttributes::updateUsuarioCultura($usuario);
