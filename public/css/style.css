@@ -65,3 +65,19 @@ body {
 .custom-file-label::after {
     content: "Navegar";
 }
+
+.changePicButton {
+    display: none;
+    width: 187px;
+    height: 187px;
+    background: black;
+    opacity: 0.6;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding-top: 70px;
+}
+
+.changePic:hover div {
+    display: block;
+    position: absolute;
+}

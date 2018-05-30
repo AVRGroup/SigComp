@@ -4,9 +4,15 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
-                    <img src="{base_url}/{if $loggedUser->getFoto()}upload/{$loggedUser->getFoto()}{else}img/silhueta.jpg{/if}"
-                         class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190"
-                         data-toggle="modal" data-target="#chagePhotoModal">                    {$loggedUser->getNome()}
+                    <div class="changePic">
+                        <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
+                            <i class="fas fa-camera" style="font-size: 30px;"></i>
+                            <p>Alterar Foto</p>
+                        </div>
+                        <img src="{base_url}/{if $loggedUser->getFoto()}upload/{$loggedUser->getFoto()}{else}img/silhueta.jpg{/if}"
+                             class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
+                    </div>
+                    {$loggedUser->getNome()}
                 </div>
             </div>
             <div class="col-9">
