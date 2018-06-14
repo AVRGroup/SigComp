@@ -223,7 +223,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row>
             <div class="col-12">
                 <h4 class="text-center">Estatíticas</h4>
                 <p class="mb-0 mt-3"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
@@ -254,6 +254,95 @@
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <h4 class="text-center">Melhor IRA Anual</h4>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jack</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <h4 class="text-center">Melhor IRA Atual</h4>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jack</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <h4 class="text-center">Melhor Evolução</h4>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jack</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
