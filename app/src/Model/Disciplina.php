@@ -72,6 +72,12 @@ class Disciplina implements ToIdArrayInterface
      */
     protected $notas;
 
+    /**
+     * @ORM\OneToMany(targetEntity="GradeDisciplina", mappedBy="disciplina")
+     * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
+     */
+    protected $disciplinas_grade;
+
     public function __construct()
     {
         $this->notas = new ArrayCollection();
