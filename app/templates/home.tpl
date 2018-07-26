@@ -12,6 +12,13 @@
                         <img src="{base_url}/{if $loggedUser->getFoto()}upload/{$loggedUser->getFoto()}{else}img/silhueta.jpg{/if}"
                              class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
                     </div>
+                    <div class="align-content-lg-center">
+                        <p></p>
+                        <a href="https://www.facebook.com/" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
+                        <a href="https://www.instagram.com/" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
+                        <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
+                        <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
+                    </div>
                 </div>
             </div>
             <div class="col-9">
@@ -45,10 +52,10 @@
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
             </div>
-
         </div>
         <div class="row">
                 <div class="col-12">
+                    <p></p>
                 <h4 class="text-center">Quadro de medalhas</h4>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
                     <li class="nav-item">
@@ -342,10 +349,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="row">
             <div class="col-6">
+                <p></p>
                 <h4 class="text-center">Melhor IRA Geral</h4>
                 <table class="table table-sm">
                     <thead>
@@ -375,6 +382,7 @@
                 </table>
             </div>
             <div class="col-6">
+                <p></p>
                 <h4 class="text-center">Melhor IRA No Período</h4>
                 <table class="table table-sm">
                     <thead>
