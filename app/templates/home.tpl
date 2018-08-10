@@ -19,10 +19,17 @@
                         <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
                         <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
                     </div>
+
+                    <div class="sobre-mim">
+                        <h5>Sobre mim</h5>
+
+                        <textarea name="sobre-mim" id="sobre-mim" cols="25" rows="6" disabled maxlength="150" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p</textarea>
+                    </div>
+
                 </div>
             </div>
             <div class="col-9">
-                <h4 class="text-center">{$loggedUser->getNome()}</h4>
+                <h4 class="text-center">{if $loggedUser->getNomeReal()}{$loggedUser->getNome()}{else}Usuario {$loogedUser->getId()}{/if}</h4>
                 <p class="mb-0 mt-3"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ) }%;">{((100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ))|string_format:"%.2f"}%</div>

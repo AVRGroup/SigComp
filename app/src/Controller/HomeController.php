@@ -45,7 +45,7 @@ class HomeController
                     $this->container->usuarioDAO->save($user);
                     imagedestroy($im);
 
-                    //Delet Last Foto
+                    //Delete Last Foto
                     if($lastFoto) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
                     }

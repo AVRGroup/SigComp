@@ -81,3 +81,12 @@ body {
     display: block;
     position: absolute;
 }
+
+.sobre-mim{
+    margin-top: 10%;
+}
+
+#sobre-mim{
+    resize: none;
+    border-radius: 1rem;
+}

@@ -32,7 +32,7 @@ class LoginController
             try {
                 //TODO REMOVE THIS ON PRODUCTION
                 if($request->getParsedBodyParam('cpf') == '123' && $request->getParsedBodyParam('password') == '456') {
-                    $matriculas[] = '200935027';
+                    $matriculas[] = '201535025';
                     $userInfoResponse = new wsUserInfoResponse(12345);
                     $userInfoResponse->setEmailSiga('a@a.com');
                 } else {

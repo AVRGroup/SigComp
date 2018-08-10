@@ -124,6 +124,11 @@ class Usuario implements ToIdArrayInterface
      */
     protected $notas;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : 1})
+     */
+    protected $nome_real;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -511,4 +516,8 @@ class Usuario implements ToIdArrayInterface
         return $this->getMatricula();
     }
 
+    public function getNomeReal()
+    {
+        return $this->nome_real;
+    }
 }
