@@ -12,6 +12,8 @@ use App\Library\Integra\wsUserInfoResponse;
 use App\Model\Certificado;
 use App\Model\Nota;
 use App\Model\Usuario;
+use App\Model\GradeDisciplina;
+use App\Model\Grade;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -64,5 +66,16 @@ class UserController
         $this->container->view['usuariosFull'] = $allUsers;
 
         return $this->container->view->render($response, 'adminTest.tpl');
+    }
+
+    public function checkPeriodosTestAction(Request $request, Response $response, $args)
+    {
+        $allUsers = $this->container->usuarioDAO->getAllFetched();
+        $allGrades = $this->container->gradeDAO->getAll();
+
+        $this->container->view['usuariosFull'] = $allUsers;
+        $this->container->view['gradesFull'] = $allGrades;
+
+        return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 }

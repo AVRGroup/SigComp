@@ -64,10 +64,10 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas'];
+            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade'];
         }
 
-        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas'];
+        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade'];
     }
 
     /**

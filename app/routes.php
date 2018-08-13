@@ -15,6 +15,8 @@ $app->group('', function () {
 
     $this->group('/admin', function () {
 
+        $this->get('/grade', '\App\Controller\UserController:checkPeriodosTestAction')->setName('checkPeriodos');
+
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
         $this->get('/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');

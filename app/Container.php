@@ -4,6 +4,8 @@ use App\Persistence\DisciplinaDAO;
 use App\Persistence\NotaDAO;
 use App\Persistence\UsuarioDAO;
 use App\Persistence\CertificadoDAO;
+use App\Persistence\GradeDAO;
+use App\Persistence\GradeDisciplinaDAO;
 use \Doctrine\ORM\EntityManager;
 use Slim\Views\Smarty;
 
@@ -12,6 +14,8 @@ use Slim\Views\Smarty;
  * @property NotaDAO notaDAO
  * @property UsuarioDAO usuarioDAO
  * @property CertificadoDAO certificadoDAO
+ * @property GradeDAO gradeDAO
+ * @property GradeDisciplinaDAO gradeDisciplinaDAO
  * @property Smarty view
  * @property EntityManager db
  */
@@ -83,6 +87,14 @@ class Container extends \Slim\Container
 
         $this['certificadoDAO'] = function () {
             return new CertificadoDAO($this->db);
+        };
+
+        $this['gradeDAO'] = function () {
+            return new GradeDAO($this->db);
+        };
+
+        $this['gradeDisciplinaDAO'] = function () {
+            return new GradeDisciplinaDAO($this->db);
         };
 
     }
