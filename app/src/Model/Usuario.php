@@ -129,6 +129,26 @@ class Usuario implements ToIdArrayInterface
      */
     protected $nome_real;
 
+    /**
+     * @ORM\Column(type="string", length=50, options={"default" : null})
+     */
+    protected $facebook;
+
+    /**
+     * @ORM\Column(type="string", length=50, options={"default" : null})
+     */
+    protected $instagram;
+
+    /**
+     * @ORM\Column(type="string", length=50, options={"default" : null})
+     */
+    protected $linkedin;
+
+    /**
+     * @ORM\Column(type="string", length=50, options={"default" : null})
+     */
+    protected $lattes;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -519,5 +539,28 @@ class Usuario implements ToIdArrayInterface
     public function getNomeReal()
     {
         return $this->nome_real;
+    }
+
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+
+    public function getInstagram()
+    {
+        return $this->instagram;
+    }
+
+
+    public function getLinkedin()
+    {
+        return $this->linkedin;
+    }
+
+
+    public function getLattes()
+    {
+        return $this->lattes;
     }
 }

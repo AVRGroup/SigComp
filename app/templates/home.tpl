@@ -13,17 +13,36 @@
                              class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
                     </div>
                     <div class="align-content-lg-center">
-                        <p></p>
-                        <a href="https://www.facebook.com/" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
-                        <a href="https://www.instagram.com/" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
-                        <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
-                        <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
+
+                        {if $loggedUser->getFacebook() == null}
+                            <img src="{base_url}/img/facebook_preto.png" class="img-thumbnail" alt="Facebook" width="42" height="42">
+                        {else}
+                            <a href="https://www.facebook.com/" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
+                        {/if}
+
+                        {if $loggedUser->getInstagram() == null}
+                            <img src="{base_url}/img/instagram_preto.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42">
+                        {else}
+                            <a href="https://www.instagram.com/" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
+                        {/if}
+
+                        {if $loggedUser->getLinkedin() == null}
+                            <img src="{base_url}/img/linkedin_preto.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42">
+                        {else}
+                            <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
+                        {/if}
+
+                        {if $loggedUser->getLattes() == null}
+                            <img src="{base_url}/img/lattes_preto.png" class="img-thumbnail" alt="Lattes" width="42" height="42">
+                        {else}
+                            <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
+                        {/if}
+
                     </div>
 
                     <div class="sobre-mim">
                         <h5>Sobre mim</h5>
-
-                        <textarea name="sobre-mim" id="sobre-mim" cols="25" rows="6" disabled maxlength="150" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis p</textarea>
+                        <textarea name="sobre-mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula e</textarea>
                     </div>
 
                 </div>
