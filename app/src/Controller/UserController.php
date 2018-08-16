@@ -78,4 +78,16 @@ class UserController
 
         return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
+
+    public function informacoesPessoaisAction(Request $request, Response $response, $args)
+    {
+        $user = $request->getAttribute('user');
+
+        $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
+
+        $this->container->view['usuario'] = $usuario;
+
+        return $this->container->view->render($response, 'informacoesPessoais.tpl');
+    }
 }
+

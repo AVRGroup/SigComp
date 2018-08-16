@@ -13,9 +13,13 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
 
+    $this->get('/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
+
+
     $this->group('/admin', function () {
 
         $this->get('/grade', '\App\Controller\UserController:checkPeriodosTestAction')->setName('checkPeriodos');
+
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 

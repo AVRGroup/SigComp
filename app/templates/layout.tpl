@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{base_url}/css/croppie.css"/>
     <link rel="stylesheet" href="{base_url}/css/style.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+
 </head>
 
 <body>
@@ -25,6 +28,7 @@
                 {if $loggedUser != null}
                     <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Administrador
