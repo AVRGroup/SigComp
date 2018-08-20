@@ -7,6 +7,7 @@ use App\Model\Disciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Utility\IdentifierFlattener;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
@@ -99,6 +100,38 @@ class AdminController
                 }
             }
         }
+
+        $usuarios = $this->container->usuarioDAO->getAllFetched();
+
+        /** @var Usuario $usuario */
+        foreach ($usuarios as $usuario){
+            $somatorioNotasVezesCargas = 0;
+            $somatorioCargas = 0;
+            $ira = 0;
+
+            /** @var Nota $nota */
+            foreach ($usuario->getNotas() as $nota) {
+                if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado")
+                    continue;
+                $somatorioNotasVezesCargas += $nota->getValor() * $nota->getDisciplina()->getCarga();
+                $somatorioCargas += $nota->getDisciplina()->getCarga();
+            }
+
+            if($somatorioCargas != 0)
+                $ira = $somatorioNotasVezesCargas / $somatorioCargas;
+            else
+                $ira = 0;
+
+//            $usuario->setIra($ira);
+//            try {
+//                $this->container->usuarioDAO->flush();
+//            } catch (\Exception $e) {
+//                echo $e;
+//            }
+        }
+
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
+
+
 }
