@@ -95,4 +95,15 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+    public function getTop10Ira(){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u ORDER BY u.ira DESC")->setMaxResults(10);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
 }

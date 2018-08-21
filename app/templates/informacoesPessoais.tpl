@@ -9,6 +9,7 @@
         <h5 class="col-md-6 float-right">Matrícula: {$usuario->getMatricula()}</h5>
         <h5 class="col-md-6">Curso: {$usuario->getCurso()}</h5>
         <h5 class="col-md-6">E-mail: {$usuario->getEmail()}</h5>
+        <h5 class="col-md-6">Indíce de Rendimento Acadêmico: {$usuario->getIra()|string_format:"%.2f"}</h5>
 
     </div>
 
@@ -42,7 +43,6 @@
                 <label for="instagram">Instagram</label>
                 <input type="text" placeholder="Digite seu perfil no Instagram" class="form-control">
             </div>
-
         </div>
 
         <div class="form-row" style="margin-top: 3%">
@@ -55,11 +55,18 @@
                 <label for="lattes">Lattes</label>
                 <input type="text" placeholder="Digite seu perfil no Lattes" class="form-control">
             </div>
-
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 3%" type="submit">Atualizar</button>
+
+        <h5 align="center" style="margin-top: 3%">Sobre mim</h5>
+        <textarea style="margin-left: 29.5%" name="sobre-mim"  id="sobre-mim" cols="50" rows="7" placeholder="Maximo 50 caracteres"></textarea>
+        <small id="contador-mensagem"></small>
+        <hr>
+
+        <button class="btn btn-primary" type="submit">Atualizar</button>
 
     </form>
 
+
 {/block}
+
