@@ -59,6 +59,7 @@ class HomeController
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         CalculateAttributes::calculateUsuarioStatistics($usuario);
         $this->container->view['usuario'] = $usuario;
+        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10Ira();
 
         return $this->container->view->render($response, 'home.tpl');
     }

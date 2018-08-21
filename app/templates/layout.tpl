@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{base_url}/css/croppie.css"/>
     <link rel="stylesheet" href="{base_url}/css/style.css"/>
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 
@@ -74,6 +75,8 @@
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
 
+
+
 <script>
     $(function() {
         $("input[type=file]").change(function () {
@@ -88,6 +91,22 @@
                 $(this).next(".custom-file-label").text(fieldVal);
             }
         });
+    });
+
+    //Contador de caracteres da pagina InformacoesPessoais
+    var text_max = 50;
+    $('#contador-mensagem').html(text_max + ' caracteres');
+
+    $('#sobre-mim').keyup(function () {
+        var text_length = $('#sobre-mim').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#contador-mensagem').html(text_remaining + ' caracteres');
+
+        if(text_remaining <= 0){
+            $('#contador-mensagem').html('Tamanho máximo atingido')
+        }
+
     });
 </script>
 

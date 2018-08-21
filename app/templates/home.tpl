@@ -385,26 +385,18 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
+                        <th scope="col">IRA</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Jack</td>
-                    </tr>
-                    </tbody>
+                    {$i = 1}
+                    {foreach $top10Ira as $user}
+                        <tr>
+                            <th scope="row">{$i++}</th>
+                            <td>{$user->getNome()}</td>
+                            <td>{$user->getIra()|string_format:"%.2f"}</td>
+                        </tr>
+                    {/foreach}
                 </table>
             </div>
             <div class="col-6">
