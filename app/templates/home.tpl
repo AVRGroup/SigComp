@@ -95,17 +95,23 @@
                     <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
                         <table>
                             <tbody>
-                            <tr>
-                                {foreach $medalhas as $medalha}
-                                    <td>
-                                        <div class="img-thumbnail">
-                                            <img src="{base_url}/img/{$medalha['imagem']}" class="rounded mx-auto d-block">
-                                            <div class="caption">
-                                                <p class="text-center"><small>{$medalha['nome']}</small></p>
+                            {$qtde = 0}
+                                <tr>
+                                    {foreach $medalhas as $medalha}
+                                        {if $qtde < 10}
+                                        <td>
+                                            <div class="img-thumbnail" style="max-width: 100px;">
+                                                <img src="{base_url}/img/{$medalha['imagem']} " class="img-fluid">
+                                                <div class="caption">
+                                                    <p class="text-center"><small>{$medalha['nome']}</small></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                {/foreach}
+                                        </td>
+                                        {$qtde = $qtde + 1}
+                                            {else}
+                                                </tr>{$qtde = 0}<tr>
+                                        {/if}
+                                    {/foreach}
                             </tr>
                             </tbody>
                         </table>

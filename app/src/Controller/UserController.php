@@ -110,6 +110,14 @@ class UserController
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70), 70);
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(80), 80);
 
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2), 2);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3), 3);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3), 3);
+
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1), 1);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2), 2);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3), 3);
+
         return $this->container->view->render($response, 'assignMedals.tpl');
     }
 }

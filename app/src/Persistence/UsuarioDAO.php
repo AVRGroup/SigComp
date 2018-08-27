@@ -150,9 +150,59 @@ class UsuarioDAO extends BaseDAO
                 break;
         }
         foreach ($results as $user){
-            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['id']}', '$medalha')";
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['id']}','$medalha')";
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
         }
     }
+
+    public function getByOptativas($qtde){
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select id from db_gamificacao.disciplina where id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = 1) and codigo not like 'DCC%') group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
+    public function setByOptativas($results, $qtde){
+        switch ($qtde){
+            case 2: $medalha = 17;
+                break;
+            case 3: $medalha = 18;
+                break;
+            case 4: $medalha = 19;
+                break;
+        }
+        foreach ($results as $user){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['usuario']}', '$medalha')";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        }
+    }
+
+    public function getBy100($qtde){
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = 1) group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
+    public function setBy100($results, $qtde){
+        switch ($qtde){
+            case 1: $medalha = 10;
+                break;
+            case 2: $medalha = 11;
+                break;
+            case 3: $medalha = 12;
+                break;
+        }
+        foreach ($results as $user){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['usuario']}', '$medalha')";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        }
+    }
+
+
 }
