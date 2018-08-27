@@ -39,17 +39,131 @@
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $user->getCultura())/($user->getCultura() +50 ) }%;">{((100 * $user->getCultura())/($user->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
-
-                <h4 class="text-center mt-3">Notas dos usuários</h4>
-                <ul>
-                    {foreach $user->getNotas() as $nota}
-                        <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()}) -> {$nota->getValor()} </li>
-                    {/foreach}
-                </ul>
             </div>
 
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                <p></p>
+                <h4 class="text-center">Quadro de medalhas</h4>
+                <ul class="nav nav-tabs" id="badgesTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" id="current-tab" role="tab" href="#current">Medalhas Conquistadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" id="possible-tab" role="tab" href="#possible">Medalhas Possíveis</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="badgesTabContent">
+                    <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
+                        <table>
+                            <tbody>
+                            <tr>
+                                {foreach $medalhas as $medalha}
+                                    <td>
+                                        <div class="img-thumbnail">
+                                            <img src="{base_url}/img/{$medalha['imagem']}" class="rounded mx-auto d-block">
+                                            <div class="caption">
+                                                <p class="text-center"><small>{$medalha['nome']}</small></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                {/foreach}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="img-thumbnail">
+                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                        <div class="caption">
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <h4 class="text-center mt-3">Notas dos usuários</h4>
+    <ul>
+        {foreach $user->getNotas() as $nota}
+            <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()}) -> {$nota->getValor()} </li>
+        {/foreach}
+    </ul>
     <h3 class="text-center mt-5 mb-3">Certificados</h3>
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $user->getCertificados() as $certificate}

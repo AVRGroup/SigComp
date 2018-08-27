@@ -42,6 +42,9 @@ class UserController
 
         CalculateAttributes::calculateUsuarioStatistics($usuario);
 
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
+        $this->container->view['medalhas'] = $medalhasUsuario;
+
         $this->container->view['user'] = $usuario;
         return $this->container->view->render($response, 'adminUser.tpl');
     }
