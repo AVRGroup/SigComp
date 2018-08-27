@@ -106,6 +106,10 @@ class UserController
         $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(8, 4), 8);
         $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(9, 1), 9);
 
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60), 60);
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70), 70);
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(80), 80);
+
         return $this->container->view->render($response, 'assignMedals.tpl');
     }
 }

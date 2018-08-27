@@ -123,7 +123,6 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-
     public function getMedalsByIdFetched($id)
     {
         $sql = "SELECT medalha, medalha.nome, imagem FROM usuario left join medalha_usuario on usuario.id = medalha_usuario.usuario left join medalha on medalha = medalha.id WHERE usuario.id = '{$id}'";
@@ -131,5 +130,29 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
         $results =  $stmt->fetchAll();
         return $results;
+    }
+
+    public function getByIRA($ira){
+        $sql = "SELECT id FROM usuario where ira > '{$ira}'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
+    public function setByIRA($results, $ira){
+        switch ($ira){
+            case 60: $medalha = 13;
+                break;
+            case 70: $medalha = 14;
+                break;
+            case 80: $medalha = 15;
+                break;
+        }
+        foreach ($results as $user){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['id']}', '$medalha')";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        }
     }
 }
