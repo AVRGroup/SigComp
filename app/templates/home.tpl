@@ -45,6 +45,8 @@
                         <textarea name="sobre-mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula e</textarea>
                     </div>
 
+                    <div><h6>Grade: {$loggedUser->getGrade()}</h6></div>
+
                 </div>
             </div>
             <div class="col-9">
@@ -216,7 +218,7 @@
                     {foreach $top10Ira as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td>{$user->getNome()}</td>
+                            <td><a href="{path_for name="adminUser" data=["id" => $user->getId()]}">{$user->getNome()}</a></td>
                             <td>{$user->getIra()|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}

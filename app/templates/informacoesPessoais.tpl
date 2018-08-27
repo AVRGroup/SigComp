@@ -10,6 +10,7 @@
         <h5 class="col-md-6">Curso: {$usuario->getCurso()}</h5>
         <h5 class="col-md-6">E-mail: {$usuario->getEmail()}</h5>
         <h5 class="col-md-6">Indíce de Rendimento Acadêmico: {$usuario->getIra()|string_format:"%.2f"}</h5>
+        <h5 class="col-md-6">Grade: {$usuario->getGrade()}</h5>
 
     </div>
 
