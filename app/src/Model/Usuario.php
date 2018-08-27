@@ -125,6 +125,12 @@ class Usuario implements ToIdArrayInterface
     protected $notas;
 
     /**
+     * @ORM\OneToMany(targetEntity="MedalhaUsuario", mappedBy="usuario")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     */
+    protected $medalhas_usuario;
+
+    /**
      * @ORM\Column(type="boolean", options={"default" : 1})
      */
     protected $nome_real;
@@ -562,5 +568,13 @@ class Usuario implements ToIdArrayInterface
     public function getLattes()
     {
         return $this->lattes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMedalhas()
+    {
+        return $this->medalhas_usuario;
     }
 }

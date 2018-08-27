@@ -20,6 +20,7 @@ $app->group('', function () {
 
         $this->get('/grade', '\App\Controller\UserController:checkPeriodosTestAction')->setName('checkPeriodos');
 
+        $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
