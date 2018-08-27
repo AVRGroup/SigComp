@@ -32,6 +32,11 @@ class Medalha implements ToIdArrayInterface
      */
     protected $medalhas_usuario;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $imagem;
+
     public function __construct()
     {
         $this->medalhas_usuario = new ArrayCollection();
@@ -58,6 +63,32 @@ class Medalha implements ToIdArrayInterface
     public function getIdentifier()
     {
         return $this->getCodigo();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImagem()
+    {
+        return $this->imagem;
+    }
+
+    /**
+     * @param mixed $imagem
+     * @return Medalha
+     */
+    public function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
     }
 }
 

@@ -57,7 +57,9 @@ class HomeController
         }
 
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         CalculateAttributes::calculateUsuarioStatistics($usuario);
+        $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10Ira();
 

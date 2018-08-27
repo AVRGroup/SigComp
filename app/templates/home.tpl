@@ -96,51 +96,16 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                    </div>
-                                </td>
+                                {foreach $medalhas as $medalha}
+                                    <td>
+                                        <div class="img-thumbnail">
+                                            <img src="{base_url}/img/{$medalha['imagem']}" class="rounded mx-auto d-block">
+                                            <div class="caption">
+                                                <p class="text-center"><small>{$medalha['nome']}</small></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                {/foreach}
                             </tr>
                             </tbody>
                         </table>
@@ -153,7 +118,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -161,7 +126,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -169,7 +134,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -177,7 +142,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -185,7 +150,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -193,7 +158,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -201,7 +166,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -209,7 +174,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>
@@ -217,155 +182,7 @@
                                     <div class="img-thumbnail">
                                         <img src="{base_url}/img/badge.png" class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>Nome da Medalha</small></p>
+                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
                                         </div>
                                     </div>
                                 </td>

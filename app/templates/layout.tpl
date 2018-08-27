@@ -40,6 +40,7 @@
                             <a class="dropdown-item" href="{path_for name="adminDataLoad"}">Carga de Dados</a>
                             <a class="dropdown-item" href="{path_for name="adminTest"}">Admin Test</a>
                             <a class="dropdown-item" href="{path_for name="checkPeriodos"}">Grades</a>
+                            <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                         </div>
                     </li>
                 {else}

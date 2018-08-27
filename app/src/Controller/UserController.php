@@ -70,7 +70,7 @@ class UserController
 
     public function checkPeriodosTestAction(Request $request, Response $response, $args)
     {
-        $allUsers = $this->container->usuarioDAO->getAllFetched();
+        $allUsers = $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 7), 1);
         $allGrades = $this->container->gradeDAO->getAll();
 
         $this->container->view['usuariosFull'] = $allUsers;
@@ -88,6 +88,22 @@ class UserController
         $this->container->view['usuario'] = $usuario;
 
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
+    }
+
+    public function assignMedalsAction(Request $request, Response $response, $args){
+        $this->container->medalhaUsuarioDAO->truncateTable();
+
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 7), 1);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(2, 6), 2);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(3, 6), 3);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(4, 5), 4);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(5, 5), 5);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(6, 5), 6);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(7, 4), 7);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(8, 4), 8);
+        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(9, 1), 9);
+
+        return $this->container->view->render($response, 'assignMedals.tpl');
     }
 }
 
