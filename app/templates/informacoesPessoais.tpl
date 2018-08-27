@@ -14,6 +14,8 @@
     </div>
 
     <h4 align="center" style="margin-top: 5%">Atualize seus dados</h4>
+    <h6 align="center">Todas essas informações são opcionais</h6>
+
     <hr>
 
     <form action="">

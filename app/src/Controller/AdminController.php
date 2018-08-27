@@ -110,10 +110,21 @@ class AdminController
 
                 /** @var Nota $nota */
                 foreach ($usuario->getNotas() as $nota) {
+
                     if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado")
                         continue;
+
                     $somatorioNotasVezesCargas += $nota->getValor() * $nota->getDisciplina()->getCarga();
+
+                    if($nota->getValor() == 'A')
+                        $somatorioNotasVezesCargas += 100 * $nota->getDisciplina()->getCarga();
+                    if($nota->getValor() == 'B')
+                        $somatorioNotasVezesCargas += 90 * $nota->getDisciplina()->getCarga();
+                    if($nota->getValor() == 'C')
+                        $somatorioNotasVezesCargas += 80 * $nota->getDisciplina()->getCarga();
+
                     $somatorioCargas += $nota->getDisciplina()->getCarga();
+
                 }
 
                 if($somatorioCargas != 0)
