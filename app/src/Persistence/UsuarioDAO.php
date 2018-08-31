@@ -64,6 +64,19 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+    public function getAllFetchedByPeriodoNota($periodo)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE n.periodo = :periodo ORDER BY n.periodo ASC");
+            $query->setParameter('periodo', $periodo);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
     /**
      * @param array $matriculas
      * @return Usuario[]
@@ -96,7 +109,7 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
-    public function getTop10Ira(){
+    public function getTop10IraTotal(){
         try {
             $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u ORDER BY u.ira DESC")->setMaxResults(10);
             $usuarios = $query->getResult();
@@ -105,6 +118,14 @@ class UsuarioDAO extends BaseDAO
         }
 
         return $usuarios;
+    }
+
+    public function getTop10IraPeriodo(){
+        $sql = "SELECT * FROM usuario ORDER BY ira_periodo_passado DESC LIMIT 10";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
     }
 
     public function getPeriodo($periodo, $qtdeDisciplinaPeriodo){

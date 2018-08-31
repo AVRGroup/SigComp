@@ -27,12 +27,10 @@ class AdminController
         if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];
-
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
                 $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
             } else {
                 $extension = mb_strtolower(pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
-
                 if (!in_array($extension, $this->container->settings['upload']['allowedDataLoadExtensions'])) {
                     $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
                 } else {
@@ -40,27 +38,22 @@ class AdminController
                         set_time_limit(60 * 60); //Should not Exit
                         $data = Helper::processCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
-
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
-
                         foreach ($data['disciplinas'] as $disc) {
-                            if(isset($disciplinas[$disc['codigo']]))
+                            if (isset($disciplinas[$disc['codigo']])) {
                                 continue;
-
+                            }
                             $disciplina = new Disciplina();
                             $disciplina->setCodigo($disc['codigo']);
                             $disciplina->setCarga($disc['carga']);
                             $this->container->disciplinaDAO->persist($disciplina);
-
                             $disciplinas[$disciplina->getIdentifier()] = $disciplina; //Added to existing Disciplinas
-                            $affectedData['disciplinasAdded'] ++;
+                            $affectedData['disciplinasAdded']++;
                         }
                         $this->container->disciplinaDAO->flush(); //Commit the transaction
-
                         $usuarios = Helper::convertToIdArray($this->container->usuarioDAO->getAllFetched());
-
                         foreach ($data['usuarios'] as $user) {
-                            if(isset($usuarios[$user['matricula']])) {
+                            if (isset($usuarios[$user['matricula']])) {
                                 $usuario = $usuarios[$user['matricula']];
                                 foreach ($usuario->getNotas() as $userNota) {
                                     $usuario->removeNota($userNota);
@@ -75,7 +68,6 @@ class AdminController
                                 $usuario->setMatricula($user['matricula']);
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
-
                                 $this->container->usuarioDAO->persist($usuario);
                                 $affectedData['usuariosAdded']++;
                             }
@@ -86,11 +78,9 @@ class AdminController
                                 $nota->setPeriodo($disc['periodo']);
                                 $nota->setDisciplina($disciplinas[$disc['codigo']]);
                                 $usuario->addNota($nota);
-
                                 $this->container->notaDAO->persist($nota);
                             }
                         }
-
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                         $this->container->view['affectedData'] = $affectedData;
                         $this->container->view['success'] = true;
@@ -99,50 +89,94 @@ class AdminController
                     }
                 }
             }
-
-            $usuarios = $this->container->usuarioDAO->getAllFetched();
-
-            /** @var Usuario $usuario */
-            foreach ($usuarios as $usuario){
-                $somatorioNotasVezesCargas = 0;
-                $somatorioCargas = 0;
-                $ira = 0;
-
-                /** @var Nota $nota */
-                foreach ($usuario->getNotas() as $nota) {
-
-                    if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado")
-                        continue;
-
-                    $somatorioNotasVezesCargas += $nota->getValor() * $nota->getDisciplina()->getCarga();
-
-                    if($nota->getValor() == 'A')
-                        $somatorioNotasVezesCargas += 100 * $nota->getDisciplina()->getCarga();
-                    if($nota->getValor() == 'B')
-                        $somatorioNotasVezesCargas += 90 * $nota->getDisciplina()->getCarga();
-                    if($nota->getValor() == 'C')
-                        $somatorioNotasVezesCargas += 80 * $nota->getDisciplina()->getCarga();
-
-                    $somatorioCargas += $nota->getDisciplina()->getCarga();
-
-                }
-
-                if($somatorioCargas != 0)
-                    $ira = $somatorioNotasVezesCargas / $somatorioCargas;
-                else
-                    $ira = 0;
-
-                $usuario->setIra($ira);
-                try {
-                    $this->container->usuarioDAO->flush();
-                } catch (\Exception $e) {
-                    echo $e;
-                }
-            }
         }
+
+        //$this->calculaIraTotal();
+        $this->calculaIraDoPeriodo(20171);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
+    public function calculaIraTotal(){
+
+        $usuarios = $this->container->usuarioDAO->getAllFetched();
+        /** @var Usuario $usuario */
+        foreach ($usuarios as $usuario){
+            $somatorioNotasVezesCargas = 0;
+            $somatorioCargas = 0;
+
+            /** @var Nota $nota */
+            foreach ($usuario->getNotas() as $nota) {
+
+                if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
+                    continue;
+
+                $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
+                $somatorioCargas += $nota->getDisciplina()->getCarga();
+            }
+
+            if($somatorioCargas != 0)
+                $ira = $somatorioNotasVezesCargas / $somatorioCargas;
+            else
+                $ira = 0;
+
+            $usuario->setIra($ira);
+
+            try {
+                $this->container->usuarioDAO->flush();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        }
+    }
+
+    public function calculaIraDoPeriodo($periodo){
+
+        $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota($periodo);
+
+        /** @var Usuario $usuario */
+        foreach ($usuarios as $usuario){
+            $somatorioNotasVezesCargas = 0;
+            $somatorioCargas = 0;
+
+            /** @var Nota $nota */
+            foreach ($usuario->getNotas() as $nota) {
+
+                if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
+                    continue;
+
+                $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
+                $somatorioCargas += $nota->getDisciplina()->getCarga();
+            }
+
+            if($somatorioCargas != 0)
+                $ira = $somatorioNotasVezesCargas / $somatorioCargas;
+            else
+                $ira = 0;
+
+            $usuario->setIraPeriodoPassado($ira);
+
+            try {
+                $this->container->usuarioDAO->flush();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        }
+    }
+
+    public function calculaNotaVezesCarga($nota){
+        /** @var Nota $nota */
+
+        if($nota->getValor() === 'A')
+            return 100 * $nota->getDisciplina()->getCarga();
+
+        if($nota->getValor() === 'B')
+            return 90 * $nota->getDisciplina()->getCarga();
+
+        if($nota->getValor() === 'C')
+            return 80 * $nota->getDisciplina()->getCarga();
+
+        return $nota->getValor() * $nota->getDisciplina()->getCarga();
+    }
 
 }

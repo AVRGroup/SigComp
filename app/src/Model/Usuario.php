@@ -73,6 +73,11 @@ class Usuario implements ToIdArrayInterface
     protected $ira;
 
     /**
+     * @ORM\Column(type="float", nullable=true, options={"default" : 0})
+     */
+    protected $ira_periodo_passado;
+
+    /**
      * @ORM\Column(type="integer", nullable=true, options={"default" : 1})
      */
     protected $nivel = 1;
@@ -330,6 +335,25 @@ class Usuario implements ToIdArrayInterface
     public function setIra($ira)
     {
         $this->ira = $ira;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getIraPeriodoPassado()
+    {
+        return $this->ira_periodo_passado;
+    }
+
+    /**
+     * @param mixed $ira_periodo_passado
+     * @return Usuario
+     */
+    public function setIraPeriodoPassado($ira_periodo_passado)
+    {
+        $this->ira_periodo_passado = $ira_periodo_passado;
         return $this;
     }
 

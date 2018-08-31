@@ -232,25 +232,18 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
+                        <th scope="col">IRA</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Jack</td>
-                    </tr>
+                    {$i = 1}
+                    {foreach $top10IraPeriodoPassado as $user}
+                        <tr>
+                            <th scope="row">{$i++}</th>
+                            <td><a href="{path_for name="adminUser" data=["id" => $user.id]}">{$user.nome}</a></td>
+                            <td>{$user.ira_periodo_passado|string_format:"%.2f"}</td>
+                        </tr>
+                    {/foreach}
                     </tbody>
                 </table>
             </div>
