@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Library\Helper;
 use App\Model\Disciplina;
+use App\Model\Grade;
+use App\Model\GradeDisciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -177,6 +179,61 @@ class AdminController
             return 80 * $nota->getDisciplina()->getCarga();
 
         return $nota->getValor() * $nota->getDisciplina()->getCarga();
+    }
+
+    public function gradeLoadAction(Request $request, Response $response, $args)
+    {
+        if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $request->getUploadedFiles()['data'];
+            if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+                $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
+            } else {
+                $extension = mb_strtolower(pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
+                if (!in_array($extension, $this->container->settings['upload']['allowedDataLoadExtensions'])) {
+                    $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
+                } else {
+                    try {
+                        set_time_limit(60 * 60); //Should not Exit
+                        $data = Helper::processGradeCSV($uploadedFile->file);
+                        $affectedData = ['disciplinasAdded' => 0];
+                        $grade = new Grade();
+                        $grade->setCodigo(12014);
+                        $this->container->gradeDAO->flush();
+                        $disciplinasGrade = new GradeDisciplina();
+                        $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                        foreach ($data['disciplinas'] as $disc) {
+                            if (isset($disciplinas[$disc['codigo']])) {
+                                $disciplinasGrade->setGrade($grade->getId());
+                                $disciplinasGrade->setDisciplina($disciplinas[$disc['codigo']]->getIdentifier());
+                                $disciplinasGrade->setPeriodo($disc['codigo']);
+                                $disciplinasGrade->setTipo(0);
+                                $this->container->gradeDisciplinaDAO->flush();
+                            }
+                            echo $disc['codigo'];
+                            $disciplina = new Disciplina();
+                            $disciplina->setCodigo($disc['codigo']);
+                            $disciplina->setCarga($disc['carga']);
+                            $disciplina->setNome($disc['nome']);
+                            $this->container->disciplinaDAO->persist($disciplina);
+                            $disciplinas[$disciplina->getIdentifier()] = $disciplina; //Added to existing Disciplinas
+                            $this->container->disciplinaDAO->flush(); //Commit the transaction
+                            $disciplinasGrade->setGrade($grade->getId());
+                            $disciplinasGrade->setDisciplina($disciplina->getIdentifier());
+                            $disciplinasGrade->setPeriodo($disc['codigo']);
+                            $disciplinasGrade->setTipo(0);
+                            $this->container->gradeDisciplinaDAO->flush();
+                            $affectedData['disciplinasAdded']++;
+                        }
+                        $this->container->view['affectedData'] = $affectedData;
+                        $this->container->view['success'] = true;
+                    } catch (\Exception $e) {
+                        $this->container->view['error'] = $e->getMessage();
+                    }
+                }
+            }
+        }
+        return $this->container->view->render($response, 'adminGradeLoad.tpl');
     }
 
 }
