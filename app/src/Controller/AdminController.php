@@ -91,48 +91,18 @@ class AdminController
             }
         }
 
-        //$this->calculaIraTotal();
-        $this->calculaIraDoPeriodo(20171);
+        $this->calculaIra(true);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
-    public function calculaIraTotal(){
+    public function calculaIra($calcularIraPeriodoPassado){
 
-        $usuarios = $this->container->usuarioDAO->getAllFetched();
-        /** @var Usuario $usuario */
-        foreach ($usuarios as $usuario){
-            $somatorioNotasVezesCargas = 0;
-            $somatorioCargas = 0;
+        if($calcularIraPeriodoPassado)
+            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20171);
+        else
+            $usuarios = $this->container->usuarioDAO->getAllFetched();
 
-            /** @var Nota $nota */
-            foreach ($usuario->getNotas() as $nota) {
-
-                if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
-                    continue;
-
-                $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
-                $somatorioCargas += $nota->getDisciplina()->getCarga();
-            }
-
-            if($somatorioCargas != 0)
-                $ira = $somatorioNotasVezesCargas / $somatorioCargas;
-            else
-                $ira = 0;
-
-            $usuario->setIra($ira);
-
-            try {
-                $this->container->usuarioDAO->flush();
-            } catch (\Exception $e) {
-                echo $e;
-            }
-        }
-    }
-
-    public function calculaIraDoPeriodo($periodo){
-
-        $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota($periodo);
 
         /** @var Usuario $usuario */
         foreach ($usuarios as $usuario){
@@ -154,7 +124,11 @@ class AdminController
             else
                 $ira = 0;
 
-            $usuario->setIraPeriodoPassado($ira);
+            if($calcularIraPeriodoPassado)
+                if($somatorioCargas >= 60*4)
+                    $usuario->setIraPeriodoPassado($ira);
+            else
+                $usuario->setIra($ira);
 
             try {
                 $this->container->usuarioDAO->flush();

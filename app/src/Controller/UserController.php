@@ -43,10 +43,13 @@ class UserController
         CalculateAttributes::calculateUsuarioStatistics($usuario);
 
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
-        $this->container->view['medalhas'] = $medalhasUsuario;
 
-        $this->container->view['user'] = $usuario;
-        return $this->container->view->render($response, 'adminUser.tpl');
+        $this->container->view['medalhas'] = $medalhasUsuario;
+        $this->container->view['usuario'] = $usuario;
+        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
+        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+
+        return $this->container->view->render($response, 'home.tpl');
     }
 
     public function adminTestAction(Request $request, Response $response, $args)

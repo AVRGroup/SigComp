@@ -9,30 +9,30 @@
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
                             <p>Alterar Foto</p>
                         </div>
-                        <img src="{base_url}/{if $loggedUser->getFoto()}upload/{$loggedUser->getFoto()}{else}img/silhueta.jpg{/if}"
-                             class="img-thumbnail" alt="{$loggedUser->getNome()}" width="190" height="190">
+                        <img src="{base_url}/{if $usuario->getFoto()}upload/{$usuario->getFoto()}{else}img/silhueta.jpg{/if}"
+                             class="img-thumbnail" alt="{$usuario->getNome()}" width="190" height="190">
                     </div>
                     <div class="align-content-lg-center">
 
-                        {if $loggedUser->getFacebook() == null}
+                        {if $usuario->getFacebook() == 'null'}
                             <img src="{base_url}/img/facebook_preto.png" class="img-thumbnail" alt="Facebook" width="42" height="42">
                         {else}
                             <a href="https://www.facebook.com/" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
                         {/if}
 
-                        {if $loggedUser->getInstagram() == null}
+                        {if $usuario->getInstagram() == 'null'}
                             <img src="{base_url}/img/instagram_preto.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42">
                         {else}
                             <a href="https://www.instagram.com/" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
                         {/if}
 
-                        {if $loggedUser->getLinkedin() == null}
+                        {if $usuario->getLinkedin() == 'null'}
                             <img src="{base_url}/img/linkedin_preto.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42">
                         {else}
                             <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
                         {/if}
 
-                        {if $loggedUser->getLattes() == null}
+                        {if $usuario->getLattes() == 'null'}
                             <img src="{base_url}/img/lattes_preto.png" class="img-thumbnail" alt="Lattes" width="42" height="42">
                         {else}
                             <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
@@ -45,12 +45,12 @@
                         <textarea name="sobre-mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula e</textarea>
                     </div>
 
-                    <div><h6>Grade: {$loggedUser->getGrade()}</h6></div>
+                    <div><h6>Grade: {$usuario->getGrade()}</h6></div>
 
                 </div>
             </div>
             <div class="col-9">
-                <h4 class="text-center">{if $loggedUser->getNomeReal()}{$loggedUser->getNome()}{else}Usuario {$loogedUser->getId()}{/if}</h4>
+                <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$loogedUser->getId()}{/if}</h4>
                 <p class="mb-0 mt-3"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ) }%;">{((100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ))|string_format:"%.2f"}%</div>
