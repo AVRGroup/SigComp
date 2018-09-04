@@ -73,7 +73,10 @@
 <!-- jQuery -->
 <script src="{base_url}/js/jquery-3.3.1.min.js"></script>
 <!-- Bootstrap js -->
+<script src="{base_url}/js/popper.min.js"></script>
+
 <script src="{base_url}/js/bootstrap.min.js"></script>
+
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
 
@@ -110,6 +113,11 @@
         }
 
     });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
 </script>
 
 {block name=javascript}{/block}

@@ -225,8 +225,19 @@
                 </table>
             </div>
             <div class="col-6">
-                <p></p>
-                <h4 class="text-center">Melhor IRA No Período</h4>
+                <div class="row">
+                    <div class="col-10">
+                        <h4 class="text-center">Melhor IRA No Período</h4>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                                title="Informações"
+                                data-content="Esse é o IRA somando as notas apenas do ultimo periodo. São considerados aqueles que fizeram
+                                              pelo menos 4 matérias dos departamentos DCC, MAT, FIS ou EST">
+                            ?
+                        </button>
+                    </div>
+                </div>
                 <table class="table table-sm">
                     <thead>
                     <tr>
