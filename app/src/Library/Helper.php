@@ -64,4 +64,31 @@ class Helper
 
         return $data;
     }
+
+    public static function processGradeCSV($filePath)
+    {
+        $fileExcel = IOFactory::load($filePath);
+        $fileExcel->setActiveSheetIndex(0);
+        $fileSheet = $fileExcel->getActiveSheet();
+
+        $data = ['disciplinas' => []];
+
+        for ($row = 1; $row <= $fileSheet->getHighestRow(); $row++) {
+
+            $disciplina = [
+                'codigo' => $fileSheet->getCell('A' . $row)->getValue(),
+                'periodo' => $fileSheet->getCell('C' . $row)->getValue(),
+                'nome' => $fileSheet->getCell('B' . $row)->getValue(),
+                'carga' => $fileSheet->getCell('D' . $row)->getValue()
+            ];
+
+            $data['disciplinas'] = $disciplina;
+
+            if (!isset($data['disciplinas'][$disciplina['codigo']])) {
+                $data['disciplinas'][$disciplina['codigo']] = $disciplina;
+            }
+        }
+
+        return $data;
+    }
 }

@@ -136,27 +136,27 @@ class Usuario implements ToIdArrayInterface
     protected $medalhas_usuario;
 
     /**
-     * @ORM\Column(type="boolean", options={"default" : 1})
+     * @ORM\Column(type="boolean", nullable=true, options={"default" : 1})
      */
     protected $nome_real;
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default" : null})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      */
     protected $facebook;
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default" : null})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      */
     protected $instagram;
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default" : null})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      */
     protected $linkedin;
 
     /**
-     * @ORM\Column(type="string", length=50, options={"default" : null})
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
      */
     protected $lattes;
 
