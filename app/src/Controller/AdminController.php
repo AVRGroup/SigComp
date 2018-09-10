@@ -172,7 +172,7 @@ class AdminController
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
-                        $grade->setCodigo(12014);
+                        $grade->setCodigo(12009);
                         $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
