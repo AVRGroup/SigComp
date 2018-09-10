@@ -42,27 +42,27 @@ class Disciplina implements ToIdArrayInterface
     protected $experiencia = 100;
 
     /**
-     * @ORM\Column(type="integer", options={"default" : 20})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     protected $fatorInteligencia = 20;
 
     /**
-     * @ORM\Column(type="integer", options={"default" : 20})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     protected $fatorCarisma = 20;
 
     /**
-     * @ORM\Column(type="integer", options={"default" : 20})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     protected $fatorSabedoria = 20;
 
     /**
-     * @ORM\Column(type="integer", options={"default" : 20})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     protected $fatorDestreza = 20;
 
     /**
-     * @ORM\Column(type="integer", options={"default" : 20})
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     protected $fatorForca = 20;
 
