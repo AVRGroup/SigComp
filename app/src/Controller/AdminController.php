@@ -101,7 +101,7 @@ class AdminController
     public function calculaIra($calcularIraPeriodoPassado){
 
         if($calcularIraPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20171);
+            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20181);
         else
             $usuarios = $this->container->usuarioDAO->getAllFetched();
 
@@ -114,7 +114,12 @@ class AdminController
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
 
+                $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
+
                 if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
+                    continue;
+
+                if($departamento != 'DCC' || $departamento != 'EST' || $departamento != 'MAT' || $departamento != 'FIS')
                     continue;
 
                 $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
@@ -126,9 +131,12 @@ class AdminController
             else
                 $ira = 0;
 
-            if($calcularIraPeriodoPassado)
-                if($somatorioCargas >= 60*4)
+            if($calcularIraPeriodoPassado) {
+                if ($somatorioCargas >= 60 * 4)
                     $usuario->setIraPeriodoPassado($ira);
+                else
+                    $usuario->setIraPeriodoPassado(0);
+            }
             else
                 $usuario->setIra($ira);
 
