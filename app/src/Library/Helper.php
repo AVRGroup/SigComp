@@ -82,11 +82,11 @@ class Helper
                 'carga' => $fileSheet->getCell('D' . $row)->getValue()
             ];
 
-            $data['disciplinas'] = $disciplina;
+            $data['disciplinas'][$row] = $disciplina;
 
-            if (!isset($data['disciplinas'][$disciplina['codigo']])) {
+            /*if (!isset($data['disciplinas'][$disciplina['codigo']])) {
                 $data['disciplinas'][$disciplina['codigo']] = $disciplina;
-            }
+            }*/
         }
 
         return $data;
