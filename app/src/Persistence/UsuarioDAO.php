@@ -128,8 +128,16 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function getPeriodo($periodo, $qtdeDisciplinaPeriodo){
-        $sql = "Select usuario from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = 1 AND periodo = {$periodo}) group by usuario) as test where test.aprovadas_periodo = {$qtdeDisciplinaPeriodo}";
+    public function getPeriodo($periodo, $grade){
+        switch ($grade){
+            case 12009: $grade_num = 3;
+                break;
+            case 12014: $grade_num = 2;
+                break;
+            case 12018: $grade_num = 1;
+                break;
+        }
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where (estado = 'Aprovado' or 'Dispensado') and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where periodo = '{$periodo}' and grade = '{$grade_num}') group by usuario) as test left join ((SELECT id FROM db_gamificacao.usuario where grade = '{$grade}') as users) on test.usuario = users.id where id is not null";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -138,9 +146,11 @@ class UsuarioDAO extends BaseDAO
 
     public function setPeriodo($results, $periodo){
         foreach ($results as $user){
-            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['usuario']}', {$periodo})";
-            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-            $stmt_insert->execute();
+            if(isset($user[id])){
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['id']}', {$periodo})";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
         }
     }
 
@@ -177,8 +187,16 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getByOptativas($qtde){
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select id from db_gamificacao.disciplina where id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = 1) and codigo not like 'DCC%') group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
+    public function getByOptativas($qtde, $grade){
+        switch ($grade){
+            case 12009: $grade_num = 3;
+                break;
+            case 12014: $grade_num = 2;
+                break;
+            case 12018: $grade_num = 1;
+                break;
+        }
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select id from db_gamificacao.disciplina where id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') and codigo not like 'DCC%') group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -201,8 +219,16 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getBy100($qtde){
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = 1) group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
+    public function getBy100($qtde, $grade){
+        switch ($grade){
+            case 12009: $grade_num = 3;
+                break;
+            case 12014: $grade_num = 2;
+                break;
+            case 12018: $grade_num = 1;
+                break;
+        }
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') group by usuario) as test where test.aprovadas_periodo = '{$qtde}'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
