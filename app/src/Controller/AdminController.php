@@ -101,7 +101,7 @@ class AdminController
     public function calculaIra($calcularIraPeriodoPassado){
 
         if($calcularIraPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20171);
+            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20181);
         else
             $usuarios = $this->container->usuarioDAO->getAllFetched();
 
@@ -114,7 +114,12 @@ class AdminController
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
 
+                $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
+
                 if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
+                    continue;
+
+                if($departamento != 'DCC' || $departamento != 'EST' || $departamento != 'MAT' || $departamento != 'FIS')
                     continue;
 
                 $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
@@ -126,9 +131,12 @@ class AdminController
             else
                 $ira = 0;
 
-            if($calcularIraPeriodoPassado)
-                if($somatorioCargas >= 60*4)
+            if($calcularIraPeriodoPassado) {
+                if ($somatorioCargas >= 60 * 4)
                     $usuario->setIraPeriodoPassado($ira);
+                else
+                    $usuario->setIraPeriodoPassado(0);
+            }
             else
                 $usuario->setIra($ira);
 
@@ -172,35 +180,41 @@ class AdminController
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
-                        $grade->setCodigo(12014);
+                        $grade->setCodigo(12009);
+                        $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
-                        $disciplinasGrade = new GradeDisciplina();
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                        $this->container->view['vetor'] = $data;
+                        $this->container->view['disciplinas'] = $disciplinas;
                         foreach ($data['disciplinas'] as $disc) {
+                            $disciplinasGrade = new GradeDisciplina();
                             if (isset($disciplinas[$disc['codigo']])) {
-                                $disciplinasGrade->setGrade($grade->getId());
-                                $disciplinasGrade->setDisciplina($disciplinas[$disc['codigo']]->getIdentifier());
+                                $bool = 1;
+                                $this->container->view['boolean'] = $bool;
+                                $disciplinasGrade->setGrade($grade);
+                                $disciplinasGrade->setDisciplina($disciplinas[$disc['codigo']]);
+                                $disciplinasGrade->setPeriodo($disc['periodo']);
+                                $disciplinasGrade->setTipo(0);
+                                $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                            }else{
+                                $disciplina = new Disciplina();
+                                $disciplina->setCodigo($disc['codigo']);
+                                $disciplina->setCarga($disc['carga']);
+                                $disciplina->setNome($disc['nome']);
+                                $this->container->disciplinaDAO->persist($disciplina);
+                                $disciplinas[$disciplina->getCodigo()] = $disciplina; //Added to existing Disciplinas
+                                $disciplinasGrade->setGrade($grade);
+                                $disciplinasGrade->setDisciplina($disciplina);
                                 $disciplinasGrade->setPeriodo($disc['codigo']);
                                 $disciplinasGrade->setTipo(0);
-                                $this->container->gradeDisciplinaDAO->flush();
+                                $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
                             }
-                            echo $disc['codigo'];
-                            $disciplina = new Disciplina();
-                            $disciplina->setCodigo($disc['codigo']);
-                            $disciplina->setCarga($disc['carga']);
-                            $disciplina->setNome($disc['nome']);
-                            $this->container->disciplinaDAO->persist($disciplina);
-                            $disciplinas[$disciplina->getIdentifier()] = $disciplina; //Added to existing Disciplinas
-                            $this->container->disciplinaDAO->flush(); //Commit the transaction
-                            $disciplinasGrade->setGrade($grade->getId());
-                            $disciplinasGrade->setDisciplina($disciplina->getIdentifier());
-                            $disciplinasGrade->setPeriodo($disc['codigo']);
-                            $disciplinasGrade->setTipo(0);
-                            $this->container->gradeDisciplinaDAO->flush();
                             $affectedData['disciplinasAdded']++;
                         }
                         $this->container->view['affectedData'] = $affectedData;
                         $this->container->view['success'] = true;
+                        $this->container->disciplinaDAO->flush(); //Commit the transaction
+                        $this->container->gradeDisciplinaDAO->flush();
                     } catch (\Exception $e) {
                         $this->container->view['error'] = $e->getMessage();
                     }
