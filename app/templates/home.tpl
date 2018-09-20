@@ -224,7 +224,7 @@
                     {/foreach}
                 </table>
             </div>
-            <div class="col-6">
+            <div class="col-6" style="margin-top: 1.8%">
                 <div class="row">
                     <div class="col-10">
                         <h4 class="text-center">Melhor IRA No Período</h4>

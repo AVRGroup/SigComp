@@ -114,10 +114,10 @@ class AdminController
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
 
-                $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
-
                 if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
                     continue;
+
+                $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
 
                 if($departamento != 'DCC' || $departamento != 'EST' || $departamento != 'MAT' || $departamento != 'FIS')
                     continue;
