@@ -218,7 +218,7 @@
                     {foreach $top10Ira as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td><a href="{path_for name="adminUser" data=["id" => $user->getId()]}">{$user->getNome()}</a></td>
+                            <td><a href="{path_for name="adminUser" data=["id" => $user->getId()]}">{$user->getNomeAbreviado()}</a></td>
                             <td>{$user->getIra()|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}
@@ -251,7 +251,7 @@
                     {foreach $top10IraPeriodoPassado as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td><a href="{path_for name="adminUser" data=["id" => $user.id]}">{$user.nome}</a></td>
+                            <td><a href="{path_for name="adminUser" data=["id" => $user.id]}">{$user.nome_abreviado}</a></td>
                             <td>{$user.ira_periodo_passado|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}

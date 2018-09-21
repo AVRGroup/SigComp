@@ -94,6 +94,8 @@ class AdminController
         }
 
         $this->calculaIra(true);
+        //$this->abreviaTodosNomes();
+
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
@@ -119,7 +121,7 @@ class AdminController
 
                 $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
 
-                if($departamento != 'DCC' || $departamento != 'EST' || $departamento != 'MAT' || $departamento != 'FIS')
+                if($departamento != 'DCC' && $departamento != 'EST' && $departamento != 'MAT' && $departamento != 'FIS')
                     continue;
 
                 $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
@@ -132,7 +134,7 @@ class AdminController
                 $ira = 0;
 
             if($calcularIraPeriodoPassado) {
-                if ($somatorioCargas >= 60 * 4)
+                if ($somatorioCargas >= 60*4)
                     $usuario->setIraPeriodoPassado($ira);
                 else
                     $usuario->setIraPeriodoPassado(0);
@@ -142,7 +144,8 @@ class AdminController
 
             try {
                 $this->container->usuarioDAO->flush();
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e) {
                 echo $e;
             }
         }
@@ -161,6 +164,84 @@ class AdminController
             return 80 * $nota->getDisciplina()->getCarga();
 
         return $nota->getValor() * $nota->getDisciplina()->getCarga();
+    }
+
+
+    public function abreviaTodosNomes(){
+        $usuarios = $this->container->usuarioDAO->getAllFetched();
+
+        /** @var Usuario $usuario */
+        foreach ($usuarios as $usuario) {
+            $nomeAbreviado =  $this->abreviaNome($usuario->getNome(), 123);
+            $usuario->setNomeAbreviado($nomeAbreviado);
+
+            try {
+                $this->container->usuarioDAO->flush();
+            }
+            catch (\Exception $e) {
+                echo $e;
+            }
+        }
+
+
+    }
+
+    public function abreviaNome($nome, $tamanhoMax){
+        $deveAbreviar = true;
+
+        //Se o nome cabe na linha sem abreviar, não devemos abreviar;
+        if(strlen($nome) <= 30)
+            return $nome;
+
+        $offset = 1;
+
+        while($deveAbreviar){
+            $indicePrimeiraLetra = $this->indicePrimeiraLetraSobrenome($nome, $offset);
+            $indiceUltimaLetra =  $this->indiceUltimaLetraSobrenome($nome, $offset);
+            $tamanhoNome = $indiceUltimaLetra - $indicePrimeiraLetra;
+
+            $nome[$indicePrimeiraLetra + 1] = '.';
+            $nome = substr_replace($nome, '', $indicePrimeiraLetra + 2, $tamanhoNome - 1);
+
+            if(strlen($nome) <= 30)
+                $deveAbreviar = false;
+            else
+                $offset++;
+        }
+
+        return $nome;
+    }
+
+    //offset para indicar qual sobrenome deve ser abreviado. Por exemplo, contando de traz pra frente,
+    // um nome com 2 sobrenomes e offset = 1 abreviria o segundo, pois 3 - 1 = 2. (3 seria o numero de 'nomes' total)
+    public function indicePrimeiraLetraSobrenome($nome, $offset){
+        $numEspacosEmBrancoTotal = substr_count($nome, ' ');
+        $numEspacosEmBrancoContados = 0;
+
+        for($i=0; $i<strlen($nome); $i++) {
+            if($nome[$i] === ' ')
+                $numEspacosEmBrancoContados++;
+
+            if($numEspacosEmBrancoContados == $numEspacosEmBrancoTotal - $offset )
+                return $i + 1;
+        }
+
+        return -1;
+    }
+
+    public function indiceUltimaLetraSobrenome($nome, $offset){
+        $numEspacosEmBrancoTotal = substr_count($nome, ' ');
+        $numEspacosEmBrancoContados = 0;
+
+        for($i=0; $i<strlen($nome); $i++) {
+            if($nome[$i] === ' ')
+                $numEspacosEmBrancoContados++;
+
+            if($numEspacosEmBrancoContados == $numEspacosEmBrancoTotal - $offset + 1)
+                return $i - 1;
+        }
+
+        return -1;
     }
 
     public function gradeLoadAction(Request $request, Response $response, $args)

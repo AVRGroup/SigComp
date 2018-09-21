@@ -34,6 +34,12 @@ class Usuario implements ToIdArrayInterface
     protected $nome;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $nome_abreviado;
+
+
+    /**
      * @ORM\Column(type="string", length=20)
      */
     protected $curso;
@@ -208,6 +214,24 @@ class Usuario implements ToIdArrayInterface
     public function setNome($nome)
     {
         $this->nome = $nome;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomeAbreviado()
+    {
+        return $this->nome_abreviado;
+    }
+
+    /**
+     * @param mixed $nome_abreviado
+     * @return Usuario
+     */
+    public function setNomeAbreviado($nome_abreviado)
+    {
+        $this->nome_abreviado = $nome_abreviado;
         return $this;
     }
 

@@ -56,15 +56,74 @@ class HomeController
             }
         }
 
+
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         CalculateAttributes::calculateUsuarioStatistics($usuario);
+
+        $this->abreviaNome("Thales Castro Mendes Teste", 123);
+
+        $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
+        $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
+
+
+
         $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['usuario'] = $usuario;
-        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
-        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $this->container->view['top10Ira'] = $top10Ira;
+        $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
 
         return $this->container->view->render($response, 'home.tpl');
+    }
+
+    public function abreviaNome($nome, $tamanhoMax){
+        $deveAbreviar = true;
+
+        while($deveAbreviar){
+
+            $indicePrimeiraLetra = $this->indicePrimeiraLetraSobrenome($nome, 1);
+            $indiceUltimaLetra =  $this->indiceUltimaLetraSobrenome($nome, 1);
+            $tamanhoNome = $indiceUltimaLetra - $indicePrimeiraLetra;
+
+            $nome[$indicePrimeiraLetra + 1] = '.';
+            $nome = substr_replace($nome, '', $indicePrimeiraLetra + 2, $tamanhoNome - 1);
+
+            $deveAbreviar = false;
+        }
+
+        return $nome;
+    }
+
+    //offset para indicar qual sobrenome deve ser abreviado. Por exemplo, contando de traz pra frente,
+    // um nome com 2 sobrenomes e offset = 1 abreviria o segundo, pois 3 - 1 = 2. (3 seria o numero de 'nomes' total)
+    public function indicePrimeiraLetraSobrenome($nome, $offset){
+        $numEspacosEmBrancoTotal = substr_count($nome, ' ');
+        $numEspacosEmBrancoContados = 0;
+
+        for($i=0; $i<strlen($nome); $i++) {
+            if($nome[$i] === ' ')
+                $numEspacosEmBrancoContados++;
+
+            if($numEspacosEmBrancoContados == $numEspacosEmBrancoTotal - $offset )
+                return $i + 1;
+        }
+
+        return -1;
+    }
+
+    public function indiceUltimaLetraSobrenome($nome, $offset){
+        $numEspacosEmBrancoTotal = substr_count($nome, ' ');
+        $numEspacosEmBrancoContados = 0;
+
+        for($i=0; $i<strlen($nome); $i++) {
+            if($nome[$i] === ' ')
+                $numEspacosEmBrancoContados++;
+
+            if($numEspacosEmBrancoContados == $numEspacosEmBrancoTotal - $offset + 1)
+                return $i - 1;
+        }
+
+        return -1;
     }
 
     public function aboutAction(Request $request, Response $response, $args)
@@ -108,6 +167,5 @@ class HomeController
         }
         return $this->container->view->render($response, 'home.tpl');
     }
-
 
 }
