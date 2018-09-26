@@ -102,7 +102,7 @@
                                     {foreach $medalhas as $medalha}
                                         {if $qtde < 10}
                                         <td>
-                                            <div class="img-thumbnail" style="max-width: 100px;">
+                                            <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                                 <img src="{base_url}/img/{$medalha['imagem']} " class="img-fluid">
                                                 <div class="caption">
                                                     <p class="text-center"><small>{$medalha['nome']}</small></p>

@@ -93,9 +93,8 @@ class AdminController
             }
         }
 
-        $this->calculaIra(true);
-        //$this->abreviaTodosNomes();
-
+        //$this->calculaIra(true);
+        $this->abreviaTodosNomes(true);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
@@ -167,12 +166,20 @@ class AdminController
     }
 
 
-    public function abreviaTodosNomes(){
-        $usuarios = $this->container->usuarioDAO->getAllFetched();
+    public function abreviaTodosNomes($isPeriodoPassado){
+
+        if($isPeriodoPassado)
+            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIraPeriodoPassado();
+        else
+            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIra();
 
         /** @var Usuario $usuario */
         foreach ($usuarios as $usuario) {
+
             $nomeAbreviado =  $this->abreviaNome($usuario->getNome(), 123);
+
+            echo $nomeAbreviado . ' ';
+
             $usuario->setNomeAbreviado($nomeAbreviado);
 
             try {

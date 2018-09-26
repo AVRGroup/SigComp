@@ -100,3 +100,7 @@ body {
     line-height: 1.428571429;
     border-radius: 15px;
 }
+
+.altura-medalha{
+    height: 188px!important;
+}
