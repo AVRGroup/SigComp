@@ -111,6 +111,8 @@ class UserController
                 foreach ($user_notas as $un){
                     if ($disciplina->getCodigo() == $un->getDisciplina()->getCodigo())
                         $cont++;
+                    else if ($un->getDisciplina()->getCodigo() == $disciplina->getCodigo()."E")
+                        $cont++;
                 }
             }
             if(sizeof($disciplinas) > 0){
