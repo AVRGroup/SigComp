@@ -91,7 +91,6 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
-
     public function getAllFetchedByPeriodoNota($periodo)
     {
         try {
@@ -104,6 +103,49 @@ class UsuarioDAO extends BaseDAO
 
         return $usuarios;
     }
+
+    /**
+    \
+     * @param $grade
+     * @return Usuario[]|null
+     */
+    public function getUsersNotasByGrade($grade)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.grade = :grade AND (n.estado = 'Aprovado' OR n.estado = 'Dispensado')");
+            $query->setParameter('grade', $grade);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+        return $usuarios;
+    }
+
+    /**
+     * @param $grade
+     * @param $periodo
+     * @return array
+     */
+    public function getDisciplinasByGradePeriodo($grade, $periodo)
+    {
+        switch ($grade){
+            case 12009: $grade_num = 3;
+                break;
+            case 12014: $grade_num = 2;
+                break;
+            case 12018: $grade_num = 1;
+                break;
+        }
+        try {
+            $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade AND dg.periodo = :periodo");
+            $query->setParameters(['grade' => $grade_num, 'periodo' => $periodo]);
+            $disciplinas = $query->getResult();
+        } catch (\Exception $e) {
+            $disciplinas = null;
+        }
+        return $disciplinas;
+    }
+
 
     /**
      * @param array $matriculas
@@ -172,13 +214,13 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function setPeriodo($results, $periodo){
+    public function setPeriodo($results, $periodo, $grade){
         foreach ($results as $user){
-            if(isset($user['id'])){
-                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user['id']}', {$periodo})";
+            //if($user->getGrade() == $grade){
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user->getId()}', {$periodo})";
                 $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
                 $stmt_insert->execute();
-            }
+            //}
         }
     }
 
@@ -191,8 +233,10 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function getByIRA($ira){
-        $sql = "SELECT id FROM usuario where ira > '{$ira}'";
+    public function getByIRA($ira_min, $ira_max){
+        $ira_min = intval($ira_min);
+        $ira_max = intval($ira_max);
+        $sql = "SELECT id FROM usuario where (usuario.ira >= $ira_min AND usuario.ira < $ira_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -215,7 +259,7 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getByOptativas($qtde, $grade){
+    public function getByOptativas($qtde_min, $qtde_max, $grade){
         switch ($grade){
             case 12009: $grade_num = 3;
                 break;
@@ -224,7 +268,9 @@ class UsuarioDAO extends BaseDAO
             case 12018: $grade_num = 1;
                 break;
         }
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select id from db_gamificacao.disciplina where id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') and codigo not like 'DCC%') group by usuario) as test left join usuario on test.usuario = usuario.id where test.aprovadas_periodo = '{$qtde}'";
+        $qtde_min = intval($qtde_min);
+        $qtde_max = intval($qtde_max);
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where nota.estado = 'Aprovado' and nota.disciplina in (Select id from db_gamificacao.disciplina where disciplina.id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') and disciplina.codigo not like 'DCC%') group by usuario) as test left join usuario on test.usuario = usuario.id where (test.aprovadas_periodo >= $qtde_min AND test.aprovadas_periodo < $qtde_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -249,7 +295,7 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getBy100($qtde, $grade){
+    public function getBy100($qtde_min, $qtde_max, $grade){
         switch ($grade){
             case 12009: $grade_num = 3;
                 break;
@@ -258,7 +304,9 @@ class UsuarioDAO extends BaseDAO
             case 12018: $grade_num = 1;
                 break;
         }
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') group by usuario) as test left join usuario on test.usuario = usuario.id where test.aprovadas_periodo = '{$qtde}'";
+        $qtde_min = intval($qtde_min);
+        $qtde_max = intval($qtde_max);
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') group by usuario) as test left join usuario on test.usuario = usuario.id where (test.aprovadas_periodo >= $qtde_min AND test.aprovadas_periodo < $qtde_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();

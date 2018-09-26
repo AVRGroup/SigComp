@@ -18,7 +18,7 @@ $app->group('', function () {
 
     $this->group('/admin', function () {
 
-        $this->get('/grade', '\App\Controller\UserController:checkPeriodosTestAction')->setName('checkPeriodos');
+        $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
