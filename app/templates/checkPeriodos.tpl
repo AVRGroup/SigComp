@@ -1,15 +1,17 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h3 class="text-center">Grades</h3>
-    <h4>Grades {print_r($usuariosFull, true)}</h4>
     <ul>
-        {foreach $gradesFull as $grade}
-            <li>{$grade->getCodigo()}</li>
+        {foreach $usuariosFull as $usuario}
+            <li>{$usuario->getMatricula()} - {$usuario->getNome()}</li>
             <ul>
-                {foreach $grade->getDisciplinas_grade() as $discpl}
-                    <li>{$discpl->getDisciplina()->getCodigo()} - Período: {$discpl->getPeriodo()}</li>
+                {foreach $usuario->getNotas() as $nota}
+                    <li>{$nota->getDisciplina()->getCodigo()}({$nota->getEstado()} - {$nota->getPeriodo()}) -> {$nota->getValor()} </li>
                 {/foreach}
             </ul>
+        {/foreach}
+        {foreach $disciplinas as $disciplina}
+            <li>{$disciplina->getCodigo()}</li>
         {/foreach}
     </ul>
 {/block}

@@ -76,11 +76,14 @@ class UserController
 
     public function checkPeriodosTestAction(Request $request, Response $response, $args)
     {
-        $allUsers = $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 7), 1);
-        $allGrades = $this->container->gradeDAO->getAll();
+        $allUsers = $this->container->usuarioDAO->getUsersNotasByGrade(12018);
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo(12018, 1);
+
+        //$allGrades = $this->container->usuarioDAO->getUsersNotasByGrade('12018');
 
         $this->container->view['usuariosFull'] = $allUsers;
-        $this->container->view['gradesFull'] = $allGrades;
+        $this->container->view['disciplinas'] = $disciplinas;
+        //$this->container->view['gradesFull'] = $allGrades;
 
         return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
@@ -96,38 +99,68 @@ class UserController
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
     }
 
+    public function periodMedalsVerification($grade, $periodo){
+        $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade);
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade, $periodo);
+        $cont = 0;
+        unset($usrs);
+        $usrs = array();
+        foreach ($users as $user){
+            $user_notas = $user->getNotas();
+            foreach ($disciplinas as $disciplina){
+                foreach ($user_notas as $un){
+                    if ($disciplina->getCodigo() == $un->getDisciplina()->getCodigo())
+                        $cont++;
+                }
+            }
+            if(sizeof($disciplinas) > 0){
+                if ($cont == sizeof($disciplinas)){
+                    array_push($usrs, $user);
+                }
+                $cont = 0;
+            }
+        }
+        return $usrs;
+    }
+
     public function assignMedalsAction(Request $request, Response $response, $args){
+
         $this->container->medalhaUsuarioDAO->truncateTable();
 
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 12009), 1);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(2, 12009), 2);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(3, 12009), 3);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(4, 12009), 4);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(5, 12009), 5);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(6, 12009), 6);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(7, 12009), 7);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(8, 12009), 8);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(9, 12009), 9);
+        for($i = 1; $i <= 9; $i++){
+            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, $i), $i, 12009);
+            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, $i), $i, 12014);
+            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, $i), $i, 12018);
+        }
+        /*$this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 1), 1);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 2), 2);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 3), 3);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 4), 4);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 5), 5);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 6), 6);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 7), 7);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 8), 8);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 9), 9);
 
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 12014), 1);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(2, 12014), 2);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(3, 12014), 3);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(4, 12014), 4);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(5, 12014), 5);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(6, 12014), 6);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(7, 12014), 7);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(8, 12014), 8);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(9, 12014), 9);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 1), 1);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 2), 2);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 3), 3);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 4), 4);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 5), 5);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 6), 6);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 7), 7);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 8), 8);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 9), 9);
 
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(1, 12018), 1);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(2, 12018), 2);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(3, 12018), 3);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(4, 12018), 4);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(5, 12018), 5);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(6, 12018), 6);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(7, 12018), 7);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(8, 12018), 8);
-        $this->container->usuarioDAO->setPeriodo($this->container->usuarioDAO->getPeriodo(9, 12018), 9);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 1), 1);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 2), 2);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 3), 3);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 4), 4);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 5), 5);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 6), 6);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 7), 7);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 8), 8);
+        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 9), 9);*/
 
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60), 60);
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70), 70);
@@ -158,6 +191,7 @@ class UserController
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 12018), 3, 12018);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
+        //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 }
 
