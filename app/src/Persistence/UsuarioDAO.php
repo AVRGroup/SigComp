@@ -209,8 +209,10 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function getByIRA($ira){
-        $sql = "SELECT id FROM usuario where ira > '{$ira}'";
+    public function getByIRA($ira_min, $ira_max){
+        $ira_min = intval($ira_min);
+        $ira_max = intval($ira_max);
+        $sql = "SELECT id FROM usuario where (usuario.ira >= $ira_min AND usuario.ira < $ira_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -233,7 +235,7 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getByOptativas($qtde, $grade){
+    public function getByOptativas($qtde_min, $qtde_max, $grade){
         switch ($grade){
             case 12009: $grade_num = 3;
                 break;
@@ -242,7 +244,9 @@ class UsuarioDAO extends BaseDAO
             case 12018: $grade_num = 1;
                 break;
         }
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and disciplina in (Select id from db_gamificacao.disciplina where id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') and codigo not like 'DCC%') group by usuario) as test left join usuario on test.usuario = usuario.id where test.aprovadas_periodo = '{$qtde}'";
+        $qtde_min = intval($qtde_min);
+        $qtde_max = intval($qtde_max);
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where nota.estado = 'Aprovado' and nota.disciplina in (Select id from db_gamificacao.disciplina where disciplina.id not in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') and disciplina.codigo not like 'DCC%') group by usuario) as test left join usuario on test.usuario = usuario.id where (test.aprovadas_periodo >= $qtde_min AND test.aprovadas_periodo < $qtde_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -267,7 +271,7 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getBy100($qtde, $grade){
+    public function getBy100($qtde_min, $qtde_max, $grade){
         switch ($grade){
             case 12009: $grade_num = 3;
                 break;
@@ -276,7 +280,9 @@ class UsuarioDAO extends BaseDAO
             case 12018: $grade_num = 1;
                 break;
         }
-        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') group by usuario) as test left join usuario on test.usuario = usuario.id where test.aprovadas_periodo = '{$qtde}'";
+        $qtde_min = intval($qtde_min);
+        $qtde_max = intval($qtde_max);
+        $sql = "Select * from (Select usuario, count(id) as aprovadas_periodo from db_gamificacao.nota where estado = 'Aprovado' and valor = 100 and disciplina in (Select disciplina from db_gamificacao.grade_disciplina where grade = '{$grade_num}') group by usuario) as test left join usuario on test.usuario = usuario.id where (test.aprovadas_periodo >= $qtde_min AND test.aprovadas_periodo < $qtde_max)";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();

@@ -162,33 +162,33 @@ class UserController
         $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 8), 8);
         $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 9), 9);*/
 
-        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60), 60);
-        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70), 70);
-        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(80), 80);
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60, 70), 60);
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70, 80), 70);
+        $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(80, 100), 80);
 
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 12009), 2, 12009);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12009), 3, 12009);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12009), 3, 12009);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 3, 12009), 2, 12009);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 4, 12009), 3, 12009);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(4, 5, 12009), 4, 12009);
 
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 12014), 2, 12014);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12014), 3, 12014);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12014), 3, 12014);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 3, 12014), 2, 12014);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 4, 12014), 3, 12014);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(4, 5, 12014), 4, 12014);
 
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 12018), 2, 12018);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12018), 3, 12018);
-        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 12018), 3, 12018);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(2, 3, 12018), 2, 12018);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(3, 4, 12018), 3, 12018);
+        $this->container->usuarioDAO->setByOptativas($this->container->usuarioDAO->getByOptativas(4, 5, 12018), 4, 12018);
 
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 12009), 1, 12009);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 12009), 2, 12009);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 12009), 3, 12009);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 2, 12009), 1, 12009);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 3, 12009), 2, 12009);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12009), 3, 12009);
 
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 12014), 1, 12014);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 12014), 2, 12014);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 12014), 3, 12014);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 2, 12014), 1, 12014);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 3, 12014), 2, 12014);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12014), 3, 12014);
 
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 12018), 1, 12018);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 12018), 2, 12018);
-        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 12018), 3, 12018);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 2, 12018), 1, 12018);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 3, 12018), 2, 12018);
+        $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12018), 3, 12018);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
