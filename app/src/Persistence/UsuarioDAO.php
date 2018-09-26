@@ -88,7 +88,7 @@ class UsuarioDAO extends BaseDAO
     public function getUsersNotasByGrade($grade)
     {
         try {
-            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.grade = :grade AND n.estado = 'Aprovado' OR n.estado = 'Dispensado'");
+            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.grade = :grade AND (n.estado = 'Aprovado' OR n.estado = 'Dispensado')");
             $query->setParameter('grade', $grade);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
