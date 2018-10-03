@@ -15,6 +15,7 @@ $app->group('', function () {
 
     $this->get('/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
 
+    $this->POST('/atualizacao', '\App\Controller\UserController:atualizaInformacoesPessoaisAction')->setName('atualizacao');
 
     $this->group('/admin', function () {
 

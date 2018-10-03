@@ -99,6 +99,14 @@ class UserController
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
     }
 
+    public function atualizaInformacoesPessoaisAction(Request $request, Response $response, $args){
+        $nickname = $request->getAttribute('nickname');
+        var_dump($request);
+        $this->container->view['nickname'] = $nickname;
+
+        return $this->container->view->render($response, 'teste.tpl');
+    }
+
     public function periodMedalsVerification($grade, $periodo){
         $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade);
         $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade, $periodo);

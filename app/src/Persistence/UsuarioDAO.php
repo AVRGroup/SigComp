@@ -70,7 +70,7 @@ class UsuarioDAO extends BaseDAO
     public function getAllFetched10PrimeirosPorIra()
     {
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd ORDER BY u.ira DESC")->setMaxResults(500);
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 ORDER BY u.ira DESC")->setMaxResults(500);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;
@@ -82,7 +82,7 @@ class UsuarioDAO extends BaseDAO
     public function getAllFetched10PrimeirosPorIraPeriodoPassado()
     {
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;

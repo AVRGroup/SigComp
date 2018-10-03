@@ -19,44 +19,44 @@
 
     <hr>
 
-    <form action="">
+    <form action="{path_for name="atualizacao"}" method="post">
         <div class="form-row">
             <div class="col-6">
                 <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Digite seu e-mail">
             </div>
             <div class="col-6">
                 <label for="nickname">Nickname</label>
-                <input type="text" class="form-control" id="text" placeholder="Digite seu nickname">
+                <input type="text" name="nickname" class="form-control" id="text" placeholder="Digite seu nickname">
             </div>
         </div>
 
         <div class="custom-control custom-checkbox" style="margin-top: 2%">
-            <input type="checkbox" class="custom-control-input" id="customCheck1">
+            <input type="checkbox" name="nome_verdadeiro" class="custom-control-input" id="customCheck1">
             <label class="custom-control-label" for="customCheck1">Desejo que meu nickname seja mostrado em vez do meu nome</label>
         </div>
 
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="facebook">Facebook</label>
-                <input type="text" placeholder="Digite seu perfil no Facebook" class="form-control">
+                <input type="text" name="facebook" placeholder="Digite seu perfil no Facebook" class="form-control">
             </div>
 
             <div class="col-6">
                 <label for="instagram">Instagram</label>
-                <input type="text" placeholder="Digite seu perfil no Instagram" class="form-control">
+                <input type="text" name="instagram" placeholder="Digite seu perfil no Instagram" class="form-control">
             </div>
         </div>
 
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="linkedin">LinkedIn</label>
-                <input type="text" placeholder="Digite seu perfil no Linkedin" class="form-control">
+                <input type="text" name="linkedin" placeholder="Digite seu perfil no Linkedin" class="form-control">
             </div>
 
             <div class="col-6">
                 <label for="lattes">Lattes</label>
-                <input type="text" placeholder="Digite seu perfil no Lattes" class="form-control">
+                <input type="text" name="lattes" placeholder="Digite seu perfil no Lattes" class="form-control">
             </div>
         </div>
 

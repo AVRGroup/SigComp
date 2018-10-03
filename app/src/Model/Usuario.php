@@ -166,6 +166,11 @@ class Usuario implements ToIdArrayInterface
      */
     protected $lattes;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=false, options={"default" : 0})
+     */
+    protected $situacao;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -625,4 +630,20 @@ class Usuario implements ToIdArrayInterface
     {
         return $this->medalhas_usuario;
     }
+
+    /**
+     * @param mixed $id
+     * @return Usuario
+     */
+    public function setSituacao($situacao)
+    {
+        $this->situacao = $situacao;
+        return $this;
+    }
+
+    public function getSituacao()
+    {
+        return $this->situacao;
+    }
+
 }

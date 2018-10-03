@@ -202,9 +202,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
-                <p></p>
-                <h4 class="text-center">Melhor IRA Geral</h4>
+            <div class="col-6" style="margin-top: 1.8%">
+                <div class="row">
+                    <h4 class="text-center col-10">Melhor IRA Geral</h4>
+
+                    <div class="col-2">
+                        <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                                title="Informações"
+                                data-content="Esse é o IRA geral, considerando todos os seus períodos. São considerados apenas os alunos ativos no curso">
+                            ?
+                        </button>
+                    </div>
+                </div>
                 <table class="table table-sm">
                     <thead>
                     <tr>

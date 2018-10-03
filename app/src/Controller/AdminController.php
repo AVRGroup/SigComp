@@ -94,7 +94,7 @@ class AdminController
         }
 
         //$this->calculaIra(true);
-        $this->abreviaTodosNomes(true);
+        $this->abreviaTodosNomes(false);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
