@@ -74,6 +74,15 @@ class Usuario implements ToIdArrayInterface
     protected $tipo = 0;
 
     /**
+     * 0: Ativo
+     * 1: Formado
+     * 2: Outros
+     *
+     * @ORM\Column(type="smallint", options={"default" : 0})
+     */
+    protected $situacao = 0;
+
+    /**
      * @ORM\Column(type="float", nullable=true)
      */
     protected $ira;
