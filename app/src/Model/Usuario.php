@@ -175,11 +175,6 @@ class Usuario implements ToIdArrayInterface
      */
     protected $lattes;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=false, options={"default" : 0})
-     */
-    protected $situacao;
-
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
