@@ -636,7 +636,7 @@ class Usuario implements ToIdArrayInterface
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $situacao
      * @return Usuario
      */
     public function setSituacao($situacao)
