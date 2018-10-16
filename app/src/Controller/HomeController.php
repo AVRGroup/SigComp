@@ -126,9 +126,15 @@ class HomeController
         return -1;
     }
 
+
     public function aboutAction(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'about.tpl');
+    }
+
+    public function privacidadeAction(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'politicaPrivacidade.tpl');
     }
 
     public function testAction(Request $request, Response $response, $args)

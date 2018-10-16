@@ -3,6 +3,7 @@
 $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginAction')->setName('login');
 
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
+$app->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
 
 $app->group('', function () {
 
