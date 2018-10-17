@@ -55,7 +55,6 @@ class AdminController
                         $this->container->disciplinaDAO->flush(); //Commit the transaction
                         $usuarios = Helper::convertToIdArray($this->container->usuarioDAO->getAllFetched());
                         foreach ($data['usuarios'] as $user) {
-                            $temp = 0;
                             if (isset($usuarios[$user['matricula']])) {
                                 $usuario = $usuarios[$user['matricula']];
                                 foreach ($usuario->getNotas() as $userNota) {
@@ -82,20 +81,7 @@ class AdminController
                                 $nota->setDisciplina($disciplinas[$disc['codigo']]);
                                 $usuario->addNota($nota);
                                 $this->container->notaDAO->persist($nota);
-                                /*if($disc['periodo'] == '20183'){
-                                    if($temp == 0){
-                                        $temp = 1;
-                                    }
-                                }*/
                             }
-                            /*if($temp == 1){
-                                $usuario->setSituacao(0);
-                            }else{
-                                if($usuario->getSituacao() == 0){
-                                    $usuario->setSituacao(2);
-                                }
-                            }
-                            $this->container->usuarioDAO->persist($usuario);*/
                         }
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                         $this->container->view['affectedData'] = $affectedData;
@@ -106,28 +92,11 @@ class AdminController
                 }
             }
         }
-        $this->checkAtivos();
-
-        //$this->calculaIra(true);
+        $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
+        $this->calculaIra(true);
         $this->abreviaTodosNomes(false);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');
-    }
-
-    public function checkAtivos(){
-        $usuarios = $this->container->usuarioDAO->getAllFetched();
-        foreach ($usuarios as $user) {
-
-            foreach ($user->getNotas() as $nota) {
-                if (intval($nota->getPeriodo()) != 20181) {
-                    $user->setSituacao(0);
-                } else {
-                    $user->setSituacao(2);
-                }
-                //$this->container->usuarioDAO->persist($user);
-            }
-            $this->container->usuarioDAO->flush();
-        }
     }
 
     public function calculaIra($calcularIraPeriodoPassado){
@@ -209,7 +178,7 @@ class AdminController
 
             $nomeAbreviado =  $this->abreviaNome($usuario->getNome(), 123);
 
-            echo $nomeAbreviado . ' ';
+            //echo $nomeAbreviado . ' ';
 
             $usuario->setNomeAbreviado($nomeAbreviado);
 
