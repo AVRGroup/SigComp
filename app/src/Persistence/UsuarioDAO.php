@@ -234,6 +234,14 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getTodasMedalhas(){
+        $sql = "SELECT * FROM medalha";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
     public function getByIRA($ira_min, $ira_max){
         $ira_min = intval($ira_min);
         $ira_max = intval($ira_max);

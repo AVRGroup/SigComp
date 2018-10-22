@@ -59,16 +59,15 @@ class HomeController
 
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
+        $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
         CalculateAttributes::calculateUsuarioStatistics($usuario);
-
-        $this->abreviaNome("Thales Castro Mendes Teste", 123);
 
         $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
         $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
 
 
-
         $this->container->view['medalhas'] = $medalhasUsuario;
+        $this->container->view['todasMedalhas'] = $todasMedalhas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;

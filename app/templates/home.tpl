@@ -122,78 +122,17 @@
                         <table>
                             <tbody>
                             <tr>
+                                {foreach $todasMedalhas as $medal}
                                 <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
+                                    <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                        <img src="{base_url}/img/{$medal['imagem']} " class="img-fluid">
                                         <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
+                                            <p class="text-center"><small>{$medal['nome']}</small></p>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="img-thumbnail">
-                                        <img src="{base_url}/img/badge.png" class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>NOME DA MEDALHA</small></p>
-                                        </div>
-                                    </div>
-                                </td>
+                                {/foreach}
+
                             </tr>
                             </tbody>
                         </table>
