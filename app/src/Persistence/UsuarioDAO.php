@@ -340,5 +340,21 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
+    public function getUsersPeriodo($periodo){
+        $sql = "Select distinct u.id, u.nome from db_gamificacao.usuario  as u inner join db_gamificacao.nota on u.id = nota.usuario where nota.periodo = '$periodo'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function setActiveUsers($results){
+        foreach ($results as $result) {
+            $sql = "UPDATE db_gamificacao.usuario set usuario.situacao = 0 where usuario.id = '{$result['id']}'";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+    }
+
 
 }

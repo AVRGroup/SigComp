@@ -203,5 +203,7 @@ class UserController
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
+
+
 }
 
