@@ -97,10 +97,12 @@
                     <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
                         <table>
                             <tbody>
-                            {$qtde = 0}
+                            {$qtde = 1}
+                            {$novaLinha = true}
+                            {while $novaLinha}
                                 <tr>
+                                    {$novaLinha = false}
                                     {foreach $medalhas as $medalha}
-                                        {if $qtde < 10}
                                         <td>
                                             <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                                 <img src="{base_url}/img/{$medalha['imagem']} " class="img-fluid">
@@ -110,41 +112,64 @@
                                             </div>
                                         </td>
                                         {$qtde = $qtde + 1}
-                                            {else}
-                                                </tr>{$qtde = 0}<tr>
+                                        {if $qtde > 9}
+                                            {$qtde = 0}
+                                            {$novaLinha = true}
+                                            {break}
                                         {/if}
                                     {/foreach}
+                            {/while}
                             </tr>
                             </tbody>
                         </table>
                     </div>
+
                     <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
                         <table>
                             <tbody>
-                            <tr>
-                                {foreach $todasMedalhas as $medal}
-                                <td>
-                                    <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
-                                        <img src="{base_url}/img/{$medal['imagem']} " class="img-fluid">
-                                        <div class="caption">
-                                            <p class="text-center"><small>{$medal['nome']}</small></p>
-                                        </div>
-                                    </div>
-                                </td>
-                                {/foreach}
+                            {$novaLinha = true}
+                            {$numMedalhas = 0}
+                            {$i=0}
+                            {$auxI = 0}
+                            {var_dump($todasMedalhas)}
+                            {foreach $todasMedalhas as $medal}
+                                {$numMedalhas = $numMedalhas + 1}
+                            {/foreach}
 
-                            </tr>
+                            {while $novaLinha}
+                                <tr>
+                                {$novaLinha = false}
+                                {while $i < $numMedalhas}
+                                    <td>
+                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                            <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
+                                            <div class="caption">
+                                                <p class="text-center"><small>{$todasMedalhas[$i].nome}</small></p>
+                                            </div>
+                                        </div>
+                                    {$i = i + 1}
+                                    {$auxI = $auxI + 1}
+                                    </td>
+                                    {if $auxI > 9}
+                                        {$novaLinha = true}
+                                        {$auxI = 0}
+                                        {break}
+                                    {/if}
+                                {/while}
+                                </tr>
+                            {/while}
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-6" style="margin-top: 1.8%">
                 <div class="row">
                     <h4 class="text-center col-10">Melhor IRA Geral</h4>
-
                     <div class="col-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
