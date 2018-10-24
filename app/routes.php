@@ -36,6 +36,7 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/data-load', '\App\Controller\AdminController:dataLoadAction')->setName('adminDataLoad');
 
         $this->map(['GET', 'POST'], '/grade-load', '\App\Controller\AdminController:gradeLoadAction')->setName('gradeLoadAction');
+
         $this->get('/data', '\App\Controller\AdminController:adminData')->setName('adminData');
 
     })->add('\App\Middleware\AdminMiddleware');
