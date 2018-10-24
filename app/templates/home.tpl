@@ -131,14 +131,15 @@
                             {$numMedalhas = 0}
                             {$i=0}
                             {$auxI = 0}
+
                             {foreach $todasMedalhas as $medal}
                                 {$numMedalhas = $numMedalhas + 1}
                             {/foreach}
 
-                            {*{while $novaLinha}*}
+                            {while $novaLinha}
                                 <tr>
-                                {*{$novaLinha = false}*}
-                                {*{while $i < $numMedalhas}*}
+                                {$novaLinha = false}
+                                {while $i < $numMedalhas}
                                     <td>
                                         <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                             <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
@@ -146,17 +147,17 @@
                                                 <p class="text-center"><small>{$todasMedalhas[$i].nome}</small></p>
                                             </div>
                                         </div>
-                                    {*{$i = i + 1}*}
-                                    {*{$auxI = $auxI + 1}*}
+                                    {$i = i + 1}
+                                    {$auxI = $auxI + 1}
                                     </td>
-                                    {*{if $auxI > 9}*}
-                                        {*{$novaLinha = true}*}
-                                        {*{$auxI = 0}*}
-                                        {*{break}*}
-                                    {*{/if}*}
-                                {*{/while}*}
+                                    {if $auxI > 9}
+                                        {$novaLinha = true}
+                                        {$auxI = 0}
+                                        {break}
+                                    {/if}
+                                {/while}
                                 </tr>
-                            {*{/while}*}
+                            {/while}
 
                             </tbody>
                         </table>
