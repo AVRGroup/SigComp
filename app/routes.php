@@ -14,9 +14,7 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
 
-    $this->get('/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
-
-    $this->POST('/atualizacao', '\App\Controller\UserController:atualizaInformacoesPessoaisAction')->setName('atualizacao');
+    $this->map(['GET', 'POST'], '/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
 
     $this->group('/admin', function () {
 

@@ -12,7 +12,7 @@
     <p>
         Caso você esteja entre os 10 melhores IRAs do curso, seu nome e IRA serão mostrados em uma tabela para todos que
         utilizarem o sistema. Caso queira que seu nome <b>não seja exibido</b>, vá na página de <b>Informações Pessoais</b> e, ao
-        preencher o formulário, dê um check na opção <b>“Quero que meu nome/IRA não seja exibido”</b>. Essas opções podem ser
+        preencher o formulário, dê um check na opção <b>“Quero que meu nome não seja exibido”</b>. Essas opções podem ser
         alteradas a qualquer momento
     </p>
 
@@ -20,7 +20,7 @@
 
     <p>
         O sistema <b>não reivindica o direito</b> das informações pessoais que você disponibiliza para sua conta, como os links
-        para suas redes sociais, o campo sobre mim, sua foto e seu nickname caso queira colocá-lo.
+        para suas redes sociais, o campo sobre mim e sua foto caso queira colocá-los.
     </p>
 
     <p>O sistema não <b>coleta nenhum tipo de informação sobre você</b>, além é claro das que você explicitamente conceder.</p>

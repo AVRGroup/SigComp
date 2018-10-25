@@ -14,6 +14,7 @@ use App\Model\Nota;
 use App\Model\Usuario;
 use App\Model\GradeDisciplina;
 use App\Model\Grade;
+use App\Persistence\UsuarioDAO;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -91,20 +92,35 @@ class UserController
     public function informacoesPessoaisAction(Request $request, Response $response, $args)
     {
         $user = $request->getAttribute('user');
-
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
 
+        try {
+            if ($request->isPost()) {
+                $email = $request->getParsedBodyParam('email');
+                $facebook = $request->getParsedBodyParam('facebook');
+                $instagram = $request->getParsedBodyParam('instagram');
+                $linkedin = $request->getParsedBodyParam('linkedin');
+                $lattes = $request->getParsedBodyParam('lattes');
+                $sobreMim = $request->getParsedBodyParam('sobre-mim');
+
+                $usuario->setEmail($email);
+                $usuario->setFacebook($facebook);
+                $usuario->setInstagram($instagram);
+                $usuario->setLinkedin($linkedin);
+                $usuario->setLinkedin($lattes);
+                $usuario->setLinkedin($sobreMim);
+
+                $this->container->usuarioDAO->persist($usuario);
+                $this->container->usuarioDAO->flush(); //Commit the transaction
+                $this->container->view['success'] = "Informações atualizadas com sucesso";
+            }
+        }
+        catch (\Exception $e){
+            $this->container->view['error'] = $e->getMessage();
+        }
+
         $this->container->view['usuario'] = $usuario;
-
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
-    }
-
-    public function atualizaInformacoesPessoaisAction(Request $request, Response $response, $args){
-        $nickname = $request->getAttribute('nickname');
-        var_dump($request);
-        $this->container->view['nickname'] = $nickname;
-
-        return $this->container->view->render($response, 'teste.tpl');
     }
 
     public function periodMedalsVerification($grade, $periodo){

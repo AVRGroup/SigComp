@@ -18,22 +18,36 @@
     <h6 align="center">Todas essas informações são opcionais</h6>
 
     <hr>
+    {if isset($success)}
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <p>{$success}</p>
+        </div>
+    {/if}
 
-    <form action="{path_for name="atualizacao"}" method="post">
+    {if isset($error)}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <p>{$error}</p>
+        </div>
+    {/if}
+
+    <form method="post">
         <div class="form-row">
-            <div class="col-6">
+            <div class="col-8">
                 <label for="email">E-mail</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="Digite seu e-mail">
             </div>
-            <div class="col-6">
-                <label for="nickname">Nickname</label>
-                <input type="text" name="nickname" class="form-control" id="text" placeholder="Digite seu nickname">
-            </div>
+
         </div>
 
         <div class="custom-control custom-checkbox" style="margin-top: 2%">
             <input type="checkbox" name="nome_verdadeiro" class="custom-control-input" id="customCheck1">
-            <label class="custom-control-label" for="customCheck1">Desejo que meu nickname seja mostrado em vez do meu nome</label>
+            <label class="custom-control-label" for="customCheck1">Desejo que meu nome não seja mostrado</label>
         </div>
 
         <div class="form-row" style="margin-top: 3%">

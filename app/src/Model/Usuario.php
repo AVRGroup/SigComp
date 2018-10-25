@@ -175,6 +175,11 @@ class Usuario implements ToIdArrayInterface
      */
     protected $lattes;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     */
+    protected $sobre_mim;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -609,6 +614,37 @@ class Usuario implements ToIdArrayInterface
         return $this->facebook;
     }
 
+    /**
+     * @param mixed $facebook
+     */
+    public function setFacebook($facebook): void
+    {
+        $this->facebook = $facebook;
+    }
+
+    /**
+     * @param mixed $instagram
+     */
+    public function setInstagram($instagram): void
+    {
+        $this->instagram = $instagram;
+    }
+
+    /**
+     * @param mixed $lattes
+     */
+    public function setLattes($lattes): void
+    {
+        $this->lattes = $lattes;
+    }
+
+    /**
+     * @param mixed $linkedin
+     */
+    public function setLinkedin($linkedin): void
+    {
+        $this->linkedin = $linkedin;
+    }
 
     public function getInstagram()
     {
@@ -650,4 +686,19 @@ class Usuario implements ToIdArrayInterface
         return $this->situacao;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSobreMim()
+    {
+        return $this->sobre_mim;
+    }
+
+    /**
+     * @param mixed $sobre_mim
+     */
+    public function setSobreMim($sobre_mim): void
+    {
+        $this->sobre_mim = $sobre_mim;
+    }
 }
