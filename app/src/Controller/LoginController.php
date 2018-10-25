@@ -10,6 +10,7 @@ use App\Library\Integra\WSLogin;
 use App\Library\Integra\wsUserInfoResponse;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use App\Controller\Forum;
 
 class LoginController
 {
@@ -72,6 +73,9 @@ class LoginController
             } catch (\Exception $e) {
                 $this->container->view['error'] = $e->getMessage();
             }
+            $forum = new Forum();
+            $forum->login($loginCredentials->getCpf(), $loginCredentials->getSenha());
+            $forum->redirectToForum();
         }
 
         return $this->container->view->render($response, 'login.tpl');
@@ -79,6 +83,12 @@ class LoginController
 
     public function logoutAction(Request $request, Response $response, $args)
     {
+        $forum = new Forum();
+        $forum->logout();
+        if ($_GET['forum']) {
+            $forum->redirectToForum();
+        }
+
         unset($_SESSION['id']);
 
         return $response->withRedirect($this->container->router->pathFor('login'));

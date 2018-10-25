@@ -4,11 +4,14 @@
         "mathmarques/smarty-view": "^1.1",
         "doctrine/orm": "^2.6",
         "phpoffice/phpspreadsheet": "^1.2",
-        "ramsey/uuid": "^3.7"
+        "ramsey/uuid": "^3.7",
+        "nikic/fast-route": "^1.3",
+        "flarum/core": "^0.1.0-beta.7"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/src"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

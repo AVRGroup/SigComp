@@ -312,4 +312,9 @@ class AdminController
         return $this->container->view->render($response, 'adminGradeLoad.tpl');
     }
 
+    public function adminData(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'data.tpl');
+    }
+
 }

@@ -37,11 +37,8 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                             <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
-                            <a class="dropdown-item" href="{path_for name="adminDataLoad"}">Carga de Dados</a>
-                            <a class="dropdown-item" href="{path_for name="adminTest"}">Admin Test</a>
-                            <a class="dropdown-item" href="{path_for name="checkPeriodos"}">Grades</a>
                             <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
-                            <a class="dropdown-item" href="{path_for name="gradeLoadAction"}">Carga de Grade</a>
+                            <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
                         </div>
                     </li>
                 {else}
