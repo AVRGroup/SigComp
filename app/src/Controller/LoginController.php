@@ -66,7 +66,7 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    /*$r = new HttpRequest('http://200.131.219.56/flarum', HttpRequest::METH_POST);
+                    $r = new HttpRequest('http://200.131.219.56/flarum', HttpRequest::METH_POST);
                     $r->addPostFields(array('identification' => 'projeto', 'password' => 'prj#game'));
                     try {
                         //echo $r->send()->getBody();
@@ -74,10 +74,10 @@ class LoginController
                     } catch (HttpException $ex) {
                         //echo $ex;
                         $this->container->view['error'] = 'dashuhudsas!';
-                    }*/
+                    }
 
-                    return $response->withRedirect($this->container->router->pathFor('home'));
-                    return $this->container->view->render($response, 'login.tpl');
+                    //return $response->withRedirect($this->container->router->pathFor('home'));
+                    //return $this->container->view->render($response, 'login.tpl');
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
                 }
