@@ -120,7 +120,7 @@
                                         {$i = $i + 1}
                                         {$auxI = $auxI + 1}
                                         </td>
-                                        {if $auxI > 9}
+                                        {if $auxI > 8}
                                             {$novaLinha = 1}
                                             {$auxI = 0}
                                             {break}
@@ -158,7 +158,7 @@
                                     {$i = $i + 1}
                                     {$auxI = $auxI + 1}
                                     </td>
-                                    {if $auxI > 9}
+                                    {if $auxI > 8}
                                         {$novaLinha = 1}
                                         {$auxI = 0}
                                         {break}
