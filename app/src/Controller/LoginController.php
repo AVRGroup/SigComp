@@ -84,7 +84,7 @@ class LoginController
                     ]);
 
                     $cookieJar = new CookieJar();
-                    $client->request('POST', '/flarum', [
+                    $result = $client->request('POST', '/flarum', [
                         'cookies' => $cookieJar,
                         'form_params' => [
                             'identification' => 'projeto',
@@ -92,7 +92,7 @@ class LoginController
                         ]
                     ]);
 
-                    echo $client['cookies'];
+                    echo $result['cookies'];
 
                     $cookies = new Cookies();
 
