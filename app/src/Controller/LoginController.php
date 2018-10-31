@@ -92,7 +92,7 @@ class LoginController
                         ]
                     ]);
 
-                    echo $result['cookies'];
+                    echo $result->getHeader('Cookie');
 
                     $cookies = new Cookies();
 
