@@ -99,7 +99,7 @@ class LoginController
                     }
 
                     return $response
-                            ->withHeader('Set-cookie', cookies)
+                            ->withHeader('Set-Cookie', cookies)
                             ->withRedirect($this->container->router->pathFor('home'));
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
