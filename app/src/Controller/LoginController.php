@@ -11,6 +11,7 @@ use App\Library\Integra\wsUserInfoResponse;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Controller\Forum;
+use GuzzleHttp\Client;
 
 class LoginController
 {
@@ -66,18 +67,30 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    $r = new HttpRequest('http://200.131.219.56/flarum', HttpRequest::METH_POST);
-                    $r->addPostFields(array('identification' => 'projeto', 'password' => 'prj#game'));
-                    try {
-                        //echo $r->send()->getBody();
-                        $this->container->view['error'] = $r->send()->getBody();
-                    } catch (HttpException $ex) {
-                        //echo $ex;
-                        $this->container->view['error'] = 'dashuhudsas!';
-                    }
+                    $client = new Client([
+                        // Base URI is used with relative requests
+                        'base_uri' => 'http://200.131.219.56',
+                        // You can set any number of default request options.
+                        'timeout'  => 2.0,
+                    ]);
 
-                    //return $response->withRedirect($this->container->router->pathFor('home'));
-                    //return $this->container->view->render($response, 'login.tpl');
+                    $flarumResponse = $client->request('POST', '/flarum', [
+                        'form_params' => [
+                            'identification' => 'projeto',
+                            'password' => 'prj#game'
+                        ]
+                    ]);
+                    $cookieJar = $flarumResponse->getConfig('cookies');
+                    $cookies = new Slim/Http/Cookies();
+
+                    foreach ($cookieJar->toArray() as $key => $value)
+                    {
+                        $cookies->set($key, $value);
+                    }
+                    
+                    return $response
+                            ->withHeader('Set-cookie', cookies)
+                            ->withRedirect($this->container->router->pathFor('home'));
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
                 }

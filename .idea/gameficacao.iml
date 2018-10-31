@@ -6,11 +6,44 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="popper" level="application" />
+    <orderEntry type="module-library">
+      <library name="PHP" type="php">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
+          <root url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
+          <root url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
+          <root url="file://$MODULE_DIR$/vendor/markbaker/complex" />
+          <root url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
+          <root url="file://$MODULE_DIR$/vendor/symfony/contracts" />
+          <root url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
+          <root url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
+          <root url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
+          <root url="file://$MODULE_DIR$/vendor/markbaker/complex" />
+          <root url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
+          <root url="file://$MODULE_DIR$/vendor/symfony/contracts" />
+          <root url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
