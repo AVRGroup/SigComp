@@ -12,6 +12,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Controller\Forum;
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 
 class LoginController
 {
@@ -81,13 +82,14 @@ class LoginController
                         'timeout'  => 2.0,
                     ]);
 
-                    $flarumResponse = $client->request('POST', '/flarum', [
+                    $cookieJar = new CookieJar();
+                    $client->request('POST', '/flarum', [
+                        'cookies' => $cookieJar,
                         'form_params' => [
                             'identification' => 'projeto',
                             'password' => 'prj#game'
                         ]
                     ]);
-                    $cookieJar = $flarumResponse->getConfig('cookies');
                     $cookies = new Slim/Http/Cookies();
 
                     foreach ($cookieJar->toArray() as $key => $value)
