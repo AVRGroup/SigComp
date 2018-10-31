@@ -90,7 +90,7 @@ class LoginController
                             'password' => 'prj#game'
                         ]
                     ]);
-                    $cookies = new Slim/Http/Cookies();
+                    $cookies = new Slim\Http\Cookies();
 
                     foreach ($cookieJar->toArray() as $key => $value)
                     {
