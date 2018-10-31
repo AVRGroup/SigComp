@@ -322,7 +322,7 @@ class AdminController
 
     public function exportPDFAction(){
         $dompdf = new Dompdf();
-        $html = file_get_contents(__DIR__ . '\..\..\templates\teste.html');
+        $html = file_get_contents(__DIR__ . '/../../templates/teste.html');
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
