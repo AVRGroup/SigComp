@@ -131,6 +131,13 @@ class HomeController
         return $this->container->view->render($response, 'about.tpl');
     }
 
+    public function phpInfoAction(Request $request, Response $response, $args)
+    {
+        phpinfo();
+        //return $this->container->view->render($response, 'about.tpl');
+
+    }
+
     public function privacidadeAction(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'politicaPrivacidade.tpl');

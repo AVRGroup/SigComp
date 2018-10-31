@@ -5,6 +5,8 @@ $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginActio
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
 
+$app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
+
 $app->group('', function () {
 
     $this->map(['GET', 'POST'],'/', '\App\Controller\HomeController:indexAction')->setName('home');
