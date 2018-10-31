@@ -91,6 +91,9 @@ class LoginController
                             'password' => 'prj#game'
                         ]
                     ]);
+
+                    echo $client['cookies'];
+
                     $cookies = new Cookies();
 
                     foreach ($cookieJar->toArray() as $key => $value)
