@@ -76,7 +76,7 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    /*$client = new Client([
+                    $client = new Client([
                         // Base URI is used with relative requests
                         'base_uri' => 'http://200.131.219.56',
                         // You can set any number of default request options.
@@ -103,8 +103,10 @@ class LoginController
 
                     return $response
                             ->withHeader('Set-Cookie', cookies)
-                            ->withRedirect($this->container->router->pathFor('home'));*/
-                    $api_url = "http://200.131.219.56/flarum/api/token";
+                            ->withRedirect($this->container->router->pathFor('home'));
+
+
+                    /*$api_url = "http://200.131.219.56/flarum/api/token";
                     $username = "projeto";
                     $password = "prj#game";
 
@@ -128,7 +130,7 @@ class LoginController
 
                     $expire = time() + (86400 * 30);
                     setcookie('flarum_remember', $token, $expire, "/");
-                    header("Location: https://200.131.219.56/flarum");
+                    header("Location: https://200.131.219.56/flarum");*/
 
                     /*$new_username = "teste";
                     $new_password = "123456";
