@@ -10,6 +10,7 @@ use App\Library\Integra\WSLogin;
 use App\Library\Integra\wsUserInfoResponse;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\Cookies;
 use App\Controller\Forum;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -90,7 +91,7 @@ class LoginController
                             'password' => 'prj#game'
                         ]
                     ]);
-                    $cookies = new Slim\Http\Cookies();
+                    $cookies = new Cookies();
 
                     foreach ($cookieJar->toArray() as $key => $value)
                     {
