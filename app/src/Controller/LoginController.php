@@ -25,11 +25,12 @@ class LoginController
     public function loginAction(Request $request, Response $response, $args)
     {
         if ($request->isPost()) {
-            $loginCredentials = new login();
+            /*$loginCredentials = new login();
             $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
             $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
             $loginCredentials->setAppToken($this->container->settings['integra']['token']);
-            $WSLogin = new WSLogin();
+            $WSLogin = new WSLogin();*/
+
 
             try {
                 //TODO REMOVE THIS ON PRODUCTION
@@ -38,6 +39,12 @@ class LoginController
                     $userInfoResponse = new wsUserInfoResponse(12345);
                     $userInfoResponse->setEmailSiga('a@a.com');
                 } else {
+                    $loginCredentials = new login();
+                    $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
+                    $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
+                    $loginCredentials->setAppToken($this->container->settings['integra']['token']);
+                    $WSLogin = new WSLogin();
+
                     $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
                     $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
                     $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
@@ -87,7 +94,7 @@ class LoginController
                     {
                         $cookies->set($key, $value);
                     }
-                    
+
                     return $response
                             ->withHeader('Set-cookie', cookies)
                             ->withRedirect($this->container->router->pathFor('home'));
