@@ -39,6 +39,8 @@ $app->group('', function () {
 
         $this->get('/data', '\App\Controller\AdminController:adminData')->setName('adminData');
 
+        $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
+
     })->add('\App\Middleware\AdminMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');

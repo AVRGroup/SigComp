@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+require __DIR__ . '\..\..\..\vendor\autoload.php';
+
 use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Grade;
@@ -13,6 +15,7 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
+use Dompdf\Dompdf;
 
 class AdminController
 {
@@ -315,6 +318,15 @@ class AdminController
     public function adminData(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'data.tpl');
+    }
+
+    public function exportPDFAction(){
+        $dompdf = new Dompdf();
+        $html = file_get_contents(__DIR__ . '\..\..\templates\teste.html');
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream();
     }
 
 }

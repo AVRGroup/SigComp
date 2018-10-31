@@ -38,6 +38,7 @@
                             <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                             <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                             <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                            <a class="dropdown-item" href="{path_for name="exportPDF"}">PDF Teste</a>
                         </div>
                     </li>
                 {else}
