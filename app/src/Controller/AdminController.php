@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-require __DIR__ . '\..\..\..\vendor\autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use App\Library\Helper;
 use App\Model\Disciplina;
