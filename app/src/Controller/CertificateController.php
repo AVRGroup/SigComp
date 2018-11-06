@@ -85,7 +85,7 @@ class CertificateController
     public function adminListReviewAction(Request $request, Response $response, $args)
     {
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
-        return $this->container->view->render($response, 'adminCertificates.tpl');
+        return $this->container->view->render($response, 'adminCertificates2.tpl');
     }
 
     public function adminDeleteAction(Request $request, Response $response, $args)

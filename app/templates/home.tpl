@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
+
                     <div class="changePic">
                         <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
@@ -12,6 +13,7 @@
                         <img src="{base_url}/{if $usuario->getFoto()}upload/{$usuario->getFoto()}{else}img/silhueta.jpg{/if}"
                              class="img-thumbnail" alt="{$usuario->getNome()}" width="190" height="190">
                     </div>
+
                     <div class="align-content-lg-center">
 
                         {if $usuario->getFacebook() == 'null'}
