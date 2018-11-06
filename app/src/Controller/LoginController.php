@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Library\FlarumHelper;
 use App\Library\Integra\getUserInformation;
 use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
@@ -76,85 +77,11 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    $client = new Client([
-                        // Base URI is used with relative requests
-                        'base_uri' => 'http://200.131.219.56',
-                        // You can set any number of default request options.
-                        'timeout'  => 2.0,
-                    ]);
-
-                    $cookieJar = new CookieJar();
-                    $result = $client->request('POST', '/flarum', [
-                        'cookies' => $cookieJar,
-                        'form_params' => [
-                            'identification' => 'projeto',
-                            'password' => 'prj#game'
-                        ]
-                    ]);
-
-                    echo $result->getHeader('Cookie');
-
-                    $cookies = new Cookies();
-
-                    foreach ($cookieJar->toArray() as $key => $value)
-                    {
-                        $cookies->set($key, $value);
-                    }
+                    $flarumCookies = FlarumHelper::doFlarumLogin();
 
                     return $response
-                            ->withHeader('Set-Cookie', cookies)
-                            ->withRedirect($this->container->router->pathFor('home'));
-
-
-                    /*$api_url = "http://200.131.219.56/flarum/api/token";
-                    $username = "projeto";
-                    $password = "prj#game";
-
-                    // CURL call
-                    $ch = curl_init($api_url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Content-Type: application/json'
-                    ]);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-                        'identification' => $username,
-                        'password'       => $password
-                    ]));
-                    $result = curl_exec($ch);
-                    $session = json_decode($result);
-                    $session->token; // API Token
-                    $session->userId; // Authenticated user ID
-
-                    $api_url = "http://200.131.219.56/flarum/api/users";
-                    $token = $session->token;
-
-                    $expire = time() + (86400 * 30);
-                    setcookie('flarum_remember', $token, $expire, "/");
-                    header("Location: https://200.131.219.56/flarum");*/
-
-                    /*$new_username = "teste";
-                    $new_password = "123456";
-                    $new_email = "john.smith@example.org";
-                    $ch = curl_init($api_url);
-
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Content-Type: application/json',
-                        'Authorization: Token ' . $token
-                    ]);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-                        'data' => [
-                            'attributes' => [
-                                "username" => $new_username,
-                                "password" => $new_password,
-                                "email"    => $new_email,
-                                "isActivated" => true
-                            ]
-                        ]
-                    ]));
-                    $result = curl_exec($ch);
-                    $new_user = json_decode($result);
-                    $new_user;*/
+                        ->withHeader('Set-Cookie', $flarumCookies->toHeaders())
+                        ->withRedirect($this->container->router->pathFor('home'));
 
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
