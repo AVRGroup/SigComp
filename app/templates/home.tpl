@@ -114,7 +114,7 @@
                                             <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                                 <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
                                                 <div class="caption">
-                                                    <p class="text-center"><small>{$medalhas[$i].nome}</small></p>
+                                                    <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
                                                 </div>
                                             </div>
                                         {$i = $i + 1}
@@ -152,7 +152,7 @@
                                         <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                             <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
                                             <div class="caption">
-                                                <p class="text-center"><small>{$todasMedalhas[$i].nome}</small></p>
+                                                <p class="text-center"><small class="legenda-imagem">{$todasMedalhas[$i].nome}</small></p>
                                             </div>
                                         </div>
                                     {$i = $i + 1}

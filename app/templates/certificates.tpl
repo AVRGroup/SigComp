@@ -18,24 +18,34 @@
             </button>
         </div>
     {/if}
+
     <p>O arquivo deve estar no formato .jpg, .png ou .pdf. Tamanho máximo aceito: 2Mb.</p>
+
     <form method="post" enctype="multipart/form-data">
-        <div class="input-group mb-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="certificate" name="certificate">
-                <label class="custom-file-label" for="certificate">Selecionar certificado</label>
-            </div>
-            <select class="custom-select" id="type" name="type">
+
+        <div style="margin-left: 15%" class="custom-file col-8">
+            <input  type="file" class="custom-file-input" id="certificate" name="certificate">
+            <label class="custom-file-label" for="certificate">Selecionar certificado</label>
+        </div>
+
+        <div style="margin-top: 3%; padding: 10px" class="form-row">
+            <select class="form-control custom-select col-6" id="type" name="type">
                 <option value="-1" selected>Selecione o tipo de certificado</option>
                 {foreach $certTypes as $value => $name}
                     <option value="{$value}">{$name}</option>
                 {/foreach}
             </select>
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Enviar</button>
-            </div>
+
+            <input type="number" class="form-control col-6" placeholder="De quantas horas é esse certificado?">
+
+            <input style="margin-top: 3%" type="text" name="periodo" class="form-control col-6" placeholder="Periodo correnspondente. Ex: 2018.1">
         </div>
+
+        <button style="margin-top: 2%" class="btn btn-primary" name="num_horas" type="submit">Enviar</button>
     </form>
+
+    <hr>
+    {*SEUS CERTIFICADOS*}
     <h3 class="text-center mt-5 mb-3">Seus certificados</h3>
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $certificates as $certificate}

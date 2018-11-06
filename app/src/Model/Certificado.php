@@ -21,6 +21,17 @@ class Certificado
     const APRE_MINICURSO = 3;
     const APRE_PALESTRA = 4;
     const PUBL_ARTIGO = 5;
+    const ORG_PALESTRA = 6;
+    const ORG_EVENTO = 7;
+    const APRE_EVENTO = 8;
+    const GRP_ESTUDO = 9;
+    const ESTAGIO = 10;
+    const INICIACAO = 11;
+    const REPRESENTACAO = 12;
+    const LING_ENTRANGEIRA = 13;
+    const CERT_CURSO = 14;
+    const EMP_JUNIOR = 15;
+    const VIVENCIA = 16;
 
     /**
      * @ORM\Id
@@ -54,6 +65,16 @@ class Certificado
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $valido;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $num_horas;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=false)
+     */
+    protected $periodo;
 
 
     public function __construct()
@@ -175,7 +196,19 @@ class Certificado
             Certificado::PART_MARATONA => 'Maratona de Programação',
             Certificado::APRE_MINICURSO => 'Apresentação de Minicurso',
             Certificado::APRE_PALESTRA => 'Apresentação de Palestra',
-            Certificado::PUBL_ARTIGO => 'Publicação de Artigo'
+            Certificado::PUBL_ARTIGO => 'Publicação de Artigo',
+            Certificado::ORG_EVENTO => 'Organização de Evento',
+            Certificado::APRE_EVENTO => 'Organizacao de Palestra',
+            Certificado::GRP_ESTUDO => 'Grupo de Estudo',
+            Certificado::ESTAGIO => 'Grupo de Estudo',
+            Certificado::INICIACAO => 'Atividades de iniciação à docência, à pesquisa, à extensão ou treinamento
+                                       profissional, treinamento administrativo ou grupo de educação tutorial',
+            Certificado::REPRESENTACAO => 'Representação Estudantil',
+            Certificado::LING_ENTRANGEIRA => 'Certificação em Língua Estrangeiro',
+            Certificado::CERT_CURSO => 'Certificação na área do curso (linguagem de programação, metodologias, outros)',
+            Certificado::EMP_JUNIOR => 'Participação na administração de empresa júnior',
+            Certificado::VIVENCIA => 'Vivência profissional complementar na área de formação do curso',
+
         ];
     }
 
@@ -186,5 +219,38 @@ class Certificado
     public function isInReview() {
         return is_null($this->getValido());
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNumHoras()
+    {
+        return $this->num_horas;
+    }
+
+    /**
+     * @param mixed $num_horas
+     */
+    public function setNumHoras($num_horas): void
+    {
+        $this->num_horas = $num_horas;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+
+    /**
+     * @param mixed $periodo
+     */
+    public function setPeriodo($periodo): void
+    {
+        $this->periodo = $periodo;
+    }
+
 
 }
