@@ -105,6 +105,10 @@ body {
     height: 200px!important;
 }
 
-.legenda-imagem{
+.legenda-imagem {
     font-size: 75% !important;
+}
+
+.img-certificado{
+    width: 50%; !important;
 }
