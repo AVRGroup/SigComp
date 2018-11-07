@@ -77,11 +77,13 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    $flarumCookies = FlarumHelper::doFlarumLogin();
+                    //$flarumCookies = FlarumHelper::doFlarumLogin();
 
-                    return $response
+                   /* return $response
                         ->withHeader('Set-Cookie', $flarumCookies->toHeaders())
-                        ->withRedirect($this->container->router->pathFor('home'));
+                        ->withRedirect($this->container->router->pathFor('home'));*/
+
+                    return $response->withRedirect($this->container->router->pathFor('home'));
 
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
