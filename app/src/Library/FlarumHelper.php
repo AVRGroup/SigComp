@@ -29,7 +29,6 @@ class FlarumHelper
         ]);
 
         $cookies = new Cookies();
-        $cookies->setDefaults(['path' => '/flarum']);
 
         foreach ($cookieJar->toArray() as $cookie) {
             $cookies->set($cookie['Name'], $cookie['Value']);
