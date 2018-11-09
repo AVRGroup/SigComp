@@ -72,10 +72,17 @@ class Certificado
     protected $num_horas;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=false)
+     * @ORM\Column(type="date", nullable=true)
      */
-    protected $periodo;
 
+    protected $data_inicio;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim;
 
     public function __construct()
     {
@@ -239,18 +246,33 @@ class Certificado
     /**
      * @return mixed
      */
-    public function getPeriodo()
+    public function getDataFim()
     {
-        return $this->periodo;
+        return $this->data_fim;
     }
 
     /**
-     * @param mixed $periodo
+     * @return mixed
      */
-    public function setPeriodo($periodo): void
+    public function getDataInicio()
     {
-        $this->periodo = $periodo;
+        return $this->data_inicio;
     }
 
+    /**
+     * @param mixed $data_fim
+     */
+    public function setDataFim($data_fim): void
+    {
+        $this->data_fim = $data_fim;
+    }
+
+    /**
+     * @param mixed $data_inicio
+     */
+    public function setDataInicio($data_inicio): void
+    {
+        $this->data_inicio = $data_inicio;
+    }
 
 }

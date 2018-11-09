@@ -77,6 +77,8 @@
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 
 
 <script>
@@ -114,6 +116,37 @@
     $(function () {
         $('[data-toggle="popover"]').popover()
     })
+
+    $(document).ready(function() {
+        var max_fields      = 2;
+        var wrapper         = $(".novos-botoes");
+        var add_button      = $(".add-input");
+
+        var x = 0;
+        $(add_button).click(function(e){
+            e.preventDefault();
+            if(x < max_fields){
+                var inicio = 'data_inicio'+x;
+                var fim = 'data_fim'+x;
+                x++;
+                $(wrapper).append('<div>' +
+                    '<label style="margin-top: 3%" for="data-inicio">Digite a data de inicio do certificado</label>'+
+                    '<input type="date" class="form-control col-8" name="data_inicio'+x+'"/>' +
+                    '<label style="margin-top: 3%" for="data-inicio">Digite a data de término do certificado</label>'+
+                    '<input type="date" class="form-control col-8" name="data_fim'+x+'"/>' +
+                    '<hr>' +
+                    '</div>'); //add input box
+            }
+            else
+            {
+                alert('Você chegou no limite de períodos')
+            }
+        });
+
+        $(wrapper).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        })
+    });
 
 </script>
 
