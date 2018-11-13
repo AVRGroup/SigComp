@@ -11,16 +11,34 @@
             </a>
         </div>
 
-        <div class="col-6">
+        <div class="col-8">
             <form action="" style="margin-right: 5%">
-                <select class="form-control custom-select" id="admin-review-select" onload="teste('kek')" name="type">
-                    {foreach $certTypes as $value => $name}
-                        <option value="{$value}">{$name}</option>
-                    {/foreach}
-                </select>
+                <div class="form-row">
+                    <div class="col-8">
+                        <label for="admin-review-select">Tipo do Certificado</label>
+                        <select class="form-control custom-select" id="admin-review-select" onload="teste('kek')" name="type">
+                            {foreach $certTypes as $value => $name}
+                                <option value="{$value}">{$name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label  for="num-horas">Número de horas</label>
+                        <input id="num-horas" class="form-control" type="number" value={$certificate->getNumHoras()} >
+                    </div>
+                </div>
 
-                <label  style="margin-top: 4%" for="num-horas">Número de horas</label>
-                <input id="num-horas" class="form-control" type="number" value={$certificate->getNumHoras()} >
+                <div style="margin-top: 3%" class="form-row">
+                    <div class="col-6">
+                        <label for="data-inicio">Data de Inicio</label>
+                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value="{$certificate->getDataInicio()}">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="data-inicio">Data de Término</label>
+                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value="{$certificate->getDataFim()}">
+                    </div>
+                </div>
 
                 <div style="margin-top: 4%" class="botoes">
                     <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "true"] queryParams=["isReviewPage" => "true"]}" class="btn btn-success">Aceitar</a>

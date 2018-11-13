@@ -30,22 +30,22 @@
         </div>
 
         <div style="margin-top: 3%; padding: 10px" class="form-row">
-            <select class="form-control custom-select col-6" id="type" name="type">
-                <option value="-1" selected>Selecione o tipo de certificado</option>
+            <select class="form-control custom-select col-6" id="type" required name="type">
+                <option value="" selected>Selecione o tipo de certificado</option>
                 {foreach $certTypes as $value => $name}
                     <option value="{$value}">{$name}</option>
                 {/foreach}
             </select>
 
-            <input type="number" class="form-control col-6" placeholder="De quantas horas é esse certificado?">
+            <input type="number" class="form-control col-6" name="num_horas" required placeholder="De quantas horas é esse certificado?">
         </div>
 
 
         <label style="margin-top: 3%" for="data-inicio">Digite a data de inicio do certificado</label>
-        <input type="date" id="data-inicio" name="data_inicio" class="form-control col-8">
+        <input type="date" id="data-inicio" name="data_inicio" class="form-control col-8" required>
 
         <label style="margin-top: 2%" for="data-fim">Digite a data de término do certificado</label>
-        <input type="date" id="data-fim" name="data_fim" class="form-control col-8">
+        <input type="date" id="data-fim" name="data_fim" class="form-control col-8" required>
 
         <button style="margin-top: 3%" class="btn btn-success add-input">Adicionar mais períodos +</button>
 
