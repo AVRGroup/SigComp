@@ -45,22 +45,22 @@ class CertificateController
                         $certificado->setTipo($request->getParsedBodyParam('type'));
                         $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_inicio') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio') ));
                         $certificado->setDataInicio($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_inicio1') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio1') ));
                         $certificado->setDataInicio1($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_inicio2') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio2') ));
                         $certificado->setDataInicio2($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_fim') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim') ));
                         $certificado->setDataFim($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_fim1') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim1') ));
                         $certificado->setDataFim1($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d H:i:s", strtotime($request->getParsedBodyParam('data_fim2') ));
+                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim2') ));
                         $certificado->setDataFim2($dataFormatada);
 
                         do {
