@@ -51,8 +51,9 @@
 
         <div class="novos-botoes"></div>
 
-        <button style="margin-top: 2%" class="btn btn-primary" name="num_horas" type="submit">Enviar</button>
+        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Enviar</button>
     </form>
+
 
 
     <hr>
