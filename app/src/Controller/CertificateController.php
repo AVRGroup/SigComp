@@ -45,7 +45,11 @@ class CertificateController
                         $certificado->setTipo($request->getParsedBodyParam('type'));
                         $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
                         $certificado->setDataInicio($request->getParsedBodyParam('data_inicio'));
+                        $certificado->setDataInicio1($request->getParsedBodyParam('data_inicio1'));
+                        $certificado->setDataInicio2($request->getParsedBodyParam('data_inicio2'));
                         $certificado->setDataFim($request->getParsedBodyParam('data_fim'));
+                        $certificado->setDataFim1($request->getParsedBodyParam('data_fim1'));
+                        $certificado->setDataFim2($request->getParsedBodyParam('data_fim2'));
                         do {
                             $uuid4 = Uuid::uuid4();
                             $certificado->setNome($uuid4->toString() . '.' . $extension); //Make sure we got an unique name
