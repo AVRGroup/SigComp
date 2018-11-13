@@ -84,6 +84,32 @@ class Certificado
 
     protected $data_fim;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_inicio1;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim1;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_inicio2;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim2;
+
     public function __construct()
     {
     }
@@ -208,8 +234,7 @@ class Certificado
             Certificado::APRE_EVENTO => 'Organizacao de Palestra',
             Certificado::GRP_ESTUDO => 'Grupo de Estudo',
             Certificado::ESTAGIO => 'Grupo de Estudo',
-            Certificado::INICIACAO => 'Atividades de iniciação à docência, à pesquisa, à extensão ou treinamento
-                                       profissional, treinamento administrativo ou grupo de educação tutorial',
+            Certificado::INICIACAO => 'Iniciação à docência, à pesquisa, à extensão ou TP, treinamento administrativo ou GET',
             Certificado::REPRESENTACAO => 'Representação Estudantil',
             Certificado::LING_ENTRANGEIRA => 'Certificação em Língua Estrangeiro',
             Certificado::CERT_CURSO => 'Certificação na área do curso (linguagem de programação, metodologias, outros)',
@@ -273,6 +298,72 @@ class Certificado
     public function setDataInicio($data_inicio): void
     {
         $this->data_inicio = $data_inicio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataFim1()
+    {
+        return $this->data_fim1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataFim2()
+    {
+        return $this->data_fim2;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getDataInicio1()
+    {
+        return $this->data_inicio1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataInicio2()
+    {
+        return $this->data_inicio2;
+    }
+
+    /**
+     * @param mixed $data_fim1
+     */
+    public function setDataFim1($data_fim1): void
+    {
+        $this->data_fim1 = $data_fim1;
+    }
+
+
+    /**
+     * @param mixed $data_fim2
+     */
+    public function setDataFim2($data_fim2): void
+    {
+        $this->data_fim2 = $data_fim2;
+    }
+
+    /**
+     * @param mixed $data_inicio1
+     */
+    public function setDataInicio1($data_inicio1): void
+    {
+        $this->data_inicio1 = $data_inicio1;
+    }
+
+    /**
+     * @param mixed $data_inicio2
+     */
+    public function setDataInicio2($data_inicio2): void
+    {
+        $this->data_inicio2 = $data_inicio2;
     }
 
 }

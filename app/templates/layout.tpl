@@ -115,8 +115,17 @@
 
     $(function () {
         $('[data-toggle="popover"]').popover()
-    })
+    });
 
+    {*document.getElementById("adminReviewSelect").onload = function() {teste()};*}
+
+    document.getElementById("admin-review-select").addEventListener("load", teste(param="asd"));
+
+    function teste(param){
+        console.log(param);
+    }
+
+    //Botao da pargina de certificados para adicionar mais inputs
     $(document).ready(function() {
         var max_fields      = 2;
         var wrapper         = $(".novos-botoes");
