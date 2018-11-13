@@ -21,6 +21,7 @@
 
     <p>O arquivo deve estar no formato .jpg, .png ou .pdf. Tamanho máximo aceito: 2Mb.</p>
 
+    {*FORM PARA ADICIONAR CERTIFICADO*}
     <form method="post" enctype="multipart/form-data">
 
         <div style="margin-left: 15%" class="custom-file col-8">
@@ -37,14 +38,25 @@
             </select>
 
             <input type="number" class="form-control col-6" placeholder="De quantas horas é esse certificado?">
-
-            <input style="margin-top: 3%" type="text" name="periodo" class="form-control col-6" placeholder="Periodo correnspondente. Ex: 2018.1">
         </div>
+
+
+        <label style="margin-top: 3%" for="data-inicio">Digite a data de inicio do certificado</label>
+        <input type="date" id="data-inicio" name="data_inicio" class="form-control col-8">
+
+        <label style="margin-top: 2%" for="data-fim">Digite a data de término do certificado</label>
+        <input type="date" id="data-fim" name="data_fim" class="form-control col-8">
+
+        <button style="margin-top: 3%" class="btn btn-success add-input">Adicionar mais períodos +</button>
+
+        <div class="novos-botoes"></div>
 
         <button style="margin-top: 2%" class="btn btn-primary" name="num_horas" type="submit">Enviar</button>
     </form>
 
+
     <hr>
+
     {*SEUS CERTIFICADOS*}
     <h3 class="text-center mt-5 mb-3">Seus certificados</h3>
     <div class="d-flex flex-wrap" id="certificates">
