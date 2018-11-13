@@ -75,6 +75,7 @@ class CertificateController
                     } catch (\Exception $e) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
                         $this->container->view['error'] = 'Erro ao salvar certificado, tente novamente!';
+                        var_dump($e);
                     }
                 }
             }
