@@ -45,23 +45,35 @@ class CertificateController
                         $certificado->setTipo($request->getParsedBodyParam('type'));
                         $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio') ));
-                        $certificado->setDataInicio($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio1') ));
-                        $certificado->setDataInicio1($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_inicio2') ));
-                        $certificado->setDataInicio2($dataFormatada);
+                        $data = new \DateTime($request->getParsedBodyParam('data_inicio'));
+                        $certificado->setDataInicio($data);
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim') ));
-                        $certificado->setDataFim($dataFormatada);
+                        $data = new \DateTime($request->getParsedBodyParam('data_fim'));
+                        $certificado->setDataFim($data);
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim1') ));
-                        $certificado->setDataFim1($dataFormatada);
 
-                        $dataFormatada = date("Y-m-d", strtotime($request->getParsedBodyParam('data_fim2') ));
-                        $certificado->setDataFim2($dataFormatada);
+
+                        $dataFormatada = $request->getParsedBodyParam('data_inicio1');
+                        if($dataFormatada != null) {
+                            $certificado->setDataInicio1($dataFormatada);
+                        }
+
+                        $dataFormatada = $request->getParsedBodyParam('data_inicio2');
+                        if($dataFormatada != null) {
+                            $certificado->setDataInicio2($dataFormatada);
+                        }
+
+                        $dataFormatada = $request->getParsedBodyParam('data_fim1');
+                        if($dataFormatada != null) {
+                            $certificado->setDataFim1($dataFormatada);
+                        }
+
+                        $dataFormatada = $request->getParsedBodyParam('data_fim2');
+                        if($dataFormatada != null) {
+                            $certificado->setDataFim2($dataFormatada);
+                        }
 
                         do {
                             $uuid4 = Uuid::uuid4();
@@ -75,7 +87,6 @@ class CertificateController
                     } catch (\Exception $e) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
                         $this->container->view['error'] = 'Erro ao salvar certificado, tente novamente!';
-                        var_dump($e);
                     }
                 }
             }
