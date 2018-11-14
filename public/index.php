@@ -1,9 +1,9 @@
 <?php
-define('IN_MYBB', NULL);
+/*define('IN_MYBB', NULL);
 global $mybb, $lang, $query, $db, $cache, $plugins, $displaygroupfields;
 require_once 'myBB/global.php';
 require_once 'MyBBIntegrator.php';
-$MyBBI = new MyBBIntegrator($mybb, $db, $cache, $plugins, $lang, $config);
+$MyBBI = new MyBBIntegrator($mybb, $db, $cache, $plugins, $lang, $config);*/
 
 date_default_timezone_set('America/Sao_Paulo');
 ini_set('display_errors', 1);
