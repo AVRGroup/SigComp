@@ -324,7 +324,8 @@ class AdminController
         $certificados = $this->container->certificadoDAO->getAllByUsuario($this->container->usuarioDAO->getById(87));
         $data = date('d M Y');
 
-        $html = '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
+        $html = '<head><meta charset="UTF-8"></head>';
+        $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
         $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
         $html .= '<table border="1px" align="center">';
         $html .= '<thead>';
@@ -352,7 +353,7 @@ class AdminController
         $dompdf->render();
         $dompdf->stream("aproveitamento.pdf",
             array(
-                "Attachment" => false //Para realizar o download somente alterar para true
+                "Attachment" => true //Para realizar o download somente alterar para true
             ));
     }
 
