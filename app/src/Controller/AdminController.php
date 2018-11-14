@@ -356,7 +356,7 @@ class AdminController
         $dompdf->render();
         $dompdf->stream("aproveitamento.pdf",
             array(
-                "Attachment" => false //Para realizar o download somente alterar para true
+                "Attachment" => true //Para realizar o download somente alterar para true
             ));
     }
 
