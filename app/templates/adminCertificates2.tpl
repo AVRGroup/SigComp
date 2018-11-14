@@ -31,15 +31,42 @@
                 <div style="margin-top: 3%" class="form-row">
                     <div class="col-6">
                         <label for="data-inicio">Data de Inicio</label>
-                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value="{$certificate->getDataInicio()}">
+                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value={$certificate->getDataInicio()->format("Y-m-d")}>
                     </div>
 
                     <div class="col-6">
-                        <label for="data-inicio">Data de Término</label>
-                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value="{$certificate->getDataFim()}">
+                        <label for="data-fim">Data de Término</label>
+                        <input type="date" class="form-control" name="data_fim" id="data-fim" value={$certificate->getDataFim()->format("Y-m-d")}>
                     </div>
                 </div>
 
+                {if $certificate->getDataInicio1() != null && $certificate->getDataFim1() != null }
+                <div style="margin-top: 3%" class="form-row">
+                    <div class="col-6">
+                        <label for="data-inicio">Data de Inicio</label>
+                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value={$certificate->getDataInicio1()->format("Y-m-d")}>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="data-fim">Data de Término</label>
+                        <input type="date" class="form-control" name="data_fim" id="data-fim" value={$certificate->getDataFim1()->format("Y-m-d")}>
+                    </div>
+                </div>
+                {/if}
+
+                {if $certificate->getDataInicio2() != null && $certificate->getDataFim2() != null}
+                    <div style="margin-top: 3%" class="form-row">
+                        <div class="col-6">
+                            <label for="data-inicio">Data de Inicio</label>
+                            <input type="date" class="form-control" name="data_inicio" id="data-inicio" value={$certificate->getDataInicio2()->format("Y-m-d")}>
+                        </div>
+
+                        <div class="col-6">
+                            <label for="data-fim">Data de Término</label>
+                            <input type="date" class="form-control" name="data_fim" id="data-fim" value={$certificate->getDataFim2()->format("Y-m-d")}>
+                        </div>
+                    </div>
+                {/if}
                 <div style="margin-top: 4%" class="botoes">
                     <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "true"] queryParams=["isReviewPage" => "true"]}" class="btn btn-success">Aceitar</a>
                     <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "false"] queryParams=["isReviewPage" => "true"]}" class="btn btn-danger">Negar</a>
