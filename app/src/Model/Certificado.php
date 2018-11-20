@@ -54,6 +54,11 @@ class Certificado
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
+    protected $nome_impresso;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
     protected $extensao;
 
     /**
@@ -166,6 +171,22 @@ class Certificado
     {
         $this->nome = $nome;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomeImpresso()
+    {
+        return $this->nome_impresso;
+    }
+
+    /**
+     * @param mixed $nome_impresso
+     */
+    public function setNomeImpresso($nome_impresso): void
+    {
+        $this->nome_impresso = $nome_impresso;
     }
 
     /**

@@ -30,7 +30,6 @@ $app->group('', function () {
         $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
-        $this->get('/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
 
         $this->map(['GET', 'POST'], '/data-load', '\App\Controller\AdminController:dataLoadAction')->setName('adminDataLoad');
 
@@ -42,8 +41,10 @@ $app->group('', function () {
 
     })->add('\App\Middleware\AdminMiddleware');
 
-    $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates')->add('\App\Middleware\BolsistaMiddleware');
-
+    $this->group('/admin', function () {
+        $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
+        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
+    })->add('\App\Middleware\BolsistaMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');
 

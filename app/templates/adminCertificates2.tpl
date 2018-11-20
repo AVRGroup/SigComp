@@ -12,8 +12,12 @@
         </div>
 
         <div class="col-8">
-            <form action="" style="margin-right: 5%">
-                <div class="form-row">
+            <form action="" method="post" style="margin-right: 5%">
+
+                <label for="nome">Nome do Certificado</label>
+                <input id="nome" type="text" class="form-control" name="nome_impresso" value={$certificate->getNomeImpresso()}>
+
+                <div class="form-row" style="margin-top: 3%">
                     <div class="col-8">
                         <label for="admin-review-select">Tipo do Certificado</label>
                         <select class="form-control custom-select" id="admin-review-select" onload="teste('kek')" name="type">

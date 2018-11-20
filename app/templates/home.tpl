@@ -99,7 +99,7 @@
                 </ul>
                 <div class="tab-content" id="badgesTabContent">
 
-                    {if $usuario->getTipo()!=1}
+                    {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
                     <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
                         <table>
                             <tbody>
@@ -155,7 +155,7 @@
                                 {$novaLinha = 0}
                                 {while $i < $numMedalhas}
                                     <td>
-                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                        <div class="img-thumbnail altura-medalha" style="max-width: 90px;">
                                             <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
                                             <div class="caption">
                                                 <p class="text-center"><small class="legenda-imagem">{$todasMedalhas[$i].nome}</small></p>

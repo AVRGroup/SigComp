@@ -44,7 +44,7 @@ class CertificateController
                         $certificado->setExtensao($extension);
                         $certificado->setTipo($request->getParsedBodyParam('type'));
                         $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
-
+                        $certificado->setNomeImpresso($request->getParsedBodyParam('nome_impresso'));
 
                         $data = new \DateTime($request->getParsedBodyParam('data_inicio'));
                         $certificado->setDataInicio($data);
@@ -136,6 +136,7 @@ class CertificateController
 
         if($certificado) {
             $certificado->setValido($args['state'] == 'true'? true : false);
+
             $this->container->certificadoDAO->save($certificado);
             $redirect = $this->container->router->pathFor('adminUser', ['id' => $certificado->getUsuario()->getId()]);
         } else {
