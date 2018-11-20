@@ -321,13 +321,16 @@ class AdminController
     }
 
     public function exportPDFAction(){
-        $certificados = $this->container->certificadoDAO->getAllByUsuario($this->container->usuarioDAO->getById(87));
+        $aluno = $this->container->usuarioDAO->getById(87);
+        $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
         $data = date('d M Y');
 
         $html = '<head><meta charset="UTF-8"></head>';
         $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
         $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
-        $html .= '<table border="1px" align="center">';
+        $html .= '<div align="center"><p>PARECER</p></div>';
+        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de <b>TOTAL horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
+        $html .= '<table border="1" align="center">';
         $html .= '<thead>';
         $html .= '<tr>';
         $html .= '<th>Tipo</th>';
