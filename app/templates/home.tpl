@@ -88,14 +88,18 @@
                     <p></p>
                 <h4 class="text-center">Quadro de medalhas</h4>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
+                    {if $usuario->getTipo()!=1}
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" id="current-tab" role="tab" href="#current">Medalhas Conquistadas</a>
                     </li>
+                    {/if}
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" id="possible-tab" role="tab" href="#possible">Medalhas Possíveis</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="badgesTabContent">
+
+                    {if $usuario->getTipo()!=1}
                     <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
                         <table>
                             <tbody>
@@ -133,7 +137,7 @@
                             </tbody>
                         </table>
                     </div>
-
+                    {/if}
                     <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
                         <table>
                             <tbody>

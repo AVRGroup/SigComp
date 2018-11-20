@@ -29,7 +29,6 @@ $app->group('', function () {
         $this->get('/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
 
-        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
         $this->get('/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
 
@@ -42,6 +41,9 @@ $app->group('', function () {
         $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
 
     })->add('\App\Middleware\AdminMiddleware');
+
+    $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates')->add('\App\Middleware\BolsistaMiddleware');
+
 
 })->add('\App\Middleware\AuthMiddleware');
 

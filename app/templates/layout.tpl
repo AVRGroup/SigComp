@@ -29,6 +29,7 @@
                     <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                     <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
+                    {if $loggedUser->getTipo() == 1}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Administrador
@@ -41,6 +42,10 @@
                             <a class="dropdown-item" href="{path_for name="exportPDF"}">PDF Teste</a>
                         </div>
                     </li>
+                    {/if}
+                    {if $loggedUser->getTipo() == 2}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
+                    {/if}
                 {else}
                 <li class="nav-item">
                     <a class="nav-link" href="{path_for name="about"}">Sobre</a>

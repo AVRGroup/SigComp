@@ -5,7 +5,7 @@ namespace App\Middleware;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class AdminMiddleware
+class BolsistaMiddleware
 {
     private $container;
 
@@ -18,7 +18,7 @@ class AdminMiddleware
     {
         $user = $this->container->usuarioDAO->getById($_SESSION['id']);
 
-        if(!isset($_SESSION['id']) || $user->getTipo() != 1)
+        if(!isset($_SESSION['id']) || ($user->getTipo() != 2 && $user->getTipo() != 1) )
             return $response->withRedirect($this->container->router->pathFor('home'));
 
         $this->container->view['loggedUser'] = $user;
