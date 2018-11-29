@@ -52,16 +52,36 @@ class CertificateController
                         $data = new \DateTime($request->getParsedBodyParam('data_fim'));
                         $certificado->setDataFim($data);
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_inicio1'));
+                        if($request->getParsedBodyParam('data_inicio1') == null){
+                            $data = null;
+                        }
+                        else {
+                            $data = new \DateTime($request->getParsedBodyParam('data_inicio1'));
+                        }
                         $certificado->setDataInicio1($data);
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_inicio2'));
+                        if($request->getParsedBodyParam('data_inicio2') == null){
+                            $data = null;
+                        }
+                        else {
+                            $data = new \DateTime($request->getParsedBodyParam('data_inicio2'));
+                        }
                         $certificado->setDataInicio2($data);
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_fim1'));
+                        if($request->getParsedBodyParam('data_fim1') == null){
+                            $data = null;
+                        }
+                        else {
+                            $data = new \DateTime($request->getParsedBodyParam('data_fim1'));
+                        }
                         $certificado->setDataFim1($data);
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_fim2'));
+                        if($request->getParsedBodyParam('data_fim2') == null){
+                            $data = null;
+                        }
+                        else {
+                            $data = new \DateTime($request->getParsedBodyParam('data_fim2'));
+                        }
                         $certificado->setDataFim2($data);
 
                         do {
@@ -104,10 +124,6 @@ class CertificateController
     public function adminListReviewAction(Request $request, Response $response, $args)
     {
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
-
-        foreach ($this->container->certificadoDAO->getAllToReview() as $certificate)
-            var_dump($certificate->getNumHoras());
-
         $this->container->view['certTypes'] = Certificado::getAllTipos();
         return $this->container->view->render($response, 'adminCertificates2.tpl');
     }

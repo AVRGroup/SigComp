@@ -320,29 +320,63 @@ class AdminController
         return $this->container->view->render($response, 'data.tpl');
     }
 
+    public function formataSemestre($mesInicio){
+        return $mesInicio > 6 ? '3' : '1';
+    }
+
+    public function getPeriodoLegivel($certificado) : string {
+        $anoInicio  = $certificado->getDataInicio()->format('Y');
+        $mesInicio  = $certificado->getDataInicio()->format('m');
+
+        $periodo = $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
+        $anoInicio  = $certificado->getDataInicio1()->format('Y');
+        $mesInicio  = $certificado->getDataInicio1()->format('m');
+
+        if($anoInicio != null && $mesInicio != null){
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+        }
+
+
+        $anoInicio  = $certificado->getDataInicio2()->format('Y');
+        $mesInicio  = $certificado->getDataInicio2()->format('m');
+
+        if($anoInicio != null && $mesInicio != null){
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+        }
+
+        return $periodo;
+    }
+
     public function exportPDFAction(){
         $aluno = $this->container->usuarioDAO->getById(87);
         $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
         $data = date('d M Y');
 
         $html = '<head><meta charset="UTF-8"></head>';
+        $html .= '<div align="right"><img src="../../public/img/logo_ufjf.png" alt=""></div>';
         $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
         $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
         $html .= '<div align="center"><p>PARECER</p></div>';
         $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de <b>TOTAL horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
-        $html .= '<table border="1" align="center">';
+        $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
         $html .= '<thead>';
         $html .= '<tr>';
-        $html .= '<th>Tipo</th>';
-        $html .= '<th>Horas</th>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Periodo</th>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Tipo</th>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Horas</th>';
         $html .= '</tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
 
 
         foreach ($certificados as $certificado){
-            $html .= '<tr><td>'.$certificado->getNomeTipo(). "</td>";
-            $html .= '<td>'.$certificado->getNumHoras(). "</td>";
+
+            $periodo = $this->getPeriodoLegivel($certificado);
+
+            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodo ."</td>";
+            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
+            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
         }
 
         $html .= '</tbody>';
@@ -359,5 +393,7 @@ class AdminController
                 "Attachment" => true //Para realizar o download somente alterar para true
             ));
     }
+
+
 
 }
