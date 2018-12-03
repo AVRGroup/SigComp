@@ -354,7 +354,7 @@ class AdminController
         $data = date('d M Y');
 
         $html = '<head><meta charset="UTF-8"></head>';
-        $html .= '<div align="right"><img width="180" height="100" src="var\www\html\gameficacao\public\img\logo_ufjf.png" alt=""></div>';
+        $html .= '<div align="right"><img width="180" height="100" src="\var\www\html\gameficacao\public\img\logo_ufjf.png" alt=""></div>';
         $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
         $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
         $html .= '<div align="center"><p>PARECER</p></div>';
