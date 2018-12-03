@@ -16,28 +16,28 @@
 
                     <div class="align-content-lg-center">
 
-                        {if $usuario->getFacebook() == 'null'}
+                        {if $usuario->getFacebook() == null}
                             <img src="{base_url}/img/facebook_preto.png" class="img-thumbnail" alt="Facebook" width="42" height="42">
                         {else}
-                            <a href="https://www.facebook.com/" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
+                            <a href="{$usuario->getFacebook()}" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
                         {/if}
 
-                        {if $usuario->getInstagram() == 'null'}
+                        {if $usuario->getInstagram() == null}
                             <img src="{base_url}/img/instagram_preto.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42">
                         {else}
-                            <a href="https://www.instagram.com/" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
+                            <a href="{$usuario->getInstagram()}" target="_blank"><img src="{base_url}/img/instagram.jpg" class="img-thumbnail" alt="Instagram" width="42" height="42"></a>
                         {/if}
 
-                        {if $usuario->getLinkedin() == 'null'}
+                        {if $usuario->getLinkedin() == null}
                             <img src="{base_url}/img/linkedin_preto.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42">
                         {else}
-                            <a href="https://br.linkedin.com/" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
+                            <a href="{$usuario->getLinkedin()}" target="_blank"><img src="{base_url}/img/linkedin.png" class="img-thumbnail" alt="LinkedIn" width="42" height="42"></a>
                         {/if}
 
-                        {if $usuario->getLattes() == 'null'}
+                        {if $usuario->getLattes() == null}
                             <img src="{base_url}/img/lattes_preto.png" class="img-thumbnail" alt="Lattes" width="42" height="42">
                         {else}
-                            <a href="http://lattes.cnpq.br/" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
+                            <a href="{$usuario->getLattes()}" target="_blank"><img src="{base_url}/img/lattes.png" class="img-thumbnail" alt="Lattes" width="42" height="42"></a>
                         {/if}
 
                     </div>

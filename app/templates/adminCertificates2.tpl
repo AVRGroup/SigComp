@@ -35,7 +35,7 @@
                 <div style="margin-top: 3%" class="form-row">
                     <div class="col-6">
                         <label for="data-inicio">Data de Inicio</label>
-                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value={$certificate->getDataInicio()->format("Y-m-d")}>
+                        <input type="date" class="form-control" name="data_inicio" id="data-inicio" value={date_format($certificate->getDataInicio(), "Y-m-d")}>
                     </div>
 
                     <div class="col-6">
