@@ -353,7 +353,7 @@ class AdminController
         $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
         $data = date('d M Y');
 
-        $caminhoImagem = __DIR__ . '../../../public/img/logo_ufjf.png';
+        $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
 
         $html = '<head><meta charset="UTF-8"></head>';
         $html .= '<div align="right"><img width="180" height="100" src='. $caminhoImagem . ' alt=""></div> ';
