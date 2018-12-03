@@ -40,7 +40,7 @@
         <div class="form-row">
             <div class="col-8">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Digite seu e-mail">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Digite seu e-mail" value="{$usuario->getEmail()}">
             </div>
 
         </div>
@@ -53,30 +53,30 @@
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="facebook">Facebook</label>
-                <input type="text" name="facebook" placeholder="Digite seu perfil no Facebook" class="form-control">
+                <input type="text" name="facebook" placeholder="Digite seu perfil no Facebook" class="form-control" value="{$usuario->getFacebook()}">
             </div>
 
             <div class="col-6">
                 <label for="instagram">Instagram</label>
-                <input type="text" name="instagram" placeholder="Digite seu perfil no Instagram" class="form-control">
+                <input type="text" name="instagram" placeholder="Digite seu perfil no Instagram" class="form-control" value="{$usuario->getInstagram()}">
             </div>
         </div>
 
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="linkedin">LinkedIn</label>
-                <input type="text" name="linkedin" placeholder="Digite seu perfil no Linkedin" class="form-control">
+                <input type="text" name="linkedin" placeholder="Digite seu perfil no Linkedin" class="form-control" value="{$usuario->getLinkedin()}">
             </div>
 
             <div class="col-6">
                 <label for="lattes">Lattes</label>
-                <input type="text" name="lattes" placeholder="Digite seu perfil no Lattes" class="form-control">
+                <input type="text" name="lattes" placeholder="Digite seu perfil no Lattes" class="form-control" value="{$usuario->getLattes()}">
             </div>
         </div>
 
 
         <h5 align="center" style="margin-top: 3%">Sobre mim</h5>
-        <textarea style="margin-left: 29.5%" name="sobre-mim"  id="sobre-mim" cols="50" rows="7" placeholder="Maximo 50 caracteres"></textarea>
+        <textarea style="margin-left: 29.5%" name="sobre_mim"  id="sobre-mim" cols="50" rows="7" placeholder="Maximo 50 caracteres" >{$usuario->getSobreMim()}</textarea>
         <small id="contador-mensagem"></small>
         <hr>
 

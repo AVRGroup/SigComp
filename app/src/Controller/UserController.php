@@ -101,14 +101,14 @@ class UserController
                 $instagram = $request->getParsedBodyParam('instagram');
                 $linkedin = $request->getParsedBodyParam('linkedin');
                 $lattes = $request->getParsedBodyParam('lattes');
-                $sobreMim = $request->getParsedBodyParam('sobre-mim');
+                $sobreMim = $request->getParsedBodyParam('sobre_mim');
 
                 $usuario->setEmail($email);
                 $usuario->setFacebook($facebook);
                 $usuario->setInstagram($instagram);
                 $usuario->setLinkedin($linkedin);
-                $usuario->setLinkedin($lattes);
-                $usuario->setLinkedin($sobreMim);
+                $usuario->setLattes($lattes);
+                $usuario->setSobremim($sobreMim);
 
                 $this->container->usuarioDAO->persist($usuario);
                 $this->container->usuarioDAO->flush(); //Commit the transaction

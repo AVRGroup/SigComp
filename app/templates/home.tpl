@@ -44,7 +44,7 @@
 
                     <div class="sobre-mim">
                         <h5>Sobre mim</h5>
-                        <textarea name="sobre-mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula e</textarea>
+                        <textarea name="sobre_mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >{$usuario->getSobreMim()}</textarea>
                     </div>
 
                     <div><h6>Grade: {$usuario->getGrade()}</h6></div>
