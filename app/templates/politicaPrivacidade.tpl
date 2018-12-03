@@ -40,5 +40,5 @@
 
     <p>Caso esteja de acordo, clique em "Aceitar" e você será redirecionado para a página de cadastro.</p>
 
-    <button class="btn btn-success">Aceitar</button>
+    <a href="{path_for name="informacoesPessoais"}" class="btn btn-success">Aceitar</a>
 {/block}

@@ -22,8 +22,16 @@ class HomeController
 
     public function indexAction(Request $request, Response $response, $args)
     {
+
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
+
+        if($user->getPrimeiroLogin() == 1) {
+            $user->setPrimeiroLogin(0);
+            $this->container->usuarioDAO->save($user);
+
+            return $this->container->view->render($response, 'politicaPrivacidade.tpl');
+        }
 
         if ($request->isPost()) {
             try {

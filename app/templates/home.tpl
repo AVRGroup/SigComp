@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="col-9">
-                <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$loogedUser->getId()}{/if}</h4>
+                <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
                 <p class="mb-0 mt-3"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ) }%;">{((100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ))|string_format:"%.2f"}%</div>
@@ -205,7 +205,7 @@
                     {foreach $top10Ira as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td>{$user->getNomeAbreviado()}</td>
+                            <td>{if $user->getNomeReal()}{$user->getNomeAbreviado()} {else}USUARIO{$user->getId()}{/if}</td>
                             <td>{$user->getIra()|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}
@@ -238,8 +238,8 @@
                     {foreach $top10IraPeriodoPassado as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td>{$user.nome_abreviado}</td>
-                            <td>{$user.ira_periodo_passado|string_format:"%.2f"}</td>
+                            <td>{if $user->getNomeReal()}{$user->getNomeAbreviado()}{else}USUARIO {$user->getId()}{/if}</td>
+                            <td>{$user->getIraPeriodoPassado()|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}
                     </tbody>

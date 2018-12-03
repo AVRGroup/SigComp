@@ -102,6 +102,12 @@ class UserController
                 $linkedin = $request->getParsedBodyParam('linkedin');
                 $lattes = $request->getParsedBodyParam('lattes');
                 $sobreMim = $request->getParsedBodyParam('sobre_mim');
+                $nomeReal = $request->getParsedBodyParam('nome_real');
+
+                if($nomeReal == 'on')
+                    $usuario->setNomeReal(0);
+                else
+                    $usuario->setNomeReal(1);
 
                 $usuario->setEmail($email);
                 $usuario->setFacebook($facebook);
@@ -120,6 +126,13 @@ class UserController
         }
 
         $this->container->view['usuario'] = $usuario;
+
+        if($usuario->getNomeReal())
+            $this->container->view['checked'] = "";
+        else
+            $this->container->view['checked'] = "checked";
+
+
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
     }
 

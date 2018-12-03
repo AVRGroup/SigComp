@@ -180,6 +180,11 @@ class Usuario implements ToIdArrayInterface
      */
     protected $sobre_mim;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : 1})
+     */
+    protected $primeiro_login;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -609,6 +614,15 @@ class Usuario implements ToIdArrayInterface
         return $this->nome_real;
     }
 
+    /**
+     * @param mixed $nome_real
+     */
+    public function setNomeReal($nome_real): void
+    {
+        $this->nome_real = $nome_real;
+    }
+
+
     public function getFacebook()
     {
         return $this->facebook;
@@ -701,4 +715,38 @@ class Usuario implements ToIdArrayInterface
     {
         $this->sobre_mim = $sobre_mim;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMedalhasUsuario()
+    {
+        return $this->medalhas_usuario;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrimeiroLogin()
+    {
+        return $this->primeiro_login;
+    }
+
+    /**
+     * @param mixed $primeiro_login
+     */
+    public function setPrimeiroLogin($primeiro_login): void
+    {
+        $this->primeiro_login = $primeiro_login;
+    }
+
+    /**
+     * @param mixed $medalhas_usuario
+     */
+    public function setMedalhasUsuario($medalhas_usuario): void
+    {
+        $this->medalhas_usuario = $medalhas_usuario;
+    }
+
+
 }

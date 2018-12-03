@@ -46,8 +46,8 @@
         </div>
 
         <div class="custom-control custom-checkbox" style="margin-top: 2%">
-            <input type="checkbox" name="nome_verdadeiro" class="custom-control-input" id="customCheck1">
-            <label class="custom-control-label" for="customCheck1">Desejo que meu nome não seja mostrado</label>
+            <input id="nome-real" type="checkbox" name="nome_real" class="custom-control-input" {$checked}>
+            <label class="custom-control-label" for="nome-real">Desejo que meu nome não seja mostrado</label>
         </div>
 
         <div class="form-row" style="margin-top: 3%">

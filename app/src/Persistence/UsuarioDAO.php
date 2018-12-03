@@ -192,11 +192,15 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function getTop10IraPeriodo(){
-        $sql = "SELECT * FROM usuario WHERE situacao = 0 ORDER BY ira_periodo_passado DESC LIMIT 10";
-        $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->execute();
-        $results =  $stmt->fetchAll();
-        return $results;
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
+            $query->setParameter('situacao', 0);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
     }
 
     public function getPeriodo($periodo, $grade){
