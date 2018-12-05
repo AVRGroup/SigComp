@@ -12,15 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Certificado
 {
-    /**
-     *  Tipos
-     */
-    const PART_PALESTRA = 0;
-    const PART_MINICURSO = 1;
-    const PART_MARATONA = 2;
-    const APRE_MINICURSO = 3;
-    const APRE_PALESTRA = 4;
-    const PUBL_ARTIGO = 5;
 
     /**
      * @ORM\Id
@@ -166,25 +157,6 @@ class Certificado
     {
         $this->valido = $valido;
         return $this;
-    }
-
-    static public function getAllTipos() {
-        return [
-            Certificado::PART_PALESTRA => 'Participação em Palestra',
-            Certificado::PART_MINICURSO => 'Participação em Minicurso',
-            Certificado::PART_MARATONA => 'Maratona de Programação',
-            Certificado::APRE_MINICURSO => 'Apresentação de Minicurso',
-            Certificado::APRE_PALESTRA => 'Apresentação de Palestra',
-            Certificado::PUBL_ARTIGO => 'Publicação de Artigo'
-        ];
-    }
-
-    public function getNomeTipo() {
-        return Certificado::getAllTipos()[$this->getTipo()];
-    }
-
-    public function isInReview() {
-        return is_null($this->getValido());
     }
 
 }

@@ -24,11 +24,11 @@ class LoginController
     public function loginAction(Request $request, Response $response, $args)
     {
         if ($request->isPost()) {
-            $loginCredentials = new login();
+            /*$loginCredentials = new login();
             $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
             $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
             $loginCredentials->setAppToken($this->container->settings['integra']['token']);
-            $WSLogin = new WSLogin();
+            $WSLogin = new WSLogin();*/
 
             try {
                 //TODO REMOVE THIS ON PRODUCTION
