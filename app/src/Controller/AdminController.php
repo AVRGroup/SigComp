@@ -330,18 +330,20 @@ class AdminController
 
         $periodo = $anoInicio . '.' . $this->formataSemestre($mesInicio);
 
-        $anoInicio  = $certificado->getDataInicio1()->format('Y');
-        $mesInicio  = $certificado->getDataInicio1()->format('m');
+        if($certificado->getDataInicio1() != null) {
 
-        if($anoInicio != null && $mesInicio != null){
+            $anoInicio = $certificado->getDataInicio1()->format('Y');
+            $mesInicio = $certificado->getDataInicio1()->format('m');
+
             $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
         }
 
+        if($certificado->getDataInicio2() != null) {
+            $anoInicio = $certificado->getDataInicio2()->format('Y');
+            $mesInicio = $certificado->getDataInicio2()->format('m');
 
-        $anoInicio  = $certificado->getDataInicio2()->format('Y');
-        $mesInicio  = $certificado->getDataInicio2()->format('m');
 
-        if($anoInicio != null && $mesInicio != null){
             $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
         }
 
@@ -351,6 +353,11 @@ class AdminController
     public function exportPDFAction(){
         $aluno = $this->container->usuarioDAO->getById(87);
         $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
+        $total_horas = $this->container->certificadoDAO->getTotalHoras($aluno->getId());
+
+//        var_dump($total_horas);
+        die();
+
         $data = date('d M Y');
 
         $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
@@ -360,7 +367,7 @@ class AdminController
         $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
         $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
         $html .= '<div align="center"><p>PARECER</p></div>';
-        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de <b>TOTAL horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
+        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de <b>'. $total_horas .' horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
         $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
         $html .= '<thead>';
         $html .= '<tr>';

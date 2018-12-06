@@ -22,7 +22,7 @@
                         <label for="admin-review-select">Tipo do Certificado</label>
                         <select class="form-control custom-select" id="admin-review-select" onload="teste('kek')" name="type">
                             {foreach $certTypes as $value => $name}
-                                <option value="{$value}">{$name}</option>
+                                <option value="{$value}" {if $value == $certificate->getTipo()}selected{/if}>{$name}</option>
                             {/foreach}
                         </select>
                     </div>
@@ -74,7 +74,6 @@
                 <div style="margin-top: 4%" class="botoes">
                     <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "true"] queryParams=["isReviewPage" => "true"]}" class="btn btn-success">Aceitar</a>
                     <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "false"] queryParams=["isReviewPage" => "true"]}" class="btn btn-danger">Negar</a>
-                    <button class="btn btn-primary" onclick="teste()">Teste</button>
                 </div>
             </form>
         </div>

@@ -20,7 +20,7 @@ class CertificadoDAO extends BaseDAO
     public function getAllByUsuario(Usuario $usuario)
     {
         try {
-            $query = $this->em->createQuery("SELECT c, u FROM App\Model\Certificado AS c JOIN c.usuario AS u WHERE c.usuario = :usuario ORDER BY c.num_horas DESC");
+            $query = $this->em->createQuery("SELECT c, u FROM App\Model\Certificado AS c JOIN c.usuario AS u WHERE c.usuario = :usuario ORDER BY c.data_inicio ASC");
             $query->setParameter('usuario', $usuario);
             $certificados = $query->getResult();
         } catch (\Exception $e) {
@@ -28,6 +28,21 @@ class CertificadoDAO extends BaseDAO
         }
 
         return $certificados;
+    }
+
+    public function getTotalHoras($id)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT SUM(num_horas) FROM App\Model\Certificado AS total WHERE usuario = :id");
+            $query->setParameter('id', $id);
+            $total_horas = $query->getResult();
+            var_dump($total_horas);
+        } catch (\Exception $e) {
+            $total_horas = null;
+            var_dump($e);
+        }
+
+        return $total_horas;
     }
 
     /**

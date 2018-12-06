@@ -16,7 +16,7 @@
         alteradas a qualquer momento
     </p>
 
-    <b>Por padrão seu nome e IRA serão exibidos caso esteja entre os 10 melhores</b>
+    <p><b>Por padrão seu nome e IRA serão exibidos caso esteja entre os 10 melhores</b></p>
 
     <p>
         O sistema <b>não reivindica o direito</b> das informações pessoais que você disponibiliza para sua conta, como os links
