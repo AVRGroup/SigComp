@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
+
                     <div class="changePic">
                         <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
@@ -12,6 +13,7 @@
                         <img src="{base_url}/{if $usuario->getFoto()}upload/{$usuario->getFoto()}{else}img/silhueta.jpg{/if}"
                              class="img-thumbnail" alt="{$usuario->getNome()}" width="190" height="190">
                     </div>
+
                     <div class="align-content-lg-center">
 
                         {if $usuario->getFacebook() == 'null'}
@@ -114,13 +116,13 @@
                                             <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                                 <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
                                                 <div class="caption">
-                                                    <p class="text-center"><small>{$medalhas[$i].nome}</small></p>
+                                                    <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
                                                 </div>
                                             </div>
                                         {$i = $i + 1}
                                         {$auxI = $auxI + 1}
                                         </td>
-                                        {if $auxI > 9}
+                                        {if $auxI > 8}
                                             {$novaLinha = 1}
                                             {$auxI = 0}
                                             {break}
@@ -152,13 +154,13 @@
                                         <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                             <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
                                             <div class="caption">
-                                                <p class="text-center"><small>{$todasMedalhas[$i].nome}</small></p>
+                                                <p class="text-center"><small class="legenda-imagem">{$todasMedalhas[$i].nome}</small></p>
                                             </div>
                                         </div>
                                     {$i = $i + 1}
                                     {$auxI = $auxI + 1}
                                     </td>
-                                    {if $auxI > 9}
+                                    {if $auxI > 8}
                                         {$novaLinha = 1}
                                         {$auxI = 0}
                                         {break}

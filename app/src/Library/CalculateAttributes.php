@@ -55,4 +55,5 @@ class CalculateAttributes
 
         CalculateAttributes::updateUsuarioCultura($usuario);
     }
+
 }

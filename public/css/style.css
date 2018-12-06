@@ -104,3 +104,11 @@ body {
 .altura-medalha{
     height: 200px!important;
 }
+
+.legenda-imagem {
+    font-size: 75% !important;
+}
+
+.img-certificado{
+    width: 100%; !important;
+}

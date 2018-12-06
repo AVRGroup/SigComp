@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Library\FlarumHelper;
 use App\Library\Integra\getUserInformation;
 use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
@@ -10,7 +11,10 @@ use App\Library\Integra\WSLogin;
 use App\Library\Integra\wsUserInfoResponse;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\Cookies;
 use App\Controller\Forum;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 
 class LoginController
 {
@@ -29,7 +33,6 @@ class LoginController
             $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
             $loginCredentials->setAppToken($this->container->settings['integra']['token']);
             $WSLogin = new WSLogin();*/
-
             try {
                 //TODO REMOVE THIS ON PRODUCTION
                 if($request->getParsedBodyParam('cpf') == '123' && $request->getParsedBodyParam('password') == '456') {
@@ -37,6 +40,12 @@ class LoginController
                     $userInfoResponse = new wsUserInfoResponse(12345);
                     $userInfoResponse->setEmailSiga('a@a.com');
                 } else {
+                    $loginCredentials = new login();
+                    $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
+                    $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
+                    $loginCredentials->setAppToken($this->container->settings['integra']['token']);
+                    $WSLogin = new WSLogin();
+
                     $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
                     $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
                     $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
@@ -66,18 +75,14 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    /*$r = new HttpRequest('http://200.131.219.56/flarum', HttpRequest::METH_POST);
-                    $r->addPostFields(array('identification' => 'projeto', 'password' => 'prj#game'));
-                    try {
-                        //echo $r->send()->getBody();
-                        $this->container->view['error'] = $r->send()->getBody();
-                    } catch (HttpException $ex) {
-                        //echo $ex;
-                        $this->container->view['error'] = 'dashuhudsas!';
-                    }*/
+                    //$flarumCookies = FlarumHelper::doFlarumLogin();
+
+                   /* return $response
+                        ->withHeader('Set-Cookie', $flarumCookies->toHeaders())
+                        ->withRedirect($this->container->router->pathFor('home'));*/
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
-                    return $this->container->view->render($response, 'login.tpl');
+
                 } else {
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
                 }

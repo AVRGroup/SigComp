@@ -2,5 +2,32 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/annotations" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/collections" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/common" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/dbal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/event-manager" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/inflector" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/instantiator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/lexer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/orm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/reflection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/dompdf/dompdf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/guzzlehttp/promises" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/guzzlehttp/psr7" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/nikic/fast-route" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/pimple/pimple" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/container" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/http-message" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/simple-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/ramsey/uuid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/slim/slim" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/smarty/smarty" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/console" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/contracts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" vcs="Git" />
   </component>
 </project>

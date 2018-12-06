@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+require __DIR__ . '/../../../vendor/autoload.php';
+
 use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Grade;
@@ -13,6 +15,7 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
+use Dompdf\Dompdf;
 
 class AdminController
 {
@@ -315,6 +318,46 @@ class AdminController
     public function adminData(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'data.tpl');
+    }
+
+    public function exportPDFAction(){
+        $aluno = $this->container->usuarioDAO->getById(87);
+        $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
+        $data = date('d M Y');
+
+        $html = '<head><meta charset="UTF-8"></head>';
+        $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
+        $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
+        $html .= '<div align="center"><p>PARECER</p></div>';
+        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de <b>TOTAL horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
+        $html .= '<table border="1" align="center">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th>Tipo</th>';
+        $html .= '<th>Horas</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+
+        foreach ($certificados as $certificado){
+            $html .= '<tr><td>'.$certificado->getNomeTipo(). "</td>";
+            $html .= '<td>'.$certificado->getNumHoras(). "</td>";
+        }
+
+        $html .= '</tbody>';
+        $html .= '</table>';
+
+
+        $dompdf = new Dompdf();
+        //$html = file_get_contents(__DIR__ . '/../../templates/teste.html');
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("aproveitamento.pdf",
+            array(
+                "Attachment" => true //Para realizar o download somente alterar para true
+            ));
     }
 
 }

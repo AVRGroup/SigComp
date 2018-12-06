@@ -43,6 +43,26 @@ class CertificateController
                         $certificado->setUsuario($request->getAttribute('user'));
                         $certificado->setExtensao($extension);
                         $certificado->setTipo($request->getParsedBodyParam('type'));
+                        $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
+
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_inicio'));
+                        $certificado->setDataInicio($data);
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_fim'));
+                        $certificado->setDataFim($data);
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_inicio1'));
+                        $certificado->setDataInicio1($data);
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_inicio2'));
+                        $certificado->setDataInicio2($data);
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_fim1'));
+                        $certificado->setDataFim1($data);
+
+                        $data = new \DateTime($request->getParsedBodyParam('data_fim2'));
+                        $certificado->setDataFim2($data);
 
                         do {
                             $uuid4 = Uuid::uuid4();
@@ -55,7 +75,7 @@ class CertificateController
                         $this->container->view['success'] = true;
                     } catch (\Exception $e) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
-                        $this->container->view['error'] = 'Erro ao salvar certificado, tente novamente!';
+                        $this->container->view['error'] = $e;
                     }
                 }
             }
@@ -84,7 +104,12 @@ class CertificateController
     public function adminListReviewAction(Request $request, Response $response, $args)
     {
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
-        return $this->container->view->render($response, 'adminCertificates.tpl');
+
+        foreach ($this->container->certificadoDAO->getAllToReview() as $certificate)
+            var_dump($certificate->getNumHoras());
+
+        $this->container->view['certTypes'] = Certificado::getAllTipos();
+        return $this->container->view->render($response, 'adminCertificates2.tpl');
     }
 
     public function adminDeleteAction(Request $request, Response $response, $args)

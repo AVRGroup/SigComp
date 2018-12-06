@@ -128,5 +128,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#Pasta Flarum
+/public/flarum
+
+#Pasta myBB
+/public/myBB
+
 
 # End of https://www.gitignore.io/api/macos,windows,composer,phpstorm
+app/src/Controller/myBBHelper.php
+public/MyBBIntegrator.php

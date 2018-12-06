@@ -14,7 +14,6 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-
 </head>
 
 <body>
@@ -39,6 +38,7 @@
                             <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                             <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                             <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                            <a class="dropdown-item" href="{path_for name="exportPDF"}">PDF Teste</a>
                         </div>
                     </li>
                 {else}
@@ -77,6 +77,8 @@
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 
 
 <script>
@@ -113,7 +115,42 @@
 
     $(function () {
         $('[data-toggle="popover"]').popover()
-    })
+    });
+
+    {*document.getElementById("adminReviewSelect").onload = function() {teste()};*}
+
+
+    //Botao da pargina de certificados para adicionar mais inputs
+    $(document).ready(function() {
+        var max_fields      = 2;
+        var wrapper         = $(".novos-botoes");
+        var add_button      = $(".add-input");
+
+        var x = 0;
+        $(add_button).click(function(e){
+            e.preventDefault();
+            if(x < max_fields){
+                var inicio = 'data_inicio'+x;
+                var fim = 'data_fim'+x;
+                x++;
+                $(wrapper).append('<div>' +
+                    '<label style="margin-top: 3%" for="data-inicio">Digite a data de inicio do certificado</label>'+
+                    '<input type="date" class="form-control col-8" name="data_inicio'+x+'"/>' +
+                    '<label style="margin-top: 3%" for="data-inicio">Digite a data de término do certificado</label>'+
+                    '<input type="date" class="form-control col-8" name="data_fim'+x+'"/>' +
+                    '<hr>' +
+                    '</div>'); //add input box
+            }
+            else
+            {
+                alert('Você chegou no limite de períodos')
+            }
+        });
+
+        $(wrapper).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        })
+    });
 
 </script>
 

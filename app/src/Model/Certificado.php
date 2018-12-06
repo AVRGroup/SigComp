@@ -46,6 +46,49 @@ class Certificado
      */
     protected $valido;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $num_horas;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_inicio;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_inicio1;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim1;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_inicio2;
+
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+
+    protected $data_fim2;
 
     public function __construct()
     {
@@ -158,5 +201,4 @@ class Certificado
         $this->valido = $valido;
         return $this;
     }
-
 }
