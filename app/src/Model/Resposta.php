@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Model\Topico
+ * Model\Resposta
  *
  * @ORM\Entity()
- * @ORM\Table(name="topico")
+ * @ORM\Table(name="resposta")
  */
 class Resposta implements ToIdArrayInterface
 {
