@@ -33,8 +33,6 @@ class LoginController
             $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
             $loginCredentials->setAppToken($this->container->settings['integra']['token']);
             $WSLogin = new WSLogin();*/
-
-
             try {
                 //TODO REMOVE THIS ON PRODUCTION
                 if($request->getParsedBodyParam('cpf') == '123' && $request->getParsedBodyParam('password') == '456') {
