@@ -44,7 +44,41 @@ class Categoria implements ToIdArrayInterface
      */
     protected $categoria_topicos;
 
+    /**
+     * @param mixed $nome
+     * @return Categoria
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+        return $this;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * @param mixed $descricao
+     * @return Categoria
+     */
+    public function setDescricao($descricao)
+    {
+        $this->descricao = $descricao;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescricao()
+    {
+        return $this->descricao;
+    }
 
     public function getIdentifier()
     {
