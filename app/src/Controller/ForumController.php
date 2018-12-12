@@ -50,4 +50,5 @@ class ForumController{
 
         return $this->container->view->render($response, 'novaCategoria.tpl');
     }
+
 }
