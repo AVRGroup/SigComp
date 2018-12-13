@@ -4,7 +4,7 @@ $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginActio
 
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
-$app->get('/forum', '\App\Controller\ForumController:listCategoriesAction')->setName('forum');
+$app->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
 
 $app->group('', function () {
@@ -19,6 +19,8 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
 
     $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
+    $this->map(['GET', 'POST'], '/forum/novoTopico', '\App\Controller\ForumController:novoTopicoAction')->setName('novoTopico');
+
 
     $this->group('/admin', function () {
 

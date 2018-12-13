@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Categoria;
+use App\Model\Topico;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -49,6 +50,25 @@ class ForumController{
         }
 
         return $this->container->view->render($response, 'novaCategoria.tpl');
+    }
+
+    public function novoTopicoAction(Request $request, Response $response, $args){
+        $topico = new Topico();
+        $allCategories = $this->container->categoriaDAO->getAll();
+
+
+        try{
+            if($request->isPost()){
+
+            }
+
+
+        }catch (\Exception $e){
+            $this->container->view['error'] = $e->getMessage();
+        }
+
+        $this->container->view['categoriesFull'] = $allCategories;
+        return $this->container->view->render($response, 'novoForum.tpl');
     }
 
 }

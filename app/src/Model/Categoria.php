@@ -82,6 +82,6 @@ class Categoria implements ToIdArrayInterface
 
     public function getIdentifier()
     {
-        // TODO: Implement getIdentifier() method.
+        return $this->id;
     }
 }
