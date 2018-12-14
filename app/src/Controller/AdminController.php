@@ -355,8 +355,6 @@ class AdminController
         $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
         $total_horas = $this->container->certificadoDAO->getTotalHoras($aluno->getId());
 
-//        var_dump($total_horas);
-        die();
 
         $data = date('d M Y');
 
@@ -377,7 +375,6 @@ class AdminController
         $html .= '</tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
-
 
         foreach ($certificados as $certificado){
 
