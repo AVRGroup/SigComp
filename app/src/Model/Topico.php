@@ -55,14 +55,73 @@ class Topico implements ToIdArrayInterface
      */
     protected $respostas_topico;
 
-
-
-
-
-
-
     public function getIdentifier()
     {
-        // TODO: Implement getIdentifier() method.
+        return $this->id;
+    }
+
+    public function setAssunto($assunto){
+        $this->assunto = $assunto;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssunto()
+    {
+        return $this->assunto;
+    }
+
+    public function setData($data){
+        $this->data = $data;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function setUsuario($usuario){
+        $this->usuario = $usuario;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function setCategoria($categoria){
+        $this->categoria = $categoria;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
+
+    public function setResposta($resposta){
+        $this->respostas_topico = $resposta;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRespostasTopico()
+    {
+        return $this->respostas_topico;
     }
 }
