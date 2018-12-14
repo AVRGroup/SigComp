@@ -145,6 +145,18 @@ class Usuario implements ToIdArrayInterface
     protected $notas;
 
     /**
+     * @ORM\OneToMany(targetEntity="Topico", mappedBy="usuario")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     */
+    protected $topicos_usuario;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Resposta", mappedBy="usuario")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     */
+    protected $respostas_usuario;
+
+    /**
      * @ORM\OneToMany(targetEntity="MedalhaUsuario", mappedBy="usuario")
      * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
      */
@@ -184,6 +196,11 @@ class Usuario implements ToIdArrayInterface
      * @ORM\Column(type="boolean", nullable=false, options={"default" : 1})
      */
     protected $primeiro_login;
+
+	/**
+     * @ORM\Column(type="string", nullable=true, options={"default" : null})
+     */
+    protected $data_registro;
 
     public function __construct()
     {
