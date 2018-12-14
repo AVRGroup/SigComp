@@ -60,6 +60,21 @@ class CertificadoDAO extends BaseDAO
 
         return $certificados;
     }
+
+    /**
+     * @return Certificado[] |null
+     */
+    public function getAllToReview()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT c, u FROM App\Model\Certificado AS c JOIN c.usuario AS u WHERE c.valido IS NULL ");
+            $certificados = $query->getResult();
+        } catch (\Exception $e) {
+            $certificados = null;
+        }
+
+        return $certificados;
+    }
 }
 
 
