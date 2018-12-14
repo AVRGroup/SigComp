@@ -17,6 +17,9 @@ class ForumController{
     }
 
     public function showForumAction(Request $request, Response $response, $args){
+        $allCategories = $this->container->categoriaDAO->getAll();
+        $this->container->view['categoriesFull'] = $allCategories;
+
         return $this->container->view->render($response, 'forumMain.tpl');
     }
 
