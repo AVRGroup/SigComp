@@ -125,6 +125,53 @@ class CertificateController
     {
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
         $this->container->view['certTypes'] = Certificado::getAllTipos();
+
+
+        try{
+            if($request->isPost()){
+
+                $certificado = $this->container->certificadoDAO->getById($request->getParsedBodyParam("id"));
+
+                $tipo = $request->getParsedBodyParam("type");
+                $numHoras = $request->getParsedBodyParam("num_horas");
+                $nomeImpresso = $request->getParsedBodyParam("nome_impresso");
+                $dataInicio = date_create($request->getParsedBodyParam("data_inicio"));
+                $dataFim = date_create($request->getParsedBodyParam("data_fim"));
+
+                if($request->getParsedBodyParam("data_inicio1") != null) {
+                    $dataInicio1 = date_create($request->getParsedBodyParam("data_inicio1"));
+                    $dataFim1 = date_create($request->getParsedBodyParam("data_fim1"));
+
+                    $certificado->setDataInicio1($dataInicio1);
+                    $certificado->setDataFim1($dataFim1);
+
+                }
+
+                if($request->getParsedBodyParam("data_inicio2") != null) {
+                    $dataInicio2 = date_create($request->getParsedBodyParam("data_inicio2"));
+                    $dataFim2 = date_create($request->getParsedBodyParam("data_fim2"));
+
+                    $certificado->setDataInicio2($dataInicio2);
+                    $certificado->setDataFim2($dataFim2);
+                }
+
+                $certificado->setTipo($tipo);
+                $certificado->setNumHoras($numHoras);
+                $certificado->setNomeImpresso($nomeImpresso);
+                $certificado->setDataInicio($dataInicio);
+                $certificado->setDataFim($dataFim);
+
+                $this->container->certificadoDAO->persist($certificado);
+                $this->container->certificadoDAO->flush();
+
+                $this->container->view['success'] = true;
+
+            }
+        }
+        catch (\Exception $e){
+            $this->container->view['error'] = $e->getMessage();
+        }
+
         return $this->container->view->render($response, 'adminCertificates2.tpl');
     }
 

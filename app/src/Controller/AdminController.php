@@ -354,7 +354,7 @@ class AdminController
         $aluno = $this->container->usuarioDAO->getById(87);
         $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
         $total_horas = $this->container->certificadoDAO->getTotalHoras($aluno->getId());
-
+        var_dump($aluno);
 
         $data = date('d M Y');
 

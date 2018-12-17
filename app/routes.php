@@ -3,12 +3,12 @@
 $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginAction')->setName('login');
 
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
-$app->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
-$app->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
 
 $app->group('', function () {
 
+    $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
+    $this->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
     $this->map(['GET', 'POST'],'/', '\App\Controller\HomeController:indexAction')->setName('home');
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
@@ -47,7 +47,7 @@ $app->group('', function () {
 
     $this->group('/admin', function () {
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
-        $this->get('/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
+        $this->map(['GET', 'POST'],'/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
     })->add('\App\Middleware\BolsistaMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');
