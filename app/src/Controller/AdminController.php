@@ -371,11 +371,9 @@ class AdminController
         $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
         $horas = $this->horasTotais($certificados);
 
-        $html = '<head><meta charset="UTF-8"></head>';
-        $html .= '<div align="right"><img width="180" height="100" src='. $caminhoImagem . ' alt=""></div> ';
-        $html .= '<div align="right"><p>UNIVERSIDADE FEDERAL DE JUIZ DE FORA<br>INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br>CEP: 36036-900 - TEL:(032) 2102-3302 - FAX:(032) 2012-3300</p></div>';
-        $html .= '<div align="right"><p>Juiz de Fora, '.$data.'</div>';
-        $html .= '<div align="center"><p>PARECER</p></div>';
+        $html =  '<head><meta charset="UTF-8"></head>';
+        $html .= '<img width="140"  height="80" align="right" src='. $caminhoImagem. '><div align="left" style="font-size: 80%"><p><b>UNIVERSIDADE FEDERAL DE JUIZ DE FORA</b><br>DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO - DCC <br> INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br></p></div>';
+        $html .= '<div style="margin-top: 5%" align="center"><p>PARECER</p></div>';
         $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de '. $horas .'<b> horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
         $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
         $html .= '<thead>';
