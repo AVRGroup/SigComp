@@ -1,7 +1,14 @@
 {extends 'layout.tpl'}
 {block name=content}
+    <!--suppress ALL -->
     <h3 class="text-center mb-4">Gerenciar Usuários</h3>
-    <table class="table table-hover">
+
+    <form class="form-row" method="post">
+        <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
+        <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+    </form>
+
+    <table style="margin-top: 4%" class="table table-hover">
         <thead class="thead-light">
         <tr>
             <th scope="col">Matrícula</th>
@@ -13,10 +20,10 @@
         <tbody>
         {foreach $users as $user}
             <tr>
-                <td>{$user->getMatricula()}</td>
-                <td>{$user->getNome()}</td>
-                <td>{$user->getEmail()}</td>
-                <td><a href="{path_for name="adminUser" data=["id" => $user->getId()]}"><span class="far fa-edit" aria-hidden="true"></span></a></td>
+                <td>{$user['matricula']}</td>
+                <td>{$user['nome']}</td>
+                <td>{$user['email']}</td>
+                <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}"><span class="far fa-edit" aria-hidden="true"></span></a></td>
             </tr>
         {foreachelse}
             <tr>
@@ -25,3 +32,4 @@
         {/foreach}
     </table>
 {/block}
+

@@ -5,6 +5,8 @@ $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginActio
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
 
+
+
 $app->group('', function () {
 
     $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
@@ -30,7 +32,7 @@ $app->group('', function () {
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
-        $this->get('/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');

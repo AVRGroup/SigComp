@@ -29,7 +29,15 @@ class UserController
 
     public function adminListAction(Request $request, Response $response, $args)
     {
-        $this->container->view['users'] = $this->container->usuarioDAO->getAll();
+
+        if($request->isPost()){
+            $pesquisa = $request->getParsedBodyParam('pesquisa');
+            $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisa);
+        }
+        else {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+        }
+
         return $this->container->view->render($response, 'adminListUsers.tpl');
     }
 
@@ -232,7 +240,6 @@ class UserController
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
-
 
 }
 

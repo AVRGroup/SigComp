@@ -164,6 +164,30 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+
+    public function getByMatriculaNome($pesquisa){
+        try {
+            $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE (u.matricula LIKE '%':pesquisa'%' OR u.nome LIKE '%':pesquisa'%') ");
+            die(var_dump($query));
+            $query->setParameter('pesquisa', $pesquisa);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = [];
+        }
+
+        return $usuarios;
+    }
+
+
+    public function getByMatriculaNomeARRAY($pesquisa){
+        $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa%')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+
     /**
      * @return Usuario[] |null
      */
@@ -178,6 +202,16 @@ class UsuarioDAO extends BaseDAO
 
         return $usuarios;
     }
+
+    public function getAllARRAY()
+    {
+        $sql = "SELECT * FROM usuario";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
 
     public function getTop10IraTotal(){
         try {
