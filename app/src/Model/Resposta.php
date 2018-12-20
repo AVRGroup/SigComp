@@ -49,10 +49,46 @@ class Resposta implements ToIdArrayInterface
      */
     protected $topico;
 
-
-
     public function getIdentifier()
     {
-        // TODO: Implement getIdentifier() method.
+        return $this->id;
     }
+
+    public function setConteudo($conteudo){
+        $this->conteudo = $conteudo;
+        return $this;
+    }
+
+    public function getConteudo(){
+        return $this->conteudo;
+    }
+
+    public function setData($data){
+        $this->data = $data;
+        return $this;
+    }
+
+    public function getData(){
+        return $this->data;
+    }
+
+    public function setAutor($usuario){
+        $this->usuario = $usuario;
+        return $this;
+    }
+
+    public function getAutor(){
+        return $this->usuario;
+    }
+
+    public function setTopico($topico){
+        $this->topico = $topico;
+        return $this;
+    }
+
+    public function getTopico(){
+        return $this->topico;
+    }
+
+
 }

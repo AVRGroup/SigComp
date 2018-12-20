@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Categoria;
+use App\Model\Resposta;
 use App\Model\Topico;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -45,7 +46,7 @@ class ForumController{
 
                 $this->container->categoriaDAO->persist($categoria);
                 $this->container->categoriaDAO->flush(); //Commit the transaction
-                $this->container->view['success'] = "Informações atualizadas com sucesso";
+                $this->container->view['success'] = "Categoria criada com sucesso!";
             }
         }
         catch (\Exception $e){
@@ -57,6 +58,8 @@ class ForumController{
 
     public function novoTopicoAction(Request $request, Response $response, $args){
         $topico = new Topico();
+        $resposta = new Resposta();
+
         $allCategories = $this->container->categoriaDAO->getAll();
 
         try{
@@ -65,15 +68,23 @@ class ForumController{
                 $data = date('Y-m-d H:i:s');
                 $categoria = $request->getParsedBodyParam('topic_cat');
                 $autor = $_SESSION['id'];
+                $conteudo = $request->getParsedBodyParam('post_content');
 
                 $topico->setAssunto($assunto);
                 $topico->setData($data);
-                $topico->setCategoria($categoria);
-                $topico->setUsuario($autor);
+                $topico->setCategoria($this->container->categoriaDAO->getById($categoria));
+                $topico->setUsuario($this->container->usuarioDAO->getById($autor));
 
                 $this->container->topicoDAO->persist($topico);
                 $this->container->topicoDAO->flush();
-                $this->container->view['success'] = "Cadastros na tabela Tópico ok";
+
+                $resposta->setAutor($this->container->usuarioDAO->getById($autor));
+                $resposta->setConteudo($conteudo);
+                $resposta->setData($data);
+                $resposta->setTopico($topico);
+                $this->container->respostaDAO->persist($topico);
+                $this->container->respostaDAO->flush();
+                $this->container->view['success'] = true;
             }
         }catch (\Exception $e){
             $this->container->view['error'] = $e->getMessage();
