@@ -1,18 +1,20 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h3 class="text-center">Fórum</h3>
-
-    <h5 class="text-center">Categorias</h5>
+    <h3 class="text-center">Tópicos na categoria {$categoria->getNome()}</h3>
     <table class="table table-hover" align="center">
         <thead>
         <tr>
-            <th>Categoria</th>
+            <th>Tópico</th>
+            <th>Criação</th>
         </tr>
         </thead>
-        {foreach $categoriesFull as $category}
+        {foreach $topicsFull as $topic}
             <tr>
                 <td class="leftpart">
-                    <a href="{path_for name="showCategory" data=["id" => $category->getIdentifier()]}">{$category->getNome()}</a><br>{$category->getDescricao()}
+                    <a href="topic.php?id={$topic->getIdentifier()}">{$topic->getAssunto()}</a><br>
+                </td>
+                <td class="rightpart">
+                    {$topic->getData()}
                 </td>
             </tr>
         {/foreach}
@@ -22,9 +24,6 @@
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
                 <a href="{path_for name="novaCategoria"}" class="btn btn-primary active" role="button" aria-pressed="true">Nova categoria</a>
-            </li>
-            <li class="nav-item">
-                <a href="{path_for name="novoTopico"}" class="btn btn-primary active" role="button" aria-pressed="true">Novo tópico</a>
             </li>
         </ul>
     </div>

@@ -19,7 +19,7 @@ class CategoriaDAO extends BaseDAO
     public function getAllFetched()
     {
         try {
-            $query = $this->em->createQuery("SELECT cat,d FROM App\Model\Categoria AS cat LEFT JOIN cat.categoria_topicos AS ct");
+            $query = $this->em->createQuery("SELECT cat, ct FROM App\Model\Categoria AS cat LEFT JOIN cat.categoria_topicos AS ct");
             $categorias = $query->getResult();
         } catch (\Exception $e) {
             $categorias = null;

@@ -84,4 +84,8 @@ class Categoria implements ToIdArrayInterface
     {
         return $this->id;
     }
+
+    public function getTopicos(){
+        return $this->categoria_topicos;
+    }
 }

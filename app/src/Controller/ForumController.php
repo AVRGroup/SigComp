@@ -19,6 +19,7 @@ class ForumController{
 
     public function showForumAction(Request $request, Response $response, $args){
         $allCategories = $this->container->categoriaDAO->getAll();
+
         $this->container->view['categoriesFull'] = $allCategories;
 
         return $this->container->view->render($response, 'forumMain.tpl');
@@ -54,6 +55,22 @@ class ForumController{
         }
 
         return $this->container->view->render($response, 'novaCategoria.tpl');
+    }
+
+    public function showCategoryAction(Request $request, Response $response, $args)
+    {
+        $categoria = $this->container->categoriaDAO->getById(intval($args['id']));
+
+        if(!$categoria) {
+            return $response->withRedirect($this->container->router->pathFor('listCategories'));
+        }
+
+        $topicos = $this->container->topicoDAO->getAllByCategory(intval($args['id']));
+
+        $this->container->view['categoria'] = $categoria;
+        $this->container->view['topicsFull'] = $topicos;
+
+        return $this->container->view->render($response, 'categoria.tpl');
     }
 
     public function novoTopicoAction(Request $request, Response $response, $args){

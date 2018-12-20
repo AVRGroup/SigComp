@@ -11,7 +11,7 @@
         {foreach $categoriesFull as $category}
             <tr>
                 <td class="leftpart">
-                    <a href="category.php?id">{$category->getNome()}</a><br>{$category->getDescricao()}
+                    <a href="{path_for name="showCategory" data=["id" => $category->getIdentifier()]}">{$category->getNome()}</a><br>{$category->getDescricao()}
                 </td>
                 <td class="rightpart">
                     <a href="topic.php?id=">Topic subject</a>
