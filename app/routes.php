@@ -23,6 +23,9 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
     $this->map(['GET', 'POST'], '/forum/novoTopico', '\App\Controller\ForumController:novoTopicoAction')->setName('novoTopico');
 
+    $this->get('/forum/categorias/{id:[0-9]+}', '\App\Controller\ForumController:showCategoryAction')->setName('showCategory');
+    $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
+
 
     $this->group('/admin', function () {
 

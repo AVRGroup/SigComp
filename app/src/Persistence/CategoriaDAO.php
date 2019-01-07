@@ -19,7 +19,7 @@ class CategoriaDAO extends BaseDAO
     public function getAllFetched()
     {
         try {
-            $query = $this->em->createQuery("SELECT cat,d FROM App\Model\Categoria AS cat LEFT JOIN cat.categoria_topicos AS ct");
+            $query = $this->em->createQuery("SELECT cat, ct FROM App\Model\Categoria AS cat LEFT JOIN cat.categoria_topicos AS ct");
             $categorias = $query->getResult();
         } catch (\Exception $e) {
             $categorias = null;
@@ -40,5 +40,35 @@ class CategoriaDAO extends BaseDAO
             $categorias = null;
         }
         return $categorias;
+    }
+
+    /**
+     * @return Categoria[] |null
+     */
+    public function getByNome($nome)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT cat FROM App\Model\Categoria WHERE nome LIKE ':string'");
+            $query->setParameter('string', $nome);
+            $categorias = $query->getResult();
+        } catch (\Exception $e) {
+            $categorias = null;
+        }
+        return $categorias;
+    }
+
+    /**
+     * @return Categoria[] |null
+     */
+    public function getById($id)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT cat FROM App\Model\Categoria AS cat WHERE cat.id = :id");
+            $query->setParameter('id', $id);
+            $categoria = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $categoria = null;
+        }
+        return $categoria;
     }
 }

@@ -11,6 +11,15 @@
         </div>
     {/if}
 
+    {if isset($success)}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Tópico criado com sucesso!<br/>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {/if}
+
     <form method="post">
         <div class="form-row">
             <div class="col-8">
