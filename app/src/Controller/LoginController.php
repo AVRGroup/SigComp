@@ -75,6 +75,10 @@ class LoginController
 
                 $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
 
+                if($usuarios[0]->getNome()== "ADMINISTRADOR"){
+                    return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+                }
+
                 if (count($usuarios) != 0) {
                     $_SESSION['id'] = $usuarios[0]->getId();
                     $_SESSION['profiles'] = [];

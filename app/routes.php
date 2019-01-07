@@ -35,6 +35,8 @@ $app->group('', function () {
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
+        $this->get('/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
+
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
 

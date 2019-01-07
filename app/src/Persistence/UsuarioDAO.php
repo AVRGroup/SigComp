@@ -212,6 +212,24 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getCountNaoLogaram()
+    {
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function getCountLogaram()
+    {
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
 
     public function getTop10IraTotal(){
         try {

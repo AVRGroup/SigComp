@@ -1,7 +1,7 @@
 {extends 'layout.tpl'}
 {block name=content}
 
-    <h4 align="center">Informações Pessoais</h4>
+    <h3 align="center">Informações Pessoais</h3>
     <hr>
 
     <div class="row container">

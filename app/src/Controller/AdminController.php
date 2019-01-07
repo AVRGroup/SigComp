@@ -317,7 +317,17 @@ class AdminController
 
     public function adminData(Request $request, Response $response, $args)
     {
+
         return $this->container->view->render($response, 'data.tpl');
+    }
+
+    public function adminDashboardAction(Request $request, Response $response, $args){
+
+        $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram()[0]["COUNT(*)"];
+        $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram()[0]["COUNT(*)"];
+
+
+        return $this->container->view->render($response, 'adminDashboard.tpl');
     }
 
     public function formataSemestre($mesInicio){

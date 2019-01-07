@@ -31,5 +31,6 @@
             </tr>
         {/foreach}
     </table>
+
 {/block}
 

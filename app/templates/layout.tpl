@@ -37,6 +37,7 @@
                             Administrador
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
                             <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                             <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                             <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
@@ -86,6 +87,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
+<!-- Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
 
 
 <script>
@@ -123,8 +128,7 @@
     $(function () {
         $('[data-toggle="popover"]').popover()
     });
-
-    {*document.getElementById("adminReviewSelect").onload = function() {teste()};*}
+    //Fim do contador de caracteres da pagina InformacoesPessoais
 
 
     //Botao da pargina de certificados para adicionar mais inputs
@@ -158,7 +162,68 @@
             e.preventDefault(); $(this).parent('div').remove(); x--;
         })
     });
+    //Fim do botão para adicionarm mais inputs
 
+    //Grafico de acessos
+    google.charts.load('current', { 'callback': drawChart ,'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChart3D);
+
+    var countNaoLogaram = $('#countNaoLogaram').val();
+    var countLogaram = $('#countLogaram').val();
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Estado', 'Quantidade'],
+            ['Acessaram', countLogaram / 10 * 10],
+            ['Não Acessaram', countNaoLogaram / 10 * 10]
+        ]);
+
+        var options = {
+            title :'Número de Alunos que Acessaram ao menos uma vez',
+            width:700, height:400,
+            sliceVisibilityThreshold: 0,
+            backgroundColor: '#fafafa',
+            pieSliceText: 'value',
+            legend: {
+                position: 'labeled',
+                textStyle: {
+                    fontName: 'monospace',
+                    fontSize: 12
+                }
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+
+    function drawChart3D() {
+        var data = google.visualization.arrayToDataTable([
+            ['Estado', 'Quantidade'],
+            ['Acessaram', countLogaram / 10 * 10],
+            ['Não Acessaram', countNaoLogaram / 10 * 10]
+        ]);
+
+        var options = {
+            title :'Número de Alunos que Acessaram',
+            width:700, height:400,
+            sliceVisibilityThreshold: 0,
+            is3D: true,
+            backgroundColor: '#fafafa',
+            legend: {
+                position: 'top',
+                textStyle: {
+                    fontName: 'monospace',
+                    fontSize: 12
+                }
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart-3d'));
+        chart.draw(data, options);
+    }
+    //Fim do grafico de acessos
 </script>
 
 {block name=javascript}{/block}
