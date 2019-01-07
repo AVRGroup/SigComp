@@ -23,7 +23,7 @@
                 <td>{$user['matricula']}</td>
                 <td>{$user['nome']}</td>
                 <td>{$user['email']}</td>
-                <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}"><span class="far fa-edit" aria-hidden="true"></span></a></td>
+                <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}"><span class="fas fa-eye" aria-hidden="true"></span></a></td>
             </tr>
         {foreachelse}
             <tr>
