@@ -22,39 +22,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="popper" level="application" />
-    <orderEntry type="module-library">
-      <library name="PHP" type="php">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
-          <root url="file://$MODULE_DIR$/vendor/dompdf/dompdf" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
-          <root url="file://$MODULE_DIR$/vendor/markbaker/complex" />
-          <root url="file://$MODULE_DIR$/vendor/phenx/php-font-lib" />
-          <root url="file://$MODULE_DIR$/vendor/phenx/php-svg-lib" />
-          <root url="file://$MODULE_DIR$/vendor/pimple/pimple" />
-          <root url="file://$MODULE_DIR$/vendor/sabberworm/php-css-parser" />
-          <root url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
-        </CLASSES>
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/vendor/doctrine/event-manager" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/persistence" />
-          <root url="file://$MODULE_DIR$/vendor/doctrine/reflection" />
-          <root url="file://$MODULE_DIR$/vendor/dompdf/dompdf" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
-          <root url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
-          <root url="file://$MODULE_DIR$/vendor/markbaker/complex" />
-          <root url="file://$MODULE_DIR$/vendor/phenx/php-font-lib" />
-          <root url="file://$MODULE_DIR$/vendor/phenx/php-svg-lib" />
-          <root url="file://$MODULE_DIR$/vendor/pimple/pimple" />
-          <root url="file://$MODULE_DIR$/vendor/sabberworm/php-css-parser" />
-          <root url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>
