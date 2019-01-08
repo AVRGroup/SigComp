@@ -27,15 +27,16 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
 
 
+
     $this->group('/admin', function () {
+
+        $this->map(['GET', 'POST'],'/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
 
         $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
-
-        $this->get('/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
@@ -53,6 +54,7 @@ $app->group('', function () {
     })->add('\App\Middleware\AdminMiddleware');
 
     $this->group('/admin', function () {
+
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
         $this->map(['GET', 'POST'],'/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
     })->add('\App\Middleware\BolsistaMiddleware');

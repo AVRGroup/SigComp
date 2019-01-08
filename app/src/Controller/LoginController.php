@@ -75,10 +75,6 @@ class LoginController
 
                 $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
 
-                if($usuarios[0]->getNome()== "ADMINISTRADOR"){
-                    return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
-                }
-
                 if (count($usuarios) != 0) {
                     $_SESSION['id'] = $usuarios[0]->getId();
                     $_SESSION['profiles'] = [];
@@ -101,6 +97,10 @@ class LoginController
                    /* return $response
                         ->withHeader('Set-Cookie', $flarumCookies->toHeaders())
                         ->withRedirect($this->container->router->pathFor('home'));*/
+
+                    if($usuarios[0]->getNome()== "ADMINISTRADOR"){
+                        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+                    }
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
 

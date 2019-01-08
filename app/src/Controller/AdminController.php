@@ -326,7 +326,6 @@ class AdminController
         $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram()[0]["COUNT(*)"];
         $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram()[0]["COUNT(*)"];
 
-
         return $this->container->view->render($response, 'adminDashboard.tpl');
     }
 
