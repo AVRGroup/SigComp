@@ -118,10 +118,33 @@ class UserController
                     $usuario->setNomeReal(1);
 
                 $usuario->setEmail($email);
-                $usuario->setFacebook($facebook);
-                $usuario->setInstagram($instagram);
-                $usuario->setLinkedin($linkedin);
-                $usuario->setLattes($lattes);
+
+                $redesComErro = $this->getRedesComErro($facebook, $instagram, $linkedin, $lattes);
+
+                if(in_array("Facebook", $redesComErro))
+                    $usuario->setFacebook(null);
+                else
+                    $usuario->setFacebook($facebook);
+
+                if(in_array("Instagram", $redesComErro))
+                    $usuario->setInstagram(null);
+                else
+                    $usuario->setInstagram($instagram);
+
+                if(in_array("Linkedin", $redesComErro))
+                    $usuario->setLinkedin(null);
+                else
+                    $usuario->setLinkedin($linkedin);
+
+                if(in_array("Lattes", $redesComErro))
+                    $usuario->setLattes(null);
+                else
+                    $usuario->setLattes($lattes);
+
+
+                $this->container->view['errors'] = $redesComErro;
+
+
                 $usuario->setSobremim($sobreMim);
 
                 $this->container->usuarioDAO->persist($usuario);
@@ -130,7 +153,7 @@ class UserController
             }
         }
         catch (\Exception $e){
-            $this->container->view['error'] = $e->getMessage();
+            $this->container->view['errors'] = $e->getMessage();
         }
 
         $this->container->view['usuario'] = $usuario;
@@ -142,6 +165,30 @@ class UserController
 
 
         return $this->container->view->render($response, 'informacoesPessoais.tpl');
+    }
+
+    public function getRedesComErro($face = null, $insta = null, $linkedin = null, $lattes = null){
+
+        $redesComErro = [];
+
+        if($face != null && strpos($face, "facebook.com") === false){
+            $redesComErro[] = 'Facebook';
+        }
+
+        if($insta != null && strpos($insta, "instagram.com") === false){
+            $redesComErro[] = 'Instagram';
+        }
+
+        if($linkedin != null && strpos($linkedin, "linkedin.com") === false){
+            $redesComErro[] = 'Linkedin';
+        }
+
+        if($lattes != null && strpos($lattes, "lattes.com") === false){
+            $redesComErro[] = 'Lattes';
+
+        }
+
+        return $redesComErro;
     }
 
     public function periodMedalsVerification($grade, $periodo){

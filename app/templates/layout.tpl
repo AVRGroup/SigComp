@@ -116,8 +116,6 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
-{*teste*}
-
 <script>
     $(function() {
         $("input[type=file]").change(function () {

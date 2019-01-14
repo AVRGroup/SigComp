@@ -27,12 +27,16 @@
         </div>
     {/if}
 
-    {if isset($error)}
+    {if isset($errors) && !empty($errors)}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <p>{$error}</p>
+            <ul>
+                {foreach $errors as $error}
+                    <li>Erro na rede {$error}, por favor verifique se o link está no formato correto</li>
+                {/foreach}
+            </ul>
         </div>
     {/if}
 
@@ -53,24 +57,24 @@
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="facebook">Facebook</label>
-                <input type="text" name="facebook" placeholder="Digite seu perfil no Facebook" class="form-control" value="{$usuario->getFacebook()}">
+                <input type="text" name="facebook" placeholder="https://facebook.com/seu.perfil" class="form-control" value="{$usuario->getFacebook()}">
             </div>
 
             <div class="col-6">
                 <label for="instagram">Instagram</label>
-                <input type="text" name="instagram" placeholder="Digite seu perfil no Instagram" class="form-control" value="{$usuario->getInstagram()}">
+                <input type="text" name="instagram" placeholder="https://instagram.com/seu.perfil" class="form-control" value="{$usuario->getInstagram()}">
             </div>
         </div>
 
         <div class="form-row" style="margin-top: 3%">
             <div class="col-6">
                 <label for="linkedin">LinkedIn</label>
-                <input type="text" name="linkedin" placeholder="Digite seu perfil no Linkedin" class="form-control" value="{$usuario->getLinkedin()}">
+                <input type="text" name="linkedin" placeholder="https://linkedin.com/seu.perfil" class="form-control" value="{$usuario->getLinkedin()}">
             </div>
 
             <div class="col-6">
                 <label for="lattes">Lattes</label>
-                <input type="text" name="lattes" placeholder="Digite seu perfil no Lattes" class="form-control" value="{$usuario->getLattes()}">
+                <input type="text" name="lattes" placeholder="https://lattes.com/seu.perfil" class="form-control" value="{$usuario->getLattes()}">
             </div>
         </div>
 
