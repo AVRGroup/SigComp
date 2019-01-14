@@ -37,35 +37,49 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav mr-auto">
                 {if $loggedUser != null}
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
+
+                    {if $loggedUser->getTipo() == 0}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
+                    {/if}
                     {if $loggedUser->getTipo() == 1}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Administrador
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
-                            <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
-                            <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
-                            <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
-                            <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
-                            <a class="dropdown-item" href="{path_for name="exportPDF"}">PDF Teste</a>
-                        </div>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Início</a></li>
+                    {/if}
+
+                    {if $loggedUser->getTipo() == 0 || $loggedUser->getTipo() == 1}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
+                        {if $loggedUser->getTipo() == 1}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administrador
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
+                                <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
+                                <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
+                                <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                                <a class="dropdown-item" href="{path_for name="exportPDF"}">PDF Teste</a>
+                            </div>
+                        </li>
+                        {/if}
+
+                        {if $loggedUser->getTipo() == 2}
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
+                        {/if}
+
+                    {/if}
+                {/if}
+
+                {if  $loggedUser == null}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{path_for name="about"}">Sobre</a>
                     </li>
-                    {/if}
-                    {if $loggedUser->getTipo() == 2}
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
-                    {/if}
-                {else}
-                <li class="nav-item">
-                    <a class="nav-link" href="{path_for name="about"}">Sobre</a>
-                </li>
                 {/if}
             </ul>
+
             {if $loggedUser != null}
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
