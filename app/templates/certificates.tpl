@@ -1,6 +1,7 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h3 class="text-center">Certificados</h3>
+    <hr>
     <h4 class="mt-3">Enviar Certificado</h4>
     {if isset($error)}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
