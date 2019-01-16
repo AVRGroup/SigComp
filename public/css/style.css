@@ -112,3 +112,8 @@ body {
 .img-certificado{
     width: 100%; !important;
 }
+
+.analytics{
+    background-color: #f39c12 !important;
+    border-color: #f39c12 !important;
+}

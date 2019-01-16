@@ -10,5 +10,8 @@
     <div align="center"  id="piechart"></div>
     <hr>
     <div align="center"  id="piechart-3d"></div>
+    <hr>
+
+    <a href="https://analytics.google.com/analytics/web/?authuser=6#/home/a131900774w191543714p187441079/"  class="btn btn-primary analytics">Google Analytics</a>
 
 {/block}
