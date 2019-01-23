@@ -61,8 +61,9 @@
             </table>
         </div>
     </div>
-    </div>
 
     <a href="https://analytics.google.com/analytics/web/?authuser=6#/home/a131900774w191543714p187441079/"  class="btn btn-primary analytics">Google Analytics</a>
+
+
 
 {/block}
