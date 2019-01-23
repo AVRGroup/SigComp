@@ -17,9 +17,9 @@
                     <div class="align-content-lg-center">
 
                         {if $usuario->getFacebook() == null}
-                            <img src="{base_url}/img/facebook_preto.png" class="img-thumbnail" alt="Facebook" width="42" height="42">
+                            <img src="{base_url}/img/fb_preto.png" class="img-thumbnail" alt="Facebook" width="42" height="42">
                         {else}
-                            <a href="{$usuario->getFacebook()}" target="_blank"><img src="{base_url}/img/facebook.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
+                            <a href="{$usuario->getFacebook()}" target="_blank"><img src="{base_url}/img/fb.png" class="img-thumbnail" alt="Facebook" width="42" height="42"></a>
                         {/if}
 
                         {if $usuario->getInstagram() == null}
