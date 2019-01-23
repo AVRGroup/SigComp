@@ -37,41 +37,35 @@ class LoginController
 
             try {
                 //TODO REMOVE THIS ON PRODUCTION
-                if($request->getParsedBodyParam('cpf') == '123' && $request->getParsedBodyParam('password') == '456') {
-                    $matriculas[] = '201535025';
+                if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!79awQ/xVp') {
+                    $matriculas[] = '100000000';
                     $userInfoResponse = new wsUserInfoResponse(12345);
                     $userInfoResponse->setEmailSiga('a@a.com');
-                }
-                else {
-                    if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == 'admin') {
-                        $matriculas[] = '100000000';
+
+                } else {
+                    if($request->getParsedBodyParam('cpf') == 'bolsa' && $request->getParsedBodyParam('password') == '56#$2dEMy#!') {
+                        $matriculas[] = '200000000';
                         $userInfoResponse = new wsUserInfoResponse(12345);
                         $userInfoResponse->setEmailSiga('a@a.com');
+                    }
+                    else {
+                        $loginCredentials = new login();
+                        $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
+                        $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
+                        $loginCredentials->setAppToken($this->container->settings['integra']['token']);
+                        $WSLogin = new WSLogin();
 
-                    } else {
-                        if($request->getParsedBodyParam('cpf') == 'bolsa' && $request->getParsedBodyParam('password') == 'bolsa') {
-                            $matriculas[] = '200000000';
-                            $userInfoResponse = new wsUserInfoResponse(12345);
-                            $userInfoResponse->setEmailSiga('a@a.com');
-                        }
-                        else {
-                            $loginCredentials = new login();
-                            $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
-                            $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
-                            $loginCredentials->setAppToken($this->container->settings['integra']['token']);
-                            $WSLogin = new WSLogin();
+                        $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
+                        $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
+                        $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
 
-                            $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
-                            $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
-                            $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
-
-                            $matriculas = [];
-                            foreach ($userInfoResponse->getProfileList()->getProfile() as $profile) {
-                                $matriculas[] = $profile->getMatricula();
-                            }
+                        $matriculas = [];
+                        foreach ($userInfoResponse->getProfileList()->getProfile() as $profile) {
+                            $matriculas[] = $profile->getMatricula();
                         }
                     }
                 }
+
 
                 $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
 
@@ -111,7 +105,7 @@ class LoginController
                     $this->container->view['error'] = 'Você não possui nenhuma matrícula válida!';
                 }
             } catch (\Exception $e) {
-                $this->container->view['error'] = $e->getMessage();
+                $this->container->view['error'] = "CPF ou senha errados. Use o mesmo login do Siga :D";
             }
         }
 
