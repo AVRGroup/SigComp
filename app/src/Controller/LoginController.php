@@ -36,7 +36,6 @@ class LoginController
 
 
             try {
-                //TODO REMOVE THIS ON PRODUCTION
                 if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!79awQ/xVp') {
                     $matriculas[] = '100000000';
                     $userInfoResponse = new wsUserInfoResponse(12345);

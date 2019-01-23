@@ -55,6 +55,7 @@ class UserController
 
         $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['usuario'] = $usuario;
+        $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();;
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
 
