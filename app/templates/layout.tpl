@@ -102,15 +102,16 @@
 
 <!-- jQuery -->
 <script src="{base_url}/js/jquery-3.3.1.min.js"></script>
-<!-- Bootstrap js -->
+
+<!-- Popper -->
 <script src="{base_url}/js/popper.min.js"></script>
 
+<!-- Bootstrap js -->
 <script src="{base_url}/js/bootstrap.min.js"></script>
 
 <!-- Fontaewsome -->
 <script src="{base_url}/js/fontawesome-all.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 <!-- Google Charts -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -148,11 +149,11 @@
 
     });
 
+    //Fim do contador de caracteres da pagina InformacoesPessoais
+
     $(function () {
         $('[data-toggle="popover"]').popover()
     });
-    //Fim do contador de caracteres da pagina InformacoesPessoais
-
 
     //Botao da pargina de certificados para adicionar mais inputs
     $(document).ready(function() {
