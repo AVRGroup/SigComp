@@ -34,30 +34,42 @@ class HomeController
         }
 
         if ($request->isPost()) {
+
+            $pesquisa = $request->getParsedBodyParam('pesquisa');
+
             try {
-                $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
-                list(, $data) = explode(',', $newPhotoBase64);
-                $newPhoto = base64_decode($data);
+                if($pesquisa){
+                    $this->container->view['usuarios'] = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisa);
 
-                $im = imagecreatefromstring($newPhoto);
-                if ($im !== false) {
-                    $lastFoto = $user->getFoto();
+                }
+                else {
+                    $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
+                    list(, $data) = explode(',', $newPhotoBase64);
+                    $newPhoto = base64_decode($data);
 
-                    do {
-                        $uuid4 = Uuid::uuid4();
-                        $user->setFoto($uuid4->toString() . '.png'); //Make sure we got an unique name
-                    } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto()));
+                    $im = imagecreatefromstring($newPhoto);
+                    if ($im !== false) {
+                        $lastFoto = $user->getFoto();
 
-                    file_put_contents($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto(), $newPhoto);
+                        do {
+                            $uuid4 = Uuid::uuid4();
+                            $user->setFoto($uuid4->toString() . '.png'); //Make sure we got an unique name
+                        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto()));
 
-                    $this->container->usuarioDAO->save($user);
-                    imagedestroy($im);
+                        file_put_contents($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto(),
+                            $newPhoto);
 
-                    //Delete Last Foto
-                    if($lastFoto) {
-                        unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
+                        $this->container->usuarioDAO->save($user);
+                        imagedestroy($im);
+
+                        //Delete Last Foto
+                        if ($lastFoto) {
+                            unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
+                        }
                     }
                 }
+
+
             } catch (\Exception $e) {
                 echo $e->getTraceAsString();
                 // TODO Error message
@@ -66,6 +78,7 @@ class HomeController
 
 
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
+        $usuarios = $this->container->usuarioDAO->getAll();
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
         CalculateAttributes::calculateUsuarioStatistics($usuario);

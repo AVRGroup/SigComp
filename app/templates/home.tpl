@@ -1,7 +1,7 @@
 {extends 'layout.tpl'}
 {block name=content}
     <div class="container">
-        <div class="row">
+        <div class="row" onLoad="window.scroll(0, 100)">
             <div class="col-3">
                 <div class="text-center">
 
@@ -246,6 +246,37 @@
                 </table>
             </div>
         </div>
+
+        <hr>
+        <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
+
+        <form class="form-row" method="post" style="margin-top: 30px;">
+            <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
+            <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        </form>
+
+        {if isset($usuarios)}
+            <table id="friends" style="margin-top: 4%" class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $usuarios as $user}
+                    <tr>
+                        <td>{$user['nome']}</td>
+                        <td><a href="" class="btn btn-primary">Adicionar</a></td>
+                    </tr>
+                    {foreachelse}
+                    <tr>
+                        <td scope="row" colspan="4" class="text-center">Nenhum usuário encontrado!</td>
+                    </tr>
+                {/foreach}
+            </table>
+        {/if}
+
     </div>
 
     <!-- Modal -->
