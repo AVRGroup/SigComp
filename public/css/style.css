@@ -91,6 +91,21 @@ body {
     border-radius: 1rem;
 }
 
+
+.info-atributos{
+    display: inline;
+    margin-bottom: 4px;
+
+    width: 20px !important;
+    height: 20px !important;
+    padding: 4px 0 !important;
+    line-height: 0.428571429 !important;
+}
+
+.nome-atributos{
+    display: inline-block;
+}
+
 .btn-circle {
     width: 30px;
     height: 30px;

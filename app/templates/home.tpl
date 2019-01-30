@@ -53,34 +53,76 @@
             </div>
             <div class="col-9">
                 <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
-                <p class="mb-0 mt-3"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="Experiência"
+                          data-content="Aprender novas linguagens e suas lógicas">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ) }%;">{((100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ))|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Inteligência:</b> {$usuario->getInteligencia()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Inteligência:</b> {$usuario->getInteligencia()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="INT"
+                        data-content="Aprender novas linguagens e suas lógicas">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {((100*$usuario->getInteligencia())/17)}%;">{((100 * $usuario->getInteligencia())/17)|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Sabedoria:</b> {$usuario->getSabedoria()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Sabedoria:</b> {$usuario->getSabedoria()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="SAB"
+                        data-content="Aplicação da computação em problemas">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getSabedoria())/16}%;">{((100 * $usuario->getSabedoria())/16)|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Destreza:</b> {$usuario->getDestreza()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Destreza:</b> {$usuario->getDestreza()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="DEX"
+                        data-content="Mão na massa: programar!">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getDestreza())/14}%;">{((100 * $usuario->getDestreza())/14)|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Força:</b> {$usuario->getForca()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Força:</b> {$usuario->getForca()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="FOR"
+                        data-content="Aplicação das teorias matemáticas">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getForca())/11}%;">{((100 * $usuario->getForca())/11)|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Carisma:</b> {$usuario->getCarisma()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Carisma:</b> {$usuario->getCarisma()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="CAR"
+                        data-content="Esse é o IRA geral, considerando todos os seus períodos. São considerados apenas os alunos ativos no curso">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCarisma())/2}%;">{((100 * $usuario->getCarisma())/2)|string_format:"%.2f"}%</div>
                 </div>
-                <p class="mb-0 mt-3"><b>Cultura:</b> {$usuario->getCultura()}</p>
+
+
+                <p class="mb-0 mt-3 nome-atributos"><b>Cultura:</b> {$usuario->getCultura()}</p>
+                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="CULT"
+                        data-content="Participação em eventos">
+                    ?
+                </button>
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
+
             </div>
         </div>
         <div class="row">
