@@ -388,7 +388,7 @@ class UsuarioDAO extends BaseDAO
             }
 
             if($result['num_horas'] >= 180){
-                $numMedalha = $numMedalha + 2;
+                $numMedalha = $numMedalha + 1;
                 var_dump($numMedalha);
                 $numMedalha = $numMedalha + $offset1;
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
