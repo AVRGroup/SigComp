@@ -121,9 +121,20 @@
             </div>
         </div>
         <div class="row">
-                <div class="col-12">
+            <div class="col-12">
                     <p></p>
-                <h4 class="text-center">Quadro de medalhas</h4>
+                <div class="row">
+                    <h4 class="text-center col-10">Quadro de medalhas</h4>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-success btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                                title="Informações"
+                                data-content="As medalhas são uma forma de você guardar suas realizações durante o curso! Algumas são atribuídas ao final
+                                de cada semestre (como as de IRA) e outras ao registrar seus certificados no sistema (como as de Monitoria, GET...)">
+                            ?
+                        </button>
+                    </div>
+
+                </div>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
                     {if $usuario->getTipo()!=1}
                     <li class="nav-item">
