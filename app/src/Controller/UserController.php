@@ -227,35 +227,6 @@ class UserController
             $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, $i), $i, 12014);
             $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, $i), $i, 12018);
         }
-        /*$this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 1), 1);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 2), 2);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 3), 3);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 4), 4);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 5), 5);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 6), 6);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 7), 7);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 8), 8);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, 9), 9);
-
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 1), 1);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 2), 2);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 3), 3);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 4), 4);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 5), 5);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 6), 6);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 7), 7);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 8), 8);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, 9), 9);
-
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 1), 1);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 2), 2);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 3), 3);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 4), 4);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 5), 5);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 6), 6);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 7), 7);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 8), 8);
-        $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, 9), 9);*/
 
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60, 70), 60);
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(70, 80), 70);
@@ -284,6 +255,12 @@ class UserController
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(1, 2, 12018), 1, 12018);
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(2, 3, 12018), 2, 12018);
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12018), 3, 12018);
+
+        //ficou um pouco confuso, mas o get recebe o tipo do certificado (da model 'Certificado.php') e o set recebe o numero da primeira medalha (da tabela 'medalha')
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(18), 22);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(19), 30);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(20), 26);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(11), 36, 1);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');

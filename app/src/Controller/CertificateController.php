@@ -42,8 +42,13 @@ class CertificateController
                         $certificado = new Certificado();
                         $certificado->setUsuario($request->getAttribute('user'));
                         $certificado->setExtensao($extension);
-                        $certificado->setTipo($request->getParsedBodyParam('type'));
-                        $certificado->setNumHoras($request->getParsedBodyParam('num_horas'));
+
+                        $tipo = $request->getParsedBodyParam('type');
+                        $certificado->setTipo($tipo);
+
+                        $numHoras = $request->getParsedBodyParam('num_horas');
+                        $certificado->setNumHoras($this->maxNumHorasPorPeriodo($numHoras, $tipo));
+
                         $certificado->setNomeImpresso($request->getParsedBodyParam('nome_impresso'));
 
                         $data = new \DateTime($request->getParsedBodyParam('data_inicio'));
@@ -157,6 +162,7 @@ class CertificateController
 
                 $certificado->setTipo($tipo);
                 $certificado->setNumHoras($numHoras);
+
                 $certificado->setNomeImpresso($nomeImpresso);
                 $certificado->setDataInicio($dataInicio);
                 $certificado->setDataFim($dataFim);
@@ -174,6 +180,28 @@ class CertificateController
 
         return $this->container->view->render($response, 'adminCertificates2.tpl');
     }
+
+    public function maxNumHorasPorPeriodo($numHoras, $tipo){
+        $certificados15Horas = [Certificado::VIVENCIA, Certificado::LING_ENTRANGEIRA ,Certificado::ORG_EVENTO, Certificado::PART_EVENTO, Certificado::APRE_PALESTRA];
+        $certificados30Horas = [Certificado::APRE_MINICURSO, Certificado::GRP_ESTUDO, Certificado::CERT_CURSO];
+        $certificados60Horas = [Certificado::MONITORIA, Certificado::ESTAGIO, Certificado::REPRESENTACAO, Certificado::EMP_JUNIOR, Certificado::TP, Certificado::TA];
+
+        if($numHoras > 15 && in_array($tipo, $certificados15Horas)){
+            return 15;
+        }
+
+        if($numHoras > 30 && in_array($tipo, $certificados30Horas)){
+            return 30;
+        }
+
+        if($numHoras > 60 && in_array($tipo, $certificados60Horas)){
+            var_dump("Entrou no IF da monitoria");
+            return 60;
+        }
+
+        return $numHoras;
+    }
+
 
     public function adminDeleteAction(Request $request, Response $response, $args)
     {

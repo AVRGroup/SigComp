@@ -360,6 +360,38 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
+    public function getByTipoCertificado($tipoCertificado){
+        $sql = "SELECT usuario.id , certificado.num_horas FROM usuario JOIN certificado ON certificado.usuario = usuario.id WHERE certificado.tipo = '{$tipoCertificado}' AND num_horas >= 60 AND valido = 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+
+        return $results;
+    }
+
+    public function setByNumMedalha($results, $numMedalha, $offset1 = 0){
+        foreach ($results as $result){
+            if($result['num_horas'] >= 60) {
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
+
+            if($result['num_horas'] >= 120){
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
+
+            if($result['num_horas'] >= 180){
+                $numMedalha = $numMedalha + $offset1;
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
+        }
+    }
+
     public function getBy100($qtde_min, $qtde_max, $grade){
         switch ($grade){
             case 12009: $grade_num = 3;

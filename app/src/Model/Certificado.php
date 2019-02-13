@@ -26,12 +26,17 @@ class Certificado
     const APRE_EVENTO = 8;
     const GRP_ESTUDO = 9;
     const ESTAGIO = 10;
-    const INICIACAO = 11;
+    const GET = 11;
     const REPRESENTACAO = 12;
     const LING_ENTRANGEIRA = 13;
     const CERT_CURSO = 14;
     const EMP_JUNIOR = 15;
     const VIVENCIA = 16;
+    const PART_EVENTO = 17;
+    const MONITORIA = 18;
+    const TP = 19;
+    const IC = 20;
+    const TA = 21;
 
     /**
      * @ORM\Id
@@ -254,13 +259,18 @@ class Certificado
             Certificado::ORG_EVENTO => 'Organização de Evento',
             Certificado::APRE_EVENTO => 'Organizacao de Palestra',
             Certificado::GRP_ESTUDO => 'Grupo de Estudo',
-            Certificado::ESTAGIO => 'Grupo de Estudo',
-            Certificado::INICIACAO => 'Iniciação à docência, à pesquisa, à extensão ou TP, treinamento administrativo ou GET',
+            Certificado::ESTAGIO => 'Estágio',
+            Certificado::GET => 'Grupo de Educação Tutorial (GET)',
             Certificado::REPRESENTACAO => 'Representação Estudantil',
-            Certificado::LING_ENTRANGEIRA => 'Certificação em Língua Estrangeiro',
+            Certificado::LING_ENTRANGEIRA => 'Certificação em Língua Estrangeira',
             Certificado::CERT_CURSO => 'Certificação na área do curso (linguagem de programação, metodologias, outros)',
             Certificado::EMP_JUNIOR => 'Participação na administração de empresa júnior',
             Certificado::VIVENCIA => 'Vivência profissional complementar na área de formação do curso',
+            Certificado::PART_EVENTO => 'Participação em eventos (congresso, seminários...)',
+            Certificado::MONITORIA => 'Bolsa de Monitoria',
+            Certificado::TP => 'Treinamento Profissional',
+            Certificado::IC => 'Iniciação Científica',
+            Certificado::TA => 'Treinamento Administrativo',
 
         ];
     }
