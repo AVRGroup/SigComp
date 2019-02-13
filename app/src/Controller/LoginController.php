@@ -36,7 +36,7 @@ class LoginController
 
 
             try {
-                if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!79awQ/xVp') {
+                if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!/79awQxVp') {
                     $matriculas[] = '100000000';
                     $userInfoResponse = new wsUserInfoResponse(12345);
                     $userInfoResponse->setEmailSiga('a@a.com');

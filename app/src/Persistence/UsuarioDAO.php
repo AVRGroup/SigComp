@@ -378,12 +378,14 @@ class UsuarioDAO extends BaseDAO
             }
 
             if($result['num_horas'] >= 120){
+                $numMedalha = $numMedalha + 1;
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
                 $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
                 $stmt_insert->execute();
             }
 
             if($result['num_horas'] >= 180){
+                $numMedalha = $numMedalha + 2;
                 $numMedalha = $numMedalha + $offset1;
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
                 $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
