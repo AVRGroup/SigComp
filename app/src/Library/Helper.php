@@ -32,7 +32,7 @@ class Helper
 
         $data = ['usuarios' => [], 'disciplinas' => []];
 
-        for ($row = 1; $row <= $fileSheet->getHighestRow(); $row++) {
+        for ($row = 2; $row <= $fileSheet->getHighestRow(); $row++) {
 
             $index = $fileSheet->getCell('B' . $row)->getValue();
             if (!isset($data['usuarios'][$index])) {
