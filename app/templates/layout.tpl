@@ -41,6 +41,7 @@
                     {if $loggedUser->getTipo() == 0}
 
                         <div class="dropdown">
+
                             {if sizeof($notificacoes)==0 }
                                 <button class="btn btn-secondary notificacao-sem-amigo dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-bell"></i>
@@ -50,11 +51,22 @@
                                     <i class="fa fa-bell"></i>
                                 </button>
                             {/if}
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                            <div class="dropdown-menu scrollable" aria-labelledby="dropdownMenuButton">
                               {foreach $notificacoes as $notificacao}
-                                  <li>{$notificacao['nome']}</li>
+                                  <li class="lista-notificacoes">
+                                      {$notificacao['nome']}
+                                      <div style="margin-top: 15px">
+                                          <a href="{path_for name="aceitarAmizade" data=["id_remetente" => $notificacao['id'], "id_destinatario" => $loggedUser->getId()  ]}" class="btn btn-primary">Aceitar</a>
+                                          <a href="" class="btn btn-danger">Recusar</a>
+                                      </div>
+                                  </li>
+                                  <hr>
+                              {foreachelse}
+                                  <li class="lista-notificacoes">Não há convites pendentes</li>
                               {/foreach}
                             </div>
+
                         </div>
 
                         <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>

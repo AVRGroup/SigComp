@@ -139,3 +139,14 @@ body {
 .notificacao-com-amigo{
     background-color: #dc3545 !important;
 }
+
+.scrollable{
+    height: auto;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+
+.lista-notificacoes{
+    width: 250px;
+    margin-left: 20px;
+}

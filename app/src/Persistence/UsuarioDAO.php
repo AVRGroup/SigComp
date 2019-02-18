@@ -349,11 +349,17 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function getConvitesPendentes($id){
-        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON id_amigo = usuario.id WHERE amizade.estado = 'pendente' AND id_usuario = '$id' ";
+        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON id_usuario = usuario.id WHERE amizade.estado = 'pendente' AND id_amigo = '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
         return $results;
+    }
+
+    public function aceitarConvite($remetente, $destinatario){
+        $sql = "ALTER TABLE db_gamificacao.amizade SET amizade.estado='aceito' WHERE amizade.id_amigo = '$destinatario' AND amizade.id_usuario = '$remetente'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
     }
 
     public function setByOptativas($results, $qtde, $grade){

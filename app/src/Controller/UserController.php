@@ -221,8 +221,11 @@ class UserController
     public function conviteAmizadeAction(Request $request, Response $response, $args){
         $this->container->usuarioDAO->setConviteAmizade($args['id-remetente'], $args['id-destinatario']);
 
+        return $response->withRedirect($this->container->router->pathFor('home'));
+    }
 
-        $this->container->view['success'] = "Convite enviado com sucesso";
+    public function aceitarConiteAction(Request $request, Response $response, $args){
+        $this->container->usuarioDAO->aceitarConvite($args['id-remetente'], $args['id-destinatario']);
 
         return $response->withRedirect($this->container->router->pathFor('home'));
     }
