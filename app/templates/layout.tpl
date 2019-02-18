@@ -39,7 +39,26 @@
                 {if $loggedUser != null}
 
                     {if $loggedUser->getTipo() == 0}
+
+                        <div class="dropdown">
+                            {if sizeof($notificacoes)==0 }
+                                <button class="btn btn-secondary notificacao-sem-amigo dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                </button>
+                            {else}
+                                <button class="btn btn-secondary notificacao-com-amigo dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                </button>
+                            {/if}
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              {foreach $notificacoes as $notificacao}
+                                  <li>{$notificacao['nome']}</li>
+                              {/foreach}
+                            </div>
+                        </div>
+
                         <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
+
                     {/if}
                     {if $loggedUser->getTipo() == 1}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Início</a></li>

@@ -132,3 +132,10 @@ body {
     background-color: #f39c12 !important;
     border-color: #f39c12 !important;
 }
+
+.notificacao-sem-amigo{
+    background-color: #343a40 !important;
+}
+.notificacao-com-amigo{
+    background-color: #dc3545 !important;
+}

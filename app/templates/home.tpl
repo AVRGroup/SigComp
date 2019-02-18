@@ -296,7 +296,7 @@
         </div>
 
         <hr>
-        <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
+        <h4 class="text-center">Teste</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
         <form class="form-row" method="post" style="margin-top: 30px;">
             <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
@@ -315,7 +315,7 @@
                 {foreach $usuarios as $user}
                     <tr>
                         <td>{$user['nome']}</td>
-                        <td><a href="" class="btn btn-primary">Adicionar</a></td>
+                        <td><a href="{path_for name="conviteAmizade" data=["id-remetente" => $usuario->getId(), "id-destinatario" => $user['id']]}" class="btn btn-primary">Adicionar</a></td>
                     </tr>
                     {foreachelse}
                     <tr>

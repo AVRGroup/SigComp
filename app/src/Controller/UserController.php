@@ -218,6 +218,15 @@ class UserController
         return $usrs;
     }
 
+    public function conviteAmizadeAction(Request $request, Response $response, $args){
+        $this->container->usuarioDAO->setConviteAmizade($args['id-remetente'], $args['id-destinatario']);
+
+
+        $this->container->view['success'] = "Convite enviado com sucesso";
+
+        return $response->withRedirect($this->container->router->pathFor('home'));
+    }
+
     public function assignMedalsAction(Request $request, Response $response, $args){
 
         $this->container->medalhaUsuarioDAO->truncateTable();

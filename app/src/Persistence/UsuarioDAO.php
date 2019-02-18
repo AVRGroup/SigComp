@@ -342,6 +342,20 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function setConviteAmizade($remetente, $destinatario){
+        $sql = "INSERT INTO db_gamificacao.amizade (id_usuario, id_amigo, estado) VALUES ('$remetente', '$destinatario', 'pendente')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getConvitesPendentes($id){
+        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON id_amigo = usuario.id WHERE amizade.estado = 'pendente' AND id_usuario = '$id' ";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
     public function setByOptativas($results, $qtde, $grade){
         switch ($qtde){
             case 2: $medalha = 17;
@@ -445,6 +459,7 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
+
 
 
 }
