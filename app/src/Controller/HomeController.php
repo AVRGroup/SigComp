@@ -39,7 +39,7 @@ class HomeController
 
             try {
                 if($pesquisa){
-                    $this->container->view['usuarios'] = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisa);
+                    $this->container->view['usuariosPesquisados'] = $this->container->usuarioDAO->getByNomeComAmizade($pesquisa, $user->getId());
 
                 }
                 else {

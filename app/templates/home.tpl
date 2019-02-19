@@ -296,14 +296,14 @@
         </div>
 
         <hr>
-        <h4 class="text-center">Teste</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
+        <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
         <form class="form-row" method="post" style="margin-top: 30px;">
             <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
             <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
         </form>
 
-        {if isset($usuarios)}
+        {if isset($usuariosPesquisados)}
             <table id="friends" style="margin-top: 4%" class="table table-hover">
                 <thead class="thead-light">
                 <tr>
@@ -312,10 +312,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                {foreach $usuarios as $user}
+                {foreach $usuariosPesquisados as $user}
                     <tr>
                         <td>{$user['nome']}</td>
-                        <td><a href="{path_for name="conviteAmizade" data=["id-remetente" => $usuario->getId(), "id-destinatario" => $user['id']]}" class="btn btn-primary">Adicionar</a></td>
+
+                        {if $user['estado'] == 'nao enviado'}
+                            <td><a href="{path_for name="conviteAmizade" data=["id-remetente" => $usuario->getId(), "id-destinatario" => $user['id']]}" class="btn btn-primary">Adicionar</a></td>
+                        {/if}
+
+                        {if $user['estado'] == 'aceito'}
+                            <td><p>Já é seu amigo!</p></td>
+                        {/if}
+
+                        {if $user['estado'] == 'pendente'}
+                            <td><p>Convite pendente</p></td>
+                        {/if}
+
                     </tr>
                     {foreachelse}
                     <tr>

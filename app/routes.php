@@ -22,6 +22,7 @@ $app->group('', function () {
 
     $this->get('/convite-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:conviteAmizadeAction')->setName('conviteAmizade');
     $this->get('/aceitar-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:aceitarConviteAction')->setName('aceitarAmizade');
+    $this->get('/recusar-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:rejeitarConviteAction')->setName('rejeitarAmizade');
 
     $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
     $this->map(['GET', 'POST'], '/forum/novoTopico', '\App\Controller\ForumController:novoTopicoAction')->setName('novoTopico');
