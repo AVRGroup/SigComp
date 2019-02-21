@@ -97,6 +97,8 @@ class AdminController
         }
         $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
         $this->calculaIra(true);
+        $this->calculaIra(false);
+
         $this->abreviaTodosNomes(false);
 
         return $this->container->view->render($response, 'adminDataLoad.tpl');

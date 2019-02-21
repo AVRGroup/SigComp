@@ -39,13 +39,47 @@
                 {if $loggedUser != null}
 
                     {if $loggedUser->getTipo() == 0}
+
+                        <div class="dropdown">
+
+                            {if sizeof($notificacoes)==0 }
+                                <button class="btn btn-secondary notificacao-sem-amigo dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                </button>
+                            {else}
+                                <button class="btn btn-secondary notificacao-com-amigo dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                </button>
+                            {/if}
+
+                            <div class="dropdown-menu scrollable" aria-labelledby="dropdownMenuButton">
+                              {foreach $notificacoes as $notificacao}
+                                  <li class="lista-notificacoes">
+                                      {$notificacao['nome']}
+                                      <div style="margin-top: 15px">
+                                          <a href="{path_for name="aceitarAmizade" data=["id_remetente" => $notificacao['id'], "id_destinatario" => $loggedUser->getId()]}" class="btn btn-primary">Aceitar</a>
+                                          <a href="{path_for name="recusarAmizade" data=["id_remetente" => $notificacao['id'], "id_destinatario" => $loggedUser->getId()]}" class="btn btn-danger">Recusar</a>
+                                      </div>
+                                  </li>
+                                  <hr>
+                              {foreachelse}
+                                  <li class="lista-notificacoes-vazia">Não há convites pendentes</li>
+                              {/foreach}
+                            </div>
+
+                        </div>
+
                         <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
+
                     {/if}
                     {if $loggedUser->getTipo() == 1}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Início</a></li>
                     {/if}
 
                     {if $loggedUser->getTipo() == 0 || $loggedUser->getTipo() == 1}
+                        {if $loggedUser->getTipo() == 0}
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
+                        {/if}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>

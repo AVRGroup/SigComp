@@ -187,6 +187,22 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getByNomeComAmizade($pesquisa, $id){
+        $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.id_amigo OR usuario.id = amizade.id_usuario WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function getAmigos($id){
+        $sql = "SELECT * FROM usuario JOIN amizade ON usuario.id = amizade.id_amigo OR usuario.id = amizade.id_usuario WHERE amizade.id_amigo = '$id' OR amizade.id_usuario = '$id' AND usuario.id != '$id' AND amizade.estado='aceito' ";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
 
     /**
      * @return Usuario[] |null
@@ -342,6 +358,34 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function setConviteAmizade($remetente, $destinatario){
+        $sql = "INSERT INTO db_gamificacao.amizade (id_usuario, id_amigo, estado) VALUES ('$remetente', '$destinatario', 'pendente')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+    }
+
+    public function getConvitesPendentes($id){
+        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON id_usuario = usuario.id WHERE amizade.estado = 'pendente' AND id_amigo = '$id'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
+    public function aceitarConvite($remetente, $destinatario){
+        $sql = "UPDATE db_gamificacao.amizade SET amizade.estado='aceito' WHERE amizade.id_amigo = '$destinatario' AND amizade.id_usuario = '$remetente'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function recusarConvite($remetente, $destinatario){
+        $sql = "DELETE FROM db_gamificacao.amizade WHERE amizade.id_amigo = '$destinatario' AND amizade.id_usuario = '$remetente'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+    }
+
     public function setByOptativas($results, $qtde, $grade){
         switch ($qtde){
             case 2: $medalha = 17;
@@ -445,6 +489,7 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
+
 
 
 }
