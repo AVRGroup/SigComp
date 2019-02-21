@@ -54,7 +54,7 @@
             <div class="col-9">
                 <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
-                <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}</p>
+                <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
                 <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
                           data-content="Indica a sua vivência no curso! Cada aprovação concede +100xp e cada certificado de evento, palestra ou afins concede +10xp">
                     ?
@@ -296,45 +296,47 @@
         </div>
 
         <hr>
-        <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
+        {if !isset($naoBarraPesquisa)}
+            <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
-        <form class="form-row" method="post" style="margin-top: 30px;">
-            <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
-            <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-        </form>
+            <form class="form-row" method="post" style="margin-top: 30px;">
+                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
+                <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            </form>
 
-        {if isset($usuariosPesquisados)}
-            <table id="friends" style="margin-top: 4%" class="table table-hover">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {foreach $usuariosPesquisados as $user}
+            {if isset($usuariosPesquisados)}
+                <table id="friends" style="margin-top: 4%" class="table table-hover">
+                    <thead class="thead-light">
                     <tr>
-                        <td>{$user['nome']}</td>
-
-                        {if $user['estado'] == 'nao enviado'}
-                            <td><a href="{path_for name="conviteAmizade" data=["id-remetente" => $usuario->getId(), "id-destinatario" => $user['id']]}" class="btn btn-primary">Adicionar</a></td>
-                        {/if}
-
-                        {if $user['estado'] == 'aceito'}
-                            <td><p>Já é seu amigo!</p></td>
-                        {/if}
-
-                        {if $user['estado'] == 'pendente'}
-                            <td><p>Convite pendente</p></td>
-                        {/if}
-
+                        <th scope="col">Nome</th>
+                        <th scope="col"></th>
                     </tr>
-                    {foreachelse}
-                    <tr>
-                        <td scope="row" colspan="4" class="text-center">Nenhum usuário encontrado!</td>
-                    </tr>
-                {/foreach}
-            </table>
+                    </thead>
+                    <tbody>
+                    {foreach $usuariosPesquisados as $user}
+                        <tr>
+                            <td>{$user['nome']}</td>
+
+                            {if $user['estado'] == 'nao enviado'}
+                                <td><a href="{path_for name="conviteAmizade" data=["id-remetente" => $usuario->getId(), "id-destinatario" => $user['id']]}" class="btn btn-primary">Adicionar</a></td>
+                            {/if}
+
+                            {if $user['estado'] == 'aceito'}
+                                <td><p class="text-success">Vocês já são amigos</p></td>
+                            {/if}
+
+                            {if $user['estado'] == 'pendente'}
+                                <td><p class="text-warning">Convite pendente</p></td>
+                            {/if}
+
+                        </tr>
+                        {foreachelse}
+                        <tr>
+                            <td scope="row" colspan="4" class="text-center">Nenhum usuário encontrado!</td>
+                        </tr>
+                    {/foreach}
+                </table>
+            {/if}
         {/if}
 
     </div>

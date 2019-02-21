@@ -62,6 +62,31 @@ class UserController
         return $this->container->view->render($response, 'home.tpl');
     }
 
+    public function visualizarAmigoAction(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
+
+        $user = $request->getAttribute('user');
+        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
+
+        if(!$usuario) {
+            return $response->withRedirect($this->container->router->pathFor('home'));
+        }
+
+        CalculateAttributes::calculateUsuarioStatistics($usuario);
+
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
+
+        $this->container->view['medalhas'] = $medalhasUsuario;
+        $this->container->view['usuario'] = $usuario;
+        $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();;
+        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
+        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $this->container->view['naoBarraPesquisa'] = true;
+
+        return $this->container->view->render($response, 'home.tpl');
+    }
+
     public function adminTestAction(Request $request, Response $response, $args)
     {
         $allUsers = $this->container->usuarioDAO->getAllFetched();
@@ -102,6 +127,8 @@ class UserController
     {
         $user = $request->getAttribute('user');
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
+
+        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         try {
             if ($request->isPost()) {
@@ -228,6 +255,25 @@ class UserController
         $this->container->usuarioDAO->aceitarConvite($args['id-remetente'], $args['id-destinatario']);
 
         return $response->withRedirect($this->container->router->pathFor('home'));
+    }
+
+    public function listarAmigosAction(Request $request, Response $response, $args){
+
+        $amigos = $this->container->usuarioDAO->getAmigos($args['id']);
+        $user = $request->getAttribute('user');
+
+        $medalhasAmigo = [];
+        foreach ($amigos as $amigo) {
+            $medalhasAmigo[] = $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($amigo['id']);
+        }
+
+
+        $this->container->view['medalhas'] = $medalhasAmigo;
+        $this->container->view['amigos']  = $amigos;
+        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
+
+
+        return $this->container->view->render($response, 'listaAmigos.tpl');
     }
 
     public function assignMedalsAction(Request $request, Response $response, $args){

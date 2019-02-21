@@ -150,3 +150,18 @@ body {
     width: 250px;
     margin-left: 20px;
 }
+
+.lista-notificacoes-vazia{
+    width: 210px;
+    margin-left: 15px;
+}
+
+.medalha-amigos{
+    margin-top: 15px;
+    margin-left: 120px;
+}
+
+.altura-medalha-amigo{
+    height: 180px!important;
+
+}

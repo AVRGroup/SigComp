@@ -25,10 +25,12 @@ class HomeController
 
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
+        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $this->container->usuarioDAO->save($user);
+
 
             return $this->container->view->render($response, 'politicaPrivacidade.tpl');
         }
@@ -163,6 +165,9 @@ class HomeController
 
     public function privacidadeAction(Request $request, Response $response, $args)
     {
+        $user = $request->getAttribute('user');
+        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
+
         return $this->container->view->render($response, 'politicaPrivacidade.tpl');
     }
 

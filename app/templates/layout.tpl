@@ -63,7 +63,7 @@
                                   </li>
                                   <hr>
                               {foreachelse}
-                                  <li class="lista-notificacoes">Não há convites pendentes</li>
+                                  <li class="lista-notificacoes-vazia">Não há convites pendentes</li>
                               {/foreach}
                             </div>
 
@@ -77,6 +77,9 @@
                     {/if}
 
                     {if $loggedUser->getTipo() == 0 || $loggedUser->getTipo() == 1}
+                        {if $loggedUser->getTipo() == 0}
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
+                        {/if}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>

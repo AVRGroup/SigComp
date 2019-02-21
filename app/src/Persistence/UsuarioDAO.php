@@ -195,6 +195,14 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getAmigos($id){
+        $sql = "SELECT * FROM usuario JOIN amizade ON usuario.id = amizade.id_amigo OR usuario.id = amizade.id_usuario WHERE amizade.id_amigo = '$id' OR amizade.id_usuario = '$id' AND usuario.id != '$id' AND amizade.estado='aceito' ";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
 
     /**
      * @return Usuario[] |null
