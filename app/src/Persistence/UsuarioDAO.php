@@ -168,7 +168,6 @@ class UsuarioDAO extends BaseDAO
     public function getByMatriculaNome($pesquisa){
         try {
             $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE (u.matricula LIKE '%':pesquisa'%' OR u.nome LIKE '%':pesquisa'%') ");
-            die(var_dump($query));
             $query->setParameter('pesquisa', $pesquisa);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
