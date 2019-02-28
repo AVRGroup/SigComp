@@ -148,43 +148,50 @@
                 <div class="tab-content" id="badgesTabContent">
 
                     {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
-                    <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
-                        <table>
-                            <tbody>
-                            {$novaLinha = 1}
-                            {$numMedalhas = 0}
-                            {$i=0}
-                            {$auxI = 0}
+                            <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
+                                <table>
+                                    <tbody>
+                                    {$novaLinha = 1}
+                                    {$numMedalhas = 0}
+                                    {$i=0}
+                                    {$auxI = 0}
 
-                            {foreach $medalhas as $medal}
-                                {$numMedalhas = $numMedalhas + 1}
-                            {/foreach}
+                                    {foreach $medalhas as $medal}
+                                        {$numMedalhas = $numMedalhas + 1}
+                                    {/foreach}
 
-                            {while $novaLinha === 1}
-                                <tr>
-                                    {$novaLinha = 0}
-                                    {while $i < $numMedalhas}
-                                        <td>
-                                            <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
-                                                <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
-                                                <div class="caption">
-                                                    <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
-                                                </div>
-                                            </div>
-                                        {$i = $i + 1}
-                                        {$auxI = $auxI + 1}
-                                        </td>
-                                        {if $auxI > 8}
-                                            {$novaLinha = 1}
-                                            {$auxI = 0}
-                                            {break}
-                                        {/if}
+                                    {while $novaLinha === 1}
+                                        <tr>
+                                            {$novaLinha = 0}
+                                            {while $i < $numMedalhas}
+
+                                                {if $numMedalhas > 1}
+                                                    <td>
+                                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
+
+                                                            <div class="caption">
+                                                                <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
+                                                            </div>
+                                                        </div>
+                                                    {else}
+                                                        <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
+                                                    {$i = $i + 1}
+                                                    {$auxI = $auxI + 1}
+                                                    </td>
+                                                {/if}
+
+                                                {if $auxI > 8}
+                                                    {$novaLinha = 1}
+                                                    {$auxI = 0}
+                                                    {break}
+                                                {/if}
+                                            {/while}
+                                        </tr>
                                     {/while}
-                                </tr>
-                            {/while}
-                            </tbody>
-                        </table>
-                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
                     {/if}
                     <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
                         <table>

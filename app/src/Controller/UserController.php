@@ -259,12 +259,21 @@ class UserController
 
     public function listarAmigosAction(Request $request, Response $response, $args){
 
-        $amigos = $this->container->usuarioDAO->getAmigos($args['id']);
+        $amigosTeste = $this->container->usuarioDAO->getAmigos($args['id']);
         $user = $request->getAttribute('user');
+
+        $amigos = [];
+
+        foreach ($amigosTeste as $amigo){
+            $usuario = $this->container->usuarioDAO->getByIdFetched($amigo['id_amigo']);
+            CalculateAttributes::calculateUsuarioStatistics($usuario);
+            $amigos[] = ['id_amigo' => $usuario->getId() ,'nome' => $usuario->getNome(), 'experiencia' => $usuario->getExperiencia(), 'foto' => $usuario->getFoto()];
+        }
+
 
         $medalhasAmigo = [];
         foreach ($amigos as $amigo) {
-            $medalhasAmigo[] = $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($amigo['id']);
+            $medalhasAmigo[] = $this->container->usuarioDAO->getMedalsByIdFetched($amigo['id_amigo']);
         }
 
 

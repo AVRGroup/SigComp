@@ -158,10 +158,16 @@ body {
 
 .medalha-amigos{
     margin-top: 15px;
-    margin-left: 120px;
+    margin-left: 40px;
 }
 
 .altura-medalha-amigo{
     height: 180px!important;
 
+}
+
+.img-thumbnail-amigo{
+    padding: .25rem;
+    max-width: 100%;
+    height: auto;
 }

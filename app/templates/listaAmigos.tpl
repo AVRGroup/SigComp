@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-9">
                     <h5 class="text-center">{$amigo['nome']}</h5>
-                    <a href="{path_for name="visualizarAmigo" data=["id" => $amigo['id']]}"><p class="text-center" style="margin-bottom: 0; font-size: 14px">visualizar perfil</p></a>
+                    <a href="{path_for name="visualizarAmigo" data=["id" => $amigo['id_amigo']]}"><p class="text-center" style="margin-bottom: 0; font-size: 14px">visualizar perfil</p></a>
 
                     <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$amigo['experiencia']}xp</p>
                     <div class="progress" style="height: 20px;">
@@ -19,16 +19,13 @@
                     </div>
 
                     <div class="row medalha-amigos">
-
-                        {foreach $medalhas[$indice] as $indiceMedalha => $medalha}
-                            <div class="img-thumbnail altura-medalha-amigo col-4" style="max-width: 100px; margin-right: 30px">
-                                <img src="{base_url}/img/{$medalha['imagem']}" class="img-fluid">
-                                <div class="caption">
-                                    <p class="text-center"><small class="legenda-imagem">{$medalha['nome']}</small></p>
+                        {foreach $medalhas[$indice] as $medalha}
+                            {if sizeof($medalhas[$indice]) > 1}
+                                <div class="img-thumbnail-amigo altura-medalha-amigo col-4" style="max-width: 80px; margin-right: 5px">
+                                    <img src="{base_url}/img/{$medalha['imagem']}" class="img-fluid">
                                 </div>
-                            </div>
-                            {if $indiceMedalha == 2}
-                                {break}
+                            {else}
+                                <h6 style="margin-left: 130px; margin-top: 30px">Esse amigo ainda não possui medalhas</h6>
                             {/if}
                         {/foreach}
                     </div>
