@@ -3,7 +3,6 @@
 
     <h3 align="center">Informações Pessoais</h3>
     <hr>
-
     <div class="row container">
         <h5 class="col-md-6">Nome: {$usuario->getNome()}</h5>
         <h5 class="col-md-6 float-right">Matrícula: {$usuario->getMatricula()}</h5>

@@ -36,10 +36,8 @@ class CertificadoDAO extends BaseDAO
             $query = $this->em->createQuery("SELECT SUM(num_horas) FROM App\Model\Certificado AS total WHERE usuario = :id");
             $query->setParameter('id', $id);
             $total_horas = $query->getResult();
-            var_dump($total_horas);
         } catch (\Exception $e) {
             $total_horas = null;
-            var_dump($e);
         }
 
         return $total_horas;

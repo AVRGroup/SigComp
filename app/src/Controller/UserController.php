@@ -127,7 +127,6 @@ class UserController
     {
         $user = $request->getAttribute('user');
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
-
         $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         try {

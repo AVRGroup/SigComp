@@ -1,7 +1,7 @@
 {extends 'layout.tpl'}
 {block name=content}
     <div class="container">
-        <div class="row" onLoad="window.scroll(0, 100)">
+        <div class="row">
             <div class="col-3">
                 <div class="text-center">
 
@@ -120,6 +120,7 @@
 
             </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                     <p></p>
@@ -133,10 +134,9 @@
                             ?
                         </button>
                     </div>
-
                 </div>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
-                    {if $usuario->getTipo()!=1}
+                    {if $usuario->getTipo() !=1 }
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" id="current-tab" role="tab" href="#current">Medalhas Conquistadas</a>
                     </li>
@@ -147,52 +147,55 @@
                 </ul>
                 <div class="tab-content" id="badgesTabContent">
 
+
                     {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
-                            <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
-                                <table>
-                                    <tbody>
-                                    {$novaLinha = 1}
-                                    {$numMedalhas = 0}
-                                    {$i=0}
-                                    {$auxI = 0}
+                        <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
 
-                                    {foreach $medalhas as $medal}
-                                        {$numMedalhas = $numMedalhas + 1}
-                                    {/foreach}
+                            <table>
+                                <tbody>
+                                {$novaLinha = 1}
+                                {$numMedalhas = 0}
+                                {$i=0}
+                                {$auxI = 0}
 
-                                    {while $novaLinha === 1}
-                                        <tr>
-                                            {$novaLinha = 0}
-                                            {while $i < $numMedalhas}
+                                {foreach $medalhas as $medal}
+                                    {$numMedalhas = $numMedalhas + 1}
+                                {/foreach}
 
-                                                {if $numMedalhas > 1}
-                                                    <td>
-                                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
-                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
+                                {while $novaLinha === 1}
+                                    <tr>
+                                        {$novaLinha = 0}
+                                        {while $i < $numMedalhas}
 
-                                                            <div class="caption">
-                                                                <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
-                                                            </div>
+                                            {if $numMedalhas > 1}
+                                                <td>
+                                                    <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                                        <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
+
+                                                        <div class="caption">
+                                                            <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
                                                         </div>
-                                                    {else}
-                                                        <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
+                                                    </div>
                                                     {$i = $i + 1}
                                                     {$auxI = $auxI + 1}
-                                                    </td>
-                                                {/if}
+                                                </td>
+                                            {else}
+                                                <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
+                                            {/if}
 
-                                                {if $auxI > 8}
-                                                    {$novaLinha = 1}
-                                                    {$auxI = 0}
-                                                    {break}
-                                                {/if}
-                                            {/while}
-                                        </tr>
-                                    {/while}
-                                    </tbody>
-                                </table>
-                            </div>
+                                            {if $auxI > 8}
+                                                {$novaLinha = 1}
+                                                {$auxI = 0}
+                                                {break}
+                                            {/if}
+                                        {/while}
+                                    </tr>
+                                {/while}
+                                </tbody>
+                            </table>
+                        </div>
                     {/if}
+
                     <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
                         <table>
                             <tbody>
@@ -376,54 +379,54 @@
         </div>
     </div>
 {/block}
-
 {block name=javascript}
-    <script src="{base_url}/js/croppie.js"></script>
-    <script src="{base_url}/js/exif.js"></script>
+<script src="{base_url}/js/croppie.js"></script>
+<script src="{base_url}/js/exif.js"></script>
 
-    <script>
-        var $uploadCrop;
+<script>
+    var $uploadCrop;
 
-        function readFile(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $uploadCrop.croppie('bind', {
-                        url: e.target.result
-                    });
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-            else {
-                console.log("Sorry - you're browser doesn't support the FileReader API");
-            }
-        }
-
-        $uploadCrop = $('#image-cropper').croppie({
-            viewport: { width: 190, height: 190 },
-            boundary: { width: 450, height: 300 },
-            enableExif: true
-        });
-
-        $('#photo').on('change', function () {
-            $('#newPhoto').val('');
-            readFile(this);
-        });
-
-        $('#uploadPhoto').submit(function() {
-            if($('#newPhoto').val() !== '') {
-                return true;
-            } else {
-                $uploadCrop.croppie('result', 'base64').then(function (base64) {
-                    $('#newPhoto').val(base64);
-                    $('#photo').val('');
-                    $('#uploadPhoto').submit();
+            reader.onload = function (e) {
+                $uploadCrop.croppie('bind', {
+                    url: e.target.result
                 });
+            };
 
-                return false;
-            }
-        });
-    </script>
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            console.log("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#image-cropper').croppie({
+        viewport: { width: 190, height: 190 },
+        boundary: { width: 450, height: 300 },
+        enableExif: true
+    });
+
+    $('#photo').on('change', function () {
+        $('#newPhoto').val('');
+        readFile(this);
+    });
+
+    $('#uploadPhoto').submit(function() {
+        if($('#newPhoto').val() !== '') {
+            return true;
+        } else {
+            $uploadCrop.croppie('result', 'base64').then(function (base64) {
+                $('#newPhoto').val(base64);
+                $('#photo').val('');
+                $('#uploadPhoto').submit();
+            });
+
+            return false;
+        }
+    });
+</script>
+
 {/block}

@@ -46,8 +46,12 @@ class UsuarioDAO extends BaseDAO
             $usuario = null;
         }
 
+
         return $usuario;
     }
+
+
+
 
     /**
 \     * @return Usuario[]|null
@@ -310,6 +314,7 @@ class UsuarioDAO extends BaseDAO
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
+
         return $results;
     }
 
@@ -475,6 +480,15 @@ class UsuarioDAO extends BaseDAO
 
     public function getUsersPeriodo($periodo){
         $sql = "Select distinct u.id, u.nome from db_gamificacao.usuario  as u inner join db_gamificacao.nota on u.id = nota.usuario where nota.periodo = '$periodo'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function getByIdFetched2($id)
+    {
+        $sql = "SELECT * FROM usuario LEFT JOIN usuario.certificados LEFT JOIN usuario.notas LEFT JOIN notas.disciplina WHERE usuario.id = '$id' ORDER BY notas.periodo ASC, certificados.valido ASC";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();

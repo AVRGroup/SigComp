@@ -197,7 +197,6 @@ class CertificateController
         }
 
         if($numHoras > 60 && in_array($tipo, $certificados60Horas)){
-            var_dump("Entrou no IF da monitoria");
             return 60;
         }
 

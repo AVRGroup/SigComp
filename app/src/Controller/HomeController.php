@@ -22,15 +22,13 @@ class HomeController
 
     public function indexAction(Request $request, Response $response, $args)
     {
-
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
+        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId()) ;
 
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $this->container->usuarioDAO->save($user);
-
 
             return $this->container->view->render($response, 'politicaPrivacidade.tpl');
         }
@@ -78,9 +76,7 @@ class HomeController
             }
         }
 
-
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
-        $usuarios = $this->container->usuarioDAO->getAll();
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
         CalculateAttributes::calculateUsuarioStatistics($usuario);
