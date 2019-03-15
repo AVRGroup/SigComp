@@ -82,7 +82,7 @@
                         {/if}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>
+                        {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
                         {if $loggedUser->getTipo() == 1}
                         <li class="nav-item dropdown">
