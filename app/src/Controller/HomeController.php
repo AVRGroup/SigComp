@@ -84,13 +84,16 @@ class HomeController
         $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
         $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
 
+        $notificacoes = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
+
 
         $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['todasMedalhas'] = $todasMedalhas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
+        $this->container->view['notificacoes'] = $notificacoes;
+
 
 
         return $this->container->view->render($response, 'home.tpl');

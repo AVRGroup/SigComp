@@ -47,47 +47,49 @@ class CertificateController
                         $certificado->setTipo($tipo);
 
                         $numHoras = $request->getParsedBodyParam('num_horas');
-                        $certificado->setNumHoras($this->maxNumHorasPorPeriodo($numHoras, $tipo));
 
                         $certificado->setNomeImpresso($request->getParsedBodyParam('nome_impresso'));
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_inicio'));
-                        $certificado->setDataInicio($data);
+                        $inicio= new \DateTime($request->getParsedBodyParam('data_inicio'));
+                        $certificado->setDataInicio($inicio);
 
-                        $data = new \DateTime($request->getParsedBodyParam('data_fim'));
-                        $certificado->setDataFim($data);
+                        $fim = new \DateTime($request->getParsedBodyParam('data_fim'));
+                        $certificado->setDataFim($fim);
 
-                        if($request->getParsedBodyParam('data_inicio1') == null){
-                            $data = null;
-                        }
-                        else {
-                            $data = new \DateTime($request->getParsedBodyParam('data_inicio1'));
-                        }
-                        $certificado->setDataInicio1($data);
+                        if($request->getParsedBodyParam('data_inicio1') == null)
+                            $dataInicio1 = null;
+                        else
+                            $dataInicio1 = new \DateTime($request->getParsedBodyParam('data_inicio1'));
+                        $certificado->setDataInicio1($dataInicio1);
 
-                        if($request->getParsedBodyParam('data_inicio2') == null){
-                            $data = null;
-                        }
-                        else {
-                            $data = new \DateTime($request->getParsedBodyParam('data_inicio2'));
-                        }
-                        $certificado->setDataInicio2($data);
+                        if($request->getParsedBodyParam('data_inicio2') == null)
+                            $dataInicio2 = null;
+                        else
+                            $dataInicio2 = new \DateTime($request->getParsedBodyParam('data_inicio2'));
+                        $certificado->setDataInicio2($dataInicio2);
 
-                        if($request->getParsedBodyParam('data_fim1') == null){
-                            $data = null;
-                        }
-                        else {
-                            $data = new \DateTime($request->getParsedBodyParam('data_fim1'));
-                        }
-                        $certificado->setDataFim1($data);
+                        if($request->getParsedBodyParam('data_fim1') == null)
+                            $dataFim1= null;
+                        else
+                            $dataFim1= new \DateTime($request->getParsedBodyParam('data_fim1'));
+                        $certificado->setDataFim1($dataFim1);
 
-                        if($request->getParsedBodyParam('data_fim2') == null){
-                            $data = null;
-                        }
-                        else {
-                            $data = new \DateTime($request->getParsedBodyParam('data_fim2'));
-                        }
-                        $certificado->setDataFim2($data);
+                        if($request->getParsedBodyParam('data_fim2') == null)
+                            $dataFim2 = null;
+                        else
+                            $dataFim2 = new \DateTime($request->getParsedBodyParam('data_fim2'));
+                        $certificado->setDataFim2($dataFim2);
+
+                        $multiplicadorHoras = $this->multiplicadorHorasCertificado($inicio, $fim);
+                        if(isset($dataFim1) && isset($dataInicio1))
+                            $multiplicadorHoras += $this->multiplicadorHorasCertificado($dataInicio1, $dataFim1);
+
+                        if(isset($dataFim2) && isset($dataInicio2))
+                            $multiplicadorHoras += $this->multiplicadorHorasCertificado($dataInicio2, $dataFim2);
+
+                        $horasTotais = $multiplicadorHoras * $this->maxNumHorasPorPeriodo($numHoras , $tipo);
+                        $certificado->setNumHoras($this->maxNumHorasTotal($horasTotais, $tipo));
+
 
                         do {
                             $uuid4 = Uuid::uuid4();
@@ -111,6 +113,63 @@ class CertificateController
         $this->container->view['certTypes'] = Certificado::getAllTipos();
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllByUsuario($request->getAttribute('user'));
         return $this->container->view->render($response, 'certificates.tpl');
+    }
+
+    public function maxNumHorasTotal($numHoras, $tipo){
+        $max120Horas = [Certificado::REPRESENTACAO, Certificado::MONITORIA, Certificado::TP, Certificado::TA, Certificado::IC ];
+        $max180Horas = [Certificado::EMP_JUNIOR];
+        $max240Horas = [Certificado::VIVENCIA, Certificado::GET];
+
+        if($numHoras > 120 && in_array($tipo, $max120Horas))
+            return 120;
+
+        if($numHoras > 180 && in_array($tipo, $max180Horas))
+            return 180;
+
+        if($numHoras > 240 && in_array($tipo, $max240Horas))
+            return 240;
+
+
+        return $numHoras;
+    }
+
+    public function maxNumHorasPorPeriodo($numHoras, $tipo){
+        $certificados15Horas = [Certificado::VIVENCIA, Certificado::LING_ENTRANGEIRA ,Certificado::ORG_EVENTO, Certificado::PART_EVENTO, Certificado::APRE_PALESTRA];
+        $certificados30Horas = [Certificado::APRE_MINICURSO, Certificado::GRP_ESTUDO, Certificado::CERT_CURSO];
+        $certificados60Horas = [Certificado::MONITORIA, Certificado::ESTAGIO, Certificado::REPRESENTACAO, Certificado::EMP_JUNIOR, Certificado::TP, Certificado::TA, Certificado::IC];
+
+        if($numHoras > 15 && in_array($tipo, $certificados15Horas)){
+            return 15;
+        }
+
+        if($numHoras > 30 && in_array($tipo, $certificados30Horas)){
+            return 30;
+        }
+
+        if($numHoras > 60 && in_array($tipo, $certificados60Horas)){
+            return 60;
+        }
+
+        return $numHoras;
+    }
+
+    public function multiplicadorHorasCertificado($inicio, $fim){
+        $anoInicio = $inicio->format('Y');
+        $anoFim = $fim->format('Y');
+
+        $periodoInicio = $this->formataSemestre($inicio->format('m'));
+        $periodoFim = $this->formataSemestre($fim->format('m'));
+
+        $multiplicador = $anoFim - $anoInicio + 1;
+
+        if($periodoFim > $periodoInicio)
+            $multiplicador += 1;
+
+        return $multiplicador;
+    }
+
+    public function formataSemestre($mes){
+        return $mes > 6 ? '3' : '1';
     }
 
     public function deleteAction(Request $request, Response $response, $args)
@@ -181,26 +240,6 @@ class CertificateController
         }
 
         return $this->container->view->render($response, 'adminCertificates2.tpl');
-    }
-
-    public function maxNumHorasPorPeriodo($numHoras, $tipo){
-        $certificados15Horas = [Certificado::VIVENCIA, Certificado::LING_ENTRANGEIRA ,Certificado::ORG_EVENTO, Certificado::PART_EVENTO, Certificado::APRE_PALESTRA];
-        $certificados30Horas = [Certificado::APRE_MINICURSO, Certificado::GRP_ESTUDO, Certificado::CERT_CURSO];
-        $certificados60Horas = [Certificado::MONITORIA, Certificado::ESTAGIO, Certificado::REPRESENTACAO, Certificado::EMP_JUNIOR, Certificado::TP, Certificado::TA];
-
-        if($numHoras > 15 && in_array($tipo, $certificados15Horas)){
-            return 15;
-        }
-
-        if($numHoras > 30 && in_array($tipo, $certificados30Horas)){
-            return 30;
-        }
-
-        if($numHoras > 60 && in_array($tipo, $certificados60Horas)){
-            return 60;
-        }
-
-        return $numHoras;
     }
 
 

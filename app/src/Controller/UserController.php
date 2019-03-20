@@ -250,7 +250,7 @@ class UserController
         return $response->withRedirect($this->container->router->pathFor('home'));
     }
 
-    public function aceitarConiteAction(Request $request, Response $response, $args){
+    public function aceitarConviteAction(Request $request, Response $response, $args){
         $this->container->usuarioDAO->aceitarConvite($args['id-remetente'], $args['id-destinatario']);
 
         return $response->withRedirect($this->container->router->pathFor('home'));
@@ -258,28 +258,20 @@ class UserController
 
     public function listarAmigosAction(Request $request, Response $response, $args){
 
-        $amigosTeste = $this->container->usuarioDAO->getAmigos($args['id']);
+        $amigos = $this->container->usuarioDAO->getAmigos($args['id']);
         $user = $request->getAttribute('user');
-
-        $amigos = [];
-
-        foreach ($amigosTeste as $amigo){
-            $usuario = $this->container->usuarioDAO->getByIdFetched($amigo['id_amigo']);
-            CalculateAttributes::calculateUsuarioStatistics($usuario);
-            $amigos[] = ['id_amigo' => $usuario->getId() ,'nome' => $usuario->getNome(), 'experiencia' => $usuario->getExperiencia(), 'foto' => $usuario->getFoto()];
-        }
 
 
         $medalhasAmigo = [];
         foreach ($amigos as $amigo) {
-            $medalhasAmigo[] = $this->container->usuarioDAO->getMedalsByIdFetched($amigo['id_amigo']);
+            $medalhasAmigo[] = $this->container->usuarioDAO->getMedalsByIdFetched($amigo['id']);
         }
+
 
 
         $this->container->view['medalhas'] = $medalhasAmigo;
         $this->container->view['amigos']  = $amigos;
         $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
-
 
         return $this->container->view->render($response, 'listaAmigos.tpl');
     }

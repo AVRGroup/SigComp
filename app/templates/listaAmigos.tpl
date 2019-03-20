@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-9">
                     <h5 class="text-center">{$amigo['nome']}</h5>
-                    <a href="{path_for name="visualizarAmigo" data=["id" => $amigo['id_amigo']]}"><p class="text-center" style="margin-bottom: 0; font-size: 14px">visualizar perfil</p></a>
+                    <a href="{path_for name="visualizarAmigo" data=["id" => $amigo['id']]}"><p class="text-center" style="margin-bottom: 0; font-size: 14px">visualizar perfil</p></a>
 
                     <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$amigo['experiencia']}xp</p>
                     <div class="progress" style="height: 20px;">

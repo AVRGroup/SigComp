@@ -57,8 +57,8 @@
                                       <li class="lista-notificacoes">
                                           {$notificacao['nome']}
                                           <div style="margin-top: 15px">
-                                              <a href="{path_for name="aceitarAmizade" data=["id_remetente" => $notificacao['id'], "id_destinatario" => $loggedUser->getId()]}" class="btn btn-primary">Aceitar</a>
-                                              <a href="{path_for name="recusarAmizade" data=["id_remetente" => $notificacao['id'], "id_destinatario" => $loggedUser->getId()]}" class="btn btn-danger">Recusar</a>
+                                              <a href="{path_for name="aceitarAmizade" data=["id-remetente" => $notificacao['id'], "id-destinatario" => $loggedUser->getId()]}" class="btn btn-primary">Aceitar</a>
+                                              {*<a href="{path_for name="recusarAmizade" data=["id-remetente" => $notificacao['id'], "id-destinatario" => $loggedUser->getId()]}" class="btn btn-danger">Recusar</a>*}
                                           </div>
                                       </li>
                                       <hr>
