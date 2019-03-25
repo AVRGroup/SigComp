@@ -4,6 +4,7 @@ namespace App\Controller;
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
+use App\Library\CalculateAttributes;
 use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Grade;
@@ -427,6 +428,29 @@ class AdminController
         $this->container->view['alunos'] = $this->container->usuarioDAO->getAlunosLogaram();
 
         return $this->container->view->render($response, 'usuariosLogaram.tpl');
+    }
+
+    public function adminUserAction(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
+
+        if(!$usuario) {
+            return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+        }
+
+        CalculateAttributes::calculateUsuarioStatistics($usuario);
+
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
+
+        $this->container->view['medalhas'] = $medalhasUsuario;
+
+
+        $this->container->view['usuario'] = $usuario;
+        $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();
+        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
+        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+
+        return $this->container->view->render($response, 'home.tpl');
     }
 
 

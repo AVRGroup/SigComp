@@ -162,35 +162,40 @@
                                     {$numMedalhas = $numMedalhas + 1}
                                 {/foreach}
 
-                                {while $novaLinha === 1}
-                                    <tr>
-                                        {$novaLinha = 0}
-                                        {while $i < $numMedalhas}
+                                {if $medalhas[0]['medalha'] != null}
+                                    {while $novaLinha === 1}
+                                        <tr>
+                                            {$novaLinha = 0}
+                                            {while $i < $numMedalhas}
 
-                                            {if $numMedalhas > 1}
-                                                <td>
-                                                    <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
-                                                        <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
+                                                {if $numMedalhas > 1}
+                                                    <td>
+                                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
 
-                                                        <div class="caption">
-                                                            <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
+                                                            <div class="caption">
+                                                                <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    {$i = $i + 1}
-                                                    {$auxI = $auxI + 1}
-                                                </td>
-                                            {else}
-                                                <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
-                                            {/if}
+                                                        {$i = $i + 1}
+                                                        {$auxI = $auxI + 1}
+                                                    </td>
+                                                {else}
+                                                    <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
+                                                {/if}
 
-                                            {if $auxI > 8}
-                                                {$novaLinha = 1}
-                                                {$auxI = 0}
-                                                {break}
-                                            {/if}
-                                        {/while}
-                                    </tr>
-                                {/while}
+                                                {if $auxI > 8}
+                                                    {$novaLinha = 1}
+                                                    {$auxI = 0}
+                                                    {break}
+                                                {/if}
+                                            {/while}
+                                        </tr>
+                                    {/while}
+
+                                {else}
+                                    <p class="text-center" style="margin: 20px">Você ainda não possui nenhuma medalha. Dê uma olhada em quais medalhas são possíveis de alcançar na aba de 'Medalhas Possíveis'</p>
+                                {/if}
                                 </tbody>
                             </table>
                         </div>

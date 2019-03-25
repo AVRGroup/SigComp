@@ -47,7 +47,7 @@ $app->group('', function () {
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
-        $this->get('/user/{id:[0-9]+}', '\App\Controller\UserController:adminUserAction')->setName('adminUser');
+        $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
 
@@ -56,7 +56,6 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/grade-load', '\App\Controller\AdminController:gradeLoadAction')->setName('gradeLoadAction');
 
         $this->get('/data', '\App\Controller\AdminController:adminData')->setName('adminData');
-
 
         $this->get('/lista-alunos-logaram', '\App\Controller\AdminController:listAlunosLogaramAction')->setName('alunosLogaram');
 
