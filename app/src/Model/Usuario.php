@@ -185,6 +185,11 @@ class Usuario implements ToIdArrayInterface
      */
     protected $primeiro_login;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $quantidade_acessos;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
@@ -738,6 +743,19 @@ class Usuario implements ToIdArrayInterface
     public function setPrimeiroLogin($primeiro_login): void
     {
         $this->primeiro_login = $primeiro_login;
+    }
+
+    public function getQuantidadeAcessos()
+    {
+        return $this->quantidade_acessos;
+    }
+
+    /**
+     * @param mixed $quantidade_acessos
+     */
+    public function setQuantidadeAcessos($quantidade_acessos): void
+    {
+        $this->quantidade_acessos = $quantidade_acessos;
     }
 
     /**

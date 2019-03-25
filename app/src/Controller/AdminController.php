@@ -423,6 +423,12 @@ class AdminController
             ));
     }
 
+    public function listAlunosLogaramAction(Request $request, Response $response, $args){
+        $this->container->view['alunos'] = $this->container->usuarioDAO->getAlunosLogaram();
+
+        return $this->container->view->render($response, 'usuariosLogaram.tpl');
+    }
+
 
 
 }

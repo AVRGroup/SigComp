@@ -8,6 +8,8 @@
     <input id="countLogaram" type="hidden" value={$countLogaram}>
 
     <div align="center"  id="piechart"></div>
+    <a href="{path_for name="alunosLogaram"}">Lista de alunos que Acessaram ao menos uma vez</a>
+
     <hr>
 
     <div class="row">

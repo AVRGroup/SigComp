@@ -82,6 +82,11 @@ class LoginController
                         $_SESSION['profiles'][$usuario->getMatricula()] = $profileInfo;
 
                         $usuario->setEmail($userInfoResponse->getEmailSiga());
+
+                        $usuario->setQuantidadeAcessos($usuario->getQuantidadeAcessos() + 1);
+
+                        $this->container->usuarioDAO->persist($usuario);
+                        $this->container->usuarioDAO->flush(); //Commit the transaction
                     }
                     $this->container->usuarioDAO->flush();
 
@@ -97,6 +102,8 @@ class LoginController
                     else if ($usuarios[0]->getNome()== "BOLSISTA"){
                         return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
                     }
+
+
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
 

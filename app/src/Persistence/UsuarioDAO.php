@@ -249,6 +249,14 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getAlunosLogaram(){
+        $sql = "SELECT * FROM usuario WHERE usuario.primeiro_login = 0";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
 
     public function getTop10IraTotal(){
         try {

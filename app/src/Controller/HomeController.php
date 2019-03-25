@@ -26,6 +26,7 @@ class HomeController
         $user = $request->getAttribute('user');
         $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId()) ;
 
+
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $this->container->usuarioDAO->save($user);
@@ -93,8 +94,6 @@ class HomeController
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
         $this->container->view['notificacoes'] = $notificacoes;
-
-
 
         return $this->container->view->render($response, 'home.tpl');
     }

@@ -57,6 +57,8 @@ $app->group('', function () {
 
         $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
 
+        $this->get('/lista-alunos-logaram', '\App\Controller\AdminController:listAlunosLogaramAction')->setName('alunosLogaram');
+
     })->add('\App\Middleware\AdminMiddleware');
 
     $this->group('/admin', function () {
