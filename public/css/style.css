@@ -171,3 +171,9 @@ body {
     max-width: 100%;
     height: auto;
 }
+
+.gerar-pdf{
+    margin-bottom: 10px;
+    background-color: #f39c12;
+    border-color: #f39c12
+}

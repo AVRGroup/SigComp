@@ -32,6 +32,8 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 
+    $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
+
 
 
     $this->group('/admin', function () {
@@ -55,7 +57,6 @@ $app->group('', function () {
 
         $this->get('/data', '\App\Controller\AdminController:adminData')->setName('adminData');
 
-        $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
 
         $this->get('/lista-alunos-logaram', '\App\Controller\AdminController:listAlunosLogaramAction')->setName('alunosLogaram');
 
