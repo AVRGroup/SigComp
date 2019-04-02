@@ -378,7 +378,7 @@ class AdminController
 
     public function exportPDFAction(){
         $aluno = $this->container->usuarioDAO->getById($_SESSION['id']);
-        $certificados = $this->container->certificadoDAO->getAllByUsuario($aluno);
+        $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
 
 
         $data = date('d M Y');

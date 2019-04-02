@@ -89,8 +89,14 @@ body {
 #sobre-mim{
     resize: none;
     border-radius: 1rem;
+
 }
 
+@-moz-document url-prefix() {
+    #sobre-mim{
+        width: 192px;
+    }
+}
 
 .info-atributos{
     display: inline;

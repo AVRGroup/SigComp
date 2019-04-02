@@ -17,10 +17,23 @@ class CertificadoDAO extends BaseDAO
     /**
      * @return Certificado[] |null
      */
-    public function getAllByUsuario(Usuario $usuario)
+    public function getValidatedByUsuario(Usuario $usuario)
     {
         try {
             $query = $this->em->createQuery("SELECT c, u FROM App\Model\Certificado AS c JOIN c.usuario AS u WHERE c.usuario = :usuario AND c.valido = 1 ORDER BY c.data_inicio ASC");
+            $query->setParameter('usuario', $usuario);
+            $certificados = $query->getResult();
+        } catch (\Exception $e) {
+            $certificados = null;
+        }
+
+        return $certificados;
+    }
+
+    public function getAllByUsuario(Usuario $usuario)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT c, u FROM App\Model\Certificado AS c JOIN c.usuario AS u WHERE c.usuario = :usuario ORDER BY c.data_inicio ASC");
             $query->setParameter('usuario', $usuario);
             $certificados = $query->getResult();
         } catch (\Exception $e) {
