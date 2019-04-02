@@ -16,7 +16,7 @@
                 <td>{$aluno['matricula']}</td>
                 <td>{$aluno['nome']}</td>
                 <td>{$aluno['email']}</td>
-                <td>{$aluno['quantidade_acessos']}</td>
+                <td>{$aluno['quantidade_acessos'] + 1}</td>
             </tr>
         {/foreach}
     </table>
