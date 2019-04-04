@@ -102,7 +102,7 @@ class AdminController
 
         $this->abreviaTodosNomes(false);
 
-        return $this->container->view->render($response, 'adminDataLoad.tpl');
+        return $response->withRedirect($this->container->router->pathFor('assignMedals'));
     }
 
     public function calculaIra($calcularIraPeriodoPassado){
