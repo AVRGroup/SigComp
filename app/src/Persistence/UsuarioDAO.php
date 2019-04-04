@@ -425,26 +425,30 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function setByNumMedalha($result, $numMedalha, $offset1 = 0){
-        if($result['num_horas'] >= 60) {
-            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
-            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-            $stmt_insert->execute();
-        }
+    public function setByNumMedalha($result, $numMedalha, $offset1 = 0)
+    {
+        if (isset($result[0])) {
+            if ($result[0]['num_horas'] >= 60) {
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result[0]['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
 
-        if($result['num_horas'] >= 120){
-            $numMedalha = $numMedalha + 1;
-            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
-            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-            $stmt_insert->execute();
-        }
 
-        if($result['num_horas'] >= 180){
-            $numMedalha = $numMedalha + 1;
-            $numMedalha = $numMedalha + $offset1;
-            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
-            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-            $stmt_insert->execute();
+            if ($result[0]['num_horas'] >= 120) {
+                $numMedalha = $numMedalha + 1;
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result[0]['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
+
+            if ($result[0]['num_horas'] >= 180) {
+                $numMedalha = $numMedalha + 1;
+                $numMedalha = $numMedalha + $offset1;
+                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result[0]['id']}', '{$numMedalha}')";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            }
         }
     }
 
