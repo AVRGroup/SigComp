@@ -60,7 +60,7 @@
                     ?
                 </button>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ) }%;">{((100 * $usuario->getExperiencia())/($usuario->getExperiencia() +500 ))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/(5000) }%;">{((100 * $usuario->getExperiencia())/(5000))|string_format:"%.2f"}%</div>
                 </div>
 
 

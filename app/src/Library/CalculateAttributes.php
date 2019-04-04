@@ -21,8 +21,7 @@ class CalculateAttributes
                 continue;
             }
 
-            $usuario->setExperiencia($usuario->getExperiencia() + 10)
-                ->setCultura($usuario->getCultura() + 10);
+            $usuario->setCultura($usuario->getCultura() + 10);
         }
     }
 
