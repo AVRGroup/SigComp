@@ -425,8 +425,10 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function setByNumMedalha($results, $numMedalha, $offset1 = 0){
+    public function setByNumMedalha($results, $numPrimeiraMedalha, $offset1 = 0){
         foreach ($results as $result){
+            $numMedalha = $numPrimeiraMedalha;
+
             if($result['num_horas'] >= 60) {
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result['id']}', '{$numMedalha}')";
                 $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
