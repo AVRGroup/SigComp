@@ -56,7 +56,7 @@
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
                 <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
-                          data-content="Indica a sua vivência no curso! Cada aprovação concede +100xp e cada certificado de evento, palestra ou afins concede +10xp">
+                          data-content="Indica a sua experiência no curso! Cada aprovação concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
                     ?
                 </button>
                 <div class="progress" style="height: 20px;">
