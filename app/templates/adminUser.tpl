@@ -184,7 +184,7 @@
                         {else}
                             <span class="badge badge-warning">Invalidado</span>
                         {/if}
-                        <br/><a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "true"]}" class="badge badge-success">Aceitar</a>
+                        <br/><a href="'" class="badge badge-success">Aceitar</a>
                         <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "false"]}" class="badge badge-warning">Negar</a>
                         <a href="{path_for name="adminDeleteCertificate" data=["id" => $certificate->getId()]}" class="badge badge-danger">Excluir</a>
                     </p>

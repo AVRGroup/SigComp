@@ -766,5 +766,12 @@ class Usuario implements ToIdArrayInterface
         $this->medalhas_usuario = $medalhas_usuario;
     }
 
+    public function isAdmin(){
+        if($this->getNome() == "ADMINISTRADOR"){
+            return true;
+        }
+
+        return false;
+    }
 
 }

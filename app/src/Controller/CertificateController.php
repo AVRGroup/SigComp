@@ -2,12 +2,6 @@
 
 namespace App\Controller;
 
-use App\Library\Integra\getUserInformation;
-use App\Library\Integra\getUserInformationResponse;
-use App\Library\Integra\login;
-use App\Library\Integra\logout;
-use App\Library\Integra\WSLogin;
-use App\Library\Integra\wsUserInfoResponse;
 use App\Model\Certificado;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
@@ -112,7 +106,22 @@ class CertificateController
         $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
         $this->container->view['certTypes'] = Certificado::getAllTipos();
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllByUsuario($request->getAttribute('user'));
+
+        $certificadosValidados = $this->container->certificadoDAO->getValidatedByUsuario($request->getAttribute('user'));
+        $this->container->view['horasTotais'] = $this->horasTotais($certificadosValidados);
+
         return $this->container->view->render($response, 'certificates.tpl');
+    }
+
+
+    public function horasTotais($certificados){
+        $horas = 0;
+
+        foreach ($certificados as $certificado){
+            $horas += $certificado->getNumHoras();
+        }
+
+        return $horas;
     }
 
     public function maxNumHorasTotal($numHoras, $tipo){

@@ -376,10 +376,9 @@ class AdminController
     }
 
 
-    public function exportPDFAction(){
-        $aluno = $this->container->usuarioDAO->getById($_SESSION['id']);
+    public function exportPDFAction(Request $request, Response $response, $args){
+        $aluno = $this->container->usuarioDAO->getById($args['id']);
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
-
 
         $data = date('d M Y');
 
@@ -443,7 +442,7 @@ class AdminController
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
 
         $this->container->view['medalhas'] = $medalhasUsuario;
-
+        $this->container->view['isAdmin'] = true;
 
         $this->container->view['usuario'] = $usuario;
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();

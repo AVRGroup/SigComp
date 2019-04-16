@@ -32,7 +32,7 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 
-    $this->get('/exportPDF', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
+    $this->get('/exportPDF/{id:[0-9]+}', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
 
 
 

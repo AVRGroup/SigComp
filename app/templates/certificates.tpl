@@ -67,9 +67,8 @@
 
     {*SEUS CERTIFICADOS*}
     <h3 class="text-center mt-5 mb-3">Seus certificados</h3>
-    <div class="text-center">
-        <a href="{path_for name="exportPDF"}" class="btn btn-primary gerar-pdf" >Imprimir relatório de horas ACE</a>
-    </div>
+    <p class="text-center">Você tem um total de <b>{$horasTotais}</b> horas validadas</p>
+
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $certificates as $certificate}
             <div class="card">
