@@ -63,7 +63,8 @@ $app->group('', function () {
 
     $this->group('/admin', function () {
 
-        $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/change/{state}', '\App\Controller\CertificateController:adminChangeAction')->setName('adminChangeCertificate');
+        $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/accept', '\App\Controller\CertificateController:adminAcceptAction')->setName('adminAcceptCertificate');
+        $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/refuse', '\App\Controller\CertificateController:adminRefuseAction')->setName('adminRefuseCertificate');
         $this->map(['GET', 'POST'],'/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
     })->add('\App\Middleware\BolsistaMiddleware');
 

@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-8">
-            <form action="" method="post" style="margin-right: 5%">
+            <form action="{base_url}/admin/certificate/{$certificate->getId()}/accept" method="post" style="margin-right: 5%">
 
                 <input type="hidden" name="id" value="{$certificate->getId()}">
 
@@ -94,11 +94,10 @@
 
 
                 <div style="margin-top: 4%" class="botoes">
-                    <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "true"] queryParams=["isReviewPage" => "true"]}" class="btn btn-success">Aceitar</a>
-                    <a href="{path_for name="adminChangeCertificate" data=["id" => $certificate->getId(), "state" => "false"] queryParams=["isReviewPage" => "true"]}" class="btn btn-danger">Negar</a>
-                    <button class="btn btn-primary" type="submit">Atualizar</button>
-
+                    <button type="submit" class="btn btn-success">Aceitar</button>
+                    <a href="{path_for name="adminRefuseCertificate" data=["id" => $certificate->getId()]}" class="btn btn-danger">Negar</a>
                 </div>
+
             </form>
         </div>
 
