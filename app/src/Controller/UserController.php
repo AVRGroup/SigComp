@@ -302,6 +302,7 @@ class UserController
         $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(11, $userId), 36, 1);
 
         $this->container->usuarioDAO->setTurista($userId);
+        $this->container->usuarioDAO->setEstagio($userId);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');

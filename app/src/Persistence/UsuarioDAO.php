@@ -435,8 +435,18 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
+    
 
+    public function setEstagio($userId)
+    {
+        $horasEstagio = $this->getByTipoCertificado(10, $userId);
 
+        if($horasEstagio[0]['num_horas'] >= 60){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('$userId', 10)";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        }
+    }
 
     public function setByOptativas($results, $qtde, $grade){
         switch ($qtde){
