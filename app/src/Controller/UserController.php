@@ -303,6 +303,7 @@ class UserController
 
         $this->container->usuarioDAO->setTurista($userId);
         $this->container->usuarioDAO->setEstagio($userId);
+        $this->container->usuarioDAO->setEmpresaJunior($userId);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');

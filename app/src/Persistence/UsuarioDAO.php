@@ -447,7 +447,18 @@ class UsuarioDAO extends BaseDAO
             $stmt_insert->execute();
         }
     }
+    
+    public function setEmpresaJunior($userId)
+    {
+        $horasEmpresaJunior = $this->getByTipoCertificado(15, $userId);
 
+        if($horasEmpresaJunior[0]['num_horas'] >= 60){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('$userId', 15)";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        }
+    }
+    
     public function setByOptativas($results, $qtde, $grade){
         switch ($qtde){
             case 2: $medalha = 17;
