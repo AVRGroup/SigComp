@@ -8,10 +8,10 @@ $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('
 
 
 $app->group('', function () {
+    $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
 
     $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
     $this->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
-    $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
 

@@ -67,7 +67,10 @@
 
     {*SEUS CERTIFICADOS*}
     <h3 class="text-center mt-5 mb-3">Seus certificados</h3>
-    <p class="text-center">Você tem um total de <b>{$horasTotais}</b> horas validadas</p>
+    <p class="text-center" style="margin: 0;">Você tem um total de <b>{$horasTotais}</b> horas validadas</p>
+    <div class="text-center" style="margin-bottom: 20px">
+        <small>Este número é apenas uma pévia, o valor real pode divergir</small>
+    </div>
 
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $certificates as $certificate}

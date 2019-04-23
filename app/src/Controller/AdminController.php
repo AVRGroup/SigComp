@@ -108,7 +108,7 @@ class AdminController
     public function calculaIra($calcularIraPeriodoPassado){
 
         if($calcularIraPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20181);
+            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20191);
         else
             $usuarios = $this->container->usuarioDAO->getAllFetched();
 
