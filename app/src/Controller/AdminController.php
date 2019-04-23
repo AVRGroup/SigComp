@@ -328,7 +328,6 @@ class AdminController
 
         $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram()[0]["COUNT(*)"];
         $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram()[0]["COUNT(*)"];
-
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
 

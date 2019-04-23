@@ -398,6 +398,46 @@ class UsuarioDAO extends BaseDAO
 
     }
 
+    public function getNumeroMateriasTurista($userId)
+    {
+        $sql = "SELECT COUNT(*) FROM usuario 
+        JOIN nota ON usuario.id = nota.usuario 
+        JOIN disciplina ON nota.disciplina = disciplina.id 
+        WHERE usuario.id = $userId AND nota.estado = \"Aprovado\" 
+        AND disciplina.codigo NOT LIKE 'DCC%' AND disciplina.codigo NOT LIKE 'MAT%' AND disciplina.codigo NOT LIKE 'FIS%' AND disciplina.codigo NOT LIKE 'EST%';";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $numMaterias =  $stmt->fetchAll();
+
+        return $numMaterias;
+    }
+
+    public function setTurista($userId)
+    {
+        $numeroMaterias = $this->getNumeroMateriasTurista($userId);
+
+        if ($numeroMaterias >= 2) {
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ('$userId', 17)";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+
+        if ($numeroMaterias >= 3) {
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ('$userId', 18)";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+
+        if ($numeroMaterias >= 4) {
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ('$userId', 19)";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+    }
+
+
+
     public function setByOptativas($results, $qtde, $grade){
         switch ($qtde){
             case 2: $medalha = 17;
@@ -416,8 +456,8 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getByTipoCertificado($tipoCertificado){
-        $sql = "SELECT usuario.id , certificado.num_horas FROM usuario JOIN certificado ON certificado.usuario = usuario.id WHERE certificado.tipo = '{$tipoCertificado}' AND num_horas >= 60 AND valido = 1 ORDER BY num_horas DESC LIMIT 1";
+    public function getByTipoCertificado($tipoCertificado, $userId){
+        $sql = "SELECT usuario.id , SUM(certificado.num_horas) FROM usuario JOIN certificado ON certificado.usuario = usuario.id WHERE certificado.tipo = '{$tipoCertificado}' AND usuario.id = $userId AND num_horas >= 60 AND valido = 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();

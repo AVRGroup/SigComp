@@ -257,6 +257,7 @@ class UserController
     }
 
     public function assignMedalsAction(Request $request, Response $response, $args){
+        $userId = $_SESSION['id'];
 
         $this->container->medalhaUsuarioDAO->truncateTable();
 
@@ -295,10 +296,12 @@ class UserController
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12018), 3, 12018);
 
         //ficou um pouco confuso, mas o get recebe o tipo do certificado (da model 'Certificado.php') e o set recebe o numero da primeira medalha (da tabela 'medalha')
-        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(18), 22);
-        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(19), 30);
-        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(20), 26);
-        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(11), 36, 1);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(18, $userId), 22);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(19, $userId), 30);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(20, $userId), 26);
+        $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(11, $userId), 36, 1);
+
+        $this->container->usuarioDAO->setTurista($userId);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
