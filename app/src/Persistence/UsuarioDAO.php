@@ -441,7 +441,7 @@ class UsuarioDAO extends BaseDAO
     {
         $horasEstagio = $this->getByTipoCertificado(10, $userId);
 
-        if($horasEstagio[0]['num_horas'] >= 60){
+        if(isset($horasEstagio[0]['num_horas']) && $horasEstagio[0]['num_horas'] >= 60){
             $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('$userId', 10)";
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
@@ -452,7 +452,7 @@ class UsuarioDAO extends BaseDAO
     {
         $horasEmpresaJunior = $this->getByTipoCertificado(15, $userId);
 
-        if($horasEmpresaJunior[0]['num_horas'] >= 60){
+        if(isset($horasEmpresaJunior[0]['num_horas']) && $horasEmpresaJunior[0]['num_horas'] >= 60){
             $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('$userId', 15)";
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
@@ -478,7 +478,7 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function getByTipoCertificado($tipoCertificado, $userId){
-        $sql = "SELECT usuario.id , SUM(certificado.num_horas) FROM usuario JOIN certificado ON certificado.usuario = usuario.id WHERE certificado.tipo = '{$tipoCertificado}' AND usuario.id = $userId AND num_horas >= 60 AND valido = 1";
+        $sql = "SELECT usuario.id , SUM(certificado.num_horas) as 'num_horas' FROM usuario JOIN certificado ON certificado.usuario = usuario.id WHERE certificado.tipo = '{$tipoCertificado}' AND usuario.id = $userId AND num_horas >= 60 AND valido = 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -488,7 +488,7 @@ class UsuarioDAO extends BaseDAO
 
     public function setByNumMedalha($result, $numMedalha, $offset1 = 0)
     {
-        if (isset($result[0])) {
+        if (isset($result[0]['num_horas'])) {
             if ($result[0]['num_horas'] >= 60) {
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$result[0]['id']}', '{$numMedalha}')";
                 $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
