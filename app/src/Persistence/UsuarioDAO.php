@@ -336,6 +336,15 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getAllUsersIds()
+    {
+        $sql = "SELECT id FROM usuario";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+
     public function setByIRA($results, $ira){
         switch ($ira){
             case 60: $medalha = 13;
