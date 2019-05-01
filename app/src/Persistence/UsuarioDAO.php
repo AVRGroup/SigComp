@@ -400,7 +400,7 @@ class UsuarioDAO extends BaseDAO
 
     public function getNumeroMateriasTurista($userId)
     {
-        $sql = "SELECT COUNT(*) FROM usuario 
+        $sql = "SELECT COUNT(*) as num_materias FROM usuario 
         JOIN nota ON usuario.id = nota.usuario 
         JOIN disciplina ON nota.disciplina = disciplina.id 
         WHERE usuario.id = $userId AND nota.estado = \"Aprovado\" 
@@ -410,7 +410,38 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
         $numMaterias =  $stmt->fetchAll();
 
-        return $numMaterias;
+        return intval($numMaterias[0]['num_materias']);
+    }
+
+    public function getNumeroMateriasPoliglota($userId)
+    {
+        $sql = "SELECT COUNT(*) as num_materias FROM usuario 
+        JOIN nota ON usuario.id = nota.usuario 
+        JOIN disciplina ON nota.disciplina = disciplina.id 
+        WHERE usuario.id = $userId AND nota.estado = \"Aprovado\" 
+        AND (
+        disciplina.codigo LIKE 'UNI001%' OR
+        disciplina.codigo LIKE 'UNI002%' OR
+        disciplina.codigo LIKE 'UNI003%' OR
+        disciplina.codigo LIKE 'UNI004%' OR
+        disciplina.codigo LIKE 'UNI005%' OR
+        disciplina.codigo LIKE 'UNI006%' OR
+        disciplina.codigo LIKE 'UNI007%' OR
+        disciplina.codigo LIKE 'UNI008%' OR
+        disciplina.codigo LIKE 'UNI009%' OR
+        disciplina.codigo LIKE 'UNI010%' OR
+        disciplina.codigo LIKE 'UNI011%' OR
+        disciplina.codigo LIKE 'UNI012%' OR
+        disciplina.codigo LIKE 'UNI013%' OR
+        disciplina.codigo LIKE 'UNI014%' OR
+        disciplina.codigo LIKE 'UNI015%' OR
+        disciplina.codigo LIKE 'UNI016%')";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $numMaterias =  $stmt->fetchAll();
+
+        return intval($numMaterias[0]['num_materias']);
     }
 
     public function setTurista($userId)
@@ -435,7 +466,17 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
-    
+
+    public function setPoliglota($userId)
+    {
+        $numeroMaterias = $this->getNumeroMateriasPoliglota($userId);
+
+        if($numeroMaterias > 1){
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ('$userId', 16)";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+    }
 
     public function setEstagio($userId)
     {
@@ -548,6 +589,7 @@ class UsuarioDAO extends BaseDAO
             }
         }
     }
+    
 
     public function getUsersPeriodo($periodo){
         $sql = "Select distinct u.id, u.nome from db_gamificacao.usuario  as u inner join db_gamificacao.nota on u.id = nota.usuario where nota.periodo = '$periodo'";
@@ -573,6 +615,7 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
+    
 
     public function setPeriodoCorrente()
     {
@@ -596,6 +639,7 @@ class UsuarioDAO extends BaseDAO
 
         return $periodoCorrente[0]['ultima_carga'];
     }
+    
 
 
 }
