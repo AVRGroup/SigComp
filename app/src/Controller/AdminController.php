@@ -10,9 +10,11 @@ use App\Model\Disciplina;
 use App\Model\Grade;
 use App\Model\GradeDisciplina;
 use App\Model\Nota;
+use App\Model\PeriodoCorrente;
 use App\Model\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Utility\IdentifierFlattener;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
@@ -101,16 +103,16 @@ class AdminController
 
             $this->abreviaTodosNomes(false);
 
+            $this->container->usuarioDAO->setPeriodoCorrente();
             return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
-
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
     public function calculaIra($calcularIraPeriodoPassado){
 
         if($calcularIraPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota(20191);
+            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota($this->getPeriodoPassado());
         else
             $usuarios = $this->container->usuarioDAO->getAllFetched();
 
@@ -332,6 +334,9 @@ class AdminController
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
 
+        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+
         return $this->container->view->render($response, 'adminDashboard.tpl');
     }
 
@@ -453,5 +458,37 @@ class AdminController
     }
 
 
+    public function getPeriodoPassado()
+    {
+        $periodoAtual = $this->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+       else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
+    }
+
+    public function getPeriodoAtual()
+    {
+        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
+        $ano = $ultimaCarga[0];
+        $mes = intval($ultimaCarga[1]);
+        
+        if($mes > 6) {
+            $periodo = $ano . 3;    
+        }
+        else {
+            $periodo = $ano . 1;
+        }
+
+        return $periodo;
+    }
 
 }

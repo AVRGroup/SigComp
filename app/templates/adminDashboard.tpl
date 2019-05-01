@@ -9,6 +9,8 @@
 
     <div align="center"  id="piechart"></div>
     <a href="{path_for name="alunosLogaram"}">Lista de alunos que Acessaram ao menos uma vez</a>
+    <br>
+    Periodo Atual: {$periodoAtual} | Periodo Passado: {$periodoPassado}
 
     <hr>
 

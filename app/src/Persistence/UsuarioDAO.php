@@ -574,6 +574,28 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
+    public function setPeriodoCorrente()
+    {
+        try {
+            $horaAtual = new \DateTime();
+        } catch (\Exception $e) {
+            die(var_dump($e));
+        }
+        $horaAtual = $horaAtual->format('Y-m-d');
+        $sql = "INSERT INTO periodo_corrente (ultima_carga) VALUES ('{$horaAtual}')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getPeriodoCorrente()
+    {
+        $sql = "SELECT * FROM periodo_corrente ORDER BY ultima_carga DESC LIMIT 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $periodoCorrente = $stmt->fetchAll();
+
+        return $periodoCorrente[0]['ultima_carga'];
+    }
 
 
 }
