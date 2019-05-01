@@ -305,6 +305,7 @@ class UserController
         $this->container->usuarioDAO->setEstagio($userId);
         $this->container->usuarioDAO->setEmpresaJunior($userId);
         $this->container->usuarioDAO->setPoliglota($userId);
+        $this->container->usuarioDAO->setPeriodizado($userId);
 
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');

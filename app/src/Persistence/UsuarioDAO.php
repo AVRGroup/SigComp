@@ -589,7 +589,43 @@ class UsuarioDAO extends BaseDAO
             }
         }
     }
-    
+
+    public function setPeriodizado($userId)
+    {
+        $medalhaPeriodoAtual = $this->getMedalhaDoPeriodoAtual($userId);
+
+        if(isset($medalhaPeriodoAtual)) {
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
+        }
+        else{
+            $sql = "DELETE FROM medalha_usuario WHERE usuario = $userId AND medalha = 20";
+        }
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getMedalhaDoPeriodoAtual($userId)
+    {
+        $periodoAtual = $this->getUsersPeriodoAtual($userId);
+
+        $sql = "SELECT * FROM medalha_usuario WHERE usuario = $userId AND medalha = $periodoAtual";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getUsersPeriodoAtual($userId)
+    {
+        $sql = "SELECT nota.periodo FROM usuario 
+        JOIN nota ON usuario.id = nota.usuario JOIN disciplina ON nota.disciplina = disciplina.id WHERE usuario.id = '$userId' GROUP BY periodo";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+
+        return sizeof($results);
+    }
 
     public function getUsersPeriodo($periodo){
         $sql = "Select distinct u.id, u.nome from db_gamificacao.usuario  as u inner join db_gamificacao.nota on u.id = nota.usuario where nota.periodo = '$periodo'";
