@@ -95,14 +95,16 @@ class AdminController
                     }
                 }
             }
+            $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
+            $this->calculaIra(true);
+            $this->calculaIra(false);
+
+            $this->abreviaTodosNomes(false);
+
+            return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
-        $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
-        $this->calculaIra(true);
-        $this->calculaIra(false);
 
-        $this->abreviaTodosNomes(false);
-
-        return $response->withRedirect($this->container->router->pathFor('assignMedals'));
+        return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
     public function calculaIra($calcularIraPeriodoPassado){
@@ -320,7 +322,6 @@ class AdminController
 
     public function adminData(Request $request, Response $response, $args)
     {
-
         return $this->container->view->render($response, 'data.tpl');
     }
 

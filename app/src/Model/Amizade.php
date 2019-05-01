@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="amizade")
  */
 
-class Amizade implements toIdArrayInterface{
+class Amizade implements toIdArrayInterface {
 
     /**
      * @ORM\Id
@@ -38,12 +38,6 @@ class Amizade implements toIdArrayInterface{
      * @ORM\Column(type="enum")
      */
     protected $estado;
-
-    public function __construct()
-    {
-        $this->notas = new ArrayCollection();
-    }
-
 
     public function getIdentifier()
     {
