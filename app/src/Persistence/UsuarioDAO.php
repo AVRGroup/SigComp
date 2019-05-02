@@ -603,7 +603,7 @@ class UsuarioDAO extends BaseDAO
     {
         $medalhaPeriodoAtual = $this->getMedalhaDoPeriodoAtual($userId);
 
-        if(isset($medalhaPeriodoAtual)) {
+        if(sizeof($medalhaPeriodoAtual) != 0) {
             $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
         }
         else{

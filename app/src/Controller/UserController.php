@@ -296,6 +296,7 @@ class UserController
 
         $allUserIds = $this->container->usuarioDAO->getAllUsersIds();
         foreach ($allUserIds as $userId) {
+            $userId = $userId['id'];
             //ficou um pouco confuso, mas o get recebe o tipo do certificado (da model 'Certificado.php') e o set recebe o numero da primeira medalha (da tabela 'medalha')
             $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(18, $userId), 22);
             $this->container->usuarioDAO->setByNumMedalha($this->container->usuarioDAO->getByTipoCertificado(19, $userId), 30);
