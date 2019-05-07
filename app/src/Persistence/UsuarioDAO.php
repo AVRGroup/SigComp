@@ -601,9 +601,10 @@ class UsuarioDAO extends BaseDAO
 
     public function setPeriodizado($userId)
     {
-        $medalhaPeriodoAtual = $this->getMedalhaDoPeriodoAtual($userId);
+        $periodoAtual = $this->getUsersPeriodoAtual($userId);
+        $medalhaPeriodoAtual = $this->getMedalhasPeriodoCompleto($userId, $periodoAtual);
 
-        if(sizeof($medalhaPeriodoAtual) != 0) {
+        if(sizeof($medalhaPeriodoAtual) == 0) {
             $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
         }
         else{
@@ -611,17 +612,6 @@ class UsuarioDAO extends BaseDAO
         }
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-    }
-
-    public function getMedalhaDoPeriodoAtual($userId)
-    {
-        $periodoAtual = $this->getUsersPeriodoAtual($userId);
-
-        $sql = "SELECT * FROM medalha_usuario WHERE usuario = $userId AND medalha = $periodoAtual";
-        $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
     }
 
     public function getUsersPeriodoAtual($userId)
@@ -634,6 +624,15 @@ class UsuarioDAO extends BaseDAO
         $results =  $stmt->fetchAll();
 
         return sizeof($results);
+    }
+
+    public function getMedalhasPeriodoCompleto($userId, $periodoAtual)
+    {
+        $sql = "SELECT * FROM medalha_usuario WHERE usuario = $userId AND medalha <= $periodoAtual";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     public function getUsersPeriodo($periodo){
