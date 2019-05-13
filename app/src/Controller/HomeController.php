@@ -24,8 +24,7 @@ class HomeController
     {
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
-        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId()) ;
-
+        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
@@ -41,7 +40,6 @@ class HomeController
             try {
                 if($pesquisa){
                     $this->container->view['usuariosPesquisados'] = $this->container->usuarioDAO->getByNomeComAmizade($pesquisa, $user->getId());
-
                 }
                 else {
                     $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
@@ -69,8 +67,6 @@ class HomeController
                         }
                     }
                 }
-
-
             } catch (\Exception $e) {
                 echo $e->getTraceAsString();
                 // TODO Error message

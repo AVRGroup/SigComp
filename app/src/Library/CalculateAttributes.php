@@ -2,29 +2,12 @@
 
 namespace App\Library;
 
-
 use App\Model\Certificado;
 use App\Model\Nota;
 use App\Model\Usuario;
 
 class CalculateAttributes
 {
-
-    public static function updateUsuarioCultura(Usuario $usuario)
-    {
-        $usuario->setCultura(0);
-
-        // Calculo das Notas
-        foreach ($usuario->getCertificados() as $certificado) {
-            /** @var Certificado $certificado */
-            if (!$certificado->getValido()) {
-                continue;
-            }
-
-            $usuario->setCultura($usuario->getCultura() + 10);
-        }
-    }
-
     public static function calculateUsuarioStatistics(Usuario $usuario)
     {
         $usuario->setNivel(0)
@@ -54,5 +37,21 @@ class CalculateAttributes
 
         CalculateAttributes::updateUsuarioCultura($usuario);
     }
+
+    public static function updateUsuarioCultura(Usuario $usuario)
+    {
+        $usuario->setCultura(0);
+
+        // Calculo das Notas
+        foreach ($usuario->getCertificados() as $certificado) {
+            /** @var Certificado $certificado */
+            if (!$certificado->getValido()) {
+                continue;
+            }
+
+            $usuario->setCultura($usuario->getCultura() + 10);
+        }
+    }
+
 
 }

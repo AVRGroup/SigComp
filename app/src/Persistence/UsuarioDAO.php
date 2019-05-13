@@ -604,7 +604,7 @@ class UsuarioDAO extends BaseDAO
         $periodoAtual = $this->getUsersPeriodoAtual($userId);
         $medalhaPeriodoAtual = $this->getMedalhasPeriodoCompleto($userId, $periodoAtual);
 
-        if(sizeof($medalhaPeriodoAtual) == 0) {
+        if(sizeof($medalhaPeriodoAtual) == $periodoAtual - 1) {
             $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
         }
         else{
@@ -617,7 +617,8 @@ class UsuarioDAO extends BaseDAO
     public function getUsersPeriodoAtual($userId)
     {
         $sql = "SELECT nota.periodo FROM usuario 
-        JOIN nota ON usuario.id = nota.usuario JOIN disciplina ON nota.disciplina = disciplina.id WHERE usuario.id = '$userId' GROUP BY periodo";
+                JOIN nota ON usuario.id = nota.usuario 
+                WHERE usuario.id = $userId GROUP BY periodo";
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();

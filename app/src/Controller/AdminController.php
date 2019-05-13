@@ -340,47 +340,6 @@ class AdminController
         return $this->container->view->render($response, 'adminDashboard.tpl');
     }
 
-    public function formataSemestre($mesInicio){
-        return $mesInicio > 6 ? '3' : '1';
-    }
-
-    public function getPeriodoLegivel($certificado) : string {
-        $anoInicio  = $certificado->getDataInicio()->format('Y');
-        $mesInicio  = $certificado->getDataInicio()->format('m');
-
-        $periodo = $anoInicio . '.' . $this->formataSemestre($mesInicio);
-
-        if($certificado->getDataInicio1() != null) {
-
-            $anoInicio = $certificado->getDataInicio1()->format('Y');
-            $mesInicio = $certificado->getDataInicio1()->format('m');
-
-            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
-
-        }
-
-        if($certificado->getDataInicio2() != null) {
-            $anoInicio = $certificado->getDataInicio2()->format('Y');
-            $mesInicio = $certificado->getDataInicio2()->format('m');
-
-
-            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
-        }
-
-        return $periodo;
-    }
-
-    public function horasTotais($certificados){
-        $horas = 0;
-
-        foreach ($certificados as $certificado){
-            $horas += $certificado->getNumHoras();
-        }
-
-        return $horas;
-    }
-
-
     public function exportPDFAction(Request $request, Response $response, $args){
         $aluno = $this->container->usuarioDAO->getById($args['id']);
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
@@ -406,9 +365,10 @@ class AdminController
 
         foreach ($certificados as $certificado){
 
-            $periodo = $this->getPeriodoLegivel($certificado);
+            $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
+            $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
-            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodo ."</td>";
+            $html .= '<tr><atd style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio . '<br>' . $periodoFim ."</atd>";
             $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
             $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
         }
@@ -426,6 +386,73 @@ class AdminController
             array(
                 "Attachment" => true //Para realizar o download somente alterar para true
             ));
+    }
+
+    public function horasTotais($certificados){
+        $horas = 0;
+
+        foreach ($certificados as $certificado){
+            $horas += $certificado->getNumHoras();
+        }
+
+        return $horas;
+    }
+
+    public function getPeriodoInicioLegivel($certificado) : string {
+        $anoInicio  = $certificado->getDataInicio()->format('Y');
+        $mesInicio  = $certificado->getDataInicio()->format('m');
+
+        $periodo = $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
+        if($certificado->getDataInicio1() != null) {
+
+            $anoInicio = $certificado->getDataInicio1()->format('Y');
+            $mesInicio = $certificado->getDataInicio1()->format('m');
+
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
+        }
+
+        if($certificado->getDataInicio2() != null) {
+            $anoInicio = $certificado->getDataInicio2()->format('Y');
+            $mesInicio = $certificado->getDataInicio2()->format('m');
+
+
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+        }
+
+        return $periodo;
+    }
+
+    public function getPeriodoFimLegivel($certificado) : string {
+        $anoInicio  = $certificado->getDataFim()->format('Y');
+        $mesInicio  = $certificado->getDataFim()->format('m');
+
+        $periodo = $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
+        if($certificado->getDataFim1() != null) {
+
+            $anoInicio = $certificado->getDataFim1()->format('Y');
+            $mesInicio = $certificado->getDataFim1()->format('m');
+
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+
+        }
+
+        if($certificado->getDataFim2() != null) {
+            $anoInicio = $certificado->getDataFim2()->format('Y');
+            $mesInicio = $certificado->getDataFim2()->format('m');
+
+
+            $periodo .= '<br>' . $anoInicio . '.' . $this->formataSemestre($mesInicio);
+        }
+
+        return $periodo;
+    }
+
+
+    public function formataSemestre($mesInicio){
+        return $mesInicio > 6 ? '3' : '1';
     }
 
     public function listAlunosLogaramAction(Request $request, Response $response, $args){
