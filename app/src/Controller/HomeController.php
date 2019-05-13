@@ -90,6 +90,7 @@ class HomeController
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
         $this->container->view['notificacoes'] = $notificacoes;
+        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
 
         return $this->container->view->render($response, 'home.tpl');
     }
@@ -144,7 +145,21 @@ class HomeController
         return -1;
     }
 
+    public function getPeriodoAtual()
+    {
+        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
+        $ano = $ultimaCarga[0];
+        $mes = intval($ultimaCarga[1]);
 
+        if($mes > 6) {
+            $periodo = $ano . 3;
+        }
+        else {
+            $periodo = $ano . 1;
+        }
+
+        return $periodo;
+    }
     public function aboutAction(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'about.tpl');

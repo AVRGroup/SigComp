@@ -47,7 +47,7 @@
                         <textarea name="sobre_mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >{$usuario->getSobreMim()}</textarea>
                     </div>
 
-                    <div><h6>Grade: {$usuario->getGrade()}</h6></div>
+                    <div><span style="font-size: 12px">Grade: {$usuario->getGrade()} | Periodo {$periodoAtual}</span> </div>
 
                 </div>
             </div>
