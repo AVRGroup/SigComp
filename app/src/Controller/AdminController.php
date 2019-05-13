@@ -368,7 +368,9 @@ class AdminController
             $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
             $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
-            $html .= '<tr><atd style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio . '<br>' . $periodoFim ."</atd>";
+            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio;
+            if($periodoFim > $periodoInicio)
+                $html .= ' a ' . $periodoFim ."</td>";
             $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
             $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
         }
