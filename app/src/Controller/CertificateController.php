@@ -137,8 +137,7 @@ class CertificateController
 
         if($numHoras > 240 && in_array($tipo, $max240Horas))
             return 240;
-
-
+        
         return $numHoras;
     }
 

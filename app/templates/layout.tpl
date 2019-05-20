@@ -12,7 +12,7 @@
         gtag('config', 'UA-131900774-1');
     </script>
 
-    <title>Gameficação</title>
+    <title>Gamificação</title>
     <meta charset="utf-8">
     <meta name="robots" content="index,follow" />
     <meta name="Description" content="Gameficação" />

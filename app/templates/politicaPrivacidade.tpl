@@ -15,7 +15,7 @@
         preencher o formulário, desmarque opção <b>“Quero que meu nome não seja exibido”</b>. Essas opções podem ser alteradas a qualquer momento
     </p>
 
-    <p><b>Por padrão IRA será exibido caso esteja entre os 10 melhores</b></p>
+    <p><b>Por padrão o IRA será exibido caso esteja entre os 10 melhores</b></p>
 
     <p>
         O sistema <b>não reivindica o direito</b> das informações pessoais que você disponibiliza para sua conta, como os links
@@ -25,13 +25,13 @@
     <p>O sistema não <b>coleta nenhum tipo de informação sobre você</b>, além é claro das que você explicitamente conceder.</p>
 
     <p>
-        As pontuações de inteligência, sabedoria, destreza, força, carisma e cultura são arbitrárias, baseadas nas notas
+        As pontuações de inteligência, sabedoria, destreza, força e cultura são arbitrárias, baseadas nas notas
         de certas disciplinas. Elas não refletem de forma alguma a realidade.
     </p>
 
     <p>Podemos pedir para concordar com termos adicionais futuros relativos a possíveis novos serviços.</p>
 
-    <p>Em caso de dúvidas, mande um e-mail para xxxx@xxxx.com</p>
+    <p>Em caso de dúvidas, mande um e-mail para gamificacaoufjf@gmail.com</p>
 
     <hr>
 
