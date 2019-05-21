@@ -24,8 +24,6 @@
 
     {*FORM PARA ADICIONAR CERTIFICADO*}
     <form method="post" enctype="multipart/form-data">
-
-
         <div style="margin-left: 15%" class="custom-file col-8">
             <input  type="file" class="custom-file-input" id="certificate" name="certificate">
             <label class="custom-file-label" for="certificate">Selecionar certificado</label>

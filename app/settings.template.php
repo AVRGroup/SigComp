@@ -37,7 +37,7 @@ return [
         //Upload Path
         'upload' => [
             'path' => __DIR__ . '/../public/upload',
-            'allowedCertificationExtensions' => ['jpg', 'jpeg', 'png'],
+            'allowedCertificationExtensions' => ['jpg', 'jpeg', 'png', 'pdf'],
             'allowedPictureExtensions' => ['jpg', 'jpeg', 'png'],
             'allowedDataLoadExtensions' => ['csv'],
             'maxBytesSize' => 2097152
