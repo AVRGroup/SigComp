@@ -18,12 +18,26 @@ class ForumController{
     }
 
     public function showForumAction(Request $request, Response $response, $args){
-        $allCategories = $this->container->categoriaDAO->getAll();
         $user = $request->getAttribute('user');
+        $this->container->view['user'] = $user;
+
         $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
-        $this->container->view['categoriesFull'] = $allCategories;
+        $this->container->view['categoriesFull'] = $this->container->categoriaDAO->getAll();
+        $this->container->view['topicosPorCategoria'] = $this->getTopicosPorCategoria();
 
         return $this->container->view->render($response, 'forumMain.tpl');
+    }
+
+    public function getTopicosPorCategoria()
+    {
+        $databaseResponse = $this->container->categoriaDAO->getQuantidadeTopicos();
+        $topicosPorCategoria = [];
+
+        foreach ($databaseResponse as $topicoPorCategoria) {
+            $topicosPorCategoria[$topicoPorCategoria['id']] = $topicoPorCategoria['quantidade'];
+        }
+
+        return $topicosPorCategoria;
     }
 
     public function listCategoriesAction(Request $request, Response $response, $args){

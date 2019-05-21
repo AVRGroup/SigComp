@@ -10,7 +10,6 @@ $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
 
-    $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
     $this->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
@@ -25,16 +24,13 @@ $app->group('', function () {
     $this->get('/recusar-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:rejeitarConviteAction')->setName('recusarAmizade');
     $this->map(['GET', 'POST'], '/lista-amigos/{id: [0-9]+}', '\App\Controller\UserController:listarAmigosAction')->setName('listaAmigos');
 
-    $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
+    $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
     $this->map(['GET', 'POST'], '/forum/novoTopico', '\App\Controller\ForumController:novoTopicoAction')->setName('novoTopico');
-
     $this->get('/forum/categorias/{id:[0-9]+}', '\App\Controller\ForumController:showCategoryAction')->setName('showCategory');
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 
     $this->get('/exportPDF/{id:[0-9]+}', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
-
-
 
     $this->group('/admin', function () {
 
@@ -59,6 +55,7 @@ $app->group('', function () {
 
         $this->get('/lista-alunos-logaram', '\App\Controller\AdminController:listAlunosLogaramAction')->setName('alunosLogaram');
 
+        $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
     })->add('\App\Middleware\AdminMiddleware');
 
     $this->group('/admin', function () {

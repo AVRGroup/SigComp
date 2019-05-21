@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManager;
 
 class CategoriaDAO extends BaseDAO
 {
-
     public function __construct(EntityManager $db)
     {
         $this->em = $db;
@@ -70,5 +69,14 @@ class CategoriaDAO extends BaseDAO
             $categoria = null;
         }
         return $categoria;
+    }
+
+    public function getQuantidadeTopicos()
+    {
+        $sql = "SELECT categoria.id, COUNT(*) as quantidade FROM categoria JOIN topico ON categoria.id = topico.categoria GROUP BY topico.categoria;";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

@@ -9,6 +9,7 @@
 namespace App\Model;
 
 use App\Library\ToIdArrayInterface;
+use App\Persistence\CategoriaDAO;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -43,6 +44,7 @@ class Categoria implements ToIdArrayInterface
      * @ORM\JoinColumn(name="categoria", referencedColumnName="id", nullable=false)
      */
     protected $categoria_topicos;
+
 
     /**
      * @param mixed $nome
