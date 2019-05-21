@@ -25,7 +25,11 @@
 
         <div class="col-4">
             <a id="link-img" href="{base_url}/upload/{$certificate->getNome()}" target="_blank">
-                <img class="card-img-top img-certificado" src="{base_url}/upload/{$certificate->getNome()}">
+                {if $certificate->getExtensao() == "pdf"}
+                    <embed src="{base_url}/upload/{$certificate->getNome()}" type="application/pdf">
+                {else}
+                    <img class="card-img-top" src="{base_url}/upload/{$certificate->getNome()}">
+                {/if}
             </a>
         </div>
 

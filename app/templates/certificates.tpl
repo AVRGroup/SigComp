@@ -73,7 +73,13 @@
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $certificates as $certificate}
             <div class="card">
-                <a href="{base_url}/upload/{$certificate->getNome()}" target="_blank"><img class="card-img-top" src="{base_url}/upload/{$certificate->getNome()}"></a>
+                <a href="{base_url}/upload/{$certificate->getNome()}" target="_blank">
+                    {if $certificate->getExtensao() == "pdf"}
+                        <embed src="{base_url}/upload/{$certificate->getNome()}" type="application/pdf">
+                    {else}
+                        <img class="card-img-top" src="{base_url}/upload/{$certificate->getNome()}">
+                    {/if}
+                </a>
                 <div class="card-body d-flex flex-column justify-content-end">
                     <p class="card-text text-center"><span class="badge badge-pill badge-dark">{$certificate->getNomeTipo()}</span><br/>
                         {if $certificate->getValido()}
