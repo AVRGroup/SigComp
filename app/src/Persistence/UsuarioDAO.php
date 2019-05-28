@@ -46,7 +46,6 @@ class UsuarioDAO extends BaseDAO
             $usuario = null;
         }
 
-
         return $usuario;
     }
 

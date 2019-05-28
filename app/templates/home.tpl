@@ -4,7 +4,6 @@
         <div class="row">
             <div class="col-3">
                 <div class="text-center">
-
                     <div class="changePic">
                         <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
@@ -145,12 +144,9 @@
                         <a class="nav-link" data-toggle="tab" id="possible-tab" role="tab" href="#possible">Medalhas Possíveis</a>
                     </li>
                 </ul>
-                <div class="tab-content" id="badgesTabContent">
-
-
+                    <div class="tab-content" id="badgesTabContent">
                     {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
                         <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
-
                             <table>
                                 <tbody>
                                 {$novaLinha = 1}

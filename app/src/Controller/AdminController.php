@@ -477,9 +477,9 @@ class AdminController
 
         $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['isAdmin'] = true;
-
         $this->container->view['usuario'] = $usuario;
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();
+
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
