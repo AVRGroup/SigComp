@@ -268,7 +268,12 @@
                     {foreach $top10Ira as $user}
                         <tr>
                             <th scope="row">{$i++}</th>
-                            <td>{if $user->getNomeReal()}{$user->getNomeAbreviado()} {else}USUARIO {$user->getId()}{/if}</td>
+                            <td>{if $user->getNomeReal()}
+                                    {$user->getNomeAbreviado()}
+                                {else}
+                                    USUARIO {$user->getId()}
+                                {/if}
+                            </td>
                             <td>{$user->getIra()|string_format:"%.2f"}</td>
                         </tr>
                     {/foreach}

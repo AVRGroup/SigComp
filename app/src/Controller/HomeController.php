@@ -28,6 +28,7 @@ class HomeController
 
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
+            $user->setNomeReal(true);
             $this->container->usuarioDAO->save($user);
 
             return $this->container->view->render($response, 'politicaPrivacidade.tpl');
