@@ -28,11 +28,6 @@ class CertificateController
                 $this->container->view['error'] = 'Selecione o tipo de certificado!';
             } else {
                 $extension = mb_strtolower(pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
-                $user = $request->getAttribute('user');
-
-                if($user->isAdmin())
-                    die(var_dump($extension));
-
                 if(!in_array($extension, $this->container->settings['upload']['allowedCertificationExtensions']) || $uploadedFile->getSize() > $this->container->settings['upload']['maxBytesSize']) {
                     $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
                 } else {
