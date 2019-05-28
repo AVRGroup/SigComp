@@ -10,9 +10,10 @@
     <p>Nosso sistema tem as informações de todas suas notas, <b>mas ninguém além do administrador do sistema</b> terá acesso à elas.</p>
 
     <p>
-        Caso você esteja entre os 10 melhores IRAs do curso, seu IRA será mostrado em uma tabela para todos que
-        utilizarem o sistema, mas seu <b>nome permanecerá oculto</b>. Caso queira que seu nome <b>seja exibido</b>, vá na página de <b>Informações Pessoais</b> e, ao
-        preencher o formulário, desmarque opção <b>“Quero que meu nome não seja exibido”</b>. Essas opções podem ser alteradas a qualquer momento
+        O sistema exibe os <b>10 melhores IRAs</b> do curso (geral e do período anterior). Usuários que nunca acessaram o sistema <b>tem seus nomes
+        ocultos </b> por padrão. Ao acessar o sistema pela primeira vez o nome do usuário poderá ser exibido se o mesmo estiver entre
+        os 10 primeiros em uma das duas listagens. Caso o usuário queira manter seu nome oculto, basta acessar o menu
+        "Informações Pessoais" e marcar a opção <b>“Quero que meu nome não seja exibido”</b>. Essa opção pode ser alterada a qualquer momento.
     </p>
 
     <p><b>Por padrão o IRA será exibido caso esteja entre os 10 melhores</b></p>

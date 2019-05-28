@@ -25,12 +25,6 @@
             <div class="col-8">
                 <label>Assunto</label>
                 <input type="text" name="topic_subject" class="form-control" id="topic_subject"><br>
-                <label>Categoria</label>
-                <select name="topic_cat">
-                    {foreach $categoriesFull as $category}
-                        <option value="{$category->getIdentifier()}">{$category->getNome()}</option>
-                    {/foreach}
-                </select>
             </div>
         </div>
         <div class="form-row">
