@@ -23,7 +23,7 @@
     <div class="row container">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a href="{path_for name="novoTopico" data['id' => $categoria->getIdentifier()]}" class="btn btn-primary active" role="button" aria-pressed="true">Novo tópico</a>
+                <a href="{path_for name="novoTopico" data=['id' => $categoria->getIdentifier()]}" class="btn btn-primary active" role="button" aria-pressed="true">Novo tópico</a>
             </li>
         </ul>
     </div>

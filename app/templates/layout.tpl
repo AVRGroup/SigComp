@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{base_url}/css/croppie.css"/>
     <link rel="stylesheet" href="{base_url}/css/style.css"/>
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 </head>
@@ -91,6 +90,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
+                                <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>

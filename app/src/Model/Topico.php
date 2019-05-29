@@ -28,9 +28,14 @@ class Topico implements ToIdArrayInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $assunto;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $conteudo;
 
     /**
      * @ORM\Column(type="string")

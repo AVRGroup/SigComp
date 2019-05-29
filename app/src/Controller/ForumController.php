@@ -96,16 +96,15 @@ class ForumController{
 
         try{
             if($request->isPost()){
+                $autor = $_SESSION['id'];
+                $topico->setUsuario($this->container->usuarioDAO->getById($autor));
+
                 $assunto = $request->getParsedBodyParam('topic_subject');
                 $data = date('Y-m-d H:i:s');
-                $categoria = $request->getParsedBodyParam('topic_cat');
-                $autor = $_SESSION['id'];
                 $conteudo = $request->getParsedBodyParam('post_content');
 
                 $topico->setAssunto($assunto);
                 $topico->setData($data);
-                $topico->setCategoria($this->container->categoriaDAO->getById($categoria));
-                $topico->setUsuario($this->container->usuarioDAO->getById($autor));
 
                 $this->container->topicoDAO->persist($topico);
                 $this->container->topicoDAO->flush();
@@ -126,7 +125,7 @@ class ForumController{
             $this->container->view['error'] = 'Você não tem categorias cadastradas!';
 
         $this->container->view['categoriesFull'] = $allCategories;
-        return $this->container->view->render($response, 'novoForum.tpl');
+        return $this->container->view->render($response, 'novoTopico.tpl');
     }
 
 }
