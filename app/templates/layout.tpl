@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{base_url}/css/croppie.css"/>
     <link rel="stylesheet" href="{base_url}/css/style.css"/>
+    <link rel="stylesheet" href="{base_url}/css/theme.bootstrap.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 </head>
@@ -135,6 +136,9 @@
 
 <!-- jQuery -->
 <script src="{base_url}/js/jquery-3.3.1.min.js"></script>
+
+<!-- Table Sorter -->
+<script src="{base_url}/js/jquery.tablesorter.combined.js"></script>
 
 <!-- Popper -->
 <script src="{base_url}/js/popper.min.js"></script>
@@ -281,6 +285,10 @@
         chart.draw(data, options);
     }
     //Fim do grafico de acessos
+
+    $(function() {
+        $("#tabela").tablesorter();
+    });
 </script>
 
 {block name=javascript}{/block}

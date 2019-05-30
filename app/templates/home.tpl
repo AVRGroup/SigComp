@@ -1,3 +1,4 @@
+
 {extends 'layout.tpl'}
 {block name=content}
     <div class="container">
