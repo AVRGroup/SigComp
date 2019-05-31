@@ -165,7 +165,7 @@
                                             {$novaLinha = 0}
                                             {while $i < $numMedalhas}
 
-                                                {if $numMedalhas > 1}
+                                                {if $numMedalhas >= 1}
                                                     <td>
                                                         <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
                                                             <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
