@@ -10,16 +10,13 @@ use App\Model\Disciplina;
 use App\Model\Grade;
 use App\Model\GradeDisciplina;
 use App\Model\Nota;
-use App\Model\PeriodoCorrente;
 use App\Model\Usuario;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Utility\IdentifierFlattener;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
+use PHPMailer\PHPMailer\Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 use Dompdf\Dompdf;
-
+use App\Library\MailSender;
 class AdminController
 {
 
@@ -344,8 +341,6 @@ class AdminController
         $aluno = $this->container->usuarioDAO->getById($args['id']);
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
 
-        $data = date('d M Y');
-
         $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
         $horas = $this->horasTotais($certificados);
 
@@ -380,7 +375,6 @@ class AdminController
 
 
         $dompdf = new Dompdf();
-        //$html = file_get_contents(__DIR__ . '/../../templates/teste.html');
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();

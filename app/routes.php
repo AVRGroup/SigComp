@@ -36,6 +36,8 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'],'/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
 
+        $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
+
         $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
