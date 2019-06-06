@@ -11,11 +11,11 @@
 
     <table style="margin-top: 4%" id="tabela" class="table table-hover">
         <thead class="thead-light">
-        <tr>
-            <th scope="col">Matrícula</th>
-            <th scope="col">Nome</th>
-            <th scope="col">IRA</th>
-            <th scope="col" width="20%">Email</th>
+        <tr style="font-size: 13px;">
+            <th scope="col">Matrícula ↑↓</th>
+            <th scope="col">Nome ↑↓</th>
+            <th scope="col">IRA ↑↓</th>
+            <th scope="col">Email ↑↓</th>
             <th scope="col"></th>
         </tr>
         </thead>
