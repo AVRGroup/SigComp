@@ -15,8 +15,8 @@
     <title>Gamificação</title>
     <meta charset="utf-8">
     <meta name="robots" content="index,follow" />
-    <meta name="Description" content="Gameficação" />
-    <meta name="Keywords" content="Gameficação" />
+    <meta name="Description" content="Gamificação" />
+    <meta name="Keywords" content="Gamificação" />
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
@@ -30,7 +30,7 @@
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{path_for name="home"}">Gameficação</a>
+        <a class="navbar-brand" href="{path_for name="home"}">Gamificação</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
