@@ -1,9 +1,8 @@
 <?php
 namespace App\Library;
 use PHPMailer\PHPMailer\PHPMailer;
-
-require_once ("../../../vendor/phpmailer/phpmailer/src/PHPMailer.php");
-require_once ("../../../vendor/phpmailer/phpmailer/src/SMTP.php");
+require_once (__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/PHPMailer.php');
+require_once (__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/SMTP.php');
 
 class MailSender
 {
