@@ -1,12 +1,14 @@
 <?php
 namespace App\Library;
 use PHPMailer\PHPMailer\PHPMailer;
-require_once (__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/PHPMailer.php');
-require_once (__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/SMTP.php');
+
+require_once(__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/PHPMailer.php');
+require_once(__DIR__ . '/../../../vendor/phpmailer/phpmailer/src/SMTP.php');
 
 class MailSender
 {
     protected $mail;
+
     public function __construct()
     {
         $this->mail = new PHPMailer;
@@ -28,7 +30,7 @@ class MailSender
         $mail->addAddress('gamificacaoufjf@gmail.com', 'Gamificacao UFJF');
 
         $mail->Subject = 'Novo Certificado';
-        $mail->Body = 'Teste corpo da mensagem';
+        $mail->Body = 'Temos um total de X certificados novos hoje';
 
         $mail->send();
     }

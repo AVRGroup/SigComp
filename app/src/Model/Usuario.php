@@ -29,28 +29,28 @@ class Usuario implements ToIdArrayInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $nome;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $nome_abreviado;
 
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     protected $curso;
 
     /**
-     * @ORM\Column(type="string", length=20, unique=true)
+     * @ORM\Column(type="string", length=20, unique=true, nullable=true)
      */
     protected $matricula;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     protected $grade;
 
@@ -134,19 +134,19 @@ class Usuario implements ToIdArrayInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Certificado", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true)
      */
     protected $certificados;
 
     /**
      * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true)
      */
     protected $notas;
 
     /**
      * @ORM\OneToMany(targetEntity="MedalhaUsuario", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true)
      */
     protected $medalhas_usuario;
 
@@ -156,22 +156,22 @@ class Usuario implements ToIdArrayInterface
     protected $nome_real;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      */
     protected $facebook;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      */
     protected $instagram;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      */
     protected $linkedin;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options={"default" : null})
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default" : null})
      */
     protected $lattes;
 
@@ -181,7 +181,7 @@ class Usuario implements ToIdArrayInterface
     protected $sobre_mim;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : 1})
+     * @ORM\Column(type="boolean", nullable=true, options={"default" : 1})
      */
     protected $primeiro_login;
 

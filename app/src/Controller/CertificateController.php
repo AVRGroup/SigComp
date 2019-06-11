@@ -94,6 +94,8 @@ class CertificateController
                             $certificado->setValido(true);
 
                         $this->container->certificadoDAO->save($certificado);
+                        $this->container->certificadoDAO->incrementNumberOfCertificates();
+
                         $this->container->view['success'] = true;
                     } catch (\Exception $e) {
                         unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());

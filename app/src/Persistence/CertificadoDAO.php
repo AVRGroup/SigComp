@@ -86,6 +86,30 @@ class CertificadoDAO extends BaseDAO
 
         return $certificados;
     }
+
+    public function incrementNumberOfCertificates()
+    {
+        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade = quatidade + 1 WHERE id = 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+    
+    public function getNumberOfCertificates()
+    {
+        $sql = "SELECT quantidade FROM db_gamificacao.certificados_diarios WHERE id = 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function selectNumerOfCertificates()
+    {
+        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade = 0 WHERE id = 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
 }
 
 
