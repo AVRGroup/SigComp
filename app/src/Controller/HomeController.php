@@ -221,8 +221,6 @@ class HomeController
 
     public function calculaPosicaoGeral($idAluno)
     {
-        $this->container->usuarioDAO->getPosicaoAluno($idAluno);
-
-        return 10;
+        return $this->container->usuarioDAO->getPosicaoAluno($idAluno);
     }
 }

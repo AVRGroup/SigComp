@@ -704,7 +704,7 @@ class UsuarioDAO extends BaseDAO
 
         $percentil = ($posicao * 100)/$totalAlunos;
 
-        return 100 - $percentil;
+        return number_format(100 - $percentil, 0);
     }
 
     public function getQuantidadeAlunos()

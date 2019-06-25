@@ -4,6 +4,7 @@
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131900774-1"></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){ dataLayer.push(arguments);}
@@ -152,6 +153,8 @@
 
 <!-- Google Charts -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 
 
 <script>

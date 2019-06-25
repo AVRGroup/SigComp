@@ -312,6 +312,11 @@
             </div>
         </div>
 
+        <div style="height: 100px" >
+            <canvas id="myChart"></canvas>
+        </div>
+        <input id="posicao" type="hidden" value="{$posicaoGeral}">
+
         <hr>
         {if isset($isAdmin) && $isAdmin}
             <a href="{path_for name="exportPDF" data=["id" => $usuario->getId()]}" class="btn btn-danger">Certificados do Aluno</a>
@@ -438,6 +443,43 @@
             });
 
             return false;
+        }
+    });
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    ctx.height = 200;
+    var posicao = document.getElementById('posicao').value;
+
+    var chart = new Chart(ctx, {
+        type: 'horizontalBar',
+
+        data: {
+            labels: ['Sua Posição'],
+            datasets: [{
+                label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
+                data: [posicao, 100, 0],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+
+        // Configuration options go here
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                enabled: false
+            },
+            legend: {
+                onClick: function (e) {
+                    e.stopPropagation();
+                }
+            }
         }
     });
 </script>
