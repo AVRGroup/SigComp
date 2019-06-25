@@ -89,14 +89,14 @@ class CertificadoDAO extends BaseDAO
 
     public function incrementNumberOfCertificates()
     {
-        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade = quatidade + 1 WHERE id = 1";
+        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade_certificados = quantidade_certificados + 1 WHERE id = 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }
     
     public function getNumberOfCertificates()
     {
-        $sql = "SELECT quantidade FROM db_gamificacao.certificados_diarios WHERE id = 1";
+        $sql = "SELECT quantidade_certificados FROM db_gamificacao.certificados_diarios WHERE id = 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
@@ -104,9 +104,9 @@ class CertificadoDAO extends BaseDAO
         return $results;
     }
 
-    public function selectNumerOfCertificates()
+    public function setNumberOfCertificates()
     {
-        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade = 0 WHERE id = 1";
+        $sql = "UPDATE db_gamificacao.certificados_diarios SET quantidade_certificados = 0 WHERE id = 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }

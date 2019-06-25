@@ -4,8 +4,7 @@ $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginActio
 
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
-
-
+$app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:sendMailAction')->setName('sendMail');
 
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');

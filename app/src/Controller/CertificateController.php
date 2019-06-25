@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
+use App\Library\MailSender;
 
 class CertificateController
 {
@@ -309,6 +310,22 @@ class CertificateController
         catch (\Exception $e) {
             die(var_dump($e));
         }
+    }
+
+    public function sendMailAction(Request $request, Response $response, $args)
+    {
+        $mail = new MailSender();
+
+        $quantidadeCertificados = $this->container->certificadoDAO->getNumberOfCertificates();
+        $quantidadeCertificados = intval($quantidadeCertificados[0]['quantidade_certificados']);
+
+        if($quantidadeCertificados >= 1) {
+            $mail->sendMail();
+            $this->container->certificadoDAO->setNumberOfCertificates();
+            return "EMAIL ENVIADO";
+        }
+
+        return "EMAIL NÂO ENVIADO";
     }
 
 }

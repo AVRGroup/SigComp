@@ -28,6 +28,11 @@ class PeriodoCorrente implements toIdArrayInterface {
 
     public function getIdentifier()
     {
-        // TODO: Implement getIdentifier() method.
+       return $this->id;
+    }
+
+    public function getUltimaCarga()
+    {
+        return $this->ultima_carga;
     }
 }
