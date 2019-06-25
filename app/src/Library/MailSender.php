@@ -22,7 +22,7 @@ class MailSender
         $this->mail->Password = "prj#game";
     }
 
-    public function sendMail()
+    public function sendMail($numeroCertificados)
     {
         $mail = $this->mail;
 
@@ -30,7 +30,7 @@ class MailSender
         $mail->addAddress('gamificacaoufjf@gmail.com', 'Gamificacao UFJF');
 
         $mail->Subject = 'Novo Certificado';
-        $mail->Body = 'Temos um total de X certificados novos hoje';
+        $mail->Body = 'Temos um total de '. $numeroCertificados .' certificados novos hoje';
 
         $mail->send();
     }

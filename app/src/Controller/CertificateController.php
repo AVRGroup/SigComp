@@ -320,7 +320,7 @@ class CertificateController
         $quantidadeCertificados = intval($quantidadeCertificados[0]['quantidade_certificados']);
 
         if($quantidadeCertificados >= 1) {
-            $mail->sendMail();
+            $mail->sendMail($quantidadeCertificados);
             $this->container->certificadoDAO->setNumberOfCertificates();
             return "EMAIL ENVIADO";
         }
