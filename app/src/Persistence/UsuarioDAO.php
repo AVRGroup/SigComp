@@ -683,7 +683,39 @@ class UsuarioDAO extends BaseDAO
 
         return $periodoCorrente[0]['ultima_carga'];
     }
-    
 
+    public function getPosicaoAluno($id)
+    {
+        $sql = "SELECT id, ira FROM usuario ORDER BY ira DESC";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $alunos = $stmt->fetchAll();
+        $posicao = 1;
+
+        foreach ($alunos as $aluno) {
+            if($aluno['id'] == $id) {
+                break;
+            }
+            $posicao++;
+        }
+
+        $totalAlunos = $this->getQuantidadeAlunos();
+
+        $percentil = ($posicao * 100)/$totalAlunos;
+
+        return 100 - $percentil;
+    }
+
+    public function getQuantidadeAlunos()
+    {
+        $sql = "SELECT COUNT(id) as qtd FROM usuario";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $quantidade = $stmt->fetchAll()[0]['qtd'] - 2;
+
+        return $quantidade;
+    }
 
 }
