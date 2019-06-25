@@ -240,6 +240,11 @@
             </div>
         </div>
 
+
+        <div style="height: 100px; margin-top: 40px" >
+            <canvas id="myChart"></canvas>
+        </div>
+
         <div class="row">
             <div class="col-6" style="margin-top: 1.8%">
                 <div class="row">
@@ -312,9 +317,6 @@
             </div>
         </div>
 
-        <div style="height: 100px" >
-            <canvas id="myChart"></canvas>
-        </div>
         <input id="posicao" type="hidden" value="{$posicaoGeral}">
 
         <hr>
