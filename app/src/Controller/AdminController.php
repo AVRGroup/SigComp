@@ -477,6 +477,7 @@ class AdminController
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
 
         return $this->container->view->render($response, 'home.tpl');
     }
