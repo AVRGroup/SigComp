@@ -27,10 +27,12 @@ class MailSender
         $mail = $this->mail;
 
         $mail->setFrom('gamificacaoufjf@gmail.com', 'Gamificacao UFJF');
-        $mail->addAddress('gamificacaoufjf@gmail.com', 'Gamificacao UFJF');
+        $mail->addAddress('bolsistacomputacaonoturno@gmail.com', 'Bolsista');
 
-        $mail->Subject = 'Novo Certificado';
-        $mail->Body = 'Temos um total de '. $numeroCertificados .' certificados novos hoje';
+        $mail->Subject = 'SigComp - Novos Certificados para Validação';
+        $mail->Body =
+            "<p> Prezado(a) bolsista, </p>
+             <p>Há novos certificados no sistema <a href='http://sigcomp.nre.ice.ufjf.br'>SigComp</a> para avaliação.</p>";
 
         $mail->send();
     }
