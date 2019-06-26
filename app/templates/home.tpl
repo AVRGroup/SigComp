@@ -462,10 +462,10 @@
                 label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
                 data: [posicao, 100, 0],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)'
+                    'rgba(41, 128, 185, 0.4)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)'
+                    'rgba(41, 128, 185, 1.0)'
                 ],
                 borderWidth: 1
             }]
