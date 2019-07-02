@@ -90,7 +90,7 @@ class ForumController{
 
     public function novoTopicoAction(Request $request, Response $response, $args){
         $topico = new Topico();
-        $resposta = new Resposta();
+        $categoria = $this->container->categoriaDAO->getById($args['id']);
 
         $allCategories = $this->container->categoriaDAO->getAll();
 
@@ -104,17 +104,13 @@ class ForumController{
                 $conteudo = $request->getParsedBodyParam('post_content');
 
                 $topico->setAssunto($assunto);
+                $topico->setConteudo($conteudo);
                 $topico->setData($data);
+                $topico->setCategoria($categoria);
 
                 $this->container->topicoDAO->persist($topico);
                 $this->container->topicoDAO->flush();
 
-                $resposta->setAutor($this->container->usuarioDAO->getById($autor));
-                $resposta->setConteudo($conteudo);
-                $resposta->setData($data);
-                $resposta->setTopico($topico);
-                $this->container->respostaDAO->persist($topico);
-                $this->container->respostaDAO->flush();
                 $this->container->view['success'] = true;
             }
         }catch (\Exception $e){

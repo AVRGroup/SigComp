@@ -129,4 +129,30 @@ class Topico implements ToIdArrayInterface
     {
         return $this->respostas_topico;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConteudo()
+    {
+        return $this->conteudo;
+    }
+
+    /**
+     * @param mixed $conteudo
+     */
+    public function setConteudo($conteudo): void
+    {
+        $this->conteudo = $conteudo;
+    }
+
+
 }

@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <th>Tópico</th>
+            <th>Autor</th>
             <th>Criação</th>
         </tr>
         </thead>
@@ -13,8 +14,11 @@
                 <td class="leftpart">
                     <a href="topic.php?id={$topic->getIdentifier()}">{$topic->getAssunto()}</a><br>
                 </td>
+                <td>
+                    {$topic->getUsuario()->getNomeAbreviado()}
+                </td>
                 <td class="rightpart">
-                    {$topic->getData()}
+                    {date_format(date_create($topic->getData()), 'd/m/y')}
                 </td>
             </tr>
         {/foreach}
