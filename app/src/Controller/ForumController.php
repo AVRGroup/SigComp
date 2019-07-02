@@ -124,4 +124,13 @@ class ForumController{
         return $this->container->view->render($response, 'novoTopico.tpl');
     }
 
+    public function showTopicoAction(Request $request, Response $response, $args)
+    {
+        $topico = $this->container->topicoDAO->getById($args['id']);
+
+        $this->container->view['topico'] = $topico;
+
+        return $this->container->view->render($response, 'topic.tpl');
+    }
+
 }

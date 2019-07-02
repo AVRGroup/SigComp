@@ -45,4 +45,16 @@ class TopicoDAO extends BaseDAO
         return $topicos;
     }
 
+    public function getById($id)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Topico as t WHERE t.id = :id");
+            $query->setParameter('id', $id);
+            $topico = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $topico = null;
+        }
+        return $topico;
+    }
+
 }

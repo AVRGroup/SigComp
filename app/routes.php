@@ -26,6 +26,7 @@ $app->group('', function () {
     $this->get('/forum', '\App\Controller\ForumController:showForumAction')->setName('forum');
     $this->map(['GET', 'POST'], '/forum/novoTopico/{id:[0-9]+}', '\App\Controller\ForumController:novoTopicoAction')->setName('novoTopico');
     $this->get('/forum/categorias/{id:[0-9]+}', '\App\Controller\ForumController:showCategoryAction')->setName('showCategory');
+    $this->map(['GET', 'POST'],'/forum/topico/{id:[0-9]+}', '\App\Controller\ForumController:showTopicoAction')->setName('visualizarTopico');
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 

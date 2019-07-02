@@ -12,13 +12,13 @@
         {foreach $topicsFull as $topic}
             <tr>
                 <td class="leftpart">
-                    <a href="topic.php?id={$topic->getIdentifier()}">{$topic->getAssunto()}</a><br>
+                    <a href="{base_url}/forum/topico/{$topic->getId()}">{$topic->getAssunto()}</a><br>
                 </td>
                 <td>
                     {$topic->getUsuario()->getNomeAbreviado()}
                 </td>
                 <td class="rightpart">
-                    {date_format(date_create($topic->getData()), 'd/m/y')}
+                    {date_format(date_create($topic->getData()), 'd/m/y ')}
                 </td>
             </tr>
         {/foreach}
