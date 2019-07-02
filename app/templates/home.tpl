@@ -451,6 +451,7 @@
 
     var ctx = document.getElementById('myChart').getContext('2d');
     ctx.height = 200;
+
     var posicao = document.getElementById('posicao').value;
 
     var chart = new Chart(ctx, {
@@ -478,6 +479,9 @@
             legend: {
                 onClick: function (e) {
                     e.stopPropagation();
+                },
+                labels: {
+                    boxWidth: 0
                 }
             },
             scales: {
