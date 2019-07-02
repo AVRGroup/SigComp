@@ -201,9 +201,10 @@ class CertificateController
 
     public function adminListReviewAction(Request $request, Response $response, $args)
     {
-        $this->container->view['certificates'] = $this->container->certificadoDAO->getAllToReview();
-        $this->container->view['certTypes'] = Certificado::getAllTipos();
+        $certificates = $this->container->certificadoDAO->getAllToReview();
+        $this->container->view['certificates'] = $certificates;
 
+        $this->container->view['certTypes'] = Certificado::getAllTipos();
 
         return $this->container->view->render($response, 'adminCertificates2.tpl');
     }

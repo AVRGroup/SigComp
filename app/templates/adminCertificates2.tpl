@@ -22,7 +22,6 @@
 
     {foreach $certificates as $certificate}
     <div class="row">
-
         <div class="col-4">
             <a id="link-img" href="{base_url}/upload/{$certificate->getNome()}" target="_blank">
                 {if $certificate->getExtensao() == "pdf"}
@@ -38,8 +37,16 @@
 
                 <input type="hidden" name="id" value="{$certificate->getId()}">
 
-                <label for="nome">Nome do Certificado</label>
-                <input id="nome" type="text" class="form-control" name="nome_impresso" value={$certificate->getNomeImpresso()}>
+                <div class="form-row">
+                    <div class="col-6">
+                        <label for="nome">Nome do Certificado</label>
+                        <input id="nome" type="text" class="form-control" name="nome_impresso" value="{$certificate->getNomeImpresso()}">
+                    </div>
+                    <div class="col-6">
+                        <label for="nome_aluno">Aluno</label>
+                        <input type="text" class="form-control" disabled value="{$certificate->getUsuario()->getNome()}">
+                    </div>
+                </div>
 
                 <div class="form-row" style="margin-top: 3%">
                     <div class="col-8">
