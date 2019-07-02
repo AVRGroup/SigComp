@@ -110,6 +110,3 @@
     <hr>
     {/foreach}
 {/block}
-
-<script>
-</script>

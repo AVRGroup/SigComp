@@ -470,8 +470,6 @@
                 borderWidth: 1
             }]
         },
-
-        // Configuration options go here
         options: {
             maintainAspectRatio: false,
             tooltips: {
@@ -481,6 +479,16 @@
                 onClick: function (e) {
                     e.stopPropagation();
                 }
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        stepSize: 25,
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }]
             }
         }
     });

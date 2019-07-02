@@ -214,7 +214,7 @@
                     '<label style="margin-top: 3%" for="data-inicio">Digite a data de término do certificado</label>'+
                     '<input type="date" class="form-control col-8" name="data_fim'+x+'"/>' +
                     '<hr>' +
-                    '</div>'); //add input box
+                    '</div>')
             }
             else
             {
