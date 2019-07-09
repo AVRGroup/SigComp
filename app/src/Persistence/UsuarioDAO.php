@@ -598,6 +598,16 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
+    public function getPeriodizados()
+    {
+        $sql = "SELECT * FROM medalha_usuario JOIN usuario ON usuario.id = medalha_usuario.usuario WHERE medalha_usuario.medalha = 20 ORDER BY usuario.ira DESC";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $alunos = $stmt->fetchAll();
+        return $alunos;
+    }
+
     public function setPeriodizado($userId)
     {
         $periodoAtual = $this->getUsersPeriodoAtual($userId);
@@ -706,6 +716,7 @@ class UsuarioDAO extends BaseDAO
 
         return number_format(100 - $percentil, 0);
     }
+
 
     public function getQuantidadeAlunos()
     {

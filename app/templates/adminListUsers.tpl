@@ -26,7 +26,7 @@
             {/if}
             <tr>
                 <td>{$user['matricula']}</td>
-                <td>{$user['nome']}</td>
+                <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}">{$user['nome']}</a></td>
                 <td>{number_format($user['ira'], 2)}</td>
                 <td>{$user['email']}</td>
                 <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}"><span class="fas fa-eye" aria-hidden="true"></span></a></td>

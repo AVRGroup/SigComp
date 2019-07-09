@@ -516,4 +516,12 @@ class AdminController
         return $periodo;
     }
 
+
+    public function listPeriodizadosAction(Request $request, Response $response, $args)
+    {
+        $this->container->view['users'] = $this->container->usuarioDAO->getPeriodizados();
+
+        return $this->container->view->render($response, 'periodizados.tpl');
+    }
+
 }

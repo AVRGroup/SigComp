@@ -97,6 +97,17 @@
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                                 <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+
+                                <div class="dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
+                                       id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Relatorios
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
+                                    </div>
+                                </div>
+
                             </div>
                         </li>
                         {/if}
@@ -170,6 +181,14 @@
                 $(this).next(".custom-file-label").attr('data-content', fieldVal);
                 $(this).next(".custom-file-label").text(fieldVal);
             }
+        });
+    });
+
+    $(document).ready(function(){
+        $('.dropdown-submenu a.submenu').on("click", function(e){
+            $(this).next('div').toggle();
+            e.stopPropagation();
+            e.preventDefault();
         });
     });
 
