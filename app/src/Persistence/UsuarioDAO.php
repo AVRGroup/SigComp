@@ -729,4 +729,34 @@ class UsuarioDAO extends BaseDAO
         return $quantidade;
     }
 
+    public function setTodasMedalhasPeriodo($userId)
+    {
+        $SEASON_FINALE = 21;
+
+        for ($periodo = 1; $periodo <= 9; $periodo++) {
+            if(!$this->temMedalhaPeriodo($userId, $periodo)) {
+                $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, $periodo)";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+            }
+        }
+
+        if(!$this->temMedalhaPeriodo($userId, $SEASON_FINALE)) {
+            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, $SEASON_FINALE)";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+        }
+    }
+
+    public function temMedalhaPeriodo($userId, $periodo)
+    {
+        $sql = "SELECT * FROM medalha_usuario WHERE medalha_usuario.usuario = $userId AND medalha_usuario.medalha = $periodo";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        return sizeof($result) > 0;
+    }
+
 }

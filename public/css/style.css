@@ -191,3 +191,9 @@ body {
 .card-topico{
     box-shadow: 3px 3px 5px hsla(0, 0%, 0%, 0.1);
 }
+
+.remover-concluido-link {
+    position: absolute;
+    left: 15px;
+    color: #e74c3c;
+}

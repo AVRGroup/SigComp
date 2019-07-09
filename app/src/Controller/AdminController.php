@@ -524,4 +524,14 @@ class AdminController
         return $this->container->view->render($response, 'periodizados.tpl');
     }
 
+    public function setConcluido(Request $request, Response $response, $args)
+    {
+        $id = $request->getParsedBodyParam('id');
+        $usuario = $this->container->usuarioDAO->getById($id);
+
+        $this->container->usuarioDAO->setTodasMedalhasPeriodo($id);
+
+        return  $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+    }
+
 }
