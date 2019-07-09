@@ -53,7 +53,7 @@ class UserController
             return $response->withRedirect($this->container->router->pathFor('home'));
         }
 
-        CalculateAttributes::calculateUsuarioStatistics($usuario);
+        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
 
@@ -202,8 +202,10 @@ class UserController
         $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade);
         $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade, $periodo);
         $cont = 0;
+
         unset($usrs);
         $usrs = array();
+
         foreach ($users as $user){
             $user_notas = $user->getNotas();
             foreach ($disciplinas as $disciplina){

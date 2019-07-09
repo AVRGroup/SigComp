@@ -56,11 +56,11 @@
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
                 <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
-                          data-content="Indica a sua experiência no curso! Cada aprovação concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
+                          data-content="Indica a sua experiência no curso! Cada aprovação em matérias obrigatórias concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
                     ?
                 </button>
                 <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/(5000) }%;">{((100 * $usuario->getExperiencia())/(5000))|string_format:"%.2f"}%</div>
+                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/(5000) }%;">{floor(((100 * $usuario->getExperiencia())/(4300)))|string_format:"%.2f"}%</div>
                 </div>
 
 

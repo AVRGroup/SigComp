@@ -77,7 +77,7 @@ class HomeController
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
-        CalculateAttributes::calculateUsuarioStatistics($usuario);
+        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
         $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
         $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
