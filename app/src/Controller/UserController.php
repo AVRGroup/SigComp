@@ -226,6 +226,7 @@ class UserController
         return $usrs;
     }
 
+
     public function conviteAmizadeAction(Request $request, Response $response, $args){
         $this->container->usuarioDAO->setConviteAmizade($args['id-remetente'], $args['id-destinatario']);
 

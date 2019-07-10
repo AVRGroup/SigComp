@@ -527,11 +527,60 @@ class AdminController
     public function setConcluido(Request $request, Response $response, $args)
     {
         $id = $request->getParsedBodyParam('id');
-        $usuario = $this->container->usuarioDAO->getById($id);
 
         $this->container->usuarioDAO->setTodasMedalhasPeriodo($id);
 
         return  $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+    }
+
+    public function unsetConcluido(Request $request, Response $response, $args)
+    {
+        $SEASON_FINALE = 21;
+        $id = $request->getParsedBodyParam('id');
+
+        for($periodo = 1; $periodo <= 9; $periodo++) {
+            if ($this->concluiuPeriodo($id, $periodo) && !$this->container->usuarioDAO->temMedalhaPeriodo($id, $periodo) ) {
+                $this->container->usuarioDAO->setPeriodoOneUser($id, $periodo);
+            }
+            if (!$this->concluiuPeriodo($id, $periodo) && $this->container->usuarioDAO->temMedalhaPeriodo($id, $periodo) ) {
+                $this->container->usuarioDAO->unsetPeriodoOneUser($id, $periodo);
+            }
+        }
+
+        if($this->container->usuarioDAO->temMedalhaPeriodo($id, $SEASON_FINALE)){
+            $this->container->usuarioDAO->unsetPeriodoOneUser($id, $SEASON_FINALE);
+        }
+
+        return  $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+    }
+
+    public function concluiuPeriodo($userId, $periodo)
+    {
+        $user = $this->container->usuarioDAO->getById($userId);
+        $user = $this->container->usuarioDAO->getSingleUsersNotasByGrade($userId, $user->getGrade())[0];
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($user->getGrade(), $periodo);
+        $cont = 0;
+
+        $user_notas = $user->getNotas();
+
+        foreach ($disciplinas as $disciplina){
+            foreach ($user_notas as $un){
+                if ($disciplina->getCodigo() == $un->getDisciplina()->getCodigo()) {
+                    $cont++;
+                }
+                else if ($un->getDisciplina()->getCodigo() == $disciplina->getCodigo()."E") {
+                    $cont++;
+                }
+            }
+        }
+
+        if(sizeof($disciplinas) > 0){
+            if ($cont == sizeof($disciplinas)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

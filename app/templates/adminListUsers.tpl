@@ -67,8 +67,12 @@
                         <button type="submit" class="btn btn-success">Continuar</button>
                     </form>
 
-                    <a href="#" class="remover-concluido-link" >Revogar status de concluído</a>
+                    <form style="padding-bottom: 2rem;" action="{base_url}/admin/unset-concluido" method="post">
+                        <input type="hidden" id="id-usuario" name="id" >
+                        <button class="btn btn-link remover-concluido-link" >Revogar status de concluído</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>

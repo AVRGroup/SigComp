@@ -197,3 +197,7 @@ body {
     left: 15px;
     color: #e74c3c;
 }
+
+.btn-link:hover{
+    color: #e74c3c;
+}

@@ -124,6 +124,19 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+    public function getSingleUsersNotasByGrade($userId, $grade)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.id = :id AND u.grade = :grade AND (n.estado = 'Aprovado' OR n.estado = 'Dispensado')");
+            $query->setParameter('grade', $grade);
+            $query->setParameter('id', $userId);
+            $usuario = $query->getResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+        return $usuario;
+    }
+
     /**
      * @param $grade
      * @param $periodo
@@ -305,6 +318,20 @@ class UsuarioDAO extends BaseDAO
                 $stmt_insert->execute();
             //}
         }
+    }
+
+    public function setPeriodoOneUser($userId, $periodo)
+    {
+        $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ($userId, $periodo)";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+    }
+
+    public function unsetPeriodoOneUser($userId, $periodo)
+    {
+        $sql = "DELETE FROM medalha_usuario WHERE usuario = $userId AND medalha = $periodo";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
     }
 
     public function getMedalsByIdFetched($id)

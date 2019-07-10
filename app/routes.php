@@ -37,6 +37,7 @@ $app->group('', function () {
         $this->map(['GET', 'POST'],'/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
 
         $this->post('/set-concluido', '\App\Controller\AdminController:setConcluido')->setName('setConcluido');
+        $this->post('/unset-concluido', '\App\Controller\AdminController:unsetConcluido')->setName('unsetConcluido');
 
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
 
