@@ -162,6 +162,7 @@ class HomeController
 
         return $periodo;
     }
+
     public function aboutAction(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'about.tpl');

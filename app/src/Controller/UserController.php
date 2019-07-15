@@ -57,14 +57,32 @@ class UserController
 
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
 
-        $this->container->view['medalhas'] = $medalhasUsuario;
         $this->container->view['usuario'] = $usuario;
+        $this->container->view['medalhas'] = $medalhasUsuario;
+        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();;
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
+        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
 
         return $this->container->view->render($response, 'home.tpl');
+    }
+
+    public function getPeriodoAtual()
+    {
+        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
+        $ano = $ultimaCarga[0];
+        $mes = intval($ultimaCarga[1]);
+
+        if($mes > 6) {
+            $periodo = $ano . 3;
+        }
+        else {
+            $periodo = $ano . 1;
+        }
+
+        return $periodo;
     }
 
     public function adminTestAction(Request $request, Response $response, $args)
