@@ -38,6 +38,7 @@ class UserController
             $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
         }
 
+
         return $this->container->view->render($response, 'adminListUsers.tpl');
     }
 

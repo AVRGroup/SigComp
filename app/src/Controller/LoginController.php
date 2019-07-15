@@ -90,20 +90,12 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    //$flarumCookies = FlarumHelper::doFlarumLogin();
-
-                   /* return $response
-                        ->withHeader('Set-Cookie', $flarumCookies->toHeaders())
-                        ->withRedirect($this->container->router->pathFor('home'));*/
-
                     if($usuarios[0]->getNome()== "ADMINISTRADOR"){
                         return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
                     }
                     else if ($usuarios[0]->getNome()== "BOLSISTA"){
                         return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
                     }
-
-
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
 

@@ -529,6 +529,7 @@ class AdminController
         $id = $request->getParsedBodyParam('id');
 
         $this->container->usuarioDAO->setTodasMedalhasPeriodo($id);
+        $this->container->usuarioDAO->setSituacaoFormado($id);
 
         return  $response->withRedirect($this->container->router->pathFor('adminListUsers'));
     }

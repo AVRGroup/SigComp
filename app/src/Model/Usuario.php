@@ -190,6 +190,8 @@ class Usuario implements ToIdArrayInterface
      */
     protected $quantidade_acessos;
 
+
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
