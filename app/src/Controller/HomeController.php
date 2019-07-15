@@ -93,6 +93,7 @@ class HomeController
         $this->container->view['notificacoes'] = $notificacoes;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade()) * 100;
 
         return $this->container->view->render($response, 'home.tpl');
     }

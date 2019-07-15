@@ -66,6 +66,7 @@ class UserController
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
 
         return $this->container->view->render($response, 'home.tpl');
     }

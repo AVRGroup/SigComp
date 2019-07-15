@@ -162,6 +162,27 @@ class UsuarioDAO extends BaseDAO
         return $disciplinas;
     }
 
+    public function getQuantidadeDisciplinasByGrade($grade)
+    {
+        switch ($grade){
+            case 12009: $grade_num = 3;
+                break;
+            case 12014: $grade_num = 2;
+                break;
+            case 12018: $grade_num = 1;
+                break;
+        }
+        try {
+            $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade");
+            $query->setParameters(['grade' => $grade_num]);
+            $disciplinas = $query->getResult();
+        } catch (\Exception $e) {
+            $disciplinas = null;
+        }
+        return sizeof($disciplinas);
+    }
+
+
 
     /**
      * @param array $matriculas
