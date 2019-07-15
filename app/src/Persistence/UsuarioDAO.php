@@ -336,7 +336,7 @@ class UsuarioDAO extends BaseDAO
 
     public function getMedalsByIdFetched($id)
     {
-        $sql = "SELECT medalha, medalha.nome, imagem FROM usuario left join medalha_usuario on usuario.id = medalha_usuario.usuario left join medalha on medalha = medalha.id WHERE usuario.id = '{$id}'";
+        $sql = "SELECT medalha, medalha.nome, imagem FROM usuario left join medalha_usuario on usuario.id = medalha_usuario.usuario left join medalha on medalha = medalha.id WHERE usuario.id = '{$id}' ORDER BY medalha.id ASC";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
