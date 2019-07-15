@@ -661,14 +661,17 @@ class UsuarioDAO extends BaseDAO
         $periodoAtual = $this->getUsersPeriodoAtual($userId);
         $medalhaPeriodoAtual = $this->getMedalhasPeriodoCompleto($userId, $periodoAtual);
 
-        if(sizeof($medalhaPeriodoAtual) == $periodoAtual - 1) {
-            $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
+
+        if(sizeof($medalhaPeriodoAtual) != 0) {
+            if (sizeof($medalhaPeriodoAtual) == $periodoAtual - 1) {
+                $sql = "INSERT INTO medalha_usuario (usuario, medalha) VALUES ($userId, 20)";
+            } else {
+                $sql = "DELETE FROM medalha_usuario WHERE usuario = $userId AND medalha = 20";
+            }
+
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
         }
-        else{
-            $sql = "DELETE FROM medalha_usuario WHERE usuario = $userId AND medalha = 20";
-        }
-        $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->execute();
     }
 
     public function getUsersPeriodoAtual($userId)
