@@ -188,10 +188,6 @@ body {
     margin-top: 30px;
 }
 
-.card-topico{
-    box-shadow: 3px 3px 5px hsla(0, 0%, 0%, 0.1);
-}
-
 .remover-concluido-link {
     position: absolute;
     left: 15px;
@@ -200,4 +196,18 @@ body {
 
 .btn-link:hover{
     color: #e74c3c;
+}
+
+.card-topico {
+    background-color: #f1f1f1;
+    box-shadow: 3px 3px 4px hsla(0, 0%, 0%, 0.1);
+    border-radius: 6px;
+}
+
+.titulo-topico {
+    text-align: center;
+}
+
+.conteudo-topico {
+    padding: 10px 25px;
 }
