@@ -61,6 +61,10 @@ class CalculateAttributes
      */
     public static function calculaExpereiencia(Usuario $usuario, $container)
     {
+        if($usuario->getSituacao() == 1) {
+            return $container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
+        }
+
         $notas_usuario = $usuario->getNotas();
         $aprovacoes = 0;
         for ($periodo = 1; $periodo <= 9; $periodo++) {

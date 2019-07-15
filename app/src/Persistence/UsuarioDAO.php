@@ -803,6 +803,13 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function unsetSituacaoFormado($userId)
+    {
+        $sql = "UPDATE usuario SET situacao = 0 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
     public function temMedalhaPeriodo($userId, $periodo)
     {
         $sql = "SELECT * FROM medalha_usuario WHERE medalha_usuario.usuario = $userId AND medalha_usuario.medalha = $periodo";

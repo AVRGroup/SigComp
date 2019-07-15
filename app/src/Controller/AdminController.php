@@ -554,6 +554,8 @@ class AdminController
             $this->container->usuarioDAO->unsetPeriodoOneUser($id, $SEASON_FINALE);
         }
 
+        $this->container->usuarioDAO->unsetSituacaoFormado($id);
+
         return  $response->withRedirect($this->container->router->pathFor('adminListUsers'));
     }
 
