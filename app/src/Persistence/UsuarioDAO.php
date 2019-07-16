@@ -224,7 +224,7 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function getByNomeComAmizade($pesquisa, $id){
-        $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.id_amigo OR usuario.id = amizade.id_usuario WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
+        $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -232,7 +232,7 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function getAmigos($id){
-        $sql = "SELECT usuario.* FROM usuario JOIN amizade ON usuario.id = amizade.id_amigo OR usuario.id = amizade.id_usuario WHERE (amizade.id_amigo = '$id' OR amizade.id_usuario = '$id') AND usuario.id != '$id' AND amizade.estado='aceito' ";
+        $sql = "SELECT usuario.* FROM usuario JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (amizade.amigo_id = '$id' OR amizade.usuario_id = '$id') AND usuario.id != '$id' AND amizade.estado='aceito' ";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -427,14 +427,14 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function setConviteAmizade($remetente, $destinatario){
-        $sql = "INSERT INTO db_gamificacao.amizade (id_usuario, id_amigo, estado) VALUES ('$remetente', '$destinatario', 'pendente')";
+        $sql = "INSERT INTO db_gamificacao.amizade (usuario_id, amigo_id, estado) VALUES ('$remetente', '$destinatario', 'pendente')";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
     }
 
     public function getConvitesPendentes($id){
-        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON id_usuario = usuario.id WHERE amizade.estado = 'pendente' AND id_amigo = '$id'";
+        $sql = "SELECT usuario.id, usuario.nome FROM amizade JOIN usuario ON usuario_id = usuario.id WHERE amizade.estado = 'pendente' AND amigo_id = '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results =  $stmt->fetchAll();
@@ -442,13 +442,13 @@ class UsuarioDAO extends BaseDAO
     }
 
     public function aceitarConvite($remetente, $destinatario){
-        $sql = "UPDATE db_gamificacao.amizade SET amizade.estado='aceito' WHERE amizade.id_amigo = '$destinatario' AND amizade.id_usuario = '$remetente'";
+        $sql = "UPDATE db_gamificacao.amizade SET amizade.estado='aceito' WHERE amizade.amigo_id = '$destinatario' AND amizade.usuario_id = '$remetente'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }
 
     public function recusarConvite($remetente, $destinatario){
-        $sql = "DELETE FROM db_gamificacao.amizade WHERE amizade.id_amigo = '$destinatario' AND amizade.id_usuario = '$remetente'";
+        $sql = "DELETE FROM db_gamificacao.amizade WHERE amizade.amigo_id = '$destinatario' AND amizade.usuario_id = '$remetente'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
 
