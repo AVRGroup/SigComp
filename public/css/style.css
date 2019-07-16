@@ -202,12 +202,18 @@ body {
     background-color: #f1f1f1;
     box-shadow: 3px 3px 4px hsla(0, 0%, 0%, 0.1);
     border-radius: 6px;
+    padding: 10px 25px;
 }
 
-.titulo-topico {
+.card-topico p span{
+    background-color: #f1f1f1 !important;
+}
+
+.assunto-topico {
     text-align: center;
+    margin-bottom: 30px;
 }
 
 .conteudo-topico {
-    padding: 10px 25px;
+    background-color: #f1f1f1;
 }

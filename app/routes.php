@@ -28,6 +28,9 @@ $app->group('', function () {
     $this->get('/forum/categorias/{id:[0-9]+}', '\App\Controller\ForumController:showCategoryAction')->setName('showCategory');
     $this->map(['GET', 'POST'],'/forum/topico/{id:[0-9]+}', '\App\Controller\ForumController:showTopicoAction')->setName('visualizarTopico');
     $this->map(['GET', 'POST'], '/forum/categorias', '\App\Controller\ForumController:listCategoriesAction')->setName('listCategories');
+    $this->post('/forum/topico/responder', '\App\Controller\ForumController:responderAction')->setName('responder');
+
+
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 
     $this->get('/exportPDF/{id:[0-9]+}', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');

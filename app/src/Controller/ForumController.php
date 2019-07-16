@@ -133,4 +133,32 @@ class ForumController{
         return $this->container->view->render($response, 'topic.tpl');
     }
 
+    public function responderAction(Request $request, Response $response, $args)
+    {
+        $conteudo = $request->getParsedBodyParam('resposta');
+        $idTopico = $request->getParsedBodyParam('id_topico');
+        $idUsuario = $request->getParsedBodyParam('id_usuario');
+
+        $usuario = $this->container->usuarioDAO->getById($idUsuario);
+        $topico = $this->container->topicoDAO->getById($idTopico);
+
+        $data = date('d-m-Y');
+
+        $resposta = new Resposta();
+
+        $resposta->setConteudo($conteudo);
+        $resposta->setAutor($usuario);
+        $resposta->setTopico($topico);
+        $resposta->setData($data);
+
+        try {
+            $this->container->respostaDAO->save($resposta);
+        } catch (\Exception $e) {
+            die(var_dump($e->getMessage()));
+            return $this->container->view->render($response, '404.tpl');
+        }
+
+        return $response->withRedirect($idTopico);
+    }
+
 }
