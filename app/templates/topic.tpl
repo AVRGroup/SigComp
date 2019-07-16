@@ -7,22 +7,32 @@
             <h5 class="assunto-topico">{$topico->getAssunto()}</h5>
 
             {$topico->getConteudo()}
+
     </div>
 
+    <div class="respostas">
+        {foreach $respostas as $resposta}
+            <div class="card-topico resposta">
+                {$resposta->getConteudo()}
+            </div>
+        {/foreach}
+    </div>
 
+    <hr style="clear: both">
 
-    <hr style="margin-top: 60px">
-    <h5>Contribuia com a discussão:</h5>
+    <div>
+        <h5>Contribuia com a discussão:</h5>
 
-    <form action="{base_url}/forum/topico/responder" method="post" style="margin-top: 20px">
-        <div id="resposta-topico"></div>
+        <form action="{base_url}/forum/topico/responder" method="post" style="margin-top: 20px">
+            <div id="resposta-topico"></div>
 
-        <input type="hidden" id="resposta" name="resposta">
-        <input type="hidden" name="id_topico" value={$topico->getId()}>
-        <input type="hidden" name="id_usuario" value={$loggedUser->getId()}>
+            <input type="hidden" id="resposta" name="resposta">
+            <input type="hidden" name="id_topico" value={$topico->getId()}>
+            <input type="hidden" name="id_usuario" value={$loggedUser->getId()}>
 
-        <button class="btn btn-primary" type="submit" onclick="addContentToInput()" style="margin-top: 20px">Responder</button>
-    </form>
+            <button class="btn btn-primary" type="submit" onclick="addContentToInput()" style="margin-top: 20px">Responder</button>
+        </form>
+    </div>
 
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>

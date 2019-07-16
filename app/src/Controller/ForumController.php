@@ -128,7 +128,10 @@ class ForumController{
     {
         $topico = $this->container->topicoDAO->getById($args['id']);
 
+        $respostas = $topico->getRespostasTopico();
+
         $this->container->view['topico'] = $topico;
+        $this->container->view['respostas'] = $respostas;
 
         return $this->container->view->render($response, 'topic.tpl');
     }
