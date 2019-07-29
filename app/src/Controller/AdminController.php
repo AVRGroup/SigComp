@@ -57,6 +57,11 @@ class AdminController
                         }
                         $this->container->disciplinaDAO->flush(); //Commit the transaction
                         $usuarios = Helper::convertToIdArray($this->container->usuarioDAO->getAllFetched());
+
+                        foreach ($usuarios as $usuario) {
+                            $usuario->setAtualizadoUltimaCarga(0);
+                        }
+
                         foreach ($data['usuarios'] as $user) {
                             if (isset($usuarios[$user['matricula']])) {
                                 $usuario = $usuarios[$user['matricula']];
@@ -66,13 +71,17 @@ class AdminController
                                 }
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
+                                $usuario->setAtualizadoUltimaCarga(1);
                                 $affectedData['usuariosUpdated']++;
+
                             } else {
                                 $usuario = new Usuario();
                                 $usuario->setCurso($user['curso']);
                                 $usuario->setMatricula($user['matricula']);
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
+                                $usuario->setAtualizadoUltimaCarga(1);
+
                                 $this->container->usuarioDAO->persist($usuario);
                                 $affectedData['usuariosAdded']++;
                             }
@@ -95,6 +104,8 @@ class AdminController
                 }
             }
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
+            $this->container->usuarioDAO->deleteAbsentUsers();
+
             $this->calculaIra(true);
             $this->calculaIra(false);
 

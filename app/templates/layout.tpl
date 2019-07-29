@@ -13,7 +13,7 @@
         gtag('config', 'UA-131900774-1');
     </script>
 
-    <title>SigComp - Sistema Gamificado </title>
+    <title>SigComp - Sistema Gamificado</title>
     <meta charset="utf-8">
     <meta name="robots" content="index,follow" />
     <meta name="Description" content="Gamificação" />

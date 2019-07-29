@@ -190,12 +190,25 @@ class Usuario implements ToIdArrayInterface
      */
     protected $quantidade_acessos;
 
-
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $atualizado_ultima_carga;
 
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
         $this->notas = new ArrayCollection();
+    }
+
+    public function setAtualizadoUltimaCarga($foiAtualizado)
+    {
+        $this->atualizado_ultima_carga = $foiAtualizado;
+    }
+
+    public function getAtualizadoUltimaCarga()
+    {
+        return $this->atualizado_ultima_carga;
     }
 
     /**

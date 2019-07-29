@@ -67,6 +67,8 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+
+
     /**
     \     * @return Usuario[]|null
      */
@@ -824,5 +826,12 @@ class UsuarioDAO extends BaseDAO
         return sizeof($result) > 0;
     }
 
+    public function deleteAbsentUsers()
+    {
+        $sql = "DELETE FROM usuario WHERE atualizado_ultima_carga = 0 AND situacao != 1";
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
 
 }
