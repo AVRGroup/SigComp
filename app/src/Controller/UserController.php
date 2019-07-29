@@ -332,6 +332,12 @@ class UserController
             $this->container->usuarioDAO->setEmpresaJunior($userId);
             $this->container->usuarioDAO->setPoliglota($userId);
             $this->container->usuarioDAO->setPeriodizado($userId);
+
+            $user = $this->container->usuarioDAO->getById($userId);
+            if($user->getSituacao() == 1) {
+                $this->container->usuarioDAO->setTodasMedalhasPeriodo($userId);
+            }
+
         }
 
         return $this->container->view->render($response, 'assignMedals.tpl');
