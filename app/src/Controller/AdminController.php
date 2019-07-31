@@ -136,7 +136,7 @@ class AdminController
 
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
-                if($usuario->getId() == 237 || $usuario->getId() == 238) {
+                if($usuario->getSituacao() == 1) {
                     continue;
                 }
 
@@ -176,7 +176,7 @@ class AdminController
 
         /** @var Usuario $usuario */
         foreach ($usuarios as $usuario) {
-            if($usuario->getId() == 237 || $usuario->getId() == 238) {
+            if($usuario->getSituacao() == 1) {
                 continue;
             }
 
