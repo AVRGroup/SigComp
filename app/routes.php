@@ -43,6 +43,7 @@ $app->group('', function () {
         $this->post('/unset-concluido', '\App\Controller\AdminController:unsetConcluido')->setName('unsetConcluido');
 
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
+        $this->get('/teste-ira', '\App\Controller\AdminController:testeCalulaIra');
 
         $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 

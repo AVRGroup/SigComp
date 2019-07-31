@@ -106,8 +106,8 @@ class AdminController
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
             $this->container->usuarioDAO->deleteAbsentUsers();
 
-            $this->calculaIra(true);
-            $this->calculaIra(false);
+            $this->calculaIra();
+            $this->calculaIraPeriodoPassado();
 
             $this->abreviaTodosNomes(false);
 
@@ -117,52 +117,108 @@ class AdminController
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
-    public function calculaIra($calcularIraPeriodoPassado){
+    public function testeCalulaIra(Request $request, Response $response, $args)
+    {
+        $this->calculaIraPeriodoPassado();
+        $this->calculaIra();
 
-        if($calcularIraPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetchedByPeriodoNota($this->getPeriodoPassado());
-        else
-            $usuarios = $this->container->usuarioDAO->getAllFetched();
+        return "top d+</br></br>";
+    }
 
+    public function calculaIra()
+    {
+        $usuarios = $this->container->usuarioDAO->getAllFetched();
 
         /** @var Usuario $usuario */
-        foreach ($usuarios as $usuario){
+        foreach ($usuarios as $usuario) {
+            $somatorioNotasVezesCargas = 0;
+            $somatorioCargas = 0;
+
+            /** @var Nota $nota */
+            foreach ($usuario->getNotas() as $nota) {
+                if($usuario->getId() == 237 || $usuario->getId() == 238) {
+                    continue;
+                }
+
+                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
+                    continue;
+                }
+
+                $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
+
+                if ($departamento != 'DCC' && $departamento != 'EST' && $departamento != 'MAT' && $departamento != 'FIS') {
+                    continue;
+                }
+
+                $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
+                $somatorioCargas += $nota->getDisciplina()->getCarga();
+            }
+
+            if ($somatorioCargas != 0) {
+                $ira = $somatorioNotasVezesCargas / $somatorioCargas;
+            } else {
+                $ira = 0;
+            }
+
+            $usuario->setIra($ira);
+
+            try {
+                $this->container->usuarioDAO->flush();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        }
+    }
+
+    public function calculaIraPeriodoPassado()
+    {
+        $usuarios = $this->container->usuarioDAO->getAllFetched();
+
+        /** @var Usuario $usuario */
+        foreach ($usuarios as $usuario) {
+            if($usuario->getId() == 237 || $usuario->getId() == 238) {
+                continue;
+            }
+
             $somatorioNotasVezesCargas = 0;
             $somatorioCargas = 0;
 
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
 
-                if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado")
+                if ($nota->getPeriodo() != $this->getPeriodoPassado()) {
                     continue;
+                }
+
+                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
+                    continue;
+                }
 
                 $departamento = substr($nota->getDisciplina()->getCodigo(), 0, 3);
 
-                if($departamento != 'DCC' && $departamento != 'EST' && $departamento != 'MAT' && $departamento != 'FIS')
+                if ($departamento != 'DCC' && $departamento != 'EST' && $departamento != 'MAT' && $departamento != 'FIS') {
                     continue;
+                }
 
                 $somatorioNotasVezesCargas += $this->calculaNotaVezesCarga($nota);
                 $somatorioCargas += $nota->getDisciplina()->getCarga();
             }
 
-            if($somatorioCargas != 0)
+            if ($somatorioCargas != 0) {
                 $ira = $somatorioNotasVezesCargas / $somatorioCargas;
-            else
+            } else {
                 $ira = 0;
-
-            if($calcularIraPeriodoPassado) {
-                if ($somatorioCargas >= 60*4)
-                    $usuario->setIraPeriodoPassado($ira);
-                else
-                    $usuario->setIraPeriodoPassado(0);
             }
-            else
-                $usuario->setIra($ira);
+
+            if ($somatorioCargas >= 60 * 4) {
+                $usuario->setIraPeriodoPassado($ira);
+            } else {
+                $usuario->setIraPeriodoPassado(0);
+            }
 
             try {
                 $this->container->usuarioDAO->flush();
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 echo $e;
             }
         }
@@ -506,7 +562,7 @@ class AdminController
             $anoAnterior = date('Y', strtotime($ano . " -1 year"));
             $periodoAnterior = $anoAnterior . 3;
         }
-       else {
+        else {
             $periodoAnterior = $ano . 1;
         }
 
