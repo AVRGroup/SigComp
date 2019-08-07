@@ -135,6 +135,38 @@ class Oportunidade
         $this->descricao = $descricao;
     }
 
+    public function getNomeTipo()
+    {
+        switch ($this->tipo) {
+            case 0:
+                return "Iniciação Científica";
+                break;
+            case 1:
+                return "Treinamento Profissional" ;
+                break;
+            case 2:
+                return "Estágio";
+                break;
+            default:
+                return "Oportunidade";
+        }
+    }
 
+    public function abreviacao()
+    {
+        switch ($this->tipo) {
+            case 0:
+                return "ic";
+                break;
+            case 1:
+                return "tp" ;
+                break;
+            case 2:
+                return "estagio";
+                break;
+            default:
+                return "outro";
+        }
+    }
 }
 

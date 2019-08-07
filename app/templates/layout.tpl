@@ -87,6 +87,8 @@
                         {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
                         {if $loggedUser->getTipo() == 1}
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Administrador
@@ -98,8 +100,6 @@
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                                 <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
-                                <a class="dropdown-item" href="{path_for name="cadastrarOportunidade"}">Cadastrar Oportunidade</a>
-
                                 <div class="dropdown-submenu">
                                     <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
                                        id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -242,3 +242,67 @@ body {
 .nova-oportunidade label {
     font-weight: 500;
 }
+
+.card-oportunidade {
+    border-radius: 10px;
+    box-shadow: 3px 3px 4px hsla(0, 0%, 0%, 0.1);
+    padding: 10px 20px;
+    margin-top: 5px;
+}
+
+
+.card-oportunidade-ic {
+    background-color: #FFFAFA;
+}
+
+
+.card-oportunidade-tp {
+    background-color: #F5FFF0;
+}
+
+.card-oportunidade-estagio {
+    background-color: #FFFFD1;
+}
+
+.card-oportunidade .descricao {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+
+.card-oportunidade .titulo {
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.card-oportunidade .borda-titulo-ic {
+    border-bottom: 2px solid #FE9C9C;
+}
+
+.card-oportunidade .borda-titulo-tp {
+    border-bottom: 2px solid #8EED61;
+}
+
+.card-oportunidade .borda-titulo-estagio {
+    border-bottom: 2px solid #fae243;
+}
+
+.weight-600 {
+    font-weight: 600;
+}
+
+.card-oportunidade .btn{
+    color: #fff;
+}
+
+.card-oportunidade .btn-ic {
+    background-color: #FE9C9C;
+}
+
+.card-oportunidade .btn-tp {
+    background-color: #8EED61;
+}
+
+.card-oportunidade .btn-estagio {
+    background-color: #fae243;
+}

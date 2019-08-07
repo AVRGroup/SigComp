@@ -16,10 +16,21 @@ class OportunidadeController
         $this->container = $container;
     }
 
+
+    public function verOportunidades(Request $request, Response $response, $args)
+    {
+        $oportunidades = $this->container->oportunidadeDAO->getAll();
+
+        $this->container->view['oportunidades'] = $oportunidades;
+
+        return $this->container->view->render($response, 'verOportunidades.tpl');
+    }
+
     public function formCadastrarOportunidade(Request $request, Response $response, $args)
     {
         return $this->container->view->render($response, 'novaOportunidade.tpl');
     }
+
 
     public function criarOportunidade(Request $request, Response $response, $args)
     {

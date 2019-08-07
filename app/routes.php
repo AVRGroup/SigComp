@@ -46,7 +46,9 @@ $app->group('', function () {
         $this->get('/teste-ira', '\App\Controller\AdminController:testeCalulaIra');
 
         $this->get('/cadastrar-oportunidade', '\App\Controller\OportunidadeController:formCadastrarOportunidade')->setName('cadastrarOportunidade');
+        $this->get('/todas-oportunidades', '\App\Controller\OportunidadeController:verOportunidades')->setName('verOportunidades');
         $this->post('/criar-oportunidade', '\App\Controller\OportunidadeController:criarOportunidade')->setName('ciarOportunidade');
+
 
         $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 
