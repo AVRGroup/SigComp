@@ -230,3 +230,15 @@ body {
 .respostas:last-child{
     margin-bottom: 30px;
 }
+
+.nova-oportunidade{
+    padding: 0 40px;
+}
+
+.nova-oportunidade .form-row{
+    margin-top: 30px;
+}
+
+.nova-oportunidade label {
+    font-weight: 500;
+}

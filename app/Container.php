@@ -2,6 +2,7 @@
 
 use App\Persistence\DisciplinaDAO;
 use App\Persistence\NotaDAO;
+use App\Persistence\OportunidadeDAO;
 use App\Persistence\UsuarioDAO;
 use App\Persistence\CertificadoDAO;
 use App\Persistence\GradeDAO;
@@ -24,6 +25,7 @@ use Slim\Views\Smarty;
  * @property CategoriaDAO categoriaDAO
  * @property TopicoDAO topicoDAO
  * @property RespostaDAO respostaDAO
+ * @property OportunidadeDAO oportunidadeDAO
  * @property Smarty view
  * @property EntityManager db
  */
@@ -119,6 +121,10 @@ class Container extends \Slim\Container
 
         $this['respostaDAO'] = function () {
             return new RespostaDAO($this->db);
+        };
+
+        $this['oportunidadeDAO'] = function () {
+            return new OportunidadeDAO($this->db);
         };
 
     }

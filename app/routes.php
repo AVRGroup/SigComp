@@ -45,6 +45,9 @@ $app->group('', function () {
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
         $this->get('/teste-ira', '\App\Controller\AdminController:testeCalulaIra');
 
+        $this->get('/cadastrar-oportunidade', '\App\Controller\OportunidadeController:formCadastrarOportunidade')->setName('cadastrarOportunidade');
+        $this->post('/criar-oportunidade', '\App\Controller\OportunidadeController:criarOportunidade')->setName('ciarOportunidade');
+
         $this->get('/grade', '\App\Controller\UserController:periodMedalsVerification')->setName('checkPeriodos');
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
