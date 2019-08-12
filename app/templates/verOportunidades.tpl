@@ -24,6 +24,8 @@
 
                         <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
 
+                        <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
+
                         <p>
                             <span class="weight-600">Remuneração:</span>
                             {if $oportunidade->getRemuneracao() == 0}

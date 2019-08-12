@@ -39,6 +39,7 @@ class OportunidadeController
         $numeroVagas = $request->getParsedBodyParam('numero_vagas');
         $professor = $request->getParsedBodyParam('nome_professor');
         $descricao = $request->getParsedBodyParam('descricao');
+        $validade = new \DateTime($request->getParsedBodyParam('validade'));
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
@@ -46,6 +47,7 @@ class OportunidadeController
         $oportunidade = new Oportunidade();
         $oportunidade->setTipo($tipo);
         $oportunidade->setDescricao($descricao);
+        $oportunidade->setValidade($validade);
         $oportunidade->setProfessor($professor);
         $oportunidade->setQuantidadeVagas($numeroVagas);
         $oportunidade->setRemuneracao($valorRemuneracao);

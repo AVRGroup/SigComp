@@ -46,6 +46,11 @@ class Oportunidade
      */
     protected $descricao;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $validade;
+
 
     /**
      * @return mixed
@@ -102,6 +107,23 @@ class Oportunidade
     {
         $this->professor = $professor;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getValidade()
+    {
+        return $this->validade;
+    }
+
+    /**
+     * @param mixed $validade
+     */
+    public function setValidade($validade): void
+    {
+        $this->validade = $validade;
+    }
+
 
     /**
      * @return mixed

@@ -25,7 +25,7 @@
                 <div class="col-6">
                     <label for="tipo_oportunidade">Escolha o tipo:</label>
                     <select class="form-control" name="tipo_oportunidade">
-                        <option value="0">Iniciacao Cientifica</option>
+                        <option value="0">Iniciação Científica</option>
                         <option value="1">Treinamento Profissional</option>
                         <option value="2">Estágio</option>
                     </select>
@@ -56,6 +56,13 @@
                 <input type="number" class="form-control col-4" name="valor_remuneracao">
             </div>
 
+
+            <div class="form-row">
+                <div class="col-4">
+                    <label for="validade">Data Limite para Inscrição:</label>
+                    <input type="date" name="validade" class="form-control">
+                </div>
+            </div>
 
             <label style="margin-top: 5%" for="requisitos">Pré-Requisitos:</label>
             <br>
