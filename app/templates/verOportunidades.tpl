@@ -35,10 +35,49 @@
                             {/if}
                         </p>
 
-                        <button class="btn btn-{$oportunidade->abreviacao()}">Mais Informações</button>
+                        <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
+                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}">
+                            Mais Informações
+                        </button>
+
                     </div>
                 </div>
             {/foreach}
         </div>
     </div>
+
+
+
+    <div class="modal fade" id="maisInformacoes" tabindex="-1" role="dialog" aria-labelledby="maisInformacoesLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="maisInformacoesLabel">Pré-Requisitos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a class="download-aquivo" href="">Ver Arquivo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+
+{block name="javascript"}
+    <script>
+        $('#maisInformacoes').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var arquivo = button.data('arquivo')
+
+            var modal = $(this)
+            modal.find('.modal-body a').attr("href", arquivo)
+
+        })
+
+
+    </script>
+
 {/block}
