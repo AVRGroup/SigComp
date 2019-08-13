@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Oportunidade;
 use Exception;
+use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -45,7 +46,7 @@ class OportunidadeController
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
-
+        $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
@@ -57,21 +58,38 @@ class OportunidadeController
         $oportunidade->setProfessor($professor);
         $oportunidade->setQuantidadeVagas($numeroVagas);
         $oportunidade->setRemuneracao($valorRemuneracao);
+        $this->setArquivo($oportunidade, $arquivo);
 
         try {
             $oportunidadeId = $this->container->oportunidadeDAO->save($oportunidade);
             $this->container->view['success'] = true;
 
-            foreach ($preRequisitos as $preRequisito) {
-                $this->container->oportunidadeDAO->setPreRequisito($oportunidadeId, $preRequisito);
+            if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
+                foreach ($preRequisitos as $preRequisito) {
+                    $this->container->oportunidadeDAO->setPreRequisito($oportunidadeId, $preRequisito);
+                }
             }
 
         } catch (Exception $e) {
-            $this->container->view['error'] = "Ocorreu um erro ao criar uma nova oportunidade";
+            $this->container->view['error'] = $e->getMessage();
         }
 
 
         return $this->container->view->render($response, 'novaOportunidade.tpl');
+    }
+
+
+    public function setArquivo($oportunidade, $arquivo)
+    {
+        $extension = mb_strtolower(pathinfo($arquivo->getClientFilename(), PATHINFO_EXTENSION));
+        $oportunidade->setExtensao($extension);
+
+        do {
+            $uuid4 = Uuid::uuid4();
+            $oportunidade->setArquivo($uuid4->toString() . '.' . $extension);
+        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo()));
+
+        $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo());
     }
 
 }

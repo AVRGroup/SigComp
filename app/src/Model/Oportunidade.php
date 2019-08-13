@@ -53,6 +53,17 @@ class Oportunidade
 
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $arquivo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $extensao;
+
+
+    /**
      * @ORM\OneToMany(targetEntity="OportunidadeDisciplina", mappedBy="oportunidade")
      * @ORM\JoinColumn(name="oportunidade", referencedColumnName="id", nullable=false)
      */
@@ -162,6 +173,39 @@ class Oportunidade
     {
         $this->descricao = $descricao;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getArquivo()
+    {
+        return $this->arquivo;
+    }
+
+    /**
+     * @param mixed $arquivo
+     */
+    public function setArquivo($arquivo): void
+    {
+        $this->arquivo = $arquivo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtensao()
+    {
+        return $this->extensao;
+    }
+
+    /**
+     * @param mixed $extensao
+     */
+    public function setExtensao($extensao): void
+    {
+        $this->extensao = $extensao;
+    }
+
 
     public function getNomeTipo()
     {

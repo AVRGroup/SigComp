@@ -91,9 +91,6 @@ class CertificateController
 
                         $uploadedFile->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $certificado->getNome());
 
-                        if($uploadedFile->getClientFilename() == "palestraTeste.pdf")
-                            $certificado->setValido(true);
-
                         $this->container->certificadoDAO->save($certificado);
                         $this->container->certificadoDAO->incrementNumberOfCertificates();
 
