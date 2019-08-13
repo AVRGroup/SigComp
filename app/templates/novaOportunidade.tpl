@@ -1,4 +1,5 @@
 {extends 'layout.tpl'}
+
 {block name=content}
     <div class="nova-oportunidade">
         <h4 align="center">Cadastrar Oportunidade</h4>
@@ -64,12 +65,14 @@
                 </div>
             </div>
 
-            <label style="margin-top: 5%" for="requisitos">Pré-Requisitos:</label>
-            <br>
-            <a class="btn btn-success add-requisito" style="color: white;">Adicionar</a>
-
-            <div class="novos-requisitos"></div>
-
+            <div class="form-row">
+                <label for="requisitos">Pré-Requisitos:</label>
+                <select name="pre_requisitos[]" multiple="multiple" class="form-control pre-requisitos">
+                    {foreach $disciplinas as $disciplina}
+                        <option value="{$disciplina->getId()}">{$disciplina->getCodigo()}</option>
+                    {/foreach}
+                </select>
+            </div>
             <div class="form-row">
                 <label for="descricao">Descrição da Oportunidade</label>
                 <textarea class="form-control" name="descricao"  cols="30" rows="10"></textarea>
@@ -83,7 +86,9 @@
 
 {block name="javascript"}
     <script>
-        console.log("TESTE");
+        $(document).ready(function() {
+            $('.pre-requisitos').select2();
+        });
     </script>
 
 {/block}

@@ -16,12 +16,19 @@ class OportunidadeDAO extends BaseDAO
     {
         try {
             $query = $this->em->createQuery("SELECT o FROM App\Model\Oportunidade as o");
-            $certificados = $query->getResult();
+            $oportunidades = $query->getResult();
         } catch (\Exception $e) {
-            $certificados = null;
+            $oportunidades = null;
         }
 
-        return $certificados;
+        return $oportunidades;
+    }
+
+    public function setPreRequisito($oportunidade, $disciplina)
+    {
+        $sql_insert = "INSERT INTO db_gamificacao.oportunidade_disciplina (oportunidade, disciplina) VALUES ($oportunidade, $disciplina)";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
     }
 }
 

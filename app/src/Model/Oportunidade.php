@@ -53,6 +53,12 @@ class Oportunidade
 
 
     /**
+     * @ORM\OneToMany(targetEntity="OportunidadeDisciplina", mappedBy="oportunidade")
+     * @ORM\JoinColumn(name="oportunidade", referencedColumnName="id", nullable=false)
+     */
+    protected $oportunidade_disciplina;
+
+    /**
      * @return mixed
      */
     public function getId()

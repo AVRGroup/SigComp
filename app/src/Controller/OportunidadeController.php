@@ -28,6 +28,10 @@ class OportunidadeController
 
     public function formCadastrarOportunidade(Request $request, Response $response, $args)
     {
+        $disciplinas = $this->container->disciplinaDAO->getAll();
+
+        $this->container->view['disciplinas'] = $disciplinas;
+
         return $this->container->view->render($response, 'novaOportunidade.tpl');
     }
 
@@ -40,6 +44,8 @@ class OportunidadeController
         $professor = $request->getParsedBodyParam('nome_professor');
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
+        $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
+
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
@@ -53,11 +59,17 @@ class OportunidadeController
         $oportunidade->setRemuneracao($valorRemuneracao);
 
         try {
-            $this->container->oportunidadeDAO->save($oportunidade);
+            $oportunidadeId = $this->container->oportunidadeDAO->save($oportunidade);
             $this->container->view['success'] = true;
+
+            foreach ($preRequisitos as $preRequisito) {
+                $this->container->oportunidadeDAO->setPreRequisito($oportunidadeId, $preRequisito);
+            }
+
         } catch (Exception $e) {
-            $this->container->view['error'] = $e->getMessage();
+            $this->container->view['error'] = "Ocorreu um erro ao criar uma nova oportunidade";
         }
+
 
         return $this->container->view->render($response, 'novaOportunidade.tpl');
     }

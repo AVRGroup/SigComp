@@ -14,6 +14,7 @@ abstract class BaseDAO
         try {
             $this->em->persist($object);
             $this->em->flush();
+            return $object->getId();
         } catch (\Exception $exception) {
             throw $exception;
         }
