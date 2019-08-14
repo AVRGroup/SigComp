@@ -306,3 +306,16 @@ body {
 .card-oportunidade .btn-estagio {
     background-color: #fae243;
 }
+
+.download-aquivo {
+    display: block;
+    margin-top: 20px;
+}
+
+.card-disciplina {
+    border-radius: 10px;
+    background-color: #1c7430;
+}
+.modal-body {
+    text-align: center;
+}

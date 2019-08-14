@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity()
  * @ORM\Table(name="oportunidade")
  */
-class Oportunidade
+class Oportunidade implements ToIdArrayInterface
 {
     /**
      * @ORM\Id
@@ -64,10 +64,32 @@ class Oportunidade
 
 
     /**
-     * @ORM\OneToMany(targetEntity="OportunidadeDisciplina", mappedBy="oportunidade")
-     * @ORM\JoinColumn(name="oportunidade", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToMany(targetEntity="Disciplina", inversedBy="oportunidade")
+     * @ORM\JoinTable(name="oportunidade_disciplina")
      */
-    protected $oportunidade_disciplina;
+    protected $disciplinas;
+
+    public function __construct()
+    {
+        $this->disciplinas = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisciplinas()
+    {
+        return $this->disciplinas;
+    }
+
+    /**
+     * @param Disciplina $disciplina
+     */
+    public function addDisciplina(Disciplina $disciplina): void
+    {
+        $disciplina->addOportunidade($this);
+        $this->disciplinas[] = $disciplina;
+    }
 
     /**
      * @return mixed
@@ -239,6 +261,11 @@ class Oportunidade
             default:
                 return "outro";
         }
+    }
+
+    public function getIdentifier()
+    {
+        // TODO: Implement getIdentifier() method.
     }
 }
 

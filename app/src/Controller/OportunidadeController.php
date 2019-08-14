@@ -60,22 +60,22 @@ class OportunidadeController
         $oportunidade->setRemuneracao($valorRemuneracao);
         $this->setArquivo($oportunidade, $arquivo);
 
-        try {
-            $oportunidadeId = $this->container->oportunidadeDAO->save($oportunidade);
-            $this->container->view['success'] = true;
-
-            if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
-                foreach ($preRequisitos as $preRequisito) {
-                    $this->container->oportunidadeDAO->setPreRequisito($oportunidadeId, $preRequisito);
-                }
+        if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
+            foreach ($preRequisitos as $preRequisito) {
+                $disciplina = $this->container->disciplinaDAO->getById($preRequisito);
+                $oportunidade->addDisciplina($disciplina);
             }
+        }
 
+        try {
+            $this->container->oportunidadeDAO->save($oportunidade);
+            $this->container->view['success'] = true;
         } catch (Exception $e) {
             $this->container->view['error'] = $e->getMessage();
         }
 
 
-        return $this->container->view->render($response, 'novaOportunidade.tpl');
+        return $response->withRedirect($this->container->router->pathFor('cadastrarOportunidade'));
     }
 
 

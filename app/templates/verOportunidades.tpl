@@ -12,6 +12,7 @@
         <div class="row">
             {foreach $oportunidades as $oportunidade}
                 <div class="col-6">
+
                     <div class="card-oportunidade card-oportunidade-{$oportunidade->abreviacao()}">
 
                         <p class="text-center titulo">
@@ -35,8 +36,12 @@
                             {/if}
                         </p>
 
+                        {foreach $oportunidade->getDisciplinas() as $disciplina}
+                            <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getCodigo()}">
+                        {/foreach}
+
                         <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
-                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}">
+                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-oportunidade="{$oportunidade->getId()}">
                             Mais Informações
                         </button>
 
@@ -58,6 +63,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="disciplinas">
+
+                    </div>
+
                     <a class="download-aquivo" href="">Ver Arquivo</a>
                 </div>
             </div>
@@ -71,12 +80,30 @@
         $('#maisInformacoes').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var arquivo = button.data('arquivo')
+            var idOportunidade = button.data('oportunidade')
+
+            var disciplinas = []
+
+            $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
+                disciplinas.push(disciplina.value)
+
+                $(".disciplinas").append(
+                    "<span style='border-radius: 20px; background-color: #1c7430; color: #fff; padding: 8px'>"
+                        + disciplina.value +
+                    "</span>"
+
+                );
+            });
+
 
             var modal = $(this)
             modal.find('.modal-body a').attr("href", arquivo)
 
         })
 
+        $("#maisInformacoes").on("hidden.bs.modal", function () {
+            $(".disciplinas").empty()
+        });
 
     </script>
 

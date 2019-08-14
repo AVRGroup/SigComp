@@ -80,14 +80,20 @@ class Disciplina implements ToIdArrayInterface
 
 
     /**
-     * @ORM\OneToMany(targetEntity="OportunidadeDisciplina", mappedBy="disciplina")
-     * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToMany(targetEntity="Oportunidade", mappedBy="disciplina")
      */
-    protected $oportunidade_disciplina;
+    protected $oportunidades;
 
     public function __construct()
     {
         $this->notas = new ArrayCollection();
+        $this->oportunidades = new ArrayCollection();
+    }
+
+
+    public function addOportunidade(Oportunidade $oportunidade)
+    {
+        $this->oportunidades[] = $oportunidade;
     }
 
     /**
