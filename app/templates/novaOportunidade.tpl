@@ -54,15 +54,16 @@
             <label style="margin-top: 5%" for="remuneracao">Remuneração:</label for="remuneracao">
             <div class="form-row" style="margin-top: 0">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" name="tem_remuneracao" value="voluntario" type="radio">
-                    <label for="tem_remuneracao" class="form-check-label">Voluntário</label>
+                    <input id="voluntario" class="form-check-input" name="tem_remuneracao" value="voluntario" type="radio">
+                    <label for="voluntario" class="form-check-label">Voluntário</label>
                 </div>
 
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" name="tem_remuneracao" value="remunerado" type="radio">
-                    <label for="tem_remuneracao" class="form-check-label">Escolher Valor:</label>
+                    <input id="remunerado" class="form-check-input escolher-valor" name="tem_remuneracao" value="remunerado" type="radio">
+                    <label for="remunerado" class="form-check-label">Escolher Valor:</label>
                 </div>
-                <input type="number" class="form-control col-4" name="valor_remuneracao">
+
+                <input id="valor-remuneracao" type="number" class="form-control col-4" name="valor_remuneracao" disabled="disabled">
             </div>
 
 
@@ -98,6 +99,16 @@
         $(document).ready(function() {
             $('.pre-requisitos').select2();
         });
+
+
+        $('input:radio').click(function() {
+            $("#valor-remuneracao").prop("disabled",true);
+
+            if($(this).hasClass('escolher-valor')) {
+                $("#valor-remuneracao").prop("disabled",false);
+            }
+        });
+
     </script>
 
 {/block}
