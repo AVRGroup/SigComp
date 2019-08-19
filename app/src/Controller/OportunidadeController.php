@@ -47,7 +47,6 @@ class OportunidadeController
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
         $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
-
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
 
@@ -58,7 +57,11 @@ class OportunidadeController
         $oportunidade->setProfessor($professor);
         $oportunidade->setQuantidadeVagas($numeroVagas);
         $oportunidade->setRemuneracao($valorRemuneracao);
-        $this->setArquivo($oportunidade, $arquivo);
+        $oportunidade->setCriadoEm(new \DateTime());
+
+        if($arquivo->getSize() > 0) {
+            $this->setArquivo($oportunidade, $arquivo);
+        }
 
         if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
             foreach ($preRequisitos as $preRequisito) {
@@ -75,7 +78,7 @@ class OportunidadeController
         }
 
 
-        return $response->withRedirect($this->container->router->pathFor('cadastrarOportunidade'));
+        return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
     }
 
 

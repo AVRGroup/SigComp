@@ -15,7 +15,7 @@ class OportunidadeDAO extends BaseDAO
     public function getAll()
     {
         try {
-            $query = $this->em->createQuery("SELECT o FROM App\Model\Oportunidade as o");
+            $query = $this->em->createQuery("SELECT o FROM App\Model\Oportunidade as o ORDER BY o.criado_em DESC");
             $oportunidades = $query->getResult();
         } catch (\Exception $e) {
             $oportunidades = null;

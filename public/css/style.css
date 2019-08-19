@@ -319,3 +319,10 @@ body {
 .modal-body {
     text-align: center;
 }
+
+.aviso-ira {
+    padding: 10px;
+    background-color: #ebebeb;
+    margin-top: 10px;
+    border-radius: 5px;
+}

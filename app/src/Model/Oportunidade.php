@@ -62,12 +62,18 @@ class Oportunidade implements ToIdArrayInterface
      */
     protected $extensao;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    protected $criado_em;
 
     /**
      * @ORM\ManyToMany(targetEntity="Disciplina", inversedBy="oportunidade")
      * @ORM\JoinTable(name="oportunidade_disciplina")
      */
     protected $disciplinas;
+
+
 
     public function __construct()
     {
@@ -227,6 +233,24 @@ class Oportunidade implements ToIdArrayInterface
     {
         $this->extensao = $extensao;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCriadoEm()
+    {
+        return $this->criado_em;
+    }
+
+    /**
+     * @param mixed $criado_em
+     */
+    public function setCriadoEm($criado_em): void
+    {
+        $this->criado_em = $criado_em;
+    }
+
+
 
 
     public function getNomeTipo()

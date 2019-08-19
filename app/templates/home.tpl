@@ -240,10 +240,15 @@
             </div>
         </div>
 
-
-        <div style="height: 100px; margin-top: 40px" >
-            <canvas id="myChart"></canvas>
-        </div>
+        {if $usuario->getIra() > 0}
+            <div style="height: 100px; margin-top: 40px" >
+                <canvas id="percentilIra"></canvas>
+            </div>
+        {else}
+            <div class="aviso-ira">
+                <p>Seu Índice de Rendimento Acadêmico será computado ao finalizar o periodo, passando em ao menos uma matéria</p>
+            </div>
+        {/if}
 
         <div class="row">
             <div class="col-6" style="margin-top: 1.8%">
@@ -448,7 +453,7 @@
     });
 
 
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx = document.getElementById('percentilIra').getContext('2d');
     ctx.height = 200;
 
     var posicao = document.getElementById('posicao').value;

@@ -63,11 +63,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="disciplinas">
+                    <div class="disciplinas"></div>
 
-                    </div>
-
-                    <a class="download-aquivo" href="">Ver Arquivo</a>
+                    {if isset($oportunidade->getArquivo())}
+                        <a class="download-aquivo" href="">Ver Arquivo</a>
+                    {/if}
                 </div>
             </div>
         </div>
