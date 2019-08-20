@@ -339,12 +339,14 @@ class AdminController
                 } else {
                     try {
                         set_time_limit(60 * 60); //Should not Exit
+
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
                         $grade->setCodigo(12009);
                         $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
+
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
                         $this->container->view['vetor'] = $data;
                         $this->container->view['disciplinas'] = $disciplinas;
@@ -384,6 +386,23 @@ class AdminController
             }
         }
         return $this->container->view->render($response, 'adminGradeLoad.tpl');
+    }
+
+    public function adicionaNomeAsDisciplinas($data)
+    {
+        foreach ($data['disciplinas'] as $disc) {
+            if(isset($disc['nome']) && $disc['nome'] != false){
+
+                $disciplina = $this->container->disciplinaDAO->getByCodigo($disc['codigo']);
+
+                if(isset($disciplina)) {
+                    $disciplina->setNome($disc['nome']);
+                    $this->container->disciplinaDAO->persist($disciplina);
+                    $this->container->disciplinaDAO->flush(); //Commit the transaction
+                }
+            }
+        }
+        die();
     }
 
     public function adminData(Request $request, Response $response, $args)

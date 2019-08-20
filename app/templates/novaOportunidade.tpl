@@ -78,7 +78,13 @@
                 <label for="requisitos">Pré-Requisitos:</label>
                 <select name="pre_requisitos[]" multiple="multiple" class="form-control pre-requisitos">
                     {foreach $disciplinas as $disciplina}
-                        <option value="{$disciplina->getId()}">{$disciplina->getCodigo()}</option>
+                        <option data-codigo="{$disciplina->getCodigo()}" value="{$disciplina->getId()}">
+                            {$disciplina->getCodigo()}
+
+                            {if isset($disciplina->getNome())}
+                                - {$disciplina->getNome()}
+                            {/if}
+                        </option>
                     {/foreach}
                 </select>
             </div>
@@ -97,7 +103,31 @@
 {block name="javascript"}
     <script>
         $(document).ready(function() {
-            $('.pre-requisitos').select2();
+            function formatDisciplina (disciplina) {
+                if (!disciplina.id) {
+                    return disciplina.text;
+                }
+
+                var $disciplina = $('<span><span></span></span>');
+
+                var nomeDisciplina = (disciplina.text);
+                var codigoDisciplina = nomeDisciplina.substr(0, nomeDisciplina.indexOf('-'))
+
+                if (codigoDisciplina !== "") {
+                    $disciplina.find("span").text(codigoDisciplina);
+                }
+                else {
+                    $disciplina.find("span").text(nomeDisciplina);
+                }
+                return $disciplina;
+            }
+
+
+            $('.pre-requisitos').select2({
+                placeholder: "Selecione as disciplinas",
+                allowClear: true,
+                templateSelection: formatDisciplina
+            });
         });
 
 

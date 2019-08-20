@@ -41,4 +41,18 @@ class DisciplinaDAO extends BaseDAO
         return $disciplina;
     }
 
+    public function getByCodigo($codigo)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d WHERE d.codigo = :codigo");
+            $query->setParameter('codigo', $codigo);
+            $disciplina = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            $disciplina = null;
+        }
+
+        return $disciplina;
+    }
+
 }
