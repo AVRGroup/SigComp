@@ -37,11 +37,15 @@
                         </p>
 
                         {foreach $oportunidade->getDisciplinas() as $disciplina}
-                            <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getCodigo()}">
+                            {if $disciplina->getNome()}
+                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getNome()}">
+                            {else}
+                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getCodigo()}">
+                            {/if}
                         {/foreach}
 
                         <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
-                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-oportunidade="{$oportunidade->getId()}">
+                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}">
                             Mais Informações
                         </button>
 
@@ -65,9 +69,7 @@
                 <div class="modal-body">
                     <div class="disciplinas"></div>
 
-                    {if isset($oportunidade->getArquivo())}
-                        <a class="download-aquivo" href="">Ver Arquivo</a>
-                    {/if}
+                    <a class="download-aquivo" href="">Ver Arquivo</a>
                 </div>
             </div>
         </div>
@@ -80,6 +82,7 @@
         $('#maisInformacoes').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var arquivo = button.data('arquivo')
+            var temArquivo = button.data('tem_arquivo')
             var idOportunidade = button.data('oportunidade')
 
             var disciplinas = []
@@ -88,7 +91,7 @@
                 disciplinas.push(disciplina.value)
 
                 $(".disciplinas").append(
-                    "<span style='border-radius: 20px; background-color: #1c7430; color: #fff; padding: 8px'>"
+                    "<span style='border-radius: 20px; background-color: #74eb56; color: #fff; display:inline-block; padding: 10px; margin-left: 10px; margin-top: 10px'>"
                         + disciplina.value +
                     "</span>"
 
@@ -97,8 +100,12 @@
 
 
             var modal = $(this)
-            modal.find('.modal-body a').attr("href", arquivo)
-
+            if(temArquivo) {
+                modal.find('.modal-body a').attr("href", arquivo)
+                modal.find('.modal-body a').css("display", "block")
+            } else {
+                modal.find('.modal-body a').css("display", "none")
+            }
         })
 
         $("#maisInformacoes").on("hidden.bs.modal", function () {

@@ -54,7 +54,7 @@
             <label style="margin-top: 5%" for="remuneracao">Remuneração:</label for="remuneracao">
             <div class="form-row" style="margin-top: 0">
                 <div class="form-check form-check-inline">
-                    <input id="voluntario" class="form-check-input" name="tem_remuneracao" value="voluntario" type="radio">
+                    <input id="voluntario" class="form-check-input" name="tem_remuneracao" value="voluntario" type="radio" checked>
                     <label for="voluntario" class="form-check-label">Voluntário</label>
                 </div>
 
@@ -115,10 +115,10 @@
 
                 if (codigoDisciplina !== "") {
                     $disciplina.find("span").text(codigoDisciplina);
-                }
-                else {
+                } else {
                     $disciplina.find("span").text(nomeDisciplina);
                 }
+
                 return $disciplina;
             }
 
