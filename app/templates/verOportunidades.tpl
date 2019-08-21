@@ -9,6 +9,8 @@
             </div>
         {/if}
 
+        <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
+
         <div class="row">
             {foreach $oportunidades as $oportunidade}
                 <div class="col-6">
@@ -38,9 +40,9 @@
 
                         {foreach $oportunidade->getDisciplinas() as $disciplina}
                             {if $disciplina->getNome()}
-                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getNome()}">
+                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getNome()} - {$disciplina->getId()}">
                             {else}
-                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getCodigo()}">
+                                <input type="hidden" class="disciplinas-{$oportunidade->getId()}" value="{$disciplina->getCodigo()} - {$disciplina->getId()}">
                             {/if}
                         {/foreach}
 
@@ -84,18 +86,33 @@
             var arquivo = button.data('arquivo')
             var temArquivo = button.data('tem_arquivo')
             var idOportunidade = button.data('oportunidade')
+            var disciplinasAprovadas = {json_encode($disciplinasAprovadas)}
 
-            var disciplinas = []
+            var aprovadas = []
+            for(var index in disciplinasAprovadas) {
+                aprovadas.push(parseInt(disciplinasAprovadas[index].disciplina))
+            }
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
-                disciplinas.push(disciplina.value)
+                var nome = disciplina.value.substr(0, disciplina.value.indexOf('-'))
+                var id = parseInt(disciplina.value.substr(disciplina.value.indexOf('-') + 1))
 
-                $(".disciplinas").append(
-                    "<span style='border-radius: 20px; background-color: #74eb56; color: #fff; display:inline-block; padding: 10px; margin-left: 10px; margin-top: 10px'>"
-                        + disciplina.value +
-                    "</span>"
+                if(aprovadas.includes(id)) {
+                    $(".disciplinas").append(
+                        "<span style='border-radius: 20px; background-color: #74eb56; color: #fff; display:inline-block; padding: 10px; margin-left: 10px; margin-top: 10px'>"
+                        + nome +
+                        "</span>"
+                    );
 
-                );
+                } else {
+                    $(".disciplinas").append(
+                        "<span style='border-radius: 20px; background-color: #F96262; color: #fff; display:inline-block; padding: 10px; margin-left: 10px; margin-top: 10px'>"
+                        + nome +
+                        "</span>"
+                    );
+                }
+
+
             });
 
 

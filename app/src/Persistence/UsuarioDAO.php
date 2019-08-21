@@ -32,6 +32,15 @@ class UsuarioDAO extends BaseDAO
         return $usuario;
     }
 
+    public function getDisciplinasAprovadasById($idUsuario)
+    {
+        $sql = "SELECT disciplina FROM nota WHERE estado='Aprovado' AND usuario=$idUsuario";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
+    
     /**
      * @param $id
      * @return Usuario|null

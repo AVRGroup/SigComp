@@ -20,9 +20,14 @@ class OportunidadeController
 
     public function verOportunidades(Request $request, Response $response, $args)
     {
+        $usuario = $this->container->usuarioDAO->getById($_SESSION['id']);
+        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
+
+        $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
 
         $this->container->view['oportunidades'] = $oportunidades;
+        $this->container->view['disciplinasAprovadas'] = $disciplinasAprovadas;
 
         return $this->container->view->render($response, 'verOportunidades.tpl');
     }
