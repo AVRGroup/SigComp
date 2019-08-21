@@ -140,7 +140,7 @@ class Usuario implements ToIdArrayInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Nota", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     protected $notas;
 

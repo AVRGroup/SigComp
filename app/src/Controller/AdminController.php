@@ -97,14 +97,16 @@ class AdminController
                         }
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                         $this->container->view['affectedData'] = $affectedData;
+
+                        $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
+                        $this->container->usuarioDAO->deleteAbsentUsers();
+
                         $this->container->view['success'] = true;
                     } catch (\Exception $e) {
                         $this->container->view['error'] = $e->getMessage();
                     }
                 }
             }
-            $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
-            $this->container->usuarioDAO->deleteAbsentUsers();
 
             $this->calculaIra();
             $this->calculaIraPeriodoPassado();

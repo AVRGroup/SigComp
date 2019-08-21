@@ -11,6 +11,10 @@
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
+        <input type="checkbox" id="filtrar-pre-requisitos" >
+        <label for="filtrar-pre-requisitos">Mostrar apenas Oportunidades que tenho os pré-requisitos</label>
+
+
         <div class="row">
             {foreach $oportunidades as $oportunidade}
                 <div class="col-6">
@@ -127,6 +131,12 @@
 
         $("#maisInformacoes").on("hidden.bs.modal", function () {
             $(".disciplinas").empty()
+        });
+
+        $("#filtrar-pre-requisitos").change(function () {
+            if ($(this).is(':checked')) {
+
+            }
         });
 
     </script>
