@@ -165,7 +165,7 @@ class AdminController
             $usuario->setIra($ira);
 
             try {
-                $this->container->usuarioDAO->flush();
+                $this->container->usuarioDAO->save($usuario);
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -219,7 +219,7 @@ class AdminController
             }
 
             try {
-                $this->container->usuarioDAO->flush();
+                $this->container->usuarioDAO->save($usuario);
             } catch (\Exception $e) {
                 echo $e;
             }

@@ -16,10 +16,12 @@
 
 
         <div class="row">
-            {foreach $oportunidades as $oportunidade}
+            {foreach $oportunidades as $indice => $oportunidade}
                 <div class="col-6">
 
-                    <div class="card-oportunidade card-oportunidade-{$oportunidade->abreviacao()}">
+                    <input type="hidden" class="oportunidade-{$indice}" value="{$oportunidade->getId()}" >
+
+                    <div class="card-oportunidade card-oportunidade-{$indice} card-oportunidade-{$oportunidade->getId()} card-oportunidade-{$oportunidade->abreviacao()}">
 
                         <p class="text-center titulo">
                             <span class="borda-titulo-{$oportunidade->abreviacao()}">{$oportunidade->getNomeTipo()}</span>
@@ -85,17 +87,18 @@
 
 {block name="javascript"}
     <script>
+        var disciplinasAprovadas = {json_encode($disciplinasAprovadas)}
+
+        var aprovadas = []
+        for(var index in disciplinasAprovadas) {
+            aprovadas.push(parseInt(disciplinasAprovadas[index].disciplina))
+        }
+
         $('#maisInformacoes').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var arquivo = button.data('arquivo')
             var temArquivo = button.data('tem_arquivo')
             var idOportunidade = button.data('oportunidade')
-            var disciplinasAprovadas = {json_encode($disciplinasAprovadas)}
-
-            var aprovadas = []
-            for(var index in disciplinasAprovadas) {
-                aprovadas.push(parseInt(disciplinasAprovadas[index].disciplina))
-            }
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
                 var nome = disciplina.value.substr(0, disciplina.value.indexOf('-'))
@@ -135,9 +138,34 @@
 
         $("#filtrar-pre-requisitos").change(function () {
             if ($(this).is(':checked')) {
+                $(".card-oportunidade").each(function (indice, card) {
+                    var idOportunidade = $(".oportunidade-"+indice).val()
+                    var requisitos = []
 
+                    $(".disciplinas-"+idOportunidade).each(function (i, disciplina) {
+                        var id = parseInt(disciplina.value.substr(disciplina.value.indexOf('-') + 1))
+                        requisitos.push(id)
+                    })
+
+                    if(!estaContido(requisitos, aprovadas)) {
+                        var cardOportunidade = $(".card-oportunidade-"+idOportunidade)
+                        cardOportunidade.slideUp()
+                    }
+                })
+            } else {
+                $(".card-oportunidade").each(function (indice, card) {
+                    $(".card-oportunidade-"+indice).slideDown()
+                })
             }
         });
+
+        function estaContido(needle, haystack){
+            for(var i = 0; i < needle.length; i++){
+                if(haystack.indexOf(needle[i]) === -1)
+                    return false;
+            }
+            return true;
+        }
 
     </script>
 
