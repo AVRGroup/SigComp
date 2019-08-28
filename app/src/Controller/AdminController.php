@@ -689,8 +689,10 @@ class AdminController
 
     public function sairImpersonar(Request $request, Response $response, $args)
     {
-        $_SESSION['id'] = 237;
-        unset($_SESSION['estaImpersonando']);
+        if(isset($_SESSION['estaImpersonando'])) {
+            $_SESSION['id'] = 237;
+            unset($_SESSION['estaImpersonando']);
+        }
 
         return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
 
