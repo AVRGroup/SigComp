@@ -85,7 +85,12 @@
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                         {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
+                        {if $estaImpersonando == true}
+                            <li class="nav-item" style="background-color: #e74c3c;"><a class="nav-link" style="color:black" href="{path_for name="sairImpersonar"}">SAIR DO USUARIO</a></li>
+                        {else}
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
+                        {/if}
+
                         {if $loggedUser->getTipo() == 1}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
 

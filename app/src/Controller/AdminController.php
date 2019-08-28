@@ -676,4 +676,23 @@ class AdminController
         return false;
     }
 
+
+    public function impersonarUsuario(Request $request, Response $response, $args)
+    {
+        $idUsuario = $args['id'];
+
+        $_SESSION['id'] = $idUsuario;
+        $_SESSION['estaImpersonando'] = true;
+
+        return $response->withRedirect($this->container->router->pathFor('home'));
+    }
+
+    public function sairImpersonar(Request $request, Response $response, $args)
+    {
+        $_SESSION['id'] = 237;
+        unset($_SESSION['estaImpersonando']);
+
+        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+
+    }
 }

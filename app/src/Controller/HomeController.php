@@ -24,6 +24,7 @@ class HomeController
     {
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
+
         $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         if($user->getPrimeiroLogin() == 1) {
@@ -70,7 +71,6 @@ class HomeController
                 }
             } catch (\Exception $e) {
                 echo $e->getTraceAsString();
-                // TODO Error message
             }
         }
 

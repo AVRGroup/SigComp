@@ -28,13 +28,6 @@ class LoginController
     public function loginAction(Request $request, Response $response, $args)
     {
         if ($request->isPost()) {
-            /*$loginCredentials = new login();
-            $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
-            $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
-            $loginCredentials->setAppToken($this->container->settings['integra']['token']);
-            $WSLogin = new WSLogin();*/
-
-
             try {
                 if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!/79awQxVp') {
                     $matriculas[] = '100000000';
@@ -64,7 +57,6 @@ class LoginController
                         }
                     }
                 }
-
 
                 $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
 
