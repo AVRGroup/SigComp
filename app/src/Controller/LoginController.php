@@ -29,6 +29,8 @@ class LoginController
     {
         if ($request->isPost()) {
             try {
+                unset($_SESSION['estaImpersonando']);
+
                 if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!/79awQxVp') {
                     $matriculas[] = '100000000';
                     $userInfoResponse = new wsUserInfoResponse(12345);

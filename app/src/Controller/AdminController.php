@@ -694,7 +694,7 @@ class AdminController
             unset($_SESSION['estaImpersonando']);
         }
 
-        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+        return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
 
     }
 }
