@@ -667,9 +667,9 @@ class UsuarioDAO extends BaseDAO
         return $alunos;
     }
 
-    public function setPeriodizado($userId)
+    public function setPeriodizado($userId, $periodoCorrente)
     {
-        $periodoAtual = $this->getUsersPeriodoAtual($userId);
+        $periodoAtual = $this->getUsersPeriodoAtual($userId, $periodoCorrente);
         $medalhaPeriodoAtual = $this->getMedalhasPeriodoCompleto($userId, $periodoAtual);
 
 
@@ -685,17 +685,35 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getUsersPeriodoAtual($userId)
+    public function getUsersPeriodoAtual($userId, $periodoCorrente)
     {
-        $sql = "SELECT nota.periodo FROM usuario 
-                JOIN nota ON usuario.id = nota.usuario 
-                WHERE usuario.id = $userId GROUP BY periodo";
+        $matricula = $this->getMatricula($userId);
+        $anoMatricula = substr($matricula, 0, 4);
+        $anoMatricula = intval($anoMatricula);
 
+        $dataPeriodoCorrente = explode('-', $periodoCorrente);
+        $anoPeriodoCorrente = intval($dataPeriodoCorrente[0]);
+        $mesPeriodoCorrente = intval($dataPeriodoCorrente[1]);
+
+
+        $periodo = ($anoPeriodoCorrente - $anoMatricula) * 2;
+
+        if($mesPeriodoCorrente > 7) {
+            $periodo += 1;
+        }
+
+
+        return $periodo;
+    }
+
+    public function getMatricula($userId)
+    {
+        $sql = "SELECT matricula FROM usuario WHERE id = $userId";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
-        $results =  $stmt->fetchAll();
+        $resultado =  $stmt->fetchAll();
 
-        return sizeof($results);
+        return $resultado[0]['matricula'];
     }
 
     public function getMedalhasPeriodoCompleto($userId, $periodoAtual)

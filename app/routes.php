@@ -46,7 +46,6 @@ $app->group('', function () {
         $this->post('/unset-concluido', '\App\Controller\AdminController:unsetConcluido')->setName('unsetConcluido');
 
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
-        $this->get('/teste-ira', '\App\Controller\AdminController:testeCalulaIra');
 
         $this->get('/cadastrar-oportunidade', '\App\Controller\OportunidadeController:formCadastrarOportunidade')->setName('cadastrarOportunidade');
         $this->post('/criar-oportunidade', '\App\Controller\OportunidadeController:criarOportunidade')->setName('ciarOportunidade');
@@ -60,6 +59,7 @@ $app->group('', function () {
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+        $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');

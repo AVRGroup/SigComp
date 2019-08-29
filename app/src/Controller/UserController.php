@@ -253,6 +253,15 @@ class UserController
         return $response->withRedirect($this->container->router->pathFor('home'));
     }
 
+
+    public function teste(Request $request, Response $response, $args){
+        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
+        $periodo = $this->container->usuarioDAO->getUsersPeriodoAtual(145, $periodoCorrente);
+
+        die(var_dump($periodo));
+    }
+
+
     public function aceitarConviteAction(Request $request, Response $response, $args){
         $this->container->usuarioDAO->aceitarConvite($args['id-remetente'], $args['id-destinatario']);
 
@@ -318,6 +327,7 @@ class UserController
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12018), 3, 12018);
 
         $allUserIds = $this->container->usuarioDAO->getAllUsersIds();
+        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
         foreach ($allUserIds as $userId) {
             $userId = $userId['id'];
             //ficou um pouco confuso, mas o get recebe o tipo do certificado (da model 'Certificado.php') e o set recebe o numero da primeira medalha (da tabela 'medalha')
@@ -331,7 +341,7 @@ class UserController
             $this->container->usuarioDAO->setEstagio($userId);
             $this->container->usuarioDAO->setEmpresaJunior($userId);
             $this->container->usuarioDAO->setPoliglota($userId);
-            $this->container->usuarioDAO->setPeriodizado($userId);
+            $this->container->usuarioDAO->setPeriodizado($userId, $periodoCorrente);
 
             $user = $this->container->usuarioDAO->getById($userId);
             if($user->getSituacao() == 1) {
@@ -343,6 +353,7 @@ class UserController
         return $this->container->view->render($response, 'assignMedals.tpl');
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
+
 
 }
 
