@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Oportunidade;
+use Doctrine\Instantiator\Exception\ExceptionInterface;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
@@ -20,7 +21,8 @@ class OportunidadeController
 
     public function verOportunidades(Request $request, Response $response, $args)
     {
-        $usuario = $this->container->usuarioDAO->getById($_SESSION['id']);
+        $idUsuario = $_SESSION['id'];
+        $usuario = $this->container->usuarioDAO->getById($idUsuario);
         $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
 
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
@@ -28,6 +30,9 @@ class OportunidadeController
 
         $this->container->view['oportunidades'] = $oportunidades;
         $this->container->view['disciplinasAprovadas'] = $disciplinasAprovadas;
+
+        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
+        $this->container->view['periodo'] = $this->container->usuarioDAO->getUsersPeriodoAtual($idUsuario, $periodoCorrente);
 
         return $this->container->view->render($response, 'verOportunidades.tpl');
     }
@@ -45,12 +50,12 @@ class OportunidadeController
     public function criarOportunidade(Request $request, Response $response, $args)
     {
         $erros = $this->validaFormulario($request);
+        $idUsuario = $_SESSION['id'];
 
         if(sizeof($erros) > 0){
             $this->container->view['error'] = $erros;
             return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
         }
-
 
         $tipo = $request->getParsedBodyParam('tipo_oportunidade');
         $numeroVagas = $request->getParsedBodyParam('numero_vagas');
@@ -92,7 +97,6 @@ class OportunidadeController
         } catch (Exception $e) {
             $this->container->view['error'] = $e->getMessage();
         }
-
 
         return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
     }

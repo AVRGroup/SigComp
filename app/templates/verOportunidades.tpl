@@ -14,6 +14,7 @@
         <input type="checkbox" id="filtrar-pre-requisitos" >
         <label for="filtrar-pre-requisitos">Mostrar apenas Oportunidades que tenho os pré-requisitos</label>
 
+        <input type="hidden" id="periodo-usuario" value="{$periodo}">
 
         <div class="row">
             {foreach $oportunidades as $indice => $oportunidade}
@@ -43,6 +44,9 @@
                                 R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
                             {/if}
                         </p>
+
+                        <input type="hidden" class="periodo-minimo-{$oportunidade->getId()}" value={$oportunidade->getPeriodoMinimo()}>
+                        <input type="hidden" class="periodo-maximo-{$oportunidade->getId()}" value={$oportunidade->getPeriodoMaximo()}>
 
                         {foreach $oportunidade->getDisciplinas() as $disciplina}
                             {if $disciplina->getNome()}
@@ -137,9 +141,16 @@
         });
 
         $("#filtrar-pre-requisitos").change(function () {
+
             if ($(this).is(':checked')) {
                 $(".card-oportunidade").each(function (indice, card) {
                     var idOportunidade = $(".oportunidade-"+indice).val()
+                    var cardOportunidade = $(".card-oportunidade-"+idOportunidade)
+
+                    var periodoUsuario = $("#periodo-usuario").val()
+                    var periodoMinimo = $(".periodo-minimo-"+idOportunidade).val()
+                    var periodoMaximo = $(".periodo-maximo-"+idOportunidade).val()
+
                     var requisitos = []
 
                     $(".disciplinas-"+idOportunidade).each(function (i, disciplina) {
@@ -148,9 +159,12 @@
                     })
 
                     if(!estaContido(requisitos, aprovadas)) {
-                        var cardOportunidade = $(".card-oportunidade-"+idOportunidade)
                         cardOportunidade.slideUp()
                     }
+                    if(!(periodoUsuario >= periodoMinimo && periodoUsuario <= periodoMaximo)) {
+                        cardOportunidade.slideUp()
+                    }
+
                 })
             } else {
                 $(".card-oportunidade").each(function (indice, card) {

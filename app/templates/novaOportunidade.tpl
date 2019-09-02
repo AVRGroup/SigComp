@@ -79,7 +79,7 @@
                 <div class="col-6">
                     <label for="periodo-minimo">Período Mínimo</label>
                     <select class="form-control" name="periodo_minimo" id="periodo-minimo">
-                        <option value="0">Sem limite</option>
+                        <option value="-1">Sem limite</option>
                         {for $i=1; $i<= 9; $i++}
                             <option value="{$i}">{$i}º período</option>
                         {/for}
@@ -89,7 +89,7 @@
                 <div class="col-6">
                     <label for="periodo-maximo">Período Máximo</label>
                     <select class="form-control" name="periodo_maximo" id="periodo-maximo">
-                        <option value="0">Sem limite</option>
+                        <option value="999">Sem limite</option>
                         {for $i=1; $i<= 9; $i++}
                             <option value="{$i}">{$i}º período</option>
                         {/for}
