@@ -63,6 +63,16 @@ class Oportunidade implements ToIdArrayInterface
     protected $extensao;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $periodo_minimo;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $periodo_maximo;
+
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      */
     protected $criado_em;
@@ -111,6 +121,38 @@ class Oportunidade implements ToIdArrayInterface
     public function getTipo()
     {
         return $this->tipo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodoMinimo()
+    {
+        return $this->periodo_minimo;
+    }
+
+    /**
+     * @param mixed $periodo_minimo
+     */
+    public function setPeriodoMinimo($periodo_minimo): void
+    {
+        $this->periodo_minimo = $periodo_minimo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodoMaximo()
+    {
+        return $this->periodo_maximo;
+    }
+
+    /**
+     * @param mixed $periodo_maximo
+     */
+    public function setPeriodoMaximo($periodo_maximo): void
+    {
+        $this->periodo_maximo = $periodo_maximo;
     }
 
     /**

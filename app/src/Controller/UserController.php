@@ -29,7 +29,6 @@ class UserController
 
     public function adminListAction(Request $request, Response $response, $args)
     {
-
         if($request->isPost()){
             $pesquisa = $request->getParsedBodyParam('pesquisa');
             $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisa);

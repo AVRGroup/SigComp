@@ -44,6 +44,13 @@ class OportunidadeController
 
     public function criarOportunidade(Request $request, Response $response, $args)
     {
+        $erros = $this->validaFormulario($request);
+
+        if(sizeof($erros) > 0){
+            $this->container->view['error'] = $erros;
+            return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
+        }
+
 
         $tipo = $request->getParsedBodyParam('tipo_oportunidade');
         $numeroVagas = $request->getParsedBodyParam('numero_vagas');
@@ -54,6 +61,8 @@ class OportunidadeController
         $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
+        $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
+        $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
 
         $oportunidade = new Oportunidade();
         $oportunidade->setTipo($tipo);
@@ -63,6 +72,8 @@ class OportunidadeController
         $oportunidade->setQuantidadeVagas($numeroVagas);
         $oportunidade->setRemuneracao($valorRemuneracao);
         $oportunidade->setCriadoEm(new \DateTime());
+        $oportunidade->setPeriodoMinimo($periodoMinimo);
+        $oportunidade->setPeriodoMaximo($periodoMaximo);
 
         if($arquivo->getSize() > 0) {
             $this->setArquivo($oportunidade, $arquivo);
@@ -77,7 +88,7 @@ class OportunidadeController
 
         try {
             $this->container->oportunidadeDAO->save($oportunidade);
-            $this->container->view['success'] = true;
+            $this->container->view['success'] = "Oportunidade cadastrada com sucesso!";
         } catch (Exception $e) {
             $this->container->view['error'] = $e->getMessage();
         }
@@ -86,6 +97,19 @@ class OportunidadeController
         return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
     }
 
+    public function validaFormulario(Request $request)
+    {
+        $erros = [];
+
+        $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
+        $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
+
+        if($periodoMaximo < $periodoMinimo) {
+            $erros['periodo'] = "Perído máximo deve ser maior que o período mínimo";
+        }
+
+        return $erros;
+    }
 
     public function setArquivo($oportunidade, $arquivo)
     {
