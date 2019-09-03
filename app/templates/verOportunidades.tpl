@@ -11,9 +11,17 @@
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
+
         <input type="checkbox" id="filtrar-pre-requisitos" >
         <label for="filtrar-pre-requisitos">Mostrar apenas Oportunidades que tenho os pré-requisitos</label>
 
+        <select id="filtrar-data" class="form-control col-6">
+            <option disabled selected>Filtrar por data</option>
+            <option value="todas">Mostrar todas oportunidades (padrão)</option>
+            <option value="ativas">Mostrar apenas ativas (data de inscrição após hoje)</option>
+            <option value="inativas">Mostrar apenas as inativas (data de inscrição já passou)</option>
+        </select>
+        <br>
         <input type="hidden" id="periodo-usuario" value="{$periodo}">
 
         <div class="row">
@@ -35,6 +43,7 @@
                         <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
+                        <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
 
                         <p>
                             <span class="weight-600">Remuneração:</span>
@@ -67,8 +76,6 @@
         </div>
     </div>
 
-
-
     <div class="modal fade" id="maisInformacoes" tabindex="-1" role="dialog" aria-labelledby="maisInformacoesLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -86,6 +93,7 @@
             </div>
         </div>
     </div>
+
 {/block}
 
 
@@ -126,7 +134,6 @@
 
             });
 
-
             var modal = $(this)
             if(temArquivo) {
                 modal.find('.modal-body a').attr("href", arquivo)
@@ -141,7 +148,6 @@
         });
 
         $("#filtrar-pre-requisitos").change(function () {
-
             if ($(this).is(':checked')) {
                 $(".card-oportunidade").each(function (indice, card) {
                     var idOportunidade = $(".oportunidade-"+indice).val()
@@ -164,7 +170,6 @@
                     if(!(periodoUsuario >= periodoMinimo && periodoUsuario <= periodoMaximo)) {
                         cardOportunidade.slideUp()
                     }
-
                 })
             } else {
                 $(".card-oportunidade").each(function (indice, card) {
@@ -179,6 +184,84 @@
                     return false;
             }
             return true;
+        }
+
+
+        $("#filtrar-data").change(function () {
+            var filtro = $(this).val();
+            switch (filtro) {
+                case "ativas":
+                    mostrarOportunidadesAtivas()
+                    break;
+                case "inativas":
+                    mostrarOportunidadesInativas()
+                    break;
+                default:
+                    mostrarTodasOportunidades()
+                    break;
+            }
+        })
+
+        function mostrarOportunidadesAtivas() {
+            $(".card-oportunidade").each(function (indice, card) {
+                var idOportunidade = $(".oportunidade-"+indice).val()
+                var cardOportunidade = $(".card-oportunidade-"+idOportunidade)
+
+                var validade = $(".validade-"+idOportunidade).val()
+                var hoje = dataHoje()
+
+                validade = criarObjetoDate(validade)
+                hoje = criarObjetoDate(hoje)
+                if(validade < hoje) {
+                    cardOportunidade.slideUp()
+                }
+                else {
+                    cardOportunidade.slideDown()
+                }
+            })
+        }
+
+        function mostrarOportunidadesInativas() {
+            $(".card-oportunidade").each(function (indice, card) {
+                var idOportunidade = $(".oportunidade-"+indice).val()
+                var cardOportunidade = $(".card-oportunidade-"+idOportunidade)
+
+                var validade = $(".validade-"+idOportunidade).val()
+                var hoje = dataHoje()
+
+                validade = criarObjetoDate(validade)
+                hoje = criarObjetoDate(hoje)
+                if(validade >= hoje) {
+                    cardOportunidade.slideUp()
+                }
+                else {
+                    cardOportunidade.slideDown()
+                }
+            })
+        }
+
+        function mostrarTodasOportunidades() {
+            $(".card-oportunidade").each(function (indice, card) {
+                var idOportunidade = $(".oportunidade-" + indice).val()
+                var cardOportunidade = $(".card-oportunidade-" + idOportunidade)
+
+                cardOportunidade.slideDown()
+            })
+        }
+
+        function dataHoje() {
+            var hoje = new Date()
+            var dd = String(hoje.getDate()).padStart(2, '0');
+            var mm = String(hoje.getMonth() + 1).padStart(2, '0');
+            var yyyy = hoje.getFullYear();
+
+            hoje = dd + '/' + mm + '/' + yyyy;
+            return hoje
+        }
+
+        function criarObjetoDate(string) {
+            var data = string.split('/')
+            return new Date(data[2], data[1] - 1, data[0] );
         }
 
     </script>
