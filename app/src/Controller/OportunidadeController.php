@@ -23,7 +23,6 @@ class OportunidadeController
     {
         $idUsuario = $_SESSION['id'];
         $usuario = $this->container->usuarioDAO->getById($idUsuario);
-        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
 
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
@@ -35,6 +34,11 @@ class OportunidadeController
         $this->container->view['periodo'] = $this->container->usuarioDAO->getUsersPeriodoAtual($idUsuario, $periodoCorrente);
 
         return $this->container->view->render($response, 'verOportunidades.tpl');
+    }
+
+    public function mostrarOportunidade(Request $request, Response $response, $args)
+    {
+
     }
 
     public function formCadastrarOportunidade(Request $request, Response $response, $args)

@@ -102,9 +102,6 @@ class CertificateController
                 }
             }
         }
-
-        $user = $request->getAttribute('user');
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
         $this->container->view['certTypes'] = Certificado::getAllTipos();
         $this->container->view['certificates'] = $this->container->certificadoDAO->getAllByUsuario($request->getAttribute('user'));
 

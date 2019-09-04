@@ -25,8 +25,6 @@ class HomeController
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
 
-        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId());
-
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $user->setNomeReal(true);
@@ -90,7 +88,6 @@ class HomeController
         $this->container->view['usuario'] = $usuario;
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
-        $this->container->view['notificacoes'] = $notificacoes;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade()) * 100;
@@ -178,9 +175,6 @@ class HomeController
 
     public function privacidadeAction(Request $request, Response $response, $args)
     {
-        $user = $request->getAttribute('user');
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
-
         return $this->container->view->render($response, 'politicaPrivacidade.tpl');
     }
 

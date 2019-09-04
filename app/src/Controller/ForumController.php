@@ -21,7 +21,6 @@ class ForumController{
         $user = $request->getAttribute('user');
         $this->container->view['user'] = $user;
 
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
         $this->container->view['categoriesFull'] = $this->container->categoriaDAO->getAll();
         $this->container->view['topicosPorCategoria'] = $this->getTopicosPorCategoria();
 

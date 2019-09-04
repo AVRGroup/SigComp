@@ -23,6 +23,8 @@ class AuthMiddleware
         $this->container->view['loggedUser'] = $user;
         $this->container->view['estaImpersonando'] = isset($_SESSION['estaImpersonando']);
 
+        $this->container->view['notificacoes'] = $this->container->usuarioDAO->getConvitesPendentes($user->getId());
+
         $newRequest = $request->withAttribute('user', $user);
 
         return $next($newRequest, $response);

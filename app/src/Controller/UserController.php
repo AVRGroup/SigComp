@@ -46,9 +46,6 @@ class UserController
     {
         $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
 
-        $user = $request->getAttribute('user');
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
-
         if(!$usuario) {
             return $response->withRedirect($this->container->router->pathFor('home'));
         }
@@ -126,7 +123,6 @@ class UserController
     {
         $user = $request->getAttribute('user');
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         try {
             if ($request->isPost()) {
@@ -282,7 +278,6 @@ class UserController
 
         $this->container->view['medalhas'] = $medalhasAmigo;
         $this->container->view['amigos']  = $amigos;
-        $this->container->view['notificacoes'] =  $this->container->usuarioDAO->getConvitesPendentes($user->getId());
 
         return $this->container->view->render($response, 'listaAmigos.tpl');
     }
