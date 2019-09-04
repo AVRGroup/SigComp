@@ -36,7 +36,11 @@
                             <span class="borda-titulo-{$oportunidade->abreviacao()}">{$oportunidade->getNomeTipo()}</span>
                         </p>
 
-                        <p class="descricao">{$oportunidade->getDescricao()}</p>
+                        {if strlen($oportunidade->getDescricao()) > 120}
+                            <p class="descricao">{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
+                        {else}
+                            <p class="descricao">{$oportunidade->getDescricao()}</p>
+                        {/if}
 
                         <p><span class="weight-600">Professor:</span> {$oportunidade->getProfessor()}</p>
 
@@ -69,7 +73,7 @@
                         data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}">
                             Mais Informações
                         </button>
-
+                        <a href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link único</small></a>
                     </div>
                 </div>
             {/foreach}

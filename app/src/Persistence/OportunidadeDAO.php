@@ -12,6 +12,19 @@ class OportunidadeDAO extends BaseDAO
         $this->em = $db;
     }
 
+    public function getById($id)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Oportunidade AS u WHERE u.id = :id");
+            $query->setParameter('id', $id);
+            $oportunidade = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $oportunidade = null;
+        }
+
+        return $oportunidade;
+    }
+
     public function getAll()
     {
         try {

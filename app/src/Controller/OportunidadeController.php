@@ -38,7 +38,28 @@ class OportunidadeController
 
     public function mostrarOportunidade(Request $request, Response $response, $args)
     {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+        $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($_SESSION['id']);
 
+        $preRequisitos = $oportunidade->getDisciplinas();
+        $this->container->view['oportunidade'] = $oportunidade;
+
+        $idDisciplinas = [];
+        foreach ($disciplinasAprovadas as $disciplinasAprovada) {
+            array_push($idDisciplinas, intval($disciplinasAprovada['disciplina']));
+        }
+
+
+        $this->container->view['disciplinasAprovadas'] = $idDisciplinas;
+
+        $idPreRequisitos = [];
+        foreach ($preRequisitos as $disciplina) {
+            array_push($idPreRequisitos, intval($disciplina->getId()));
+        }
+        $this->container->view['preRequisitos'] = $idPreRequisitos;
+
+
+        $this->container->view->render($response, 'oportunidadeIndividual.tpl');
     }
 
     public function formCadastrarOportunidade(Request $request, Response $response, $args)
