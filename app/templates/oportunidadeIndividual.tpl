@@ -20,9 +20,9 @@
                 </span>
             {/foreach}
             <div style="margin-top: 10px">
-                <span class="weight-600">Minimo: {$oportunidade->getPeriodoMinimo()}º período</span>
+                <span class="weight-600">Período Minimo: {$oportunidade->getPeriodoMinimoParaEscrita()}</span>
                 |
-                <span class="weight-600">Máximo: {$oportunidade->getPeriodoMaximo()}º período</span>
+                <span class="weight-600">Período Máximo: {$oportunidade->getPeriodoMaximoParaEscrita()}</span>
             </div>
         </div>
 

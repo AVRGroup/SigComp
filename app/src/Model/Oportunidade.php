@@ -131,6 +131,15 @@ class Oportunidade implements ToIdArrayInterface
         return $this->periodo_minimo;
     }
 
+    public function getPeriodoMinimoParaEscrita()
+    {
+       if($this->periodo_minimo == -1) {
+           return "Sem Limite";
+       }
+
+       return $this->periodo_minimo;
+    }
+
     /**
      * @param mixed $periodo_minimo
      */
@@ -144,6 +153,15 @@ class Oportunidade implements ToIdArrayInterface
      */
     public function getPeriodoMaximo()
     {
+        return $this->periodo_maximo;
+    }
+
+    public function getPeriodoMaximoParaEscrita()
+    {
+        if($this->periodo_maximo == 999){
+            return "Sem Limite";
+        }
+
         return $this->periodo_maximo;
     }
 
