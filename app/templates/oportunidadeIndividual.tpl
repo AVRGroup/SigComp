@@ -44,15 +44,17 @@
                 </p>
             </div>
 
-            <div class="col-6">
-                {if $oportunidade->getExtensao() == "pdf"}
-                    <embed src="{base_url}/upload/{$oportunidade->getArquivo()}" type="application/pdf">
-                {else}
-                    <img class="card-img-top" src="{base_url}/upload/{$oportunidade->getArquivo()}">
-                {/if}
-                <br>
-                <a href="{base_url}/upload/{$oportunidade->getArquivo()}" target="_blank"> Download </a>
-            </div>
+            {if isset($oportunidade->getArquivo())}
+                <div class="col-6">
+                    {if $oportunidade->getExtensao() == "pdf"}
+                        <iframe src="{base_url}/upload/{$oportunidade->getArquivo()}" frameborder="0" type="application/pdf">
+                    {else}
+                        <img alt="pdf-oportunidade" class="card-img-top" src="{base_url}/upload/{$oportunidade->getArquivo()}">
+                    {/if}
+                    <br>
+                    <a href="{base_url}/upload/{$oportunidade->getArquivo()}" target="_blank"> Download </a>
+                </div>
+            {/if}
 
         </div>
 
