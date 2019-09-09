@@ -47,7 +47,7 @@
             {if isset($oportunidade->getArquivo())}
                 <div class="col-6">
                     {if $oportunidade->getExtensao() == "pdf"}
-                        <iframe src="{base_url}/upload/{$oportunidade->getArquivo()}" frameborder="0" type="application/pdf"></iframe>
+                        <object data="{base_url}/upload/{$oportunidade->getArquivo()}"  type="application/pdf"></object>
                     {else}
                         <img alt="pdf-oportunidade" class="card-img-top" src="{base_url}/upload/{$oportunidade->getArquivo()}">
                     {/if}
