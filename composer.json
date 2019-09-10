@@ -1,0 +1,19 @@
+{
+    "require": {
+        "slim/slim": "^3.0",
+        "mathmarques/smarty-view": "^1.1",
+        "doctrine/orm": "^2.6",
+        "phpoffice/phpspreadsheet": "^1.2",
+        "ramsey/uuid": "^3.7",
+        "nikic/fast-route": "^1.3",
+        "guzzlehttp/guzzle": "~6.0",
+        "dompdf/dompdf": "dev-master",
+        "phpmailer/phpmailer": "^6.0",
+        "ext-dom": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src"
+        }
+    }
+}
