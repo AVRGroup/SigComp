@@ -242,6 +242,39 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+
+
+
+    public function getByNomeComAmizadeSemAcento($pesquisa, $id){
+        $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id AND usuario.id != '$id'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $usuariosFiltrados = [];
+
+        $pesquisa = $this->removeAcento($pesquisa);
+
+        $pesquisa = strtoupper($pesquisa);
+
+        foreach ($results as $usuario) {
+            $nome = $this->removeAcento($usuario['nome']);
+
+            if(strpos($nome, $pesquisa) !== false) {
+                array_push($usuariosFiltrados, $usuario);
+            }
+        }
+
+        return $usuariosFiltrados;
+    }
+
+    function removeAcento($str)
+    {
+        return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
+            'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+    }
+
+
     public function getAmigos($id){
         $sql = "SELECT usuario.* FROM usuario JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (amizade.amigo_id = '$id' OR amizade.usuario_id = '$id') AND usuario.id != '$id' AND amizade.estado='aceito' ";
         $stmt = $this->em->getConnection()->prepare($sql);

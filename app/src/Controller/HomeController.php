@@ -39,7 +39,7 @@ class HomeController
 
             try {
                 if($pesquisa){
-                    $this->container->view['usuariosPesquisados'] = $this->container->usuarioDAO->getByNomeComAmizade($pesquisa, $user->getId());
+                    $this->container->view['usuariosPesquisados'] = $this->container->usuarioDAO->getByNomeComAmizadeSemAcento($pesquisa, $user->getId());
                 }
                 else {
                     $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
