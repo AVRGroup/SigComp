@@ -243,6 +243,8 @@ class UsuarioDAO extends BaseDAO
     }
 
 
+
+
     public function getByNomeComAmizadeSemAcento($pesquisa, $id){
         $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id AND usuario.id != '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -271,6 +273,7 @@ class UsuarioDAO extends BaseDAO
         return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
             'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
     }
+
 
     public function getAmigos($id){
         $sql = "SELECT usuario.* FROM usuario JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (amizade.amigo_id = '$id' OR amizade.usuario_id = '$id') AND usuario.id != '$id' AND amizade.estado='aceito' ";
