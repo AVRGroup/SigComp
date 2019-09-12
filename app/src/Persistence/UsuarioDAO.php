@@ -32,6 +32,20 @@ class UsuarioDAO extends BaseDAO
         return $usuario;
     }
 
+    public function getUserByLoginSenha($login, $senha)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.nome = :login AND u.password = :senha");
+            $query->setParameter('login', $login);
+            $query->setParameter('senha', $senha);
+            $usuario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+
+        return $usuario;
+    }
+
     public function getDisciplinasAprovadasById($idUsuario)
     {
         $sql = "SELECT disciplina FROM nota WHERE estado='Aprovado' AND usuario=$idUsuario";
@@ -893,5 +907,7 @@ class UsuarioDAO extends BaseDAO
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }
+
+
 
 }

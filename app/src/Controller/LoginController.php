@@ -31,33 +31,19 @@ class LoginController
             try {
                 unset($_SESSION['estaImpersonando']);
 
-                if ($request->getParsedBodyParam('cpf') == 'admin' && $request->getParsedBodyParam('password') == '01#!/79awQxVp') {
-                    $matriculas[] = '100000000';
-                    $userInfoResponse = new wsUserInfoResponse(12345);
-                    $userInfoResponse->setEmailSiga('a@a.com');
+                $loginCredentials = new login();
+                $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
+                $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
+                $loginCredentials->setAppToken($this->container->settings['integra']['token']);
+                $WSLogin = new WSLogin();
 
-                } else {
-                    if($request->getParsedBodyParam('cpf') == 'bolsa' && $request->getParsedBodyParam('password') == '56#$2dEMy#!') {
-                        $matriculas[] = '200000000';
-                        $userInfoResponse = new wsUserInfoResponse(12345);
-                        $userInfoResponse->setEmailSiga('a@a.com');
-                    }
-                    else {
-                        $loginCredentials = new login();
-                        $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
-                        $loginCredentials->setSenha(md5($request->getParsedBodyParam('password')));
-                        $loginCredentials->setAppToken($this->container->settings['integra']['token']);
-                        $WSLogin = new WSLogin();
+                $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
+                $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
+                $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
 
-                        $loginResponse = $WSLogin->login($loginCredentials)->getReturn();
-                        $userInfoResponse = $WSLogin->getUserInformation((new getUserInformation())->setToken($loginResponse->getToken()))->getReturn();
-                        $WSLogin->logout((new logout())->setToken($loginResponse->getToken()));
-
-                        $matriculas = [];
-                        foreach ($userInfoResponse->getProfileList()->getProfile() as $profile) {
-                            $matriculas[] = $profile->getMatricula();
-                        }
-                    }
+                $matriculas = [];
+                foreach ($userInfoResponse->getProfileList()->getProfile() as $profile) {
+                    $matriculas[] = $profile->getMatricula();
                 }
 
                 $usuarios = $this->container->usuarioDAO->getByMatricula($matriculas);
@@ -84,13 +70,6 @@ class LoginController
                     }
                     $this->container->usuarioDAO->flush();
 
-                    if($usuarios[0]->getNome()== "ADMINISTRADOR"){
-                        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
-                    }
-                    else if ($usuarios[0]->getNome()== "BOLSISTA"){
-                        return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
-                    }
-
                     return $response->withRedirect($this->container->router->pathFor('home'));
 
                 } else {
@@ -116,6 +95,29 @@ class LoginController
         $this->container->view['profiles'] = $_SESSION['profiles'];
 
         return $this->container->view->render($response, 'changeProfile.tpl');
+    }
+
+    public function areaExclusiva(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, "areaExclusiva.tpl");
+    }
+
+    public function loginAreaExclusiva(Request $request, Response $response, $args)
+    {
+        $login = $request->getParsedBodyParam('login');
+        $senha = $request->getParsedBodyParam('senha');
+        $senha = crypt($senha, $this->container->settings['password_salt']);
+
+        $usuario = $this->container->usuarioDAO->getUserByLoginSenha($login, $senha);
+
+        if($usuario == null) {
+            $this->container->view['error'] = "Verifique se o login e a senha estão corretos";
+            return $this->container->view->render($response, "areaExclusiva.tpl");
+        }
+
+        $_SESSION['id'] = $usuario->getId();
+
+        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
     }
 
 }

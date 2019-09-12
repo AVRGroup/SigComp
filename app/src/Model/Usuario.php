@@ -66,8 +66,9 @@ class Usuario implements ToIdArrayInterface
 
     /**
      * 0: Aluno
-     * 1: Professor
-     * 2: Administrador
+     * 1: Administrador
+     * 2: Bolsista
+     * 3: Coordenador
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
@@ -194,6 +195,11 @@ class Usuario implements ToIdArrayInterface
      * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
     protected $atualizado_ultima_carga;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $password;
 
     public function __construct()
     {
@@ -782,11 +788,29 @@ class Usuario implements ToIdArrayInterface
     }
 
     public function isAdmin(){
-        if($this->getNome() == "ADMINISTRADOR"){
+        if($this->getTipo() == 1){
             return true;
         }
 
         return false;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+
 
 }

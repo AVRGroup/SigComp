@@ -1,6 +1,8 @@
 <?php
 
 $app->map(['GET', 'POST'], '/login', '\App\Controller\LoginController:loginAction')->setName('login');
+$app->get('/area-exclusiva', '\App\Controller\LoginController:areaExclusiva')->setName('area-exclusiva');
+$app->post('/login-area-exclusiva', '\App\Controller\LoginController:loginAreaExclusiva')->setName('login-exclusivo');
 
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');

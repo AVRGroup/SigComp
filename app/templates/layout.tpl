@@ -128,6 +128,12 @@
 
 
                     {/if}
+
+                    {if $loggedUser->getTipo() != 0}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{path_for name="logout"}">Sair</a>
+                        </li>
+                    {/if}
                 {/if}
 
                 {if  $loggedUser == null}
@@ -137,17 +143,17 @@
                 {/if}
             </ul>
 
-            {if $loggedUser != null}
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Olá, {$loggedUser->getPrimeiroNome()}!
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{path_for name="listProfiles"}">Trocar Perfil</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{path_for name="logout"}">Sair</a>
+            {if isset($loggedUser) && $loggedUser->getTipo() == 0}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Olá, {$loggedUser->getPrimeiroNome()}!
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{path_for name="listProfiles"}">Trocar Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{path_for name="logout"}">Sair</a>
+                    </div>
                 </div>
-            </div>
             {/if}
         </div>
     </div>
