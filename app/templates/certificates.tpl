@@ -1,6 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h3 class="text-center">CertificadosTeste</h3>
+    <h3 class="text-center">CertificadosBolado</h3>
     <hr>
     <h4 class="mt-3">Enviar Certificado</h4>
     {if isset($error)}
