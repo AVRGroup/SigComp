@@ -67,8 +67,8 @@ class Usuario implements ToIdArrayInterface
     /**
      * 0: Aluno
      * 1: Administrador
-     * 2: Bolsista
-     * 3: Coordenador
+     * 2: Coordenador
+     * 3: Bolsista
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
@@ -787,8 +787,32 @@ class Usuario implements ToIdArrayInterface
         $this->medalhas_usuario = $medalhas_usuario;
     }
 
+    public function isAluno(){
+        if($this->getTipo() == 0){
+            return true;
+        }
+
+        return false;
+    }
+
     public function isAdmin(){
         if($this->getTipo() == 1){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isCoordenador(){
+        if($this->getTipo() == 2){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isBolsista(){
+        if($this->getTipo() == 3){
             return true;
         }
 

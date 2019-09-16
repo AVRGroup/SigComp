@@ -40,7 +40,7 @@
             <ul class="navbar-nav mr-auto">
                 {if $loggedUser != null}
 
-                    {if $loggedUser->getTipo() == 0}
+                    {if $loggedUser->isAluno()}
 
                         <div class="dropdown">
 
@@ -74,17 +74,17 @@
                         <li class="nav-item"><a class="nav-link" href="{path_for name="home"}">Início</a></li>
                     {/if}
 
-                    {if $loggedUser->getTipo() == 1}
+                    {if $loggedUser->isAdmin() || $loggedUser->isCoordenador() }
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Início</a></li>
                     {/if}
 
-                    {if $loggedUser->getTipo() == 2}
+                    {if $loggedUser->isBolsista()}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
                     {/if}
 
-                    {if $loggedUser->getTipo() == 0 || $loggedUser->getTipo() == 1}
-                        {if $loggedUser->getTipo() == 0}
+                    {if $loggedUser->isAluno() || $loggedUser->isAdmin()}
+                        {if $loggedUser->isAluno()}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
                         {/if}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
@@ -94,11 +94,11 @@
                             <li class="nav-item" style="background-color: #e74c3c;"><a class="nav-link" style="color:black" href="{path_for name="sairImpersonar"}">SAIR DO USUARIO</a></li>
                         {/if}
 
-                        {if $loggedUser->getTipo() == 0}
+                        {if $loggedUser->isAluno()}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
                         {/if}
 
-                        {if $loggedUser->getTipo() == 1}
+                        {if $loggedUser->isAdmin()}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
 
                             <li class="nav-item dropdown">
@@ -129,7 +129,7 @@
 
                     {/if}
 
-                    {if $loggedUser->getTipo() != 0}
+                    {if !$loggedUser->isAluno()}
                         <li class="nav-item">
                             <a class="nav-link" href="{path_for name="logout"}">Sair</a>
                         </li>
@@ -143,7 +143,7 @@
                 {/if}
             </ul>
 
-            {if isset($loggedUser) && $loggedUser->getTipo() == 0}
+            {if isset($loggedUser) && $loggedUser->isAluno()}
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Olá, {$loggedUser->getPrimeiroNome()}!

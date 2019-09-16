@@ -25,6 +25,10 @@ class HomeController
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
 
+        if(!$user->isAluno()) {
+            return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
+        }
+
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $user->setNomeReal(true);

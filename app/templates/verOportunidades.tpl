@@ -3,7 +3,7 @@
     <div style="margin: 0 20px">
         <h3 style="margin-bottom: 30px;" class="text-center">Oportunidades</h3>
 
-        {if $loggedUser->getTipo() == 1}
+        {if !$loggedUser->isAluno()}
             <div class="text-center">
                 <a class="btn btn-lg btn-success" href="{path_for name="cadastrarOportunidade"}" style="color: #fff; margin-bottom: 5%">Cadastrar Oportunidade </a>
             </div>

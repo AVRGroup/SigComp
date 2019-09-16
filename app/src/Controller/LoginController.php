@@ -9,6 +9,7 @@ use App\Library\Integra\login;
 use App\Library\Integra\logout;
 use App\Library\Integra\WSLogin;
 use App\Library\Integra\wsUserInfoResponse;
+use App\Model\Usuario;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Cookies;
@@ -107,7 +108,6 @@ class LoginController
         $login = $request->getParsedBodyParam('login');
         $senha = $request->getParsedBodyParam('senha');
         $senha = crypt($senha, $this->container->settings['password_salt']);
-
         $usuario = $this->container->usuarioDAO->getUserByLoginSenha($login, $senha);
 
         if($usuario == null) {
@@ -117,7 +117,24 @@ class LoginController
 
         $_SESSION['id'] = $usuario->getId();
 
-        return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+        return $this->getRedirecionamentoPorUsuario($usuario, $response);
+
     }
 
+    public function getRedirecionamentoPorUsuario(Usuario $usuario, $response)
+    {
+        if($usuario->isAdmin()) {
+            return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+        }
+
+        if($usuario->isBolsista()){
+            return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
+        }
+
+        if($usuario->isCoordenador()){
+            return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('home'));
+    }
 }
