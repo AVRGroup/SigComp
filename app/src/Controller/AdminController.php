@@ -414,13 +414,19 @@ class AdminController
 
     public function adminDashboardAction(Request $request, Response $response, $args){
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $parametro = $request->getParam('curso');
 
-        $curso = $usuario->isCoordenador() ? $usuario->getCurso() : null;
+        $curso = null;
+        if($usuario->isCoordenador()) {
+            $curso = $usuario->getCurso();
+        } elseif(isset($parametro)) {
+            $curso = $request->getParam('curso');
+        }
 
         $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram($curso)[0]["COUNT(*)"];
         $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram($curso)[0]["COUNT(*)"];
 
-        if($usuario->isCoordenador()) {
+        if(isset($curso)) {
             $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotalPorCurso($curso);
             $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($curso);
         }
