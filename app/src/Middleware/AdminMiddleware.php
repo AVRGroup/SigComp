@@ -18,8 +18,11 @@ class AdminMiddleware
     {
         $user = $this->container->usuarioDAO->getById($_SESSION['id']);
 
-        if(!isset($_SESSION['id']) || !$user->isAdmin())
+        $podePassar = $user->isAdmin() || $user->isCoordenador();
+
+        if(!isset($_SESSION['id']) || !$podePassar) {
             return $response->withRedirect($this->container->router->pathFor('home'));
+        }
 
         $this->container->view['loggedUser'] = $user;
         $newRequest = $request->withAttribute('user', $user);

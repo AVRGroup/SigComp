@@ -46,6 +46,22 @@ class UsuarioDAO extends BaseDAO
         return $usuario;
     }
 
+    public function getUsuarioLogado() : Usuario
+    {
+        $id = $_SESSION['id'];
+
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.id = :id");
+            $query->setParameter('id', $id);
+            $usuario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+
+        return $usuario;
+    }
+
+
     public function getDisciplinasAprovadasById($idUsuario)
     {
         $sql = "SELECT disciplina FROM nota WHERE estado='Aprovado' AND usuario=$idUsuario";
@@ -322,18 +338,22 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function getCountNaoLogaram()
+    public function getCountNaoLogaram($curso = null)
     {
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 1";
+        $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 1 AND usuario.tipo = 0" . $filtrarCurso;
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
         return $results;
     }
 
-    public function getCountLogaram()
+
+    public function getCountLogaram($curso = null)
     {
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0";
+        $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
+
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0 AND usuario.tipo = 0" . $filtrarCurso;
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -351,8 +371,9 @@ class UsuarioDAO extends BaseDAO
 
     public function getTop10IraTotal(){
         try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao ORDER BY u.ira DESC")->setMaxResults(10);
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.tipo = :tipo ORDER BY u.ira DESC")->setMaxResults(10);
             $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;
@@ -363,8 +384,39 @@ class UsuarioDAO extends BaseDAO
 
     public function getTop10IraPeriodo(){
         try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.tipo = :tipo ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
             $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
+
+
+    public function getTop10IraTotalPorCurso($curso){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.curso = :curso AND u.tipo = :tipo ORDER BY u.ira DESC")->setMaxResults(10);
+            $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $query->setParameter('curso', $curso);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
+    public function getTop10IraPeriodoPorCurso($curso){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.curso = :curso AND u.tipo = :tipo ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
+            $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $query->setParameter('curso', $curso);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;

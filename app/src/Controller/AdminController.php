@@ -413,11 +413,21 @@ class AdminController
     }
 
     public function adminDashboardAction(Request $request, Response $response, $args){
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
-        $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram()[0]["COUNT(*)"];
-        $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram()[0]["COUNT(*)"];
-        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
-        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $curso = $usuario->isCoordenador() ? $usuario->getCurso() : null;
+
+        $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram($curso)[0]["COUNT(*)"];
+        $this->container->view['countLogaram'] = $this->container->usuarioDAO->getCountLogaram($curso)[0]["COUNT(*)"];
+
+        if($usuario->isCoordenador()) {
+            $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotalPorCurso($curso);
+            $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($curso);
+        }
+        else {
+            $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
+            $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+        }
 
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
