@@ -30,7 +30,11 @@ class LoginController
     {
         if ($request->isPost()) {
             try {
-                unset($_SESSION['estaImpersonando']);
+                $cpf = $request->getParsedBodyParam('cpf');
+
+                if($this->isLoginAdministrativo($cpf)) {
+                    return $this->loginAreaExclusiva($request, $response, $args);
+                }
 
                 $loginCredentials = new login();
                 $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
@@ -82,6 +86,19 @@ class LoginController
         }
 
         return $this->container->view->render($response, 'login.tpl');
+    }
+
+    public function isLoginAdministrativo($login)
+    {
+        $loginsAdministrativos = ["coord", "bolsa", "admin"];
+
+        foreach ($loginsAdministrativos as $palavra) {
+            if(strpos($palavra, $login) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function logoutAction(Request $request, Response $response, $args)
