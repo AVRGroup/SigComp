@@ -93,7 +93,7 @@ class LoginController
         $loginsAdministrativos = ["coord", "bolsa", "admin"];
 
         foreach ($loginsAdministrativos as $palavra) {
-            if(strpos($palavra, $login) !== false) {
+            if(strpos($login, $palavra ) !== false) {
                 return true;
             }
         }
@@ -122,20 +122,19 @@ class LoginController
 
     public function loginAreaExclusiva(Request $request, Response $response, $args)
     {
-        $login = $request->getParsedBodyParam('login');
-        $senha = $request->getParsedBodyParam('senha');
+        $login = $request->getParsedBodyParam('cpf');
+        $senha = $request->getParsedBodyParam('password');
         $senha = crypt($senha, $this->container->settings['password_salt']);
         $usuario = $this->container->usuarioDAO->getUserByLoginSenha($login, $senha);
 
         if($usuario == null) {
             $this->container->view['error'] = "Verifique se o login e a senha estão corretos";
-            return $this->container->view->render($response, "areaExclusiva.tpl");
+            return $this->container->view->render($response, "login.tpl");
         }
 
         $_SESSION['id'] = $usuario->getId();
 
         return $this->getRedirecionamentoPorUsuario($usuario, $response);
-
     }
 
     public function getRedirecionamentoPorUsuario(Usuario $usuario, $response)

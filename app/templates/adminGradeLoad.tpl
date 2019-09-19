@@ -28,7 +28,7 @@
         </div>
     {/if}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <b>Atenção!</b> Efetue um backup do banco dados antes de enviar uma nova carga!
+        <b>Atenção!</b> Mantenha o mesmo nome do arquivo gerado pelo sistema de gestão. Exemplo: "65C-12014.xlsx
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -44,4 +44,16 @@
             </div>
         </div>
     </form>
+
+    <div style="padding: 10px 20px;">
+        Grades já cadastradas para o seu curso:
+        <ul style="margin-top: 10px">
+            {foreach $grades as $grade}
+                    <li style="margin-bottom: 10px"><b>{$grade->getCodigo()}</b> - {$grade->getCurso()}</li>
+            {foreachelse}
+                    <li>Nenhuma grande encontrada para esse curso</li>
+            {/foreach}
+        </ul>
+    </div>
+
 {/block}

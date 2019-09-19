@@ -26,6 +26,13 @@ class Grade implements ToIdArrayInterface
      */
     protected $codigo;
 
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    protected $curso;
+
+
     /**
      * @ORM\OneToMany(targetEntity="GradeDisciplina", mappedBy="grade")
      * @ORM\JoinColumn(name="grade", referencedColumnName="id", nullable=false)
@@ -80,6 +87,25 @@ class Grade implements ToIdArrayInterface
     {
         return $this->disciplinas_grade;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCurso()
+    {
+        return $this->curso;
+    }
+
+    /**
+     * @param mixed $curso
+     */
+    public function setCurso($curso): void
+    {
+        $this->curso = $curso;
+    }
+
+
+
 
     /**
      * @param mixed $disciplinas_grade

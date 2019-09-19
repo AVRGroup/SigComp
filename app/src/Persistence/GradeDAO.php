@@ -43,4 +43,20 @@ class GradeDAO extends BaseDAO
         }
         return $grades;
     }
+
+    /**
+     * @param $curso
+     * @return Grade[] |null
+     */
+    public function getAllByCurso($curso)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.curso = :curso");
+            $query->setParameter('curso', $curso);
+            $grades = $query->getResult();
+        } catch (\Exception $e) {
+            $grades = null;
+        }
+        return $grades;
+    }
 }

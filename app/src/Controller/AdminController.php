@@ -387,6 +387,17 @@ class AdminController
                 }
             }
         }
+
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        if($usuario->isAdmin()) {
+            $grades = $this->container->gradeDAO->getAll();
+        } else {
+            $grades = $this->container->gradeDAO->getAllByCurso($usuario->getCurso());
+        }
+
+        $this->container->view['grades'] = $grades;
+
         return $this->container->view->render($response, 'adminGradeLoad.tpl');
     }
 
