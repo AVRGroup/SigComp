@@ -24,7 +24,7 @@
 
         <div class="row">
             {foreach $oportunidades as $indice => $oportunidade}
-                <div class="col-sm-12 col-md-6 col-xs-12" style="margin-top: 3%" >
+                <div class="col-sm-12 col-md-6" style="margin-top: 3%" >
 
                     <input type="hidden" class="oportunidade-{$indice}" value="{$oportunidade->getId()}" >
 

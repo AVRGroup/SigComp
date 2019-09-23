@@ -11,7 +11,7 @@
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
-        <select id="filtrar-data" class="form-control col-6 mx-sm-auto">
+        <select id="filtrar-data" class="form-control col-6">
             <option disabled selected>Filtrar</option>
             <option value="todas">Todas oportunidades (padrão)</option>
             <option value="ativas">Todas oportunidades ativas</option>
@@ -24,7 +24,7 @@
 
         <div class="row">
             {foreach $oportunidades as $indice => $oportunidade}
-                <div class="col-sm-12 col-md-6 col-xs-12" style="margin-top: 3%" >
+                <div class="col-6">
 
                     <input type="hidden" class="oportunidade-{$indice}" value="{$oportunidade->getId()}" >
 
@@ -42,7 +42,7 @@
 
                         <p><span class="weight-600">Professor:</span> {$oportunidade->getProfessor()}</p>
 
-                        <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
+                        <p><span class="weight-600">KOE:</span> {$oportunidade->getQuantidadeVagas()}</p>
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
