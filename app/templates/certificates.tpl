@@ -24,7 +24,7 @@
 
     {*FORM PARA ADICIONAR CERTIFICADO*}
     <form method="post" enctype="multipart/form-data">
-        <div style="margin-left: 15%" class="custom-file col-sm-8 col-md-8 col-xs-8">
+        <div style="margin-left: 15%" class="custom-file col-sm-8 col-md-8 col-xs-4">
             <input  type="file" class="custom-file-input" id="certificate" name="certificate">
             <label class="custom-file-label" for="certificate">Selecionar certificado</label>
         </div>
@@ -35,14 +35,14 @@
         </div>
 
         <div style="margin-top: 3%; padding: 10px" class="form-row">
-            <select class="form-control custom-select col-sm-6 col-md-6 col-xs-6" id="type" required name="type">
+            <select class="form-control custom-select col-sm-12 col-md-6 col-xs-12" id="type" required name="type">
                 <option value="" selected>Selecione o tipo de certificado</option>
                 {foreach $certTypes as $value => $name}
                     <option value="{$value}">{$name}</option>
                 {/foreach}
             </select>
 
-            <input type="number" class="form-control col-sm-6 col-md-6 col-xs-6" name="num_horas" required placeholder="De quantas horas é esse certificado?">
+            <input type="number" class="form-control col-sm-12 col-md-6 col-xs-12" name="num_horas" required placeholder="De quantas horas é esse certificado?">
         </div>
 
 
