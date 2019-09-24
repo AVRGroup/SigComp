@@ -11,7 +11,7 @@
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
-        <select id="filtrar-data" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+        <select id="filtrar-data" class="form-control col-6 mx-sm-auto">
             <option disabled selected>Filtrar</option>
             <option value="todas">Todas oportunidades (padrão)</option>
             <option value="ativas">Todas oportunidades ativas</option>

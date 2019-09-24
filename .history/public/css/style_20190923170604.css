@@ -1,0 +1,341 @@
+/* Matheus Marques */
+
+body {
+    background: url("../img/textured_paper.png") repeat;
+}
+
+.content {
+    width: 300px;
+    margin-top: 56px;
+    margin-bottom: 30px;
+    padding-top: 8px;
+    padding-bottom: 15px;
+    background: #fafafa;
+    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    min-height: 250px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.login-form input[type="text"] {
+    margin-top: 20px;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.login-form input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#certificates .card {
+    width: 277px;
+    margin: 0.4rem;
+}
+
+#certificates .card-body {
+    padding: 0;
+    padding-bottom: 4px;
+}
+
+#certificates img:hover {
+    opacity: 0.7;
+}
+
+#certificates .card-footer a:hover {
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.custom-file-label::after {
+    content: "Navegar";
+}
+
+.changePicButton {
+    display: none;
+    width: 187px;
+    height: 187px;
+    background: black;
+    opacity: 0.6;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding-top: 70px;
+}
+
+.changePic:hover div {
+    display: block;
+    position: absolute;
+}
+
+.sobre-mim{
+    margin-top: 3%;
+}
+
+#sobre-mim{
+    resize: none;
+    border-radius: 1rem;
+
+}
+
+@-moz-document url-prefix() {
+    #sobre-mim{
+        width: 192px;
+    }
+}
+
+.info-atributos{
+    display: inline;
+    margin-bottom: 4px;
+
+    width: 20px !important;
+    height: 20px !important;
+    padding: 4px 0 !important;
+    line-height: 0.428571429 !important;
+}
+
+.nome-atributos{
+    display: inline-block;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+.altura-medalha{
+    height: 200px!important;
+}
+
+.legenda-imagem {
+    font-size: 75% !important;
+}
+
+.img-certificado{
+    width: 100%; !important;
+}
+
+.analytics{
+    background-color: #f39c12 !important;
+    border-color: #f39c12 !important;
+}
+
+.notificacao-sem-amigo{
+    background-color: #343a40 !important;
+}
+.notificacao-com-amigo{
+    background-color: #dc3545 !important;
+}
+
+.scrollable{
+    height: auto;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+
+.lista-notificacoes{
+    width: 250px;
+    margin-left: 20px;
+}
+
+.lista-notificacoes-vazia{
+    width: 210px;
+    margin-left: 15px;
+}
+
+.medalha-amigos{
+    margin-top: 15px;
+    margin-left: 40px;
+}
+
+.altura-medalha-amigo{
+    height: 180px!important;
+
+}
+
+.img-thumbnail-amigo{
+    padding: .25rem;
+    max-width: 100%;
+    height: auto;
+}
+
+.gerar-pdf{
+    margin-bottom: 10px;
+    background-color: #f39c12;
+    border-color: #f39c12
+}
+
+.tabela-forum{
+    margin-top: 30px;
+}
+
+.remover-concluido-link {
+    position: absolute;
+    left: 15px;
+    color: #e74c3c;
+}
+
+.btn-link:hover{
+    color: #e74c3c;
+}
+
+.card-topico {
+    background-color: #f1f1f1;
+    box-shadow: 3px 3px 4px hsla(0, 0%, 0%, 0.1);
+    border-radius: 6px;
+    padding: 10px 25px;
+}
+
+.card-topico p span{
+    background-color: #f1f1f1 !important;
+}
+
+.assunto-topico {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.conteudo-topico {
+    background-color: #f1f1f1;
+}
+
+.respostas{
+    width: 70%;
+    float: right;
+}
+
+.resposta {
+    margin-top: 30px;
+}
+
+.respostas:last-child{
+    margin-bottom: 30px;
+}
+
+.nova-oportunidade{
+    padding: 0 40px;
+}
+
+.nova-oportunidade .form-row{
+    margin-top: 30px;
+}
+
+.nova-oportunidade label {
+    font-weight: 500;
+}
+
+.card-oportunidade {
+    border-radius: 10px;
+    box-shadow: 3px 3px 4px hsla(0, 0%, 0%, 0.1);
+    padding: 10px 20px;
+    margin-top: 5px;
+}
+
+
+.card-oportunidade-ic {
+    background-color: #FFFAFA;
+}
+
+
+.card-oportunidade-tp {
+    background-color: #F5FFF0;
+}
+
+.card-oportunidade-estagio {
+    background-color: #FFFFD1;
+}
+
+.card-oportunidade .descricao {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+
+.card-oportunidade .titulo {
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.card-oportunidade .borda-titulo-ic {
+    border-bottom: 2px solid #FE9C9C;
+}
+
+.card-oportunidade .borda-titulo-tp {
+    border-bottom: 2px solid #8EED61;
+}
+
+.card-oportunidade .borda-titulo-estagio {
+    border-bottom: 2px solid #fae243;
+}
+
+.weight-600 {
+    font-weight: 600;
+}
+
+.card-oportunidade .btn{
+    color: #fff;
+}
+
+.card-oportunidade .btn-ic {
+    background-color: #FE9C9C;
+}
+
+.card-oportunidade .btn-tp {
+    background-color: #8EED61;
+}
+
+.card-oportunidade .btn-estagio {
+    background-color: #fae243;
+}
+
+.download-aquivo {
+    display: block;
+    margin-top: 20px;
+}
+
+.card-disciplina {
+    border-radius: 10px;
+    background-color: #1c7430;
+}
+.modal-body {
+    text-align: center;
+}
+
+.aviso-ira {
+    padding: 10px;
+    background-color: #ebebeb;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.oportunidade-unica-descicao {
+    font-weight: 500;
+}
+
+.oportunidade-unica-requisitos {
+    border-radius: 20px;
+    color: #fff;
+    display: inline-block;
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 10px
+}
