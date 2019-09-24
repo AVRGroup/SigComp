@@ -3,7 +3,7 @@
 {block name=content}
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-sm-4 col-md-3 col-xs-12">
                 <div class="text-center">
                     <div class="changePic">
                         <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
@@ -44,14 +44,14 @@
 
                     <div class="sobre-mim">
                         <h5>Sobre mim</h5>
-                        <textarea name="sobre_mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >{$usuario->getSobreMim()}</textarea>
+                        <textarea name="sobre_mim" id="sobre-mim"  disabled rows="6" maxlength="100" >{$usuario->getSobreMim()}</textarea>
                     </div>
 
                     <div><span style="font-size: 12px">Grade: {$usuario->getGrade()} | Periodo {$periodoAtual}</span> </div>
 
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-sm-8 col-md-9 col-xs-12">
                 <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
@@ -251,10 +251,10 @@
         {/if}
 
         <div class="row">
-            <div class="col-6" style="margin-top: 1.8%">
+            <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
-                    <h4 class="text-center col-10">Melhor IRA Geral</h4>
-                    <div class="col-2">
+                    <h4 class="text-center col-sm-10 col-md-10 col-xs-10">Melhor IRA Geral</h4>
+                    <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
                                 data-content="Esse é o IRA geral, considerando todos os seus períodos. São considerados apenas os alunos ativos no curso">
@@ -286,12 +286,12 @@
                     {/foreach}
                 </table>
             </div>
-            <div class="col-6" style="margin-top: 1.8%">
+            <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
-                    <div class="col-10">
+                    <div class=" col-sm-10 col-md-10 col-xs-10">
                         <h4 class="text-center">Melhor IRA No Período</h4>
                     </div>
-                    <div class="col-2">
+                    <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
                                 data-content="Esse é o IRA somando as notas apenas do ultimo periodo. São considerados aqueles que fizeram
@@ -333,7 +333,7 @@
                 <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
                 <form class="form-row" method="post" style="margin-top: 30px;">
-                    <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
+                    <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-11 col-sm-10 col-xs-10" placeholder="Pesquisar">
                     <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                 </form>
 
