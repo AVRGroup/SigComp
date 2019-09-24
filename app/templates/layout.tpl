@@ -83,7 +83,7 @@
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
                     {/if}
 
-                    {if $loggedUser->isAluno() || $loggedUser->isAdmin()}
+                    {if !$loggedUser->isBolsista()}
                         {if $loggedUser->isAluno()}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
                         {/if}
@@ -126,6 +126,29 @@
                             </li>
                         {/if}
 
+                        {if $loggedUser->isCoordenador()}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ferramentas
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                    <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
+
+                                    <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                                    <div class="dropdown-submenu">
+                                        <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
+                                           id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Relatorios
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        {/if}
 
                     {/if}
 
