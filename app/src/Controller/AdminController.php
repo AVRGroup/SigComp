@@ -332,6 +332,8 @@ class AdminController
         if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];
+
+
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
                 $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
             } else {
@@ -342,10 +344,16 @@ class AdminController
                     try {
                         set_time_limit(60 * 60); //Should not Exit
 
+                        $nomeArquivo = $uploadedFile->getClientFilename();
+                        $partes = explode('-', $nomeArquivo);
+                        $curso = $partes[0];
+                        $codigo = explode('.', $partes[1])[0];
+
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
-                        $grade->setCodigo(12009);
+                        $grade->setCodigo($codigo);
+                        $grade->setCurso($curso);
                         $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
 
