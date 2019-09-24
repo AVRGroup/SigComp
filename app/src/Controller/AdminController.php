@@ -431,7 +431,7 @@ class AdminController
         if($usuario->isCoordenador()) {
             $curso = $usuario->getCurso();
         } elseif(isset($parametro)) {
-            $curso = $request->getParam('curso');
+            $curso = $parametro;
         }
 
         $this->container->view['countNaoLogaram'] = $this->container->usuarioDAO->getCountNaoLogaram($curso)[0]["COUNT(*)"];
@@ -636,7 +636,19 @@ class AdminController
 
     public function listPeriodizadosAction(Request $request, Response $response, $args)
     {
-        $this->container->view['users'] = $this->container->usuarioDAO->getPeriodizados();
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $curso = null;
+        $parametro = $request->getParam('curso');
+
+        if ($usuario->isCoordenador()) {
+            $curso = $usuario->getCurso();
+        }
+        elseif(isset($parametro)) {
+            $curso = $parametro;
+        }
+
+        $this->container->view['users'] = $this->container->usuarioDAO->getPeriodizados($curso);
 
         return $this->container->view->render($response, 'periodizados.tpl');
     }
