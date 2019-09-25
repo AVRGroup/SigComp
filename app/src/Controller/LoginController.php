@@ -30,7 +30,11 @@ class LoginController
     {
         if ($request->isPost()) {
             try {
-                unset($_SESSION['estaImpersonando']);
+                $cpf = $request->getParsedBodyParam('cpf');
+
+                if($this->isLoginAdministrativo($cpf)) {
+                    return $this->loginAreaExclusiva($request, $response, $args);
+                }
 
                 $loginCredentials = new login();
                 $loginCredentials->setCpf($request->getParsedBodyParam('cpf'));
@@ -84,6 +88,19 @@ class LoginController
         return $this->container->view->render($response, 'login.tpl');
     }
 
+    public function isLoginAdministrativo($login)
+    {
+        $loginsAdministrativos = ["coord", "bolsa", "admin"];
+
+        foreach ($loginsAdministrativos as $palavra) {
+            if(strpos($login, $palavra ) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function logoutAction(Request $request, Response $response, $args)
     {
         unset($_SESSION['id']);
@@ -105,20 +122,19 @@ class LoginController
 
     public function loginAreaExclusiva(Request $request, Response $response, $args)
     {
-        $login = $request->getParsedBodyParam('login');
-        $senha = $request->getParsedBodyParam('senha');
+        $login = $request->getParsedBodyParam('cpf');
+        $senha = $request->getParsedBodyParam('password');
         $senha = crypt($senha, $this->container->settings['password_salt']);
         $usuario = $this->container->usuarioDAO->getUserByLoginSenha($login, $senha);
 
         if($usuario == null) {
             $this->container->view['error'] = "Verifique se o login e a senha estão corretos";
-            return $this->container->view->render($response, "areaExclusiva.tpl");
+            return $this->container->view->render($response, "login.tpl");
         }
 
         $_SESSION['id'] = $usuario->getId();
 
         return $this->getRedirecionamentoPorUsuario($usuario, $response);
-
     }
 
     public function getRedirecionamentoPorUsuario(Usuario $usuario, $response)

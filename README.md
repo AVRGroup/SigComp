@@ -21,5 +21,8 @@
 
 ## Observações
 
-* Caso atualize o ``Model`` do projeto, deverá executar o comando ``./vendor/bin/doctrine orm:schema-tool:update`` no Mac/Linux ou ``"vendor/bin/doctrine.bat" orm:schema-tool:update`` no Windows para atualizar o banco de dados
+* Caso atualize o ``Model`` do projeto, deverá executar o comando:
+     - Mac/Linux: ``./vendor/bin/doctrine orm:schema-tool:update`` 
+     - Windows: ``"vendor/bin/doctrine.bat" orm:schema-tool:update`` 
+ 
 * Caso queira ver o SQL gerado (tanto no ``orm:schema-tool:create`` quanto no ``orm:schema-tool:update``) utilize o argumento ``--dump-sql``. Exemplo: ``./vendor/bin/doctrine orm:schema-tool:create --dump-sql``

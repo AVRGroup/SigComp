@@ -46,6 +46,22 @@ class UsuarioDAO extends BaseDAO
         return $usuario;
     }
 
+    public function getUsuarioLogado() : Usuario
+    {
+        $id = $_SESSION['id'];
+
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.id = :id");
+            $query->setParameter('id', $id);
+            $usuario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+
+        return $usuario;
+    }
+
+
     public function getDisciplinasAprovadasById($idUsuario)
     {
         $sql = "SELECT disciplina FROM nota WHERE estado='Aprovado' AND usuario=$idUsuario";
@@ -248,6 +264,20 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getByMatriculaNomeCursoARRAY($pesquisa, $curso = null){
+        $queryCurso = "";
+
+        if ($curso) {
+            $queryCurso = "AND curso = \"$curso\"";
+        }
+
+        $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa% $queryCurso')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     public function getByNomeComAmizade($pesquisa, $id){
         $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -322,18 +352,36 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function getCountNaoLogaram()
+    public function getAllByCursoARRAY($curso = null)
     {
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 1";
+        $queryCurso = "";
+        if($curso) {
+            $queryCurso = "WHERE curso = '$curso'";
+        }
+
+        $sql = "SELECT * FROM usuario $queryCurso";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
         return $results;
     }
 
-    public function getCountLogaram()
+    public function getCountNaoLogaram($curso = null)
     {
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0";
+        $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 1 AND usuario.tipo = 0" . $filtrarCurso;
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+
+    public function getCountLogaram($curso = null)
+    {
+        $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
+
+        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0 AND usuario.tipo = 0" . $filtrarCurso;
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -351,8 +399,9 @@ class UsuarioDAO extends BaseDAO
 
     public function getTop10IraTotal(){
         try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao ORDER BY u.ira DESC")->setMaxResults(10);
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.tipo = :tipo ORDER BY u.ira DESC")->setMaxResults(10);
             $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;
@@ -363,8 +412,39 @@ class UsuarioDAO extends BaseDAO
 
     public function getTop10IraPeriodo(){
         try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.tipo = :tipo ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
             $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
+
+
+    public function getTop10IraTotalPorCurso($curso){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.curso = :curso AND u.tipo = :tipo ORDER BY u.ira DESC")->setMaxResults(10);
+            $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $query->setParameter('curso', $curso);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = null;
+        }
+
+        return $usuarios;
+    }
+
+    public function getTop10IraPeriodoPorCurso($curso){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = :situacao AND u.curso = :curso AND u.tipo = :tipo ORDER BY u.ira_periodo_passado DESC")->setMaxResults(10);
+            $query->setParameter('situacao', 0);
+            $query->setParameter('tipo', 0);
+            $query->setParameter('curso', $curso);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;
@@ -704,9 +784,14 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getPeriodizados()
+    public function getPeriodizados($curso = null)
     {
-        $sql = "SELECT * FROM medalha_usuario JOIN usuario ON usuario.id = medalha_usuario.usuario WHERE medalha_usuario.medalha = 20 ORDER BY usuario.ira DESC";
+        $queryCurso = "";
+        if($curso) {
+            $queryCurso = "AND usuario.curso = '$curso'";
+        }
+
+        $sql = "SELECT * FROM medalha_usuario JOIN usuario ON usuario.id = medalha_usuario.usuario WHERE medalha_usuario.medalha = 20 $queryCurso ORDER BY usuario.ira DESC";
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
