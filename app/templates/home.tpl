@@ -6,7 +6,7 @@
             <div class="col-3">
                 <div class="text-center">
                     <div class="changePic">
-                        <div class="changePicButton text-center" data-toggle="modal" data-target="#chagePhotoModal">
+                        <div class="changePicButton text-center " data-toggle="modal" data-target="#chagePhotoModal">
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
                             <p>Alterar Foto</p>
                         </div>
