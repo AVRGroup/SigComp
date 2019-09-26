@@ -264,6 +264,20 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getByMatriculaNomeCursoARRAY($pesquisa, $curso = null){
+        $queryCurso = "";
+
+        if ($curso) {
+            $queryCurso = "AND curso = \"$curso\"";
+        }
+
+        $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa% $queryCurso')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
     public function getByNomeComAmizade($pesquisa, $id){
         $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -332,6 +346,20 @@ class UsuarioDAO extends BaseDAO
     public function getAllARRAY()
     {
         $sql = "SELECT * FROM usuario";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    public function getAllByCursoARRAY($curso = null)
+    {
+        $queryCurso = "";
+        if($curso) {
+            $queryCurso = "WHERE curso = '$curso'";
+        }
+
+        $sql = "SELECT * FROM usuario $queryCurso";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -756,9 +784,14 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getPeriodizados()
+    public function getPeriodizados($curso = null)
     {
-        $sql = "SELECT * FROM medalha_usuario JOIN usuario ON usuario.id = medalha_usuario.usuario WHERE medalha_usuario.medalha = 20 ORDER BY usuario.ira DESC";
+        $queryCurso = "";
+        if($curso) {
+            $queryCurso = "AND usuario.curso = '$curso'";
+        }
+
+        $sql = "SELECT * FROM medalha_usuario JOIN usuario ON usuario.id = medalha_usuario.usuario WHERE medalha_usuario.medalha = 20 $queryCurso ORDER BY usuario.ira DESC";
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();

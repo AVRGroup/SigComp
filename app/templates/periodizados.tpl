@@ -3,6 +3,20 @@
     <!--suppress ALL -->
     <h3 class="text-center mb-4">Alunos Periodizados</h3>
 
+    {if $loggedUser->isAdmin()}
+        <br>
+        <div class="form-row">
+            <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="">Selecione o Curso</option>
+                <option value="{base_url}/admin/relatorio/periodizado?curso=35A">Ciência da Computação Noturno</option>
+                <option value="{base_url}/admin/relatorio/periodizado?curso=65C">Ciência da Computação Integral</option>
+                <option value="{base_url}/admin/relatorio/periodizado?curso=76A">Sistemas de Informação</option>
+                <option value="{base_url}/admin/relatorio/periodizado?curso=65B">Engenharia Computacional</option>
+            </select>
+        </div>
+        <hr>
+    {/if}
+
     <table style="margin-top: 4%" id="tabela" class="table table-hover">
         <thead class="thead-light">
         <tr style="font-size: 13px;">

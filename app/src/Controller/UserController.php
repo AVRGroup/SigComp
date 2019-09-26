@@ -29,12 +29,24 @@ class UserController
 
     public function adminListAction(Request $request, Response $response, $args)
     {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $curso = null;
+        $parametro = $request->getParam('curso');
+
+        if ($usuario->isCoordenador()) {
+            $curso = $usuario->getCurso();
+        }
+        elseif(isset($parametro)) {
+            $curso = $parametro;
+        }
+
         if($request->isPost()){
             $pesquisa = $request->getParsedBodyParam('pesquisa');
-            $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisa);
+            $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoARRAY($pesquisa, $curso);
         }
         else {
-            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllByCursoARRAY($curso);
         }
 
 
