@@ -19,7 +19,6 @@
     <meta name="robots" content="index,follow" />
     <meta name="Description" content="Gamificação" />
     <meta name="Keywords" content="Gamificação" />
-
     <link rel="icon" href="{base_url}/img/b_season_finale.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{base_url}/css/bootstrap.min.css">
