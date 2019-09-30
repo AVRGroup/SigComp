@@ -169,7 +169,7 @@
 
                                                 {if $numMedalhas >= 1}
                                                     <div class="col-1.5">
-                                                        <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
+                                                        <div class="img-thumbnail altura-medalha" style="max-width: 90px;">
                                                             <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid"">
 
                                                             <div class="caption">
