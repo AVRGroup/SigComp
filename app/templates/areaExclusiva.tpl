@@ -1,5 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
+    <a href="{path_for name="login"}"><i style="color: black" class="fa fa-arrow-left"></i></a>
     <h3 class="text-center">Area Exclusiva</h3>
     <form class="login-form" method="post" action="{path_for name="login-exclusivo"}">
         {if isset($error)}

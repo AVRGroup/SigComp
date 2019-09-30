@@ -2,8 +2,19 @@
 {block name=content}
 
     <h3 class="text-center">Página do Administrador</h3>
-    <hr>
-
+    {if $loggedUser->isAdmin()}
+        <br>
+        <div class="form-row">
+            <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="">Selecione o Curso</option>
+                <option value="{base_url}/admin/admin-dashboard?curso=35A">Ciência da Computação Noturno</option>
+                <option value="{base_url}/admin/admin-dashboard?curso=65C">Ciência da Computação Integral</option>
+                <option value="{base_url}/admin/admin-dashboard?curso=76A">Sistemas de Informação</option>
+                <option value="{base_url}/admin/admin-dashboard?curso=65B">Engenharia Computacional</option>
+            </select>
+        </div>
+        <hr>
+    {/if}
     <input id="countNaoLogaram" type="hidden" value={$countNaoLogaram}>
     <input id="countLogaram" type="hidden" value={$countLogaram}>
 

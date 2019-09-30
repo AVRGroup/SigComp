@@ -9,6 +9,20 @@
         <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
     </form>
 
+    {if $loggedUser->isAdmin()}
+        <br>
+        <div class="form-row">
+            <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="">Selecione o Curso</option>
+                <option value="{base_url}/admin/list-users?curso=35A">Ciência da Computação Noturno</option>
+                <option value="{base_url}/admin/list-users?curso=65C">Ciência da Computação Integral</option>
+                <option value="{base_url}/admin/list-users?curso=76A">Sistemas de Informação</option>
+                <option value="{base_url}/admin/list-users?curso=65B">Engenharia Computacional</option>
+            </select>
+        </div>
+        <hr>
+    {/if}
+
     <table style="margin-top: 4%" id="tabela" class="table table-hover">
         <thead class="thead-light">
         <tr style="font-size: 13px;">
