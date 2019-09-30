@@ -3,10 +3,12 @@
 {block name=content}
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-sm-4 col-md-4 col-lg-3 col-xs-12">
                 <div class="text-center">
                     <div class="changePic">
-                        <div class="changePicButton text-center " data-toggle="modal" data-target="#chagePhotoModal">
+
+                        <div class="changePicButton text-center col-sm-10 col-md-10 align-content-center" data-toggle="modal" data-target="#chagePhotoModal">
+
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
                             <p>Alterar Foto</p>
                         </div>
@@ -44,14 +46,14 @@
 
                     <div class="sobre-mim">
                         <h5>Sobre mim</h5>
-                        <textarea name="sobre_mim" id="sobre-mim" cols="25" disabled rows="6" maxlength="10" >{$usuario->getSobreMim()}</textarea>
+                            <textarea name="sobre_mim" id="sobre-mim"  disabled rows="6" maxlength="100" style="width:100%">{$usuario->getSobreMim()}</textarea>
                     </div>
 
                     <div><span style="font-size: 12px">Grade: {$usuario->getGrade()} | Periodo {$periodoAtual}</span> </div>
 
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-sm-8 col-md-8 col-lg-9 col-xs-12">
                 <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
@@ -122,7 +124,7 @@
         </div>
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-sx-9">
                     <p></p>
                 <div class="row">
                     <h4 class="text-center col-11">Quadro de medalhas</h4>
@@ -148,8 +150,8 @@
                     <div class="tab-content" id="badgesTabContent">
                     {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
                         <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
-                            <table>
-                                <tbody>
+                            <div class="row justify-content-start">
+
                                 {$novaLinha = 1}
                                 {$numMedalhas = 0}
                                 {$i=0}
@@ -161,14 +163,14 @@
 
                                 {if $medalhas[0]['medalha'] != null}
                                     {while $novaLinha === 1}
-                                        <tr>
+
                                             {$novaLinha = 0}
                                             {while $i < $numMedalhas}
 
                                                 {if $numMedalhas >= 1}
-                                                    <td>
+                                                    <div class="col-1.5">
                                                         <div class="img-thumbnail altura-medalha" style="max-width: 100px;">
-                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid">
+                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid"">
 
                                                             <div class="caption">
                                                                 <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
@@ -176,31 +178,30 @@
                                                         </div>
                                                         {$i = $i + 1}
                                                         {$auxI = $auxI + 1}
-                                                    </td>
+                                                    </div>
                                                 {else}
                                                     <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
                                                 {/if}
 
-                                                {if $auxI > 8}
+                                                {if $auxI > 6}
                                                     {$novaLinha = 1}
                                                     {$auxI = 0}
                                                     {break}
                                                 {/if}
                                             {/while}
-                                        </tr>
+
                                     {/while}
 
                                 {else}
                                     <p class="text-center" style="margin: 20px">Você ainda não possui nenhuma medalha. Dê uma olhada em quais medalhas são possíveis de alcançar na aba de 'Medalhas Possíveis'</p>
                                 {/if}
-                                </tbody>
-                            </table>
+
+                            </div>
                         </div>
                     {/if}
 
                     <div class="tab-pane fade" id="possible" role="tabpanel" aria-labelledby="possible-tab">
-                        <table>
-                            <tbody>
+                        <div class="row justify-content-start">
                             {$novaLinha = 1}
                             {$numMedalhas = 0}
                             {$i=0}
@@ -211,10 +212,9 @@
                             {/foreach}
 
                             {while $novaLinha === 1}
-                                <tr>
                                 {$novaLinha = 0}
                                 {while $i < $numMedalhas}
-                                    <td>
+                                    <div class="col-1.5">
                                         <div class="img-thumbnail altura-medalha" style="max-width: 90px;">
                                             <img src="{base_url}/img/{$todasMedalhas[$i].imagem}" class="img-fluid">
                                             <div class="caption">
@@ -223,18 +223,16 @@
                                         </div>
                                     {$i = $i + 1}
                                     {$auxI = $auxI + 1}
-                                    </td>
+                                    </div>
                                     {if $auxI > 8}
                                         {$novaLinha = 1}
                                         {$auxI = 0}
                                         {break}
                                     {/if}
                                 {/while}
-                                </tr>
                             {/while}
 
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -251,10 +249,10 @@
         {/if}
 
         <div class="row">
-            <div class="col-6" style="margin-top: 1.8%">
+            <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
-                    <h4 class="text-center col-10">Melhor IRA Geral</h4>
-                    <div class="col-2">
+                    <h4 class="text-center col-sm-10 col-md-10 col-xs-10">Melhor IRA Geral</h4>
+                    <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
                                 data-content="Esse é o IRA geral, considerando todos os seus períodos. São considerados apenas os alunos ativos no curso">
@@ -286,12 +284,12 @@
                     {/foreach}
                 </table>
             </div>
-            <div class="col-6" style="margin-top: 1.8%">
+            <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
-                    <div class="col-10">
+                    <div class=" col-sm-10 col-md-10 col-xs-10">
                         <h4 class="text-center">Melhor IRA No Período</h4>
                     </div>
-                    <div class="col-2">
+                    <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
                                 data-content="Esse é o IRA somando as notas apenas do ultimo periodo. São considerados aqueles que fizeram
@@ -333,7 +331,7 @@
                 <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
                 <form class="form-row" method="post" style="margin-top: 30px;">
-                    <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Pesquisar">
+                    <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-11 col-sm-10 col-xs-10" placeholder="Pesquisar">
                     <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                 </form>
 
@@ -500,6 +498,7 @@
             }
         }
     });
+
 </script>
 
 {/block}
