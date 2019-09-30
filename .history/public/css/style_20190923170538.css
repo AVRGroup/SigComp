@@ -5,12 +5,13 @@ body {
 }
 
 .content {
+    width: 900px;
     margin-top: 56px;
     margin-bottom: 30px;
     padding-top: 8px;
     padding-bottom: 15px;
     background: #fafafa;
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 2px 15px rgba(255, 58, 58, 0.5);
     -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
     box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
     -webkit-border-bottom-right-radius: 10px;
@@ -19,6 +20,7 @@ body {
     -moz-border-radius-bottomleft: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
+    min-height: 250px;
 }
 
 .login-form {

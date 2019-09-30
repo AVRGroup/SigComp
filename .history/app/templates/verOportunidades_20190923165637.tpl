@@ -5,13 +5,13 @@
 
         {if !$loggedUser->isAluno()}
             <div class="text-center">
-                <a class="btn btn-lg btn-success" href="{path_for name="cadastrarOportunidade"}" style="color: #fff; margin-bottom: 5%">Cadastrar Oportunidade </a>
+                <a class="btn btn-lg btn-success" href="{path_for name="cadastrarOportunidade"}" style="color: black; margin-bottom: 5%">Cadastrar Oportunidade </a>
             </div>
         {/if}
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
-        <select id="filtrar-data" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+        <select id="filtrar-data" class="form-control col-6 mx-sm-auto">
             <option disabled selected>Filtrar</option>
             <option value="todas">Todas oportunidades (padrão)</option>
             <option value="ativas">Todas oportunidades ativas</option>

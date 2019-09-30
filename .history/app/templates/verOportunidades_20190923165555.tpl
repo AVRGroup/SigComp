@@ -1,7 +1,7 @@
 {extends 'layout.tpl'}
 {block name=content}
     <div style="margin: 0 20px">
-        <h3 style="margin-bottom: 30px;" class="text-center">Oportunidades</h3>
+        <h3 style="margin-bottom: 30px;" class="text-center">• Oportunidades</h3>
 
         {if !$loggedUser->isAluno()}
             <div class="text-center">
@@ -11,7 +11,7 @@
 
         <input type="hidden" id="disciplinas-aprovadas" value="{$disciplinasAprovadas}">
 
-        <select id="filtrar-data" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+        <select id="filtrar-data" class="form-control col-6 mx-sm-auto">
             <option disabled selected>Filtrar</option>
             <option value="todas">Todas oportunidades (padrão)</option>
             <option value="ativas">Todas oportunidades ativas</option>
