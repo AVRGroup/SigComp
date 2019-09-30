@@ -271,7 +271,7 @@ class UsuarioDAO extends BaseDAO
             $queryCurso = "AND curso = \"$curso\"";
         }
 
-        $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa% $queryCurso')";
+        $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa%') $queryCurso";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();

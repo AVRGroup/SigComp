@@ -4,6 +4,7 @@
 /app/settings.php
 /public/upload/*
 !/public/upload/.gitkeep
+.history/*
 
 # Created by https://www.gitignore.io/api/macos,windows,composer,phpstorm
 
