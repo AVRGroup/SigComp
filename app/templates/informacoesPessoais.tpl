@@ -3,21 +3,22 @@
 
     <h3 align="center">Informações Pessoais</h3>
     <hr>
+
     <div class="row container">
-        <h5 class="col-md-6 col-sm-12">Nome: {$usuario->getNome()}</h5>
-        <h5 class="col-md-6 col-sm-12 float-right">Matrícula: {$usuario->getMatricula()}</h5>
-        <h5 class="col-md-6 col-sm-12">Curso: {$usuario->getCurso()}</h5>
-        <h5 class="col-md-6 col-sm-12">E-mail: {$usuario->getEmail()}</h5>
-        <h5 class="col-md-6 col-sm-12">Indíce de Rendimento Acadêmico: {$usuario->getIra()|string_format:"%.2f"}</h5>
-        <h5 class="col-md-6 col-sm-12">Grade: {$usuario->getGrade()}</h5>
+        <h5 class="col-md-6 col-xs-12">Nome: {$usuario->getNome()}</h5>
+        <h5 class="col-md-6 col-xs-12 float-right">Matrícula: {$usuario->getMatricula()}</h5>
+        <h5 class="col-md-6 col-xs-12">Curso: {$usuario->getCurso()}</h5>
+        <h5 class="col-md-6 col-xs-12">E-mail: {$usuario->getEmail()}</h5>
+        <h5 class="col-md-6 col-xs-12">Indíce de Rendimento Acadêmico: {$usuario->getIra()|string_format:"%.2f"}</h5>
+        <h5 class="col-md-6 col-xs-12">Grade: {$usuario->getGrade()}</h5>
     </div>
 
     <hr>
     <div style="border: 0.5px solid; margin-top: 3%">
-    <h4 align="center" style="margin-top: 2%">Atualize seus dados</h4>
-    <h6 align="center" style="margin-bottom: 2%"> Todas essas informações são opcionais </h6>
+        <h4 align="center" style="margin-top: 2%">Atualize seus dados</h4>
+        <h6 align="center" style="margin-bottom: 2%"> Todas essas informações são opcionais </h6>
     </div>
-    
+
     {if isset($success)}
         <div class="alert alert-success" role="alert" style="margin-top: 3%">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -81,14 +82,17 @@
 
         <hr>
         <h5 align="center" class="mt-sm-4 mt-md-3">Sobre mim</h5>
-        
-        <div class="mx-auto text-sm-center ">
-            <textarea name="sobre_mim"  id="sobre-mim" cols="50" rows="7" placeholder="Máximo 50 caracteres" >{$usuario->getSobreMim()}</textarea>
+
+        <div class="form-group">
+            <div class="col-xs-12 mx-auto text-sm-center">
+                <textarea class="form-control" name="sobre_mim"  id="sobre-mim" rows="7" placeholder="Máximo 50 caracteres" >{$usuario->getSobreMim()}</textarea>
+            </div>
         </div>
-        
-                <div class="text-sm-center text-md-center"
-                    <small id="contador-mensagem"></small>
-                </div>
+
+        <div class="text-sm-center text-md-center">
+            <small id="contador-mensagem"></small>
+        </div>
+
         <hr>
 
         <div class="text-sm-center" >
