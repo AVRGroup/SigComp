@@ -6,12 +6,6 @@
             <div class="col-sm-4 col-md-4 col-lg-3 col-xs-12">
                 <div class="text-center">
                     <div class="changePic">
-
-                        <div class="changePicButton text-center col-sm-10 col-md-10 align-content-center" data-toggle="modal" data-target="#chagePhotoModal">
-
-                            <i class="fas fa-camera" style="font-size: 30px;"></i>
-                            <p>Alterar Foto</p>
-                        </div>
                         <img src="{base_url}/{if $usuario->getFoto()}upload/{$usuario->getFoto()}{else}img/silhueta.jpg{/if}"
                              class="img-thumbnail" alt="{$usuario->getNome()}" width="190" height="190">
                     </div>
@@ -373,33 +367,6 @@
 
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="chagePhotoModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Alterar Foto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="uploadPhoto" method="POST">
-                    <div class="modal-body">
-                        <div class="custom-file mb-2">
-                            <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*">
-                            <label class="custom-file-label" for="photo">Selecionar Foto</label>
-                        </div>
-                        <div id="image-cropper"></div>
-                        <input type="hidden" id="newPhoto" name="newPhoto"/>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Alterar Foto</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 {/block}
 {block name=javascript}
 <script src="{base_url}/js/croppie.js"></script>
