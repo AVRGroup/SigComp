@@ -24,7 +24,7 @@
 
     {*FORM PARA ADICIONAR CERTIFICADO*}
     <form method="post" enctype="multipart/form-data">
-        <div style="margin-left: 15%" class="custom-file col-sm-8 col-md-8 col-xs-4">
+        <div class="custom-file col-sm-12 col-md-8 col-xs-12 col-lg-8">
             <input  type="file" class="custom-file-input" id="certificate" name="certificate">
             <label class="custom-file-label" for="certificate">Selecionar certificado</label>
         </div>
@@ -42,7 +42,7 @@
                 {/foreach}
             </select>
 
-            <input type="number" class="form-control col-sm-12 col-md-6 col-xs-12" name="num_horas" required placeholder="De quantas horas é esse certificado?">
+            <input type="number" class="form-control col-sm-12 col-md-6 col-xs-12 col-lg-6" name="num_horas" required placeholder="De quantas horas é esse certificado?">
         </div>
 
 
@@ -95,7 +95,7 @@
                     </p>
                 </div>
             </div>
-        {foreachelse}
+            {foreachelse}
             <div class="alert alert-warning w-100 text-center" role="alert">
                 Nenhum certificado ainda...
             </div>
