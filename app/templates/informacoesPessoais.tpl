@@ -41,7 +41,7 @@
         </div>
     {/if}
 
-    <form method="post">
+    <form id="uploadPhoto" method="post">
         <div class="form-row">
             <div class="col-md-6 col-sm-11 mx-sm-auto mx-md-0 mt-sm-4 mt-md-3 mt-3">
                 <h6> <label for="email">E-mail</label> </h6>
@@ -57,7 +57,7 @@
 
 
         <div class="form-row" style="margin-top: 3%">
-            <div class="col-md-6 col-sm-12 mx-sm-auto ">
+            <div class="col-md-6 col-sm-11 mx-sm-auto ">
                <h6> <label for="facebook">Facebook</label> </h6>
                 <input type="text" name="facebook" placeholder="https://facebook.com/seu.perfil" class="form-control" value="{$usuario->getFacebook()}">
             </div>
@@ -80,6 +80,15 @@
             </div>
         </div>
 
+        <div class="form-row justify-content-center" style="margin-top: 3%">
+            <div class="col-md-8 col-sm-11 mx-sm-auto mx-md-0 mt-sm-4 mt-md-3 mt-3">
+                <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*">
+                <label class="custom-file-label" for="photo">Selecionar Foto</label>
+            </div>
+            <div id="image-cropper"></div>
+            <input type="hidden" id="newPhoto" name="newPhoto"/>
+        </div>
+
         <hr>
         <h5 align="center" class="mt-sm-4 mt-md-3">Sobre mim</h5>
 
@@ -99,6 +108,51 @@
 
     </form>
 
+<script>
+    var $uploadCrop;
+
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $uploadCrop.croppie('bind', {
+                    url: e.target.result
+                });
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            console.log("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#image-cropper').croppie({
+        viewport: { width: 190, height: 190 },
+        boundary: { width: 450, height: 300 },
+        enableExif: true
+    });
+
+    $('#photo').on('change', function () {
+        $('#newPhoto').val('');
+        readFile(this);
+    });
+
+    $('#uploadPhoto').submit(function() {
+        if($('#newPhoto').val() !== '') {
+            return true;
+        } else {
+            $uploadCrop.croppie('result', 'base64').then(function (base64) {
+                $('#newPhoto').val(base64);
+                $('#photo').val('');
+                $('#uploadPhoto').submit();
+            });
+
+            return false;
+        }
+    });
+</script>
 
 {/block}
 
