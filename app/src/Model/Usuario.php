@@ -184,12 +184,12 @@ class Usuario implements ToIdArrayInterface
     /**
      * @ORM\Column(type="boolean", nullable=true, options={"default" : 1})
      */
-    protected $primeiro_login;
+    protected $primeiro_login = 1;
 
     /**
      * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
      */
-    protected $quantidade_acessos;
+    protected $quantidade_acessos = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
