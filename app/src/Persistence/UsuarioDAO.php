@@ -107,28 +107,35 @@ class UsuarioDAO extends BaseDAO
     }
 
 
-
     /**
-    \     * @return Usuario[]|null
+     * \     * @return Usuario[]|null
+     * @param null $curso
+     * @return mixed|null
      */
-    public function getAllFetched10PrimeirosPorIra()
+    public function getAllFetched10PrimeirosPorIra($curso = null)
     {
+        $queryCurso = isset($curso) ? "AND u.curso = '$curso'" : "";
+
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 ORDER BY u.ira DESC")->setMaxResults(500);
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 $queryCurso ORDER BY u.ira DESC")->setMaxResults(500);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
             $usuarios = null;
         }
 
         return $usuarios;
     }
 
-    public function getAllFetched10PrimeirosPorIraPeriodoPassado()
+    public function getAllFetched10PrimeirosPorIraPeriodoPassado($curso = null)
     {
+        $queryCurso = isset($curso) ? "AND u.curso = '$curso'" : "";
+
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
+            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 $queryCurso ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
             $usuarios = null;
         }
 
