@@ -92,4 +92,29 @@ class Helper
         return $data;
     }
 
+    public static function getUsuariosSemAcento($pesquisa, $results)
+    {
+        $usuariosFiltrados = [];
+
+        $pesquisa = self::removeAcento($pesquisa);
+
+        $pesquisa = strtoupper($pesquisa);
+
+        foreach ($results as $usuario) {
+            $nome = self::removeAcento($usuario['nome']);
+
+            if(strpos($nome, $pesquisa) !== false) {
+                array_push($usuariosFiltrados, $usuario);
+            }
+        }
+
+        return $usuariosFiltrados;
+    }
+
+    private static function removeAcento($str)
+    {
+        return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
+            'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+    }
+
 }

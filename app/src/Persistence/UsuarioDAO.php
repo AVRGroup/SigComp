@@ -2,6 +2,7 @@
 
 namespace App\Persistence;
 
+use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Medalha;
 use App\Model\Usuario;
@@ -282,10 +283,29 @@ class UsuarioDAO extends BaseDAO
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
+
         return $results;
     }
 
-    public function getByNomeComAmizade($pesquisa, $id){
+    public function getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso = null)
+    {
+        $queryCurso = "";
+
+        if ($curso) {
+            $queryCurso = "WHERE curso = \"$curso\"";
+        }
+
+        $sql = "SELECT * FROM usuario $queryCurso";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        $usuariosFiltrados = Helper::getUsuariosSemAcento($pesquisa, $results);
+
+        return $usuariosFiltrados;
+    }
+
+        public function getByNomeComAmizade($pesquisa, $id){
         $sql = "SELECT usuario.id, usuario.nome, IFNULL(amizade.estado, 'nao enviado') as estado FROM usuario LEFT JOIN amizade ON usuario.id = amizade.amigo_id OR usuario.id = amizade.usuario_id WHERE (usuario.nome LIKE '%$pesquisa%') AND usuario.id != '$id'";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
@@ -302,28 +322,12 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
         $results = $stmt->fetchAll();
 
-        $usuariosFiltrados = [];
-
-        $pesquisa = $this->removeAcento($pesquisa);
-
-        $pesquisa = strtoupper($pesquisa);
-
-        foreach ($results as $usuario) {
-            $nome = $this->removeAcento($usuario['nome']);
-
-            if(strpos($nome, $pesquisa) !== false) {
-                array_push($usuariosFiltrados, $usuario);
-            }
-        }
+        $usuariosFiltrados = Helper::getUsuariosSemAcento($pesquisa, $results);
 
         return $usuariosFiltrados;
     }
 
-    function removeAcento($str)
-    {
-        return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
-            'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
-    }
+
 
 
     public function getAmigos($id){
