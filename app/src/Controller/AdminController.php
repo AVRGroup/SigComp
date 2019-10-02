@@ -723,9 +723,11 @@ class AdminController
 
     public function impersonarUsuario(Request $request, Response $response, $args)
     {
+        $usuarioOriginal = $this->container->usuarioDAO->getUsuarioLogado();
         $idUsuario = $args['id'];
 
         $_SESSION['id'] = $idUsuario;
+        $_SESSION['idOriginal'] = $usuarioOriginal->getId();
         $_SESSION['estaImpersonando'] = true;
 
         return $response->withRedirect($this->container->router->pathFor('home'));
@@ -734,7 +736,9 @@ class AdminController
     public function sairImpersonar(Request $request, Response $response, $args)
     {
         if(isset($_SESSION['estaImpersonando'])) {
-            $_SESSION['id'] = 237;
+            $_SESSION['id'] = $_SESSION['idOriginal'];
+
+            unset($_SESSION['idOriginal']);
             unset($_SESSION['estaImpersonando']);
         }
 
