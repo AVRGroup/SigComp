@@ -329,7 +329,6 @@ class AdminController
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];
 
-
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
                 $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
             } else {
@@ -338,18 +337,16 @@ class AdminController
                     $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
                 } else {
                     try {
-                        set_time_limit(60 * 60); //Should not Exit
-
                         $nomeArquivo = $uploadedFile->getClientFilename();
-                        $partes = explode('-', $nomeArquivo);
-                        $curso = $partes[0];
-                        $codigo = explode('.', $partes[1])[0];
+
+                        preg_match("/.+(?=-)/" , $nomeArquivo, $cursoGrade);
+                        preg_match("/(?<=\-).+(?=\.)/", $nomeArquivo, $codigoGrade);
 
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
-                        $grade->setCodigo($codigo);
-                        $grade->setCurso($curso);
+                        $grade->setCodigo($codigoGrade[0]);
+                        $grade->setCurso($cursoGrade[0]);
                         $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
 
@@ -358,6 +355,11 @@ class AdminController
                         $this->container->view['disciplinas'] = $disciplinas;
 
                         foreach ($data['disciplinas'] as $disc) {
+
+                            if(!isset($disc['codigo'])) {
+                                continue;
+                            }
+
                             $disciplinasGrade = new GradeDisciplina();
                             if (isset($disciplinas[$disc['codigo']])) {
                                 $bool = 1;
