@@ -32,6 +32,7 @@ class AdminController
         if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];
+            $curso = "";
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
                 $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
             } else {
@@ -63,6 +64,7 @@ class AdminController
                         }
 
                         foreach ($data['usuarios'] as $user) {
+                            $curso = $user['curso'];
                             if (isset($usuarios[$user['matricula']])) {
                                 $usuario = $usuarios[$user['matricula']];
                                 foreach ($usuario->getNotas() as $userNota) {
@@ -110,8 +112,8 @@ class AdminController
 
             $this->calculaIra();
             $this->calculaIraPeriodoPassado();
-
-            $this->abreviaTodosNomes(false);
+            $this->abreviaTodosNomes(false, $curso);
+            $this->abreviaTodosNomes(true, $curso);
 
             $this->container->usuarioDAO->setPeriodoCorrente();
             return $response->withRedirect($this->container->router->pathFor('assignMedals'));
@@ -242,20 +244,16 @@ class AdminController
     }
 
 
-    public function abreviaTodosNomes($isPeriodoPassado){
-
+    public function abreviaTodosNomes($isPeriodoPassado, $curso){
         if($isPeriodoPassado)
-            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIraPeriodoPassado();
+            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIraPeriodoPassado($curso);
         else
-            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIra();
+            $usuarios = $this->container->usuarioDAO->getAllFetched10PrimeirosPorIra($curso);
+
 
         /** @var Usuario $usuario */
         foreach ($usuarios as $usuario) {
-
             $nomeAbreviado =  $this->abreviaNome($usuario->getNome(), 123);
-
-            //echo $nomeAbreviado . ' ';
-
             $usuario->setNomeAbreviado($nomeAbreviado);
 
             try {
@@ -265,8 +263,6 @@ class AdminController
                 echo $e;
             }
         }
-
-
     }
 
     public function abreviaNome($nome, $tamanhoMax){
@@ -360,6 +356,7 @@ class AdminController
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
                         $this->container->view['vetor'] = $data;
                         $this->container->view['disciplinas'] = $disciplinas;
+
                         foreach ($data['disciplinas'] as $disc) {
                             $disciplinasGrade = new GradeDisciplina();
                             if (isset($disciplinas[$disc['codigo']])) {
@@ -726,9 +723,11 @@ class AdminController
 
     public function impersonarUsuario(Request $request, Response $response, $args)
     {
+        $usuarioOriginal = $this->container->usuarioDAO->getUsuarioLogado();
         $idUsuario = $args['id'];
 
         $_SESSION['id'] = $idUsuario;
+        $_SESSION['idOriginal'] = $usuarioOriginal->getId();
         $_SESSION['estaImpersonando'] = true;
 
         return $response->withRedirect($this->container->router->pathFor('home'));
@@ -737,7 +736,9 @@ class AdminController
     public function sairImpersonar(Request $request, Response $response, $args)
     {
         if(isset($_SESSION['estaImpersonando'])) {
-            $_SESSION['id'] = 237;
+            $_SESSION['id'] = $_SESSION['idOriginal'];
+
+            unset($_SESSION['idOriginal']);
             unset($_SESSION['estaImpersonando']);
         }
 

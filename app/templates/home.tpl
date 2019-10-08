@@ -373,51 +373,6 @@
 <script src="{base_url}/js/exif.js"></script>
 
 <script>
-    var $uploadCrop;
-
-    function readFile(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $uploadCrop.croppie('bind', {
-                    url: e.target.result
-                });
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-        else {
-            console.log("Sorry - you're browser doesn't support the FileReader API");
-        }
-    }
-
-    $uploadCrop = $('#image-cropper').croppie({
-        viewport: { width: 190, height: 190 },
-        boundary: { width: 450, height: 300 },
-        enableExif: true
-    });
-
-    $('#photo').on('change', function () {
-        $('#newPhoto').val('');
-        readFile(this);
-    });
-
-    $('#uploadPhoto').submit(function() {
-        if($('#newPhoto').val() !== '') {
-            return true;
-        } else {
-            $uploadCrop.croppie('result', 'base64').then(function (base64) {
-                $('#newPhoto').val(base64);
-                $('#photo').val('');
-                $('#uploadPhoto').submit();
-            });
-
-            return false;
-        }
-    });
-
-
     var ctx = document.getElementById('percentilIra').getContext('2d');
     ctx.height = 200;
 

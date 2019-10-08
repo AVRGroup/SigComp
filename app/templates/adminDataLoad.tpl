@@ -31,7 +31,7 @@
         <div class="input-group mb-3">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="data" name="data">
-                <label class="custom-file-label" for="data">Selecionar .CSV</label>
+                <label class="custom-file-label" for="data">Selecionar .CSV ou .XLSX</label>
             </div>
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Enviar</button>
