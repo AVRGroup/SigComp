@@ -15,6 +15,7 @@ use App\Model\Usuario;
 use App\Model\GradeDisciplina;
 use App\Model\Grade;
 use App\Persistence\UsuarioDAO;
+use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -146,40 +147,75 @@ class UserController
                 $sobreMim = $request->getParsedBodyParam('sobre_mim');
                 $nomeReal = $request->getParsedBodyParam('nome_real');
 
-                if($nomeReal == 'on')
+                if($nomeReal == 'on') {
                     $usuario->setNomeReal(0);
-                else
+                } else {
                     $usuario->setNomeReal(1);
+                }
 
-                $usuario->setEmail($email);
+                if(isset($email)) {
+                    $usuario->setEmail($email);
+                }
 
                 $redesComErro = $this->getRedesComErro($facebook, $instagram, $linkedin, $lattes);
 
-                if(in_array("Facebook", $redesComErro))
+                if(in_array("Facebook", $redesComErro)) {
                     $usuario->setFacebook(null);
-                else
+                } elseif(isset($facebook)) {
                     $usuario->setFacebook($facebook);
+                }
 
-                if(in_array("Instagram", $redesComErro))
+                if(in_array("Instagram", $redesComErro)) {
                     $usuario->setInstagram(null);
-                else
+                } elseif(isset($instagram)) {
                     $usuario->setInstagram($instagram);
+                }
 
-                if(in_array("Linkedin", $redesComErro))
+                if(in_array("Linkedin", $redesComErro)) {
                     $usuario->setLinkedin(null);
-                else
+                } elseif(isset($linkedin)) {
                     $usuario->setLinkedin($linkedin);
+                }
 
-                if(in_array("Lattes", $redesComErro))
+                if(in_array("Lattes", $redesComErro)) {
                     $usuario->setLattes(null);
-                else
+                } else {
                     $usuario->setLattes($lattes);
-
+                }
 
                 $this->container->view['errors'] = $redesComErro;
 
+                $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
 
-                $usuario->setSobremim($sobreMim);
+                if(isset($newPhotoBase64)) {
+                    list(, $data) = explode(',', $newPhotoBase64);
+                    $newPhoto = base64_decode($data);
+
+                    $im = imagecreatefromstring($newPhoto);
+                    if ($im !== false) {
+                        $lastFoto = $user->getFoto();
+
+                        do {
+                            $uuid4 = Uuid::uuid4();
+                            $user->setFoto($uuid4->toString() . '.png'); //Make sure we got an unique name
+                        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto()));
+
+                        file_put_contents($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto(),
+                            $newPhoto);
+
+                        $this->container->usuarioDAO->save($user);
+                        imagedestroy($im);
+
+                        //Delete Last Foto
+                        if ($lastFoto) {
+                            unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
+                        }
+                    }
+                }
+
+                if(isset($sobreMim)) {
+                    $usuario->setSobremim($sobreMim);
+                }
 
                 $this->container->usuarioDAO->persist($usuario);
                 $this->container->usuarioDAO->flush(); //Commit the transaction
