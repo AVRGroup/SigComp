@@ -356,7 +356,11 @@ class AdminController
 
                         foreach ($data['disciplinas'] as $disc) {
 
-                            if(!isset($disc['codigo'])) {
+                            if($disc['codigo'] == "Disciplinas Eletivas") {
+                                break;
+                            }
+
+                            if(!isset($disc['codigo']) || !isset($disc['nome'])) {
                                 continue;
                             }
 
