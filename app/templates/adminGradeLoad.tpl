@@ -13,17 +13,6 @@
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             Carga efetuada com sucesso!<br/>
             {$affectedData['disciplinasAdded']} Disciplina(s) adicionada(s) <br/>
-            Bool {$boolean}
-            <ul>
-                {foreach $vetor as $grade}
-                    {print_r($grade)}
-                    <br>
-                {/foreach}
-                {foreach $disciplinas as $disc}
-                    {$disc->getCodigo()}
-                    <br>
-                {/foreach}
-            </ul>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
