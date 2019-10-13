@@ -2,7 +2,9 @@
 
 namespace App\Library\Integra;
 
-class WSLogin extends \SoapClient
+use SoapClient;
+
+class WSLogin extends SoapClient
 {
 
     /**

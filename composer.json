@@ -9,7 +9,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "dompdf/dompdf": "dev-master",
         "phpmailer/phpmailer": "^6.0",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-soap": "*"
     },
     "autoload": {
         "psr-4": {

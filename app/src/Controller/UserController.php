@@ -75,7 +75,7 @@ class UserController
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
         return $this->container->view->render($response, 'home.tpl');
     }
@@ -118,19 +118,6 @@ class UserController
         return $this->container->view->render($response, 'adminTest.tpl');
     }
 
-    public function checkPeriodosTestAction(Request $request, Response $response, $args)
-    {
-        $allUsers = $this->container->usuarioDAO->getUsersNotasByGrade(12018);
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo(12018, 1);
-
-        //$allGrades = $this->container->usuarioDAO->getUsersNotasByGrade('12018');
-
-        $this->container->view['usuariosFull'] = $allUsers;
-        $this->container->view['disciplinas'] = $disciplinas;
-        //$this->container->view['gradesFull'] = $allGrades;
-
-        return $this->container->view->render($response, 'checkPeriodos.tpl');
-    }
 
     public function informacoesPessoaisAction(Request $request, Response $response, $args)
     {
@@ -261,9 +248,9 @@ class UserController
         return $redesComErro;
     }
 
-    public function periodMedalsVerification($grade, $periodo){
-        $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade);
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade, $periodo);
+    public function periodMedalsVerification(Grade $grade, $periodo){
+        $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade->getCodigo());
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade->getCodigo(), $periodo, $grade->getCurso());
         $cont = 0;
 
         unset($usrs);
@@ -333,11 +320,12 @@ class UserController
     public function assignMedalsAction(Request $request, Response $response, $args){
 
         $this->container->medalhaUsuarioDAO->truncateTable();
+        $grades = $this->container->gradeDAO->getAll();
 
-        for($i = 1; $i <= 9; $i++){
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, $i), $i, 12009);
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, $i), $i, 12014);
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, $i), $i, 12018);
+        foreach ($grades as $grade) {
+            for ($i = 1; $i <= 9; $i++) {
+                $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification($grade, $i), $i);
+            }
         }
 
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60, 70), 60);

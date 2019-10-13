@@ -68,7 +68,7 @@ class CalculateAttributes
         $notas_usuario = $usuario->getNotas();
         $aprovacoes = 0;
         for ($periodo = 1; $periodo <= 9; $periodo++) {
-            $disciplinas = $container->usuarioDAO->getDisciplinasByGradePeriodo($usuario->getGrade(), $periodo);
+            $disciplinas = $container->usuarioDAO->getDisciplinasByGradePeriodo($usuario->getGrade(), $periodo, $usuario->getCurso());
 
             foreach ($disciplinas as $disciplina){
                 foreach ($notas_usuario as $nota){
