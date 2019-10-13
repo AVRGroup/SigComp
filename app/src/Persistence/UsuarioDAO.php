@@ -487,7 +487,7 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function setPeriodo($results, $periodo, $grade){
+    public function setPeriodo($results, $periodo){
         foreach ($results as $user){
             //if($user->getGrade() == $grade){
                 $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user->getId()}', {$periodo})";
