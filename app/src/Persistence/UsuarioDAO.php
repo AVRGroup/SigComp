@@ -189,41 +189,31 @@ class UsuarioDAO extends BaseDAO
     /**
      * @param $grade
      * @param $periodo
+     * @param $curso
      * @return array
      */
-    public function getDisciplinasByGradePeriodo($grade, $periodo)
+    public function getDisciplinasByGradePeriodo($grade, $periodo, $curso)
     {
-        switch ($grade){
-            case 12009: $grade_num = 3;
-                break;
-            case 12014: $grade_num = 2;
-                break;
-            case 12018: $grade_num = 1;
-                break;
-        }
+        $gradeId = $this->getGradeId($grade, $curso);
+
         try {
             $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade AND dg.periodo = :periodo");
-            $query->setParameters(['grade' => $grade_num, 'periodo' => $periodo]);
+            $query->setParameters(['grade' => $gradeId, 'periodo' => $periodo]);
             $disciplinas = $query->getResult();
         } catch (\Exception $e) {
             $disciplinas = null;
         }
+
         return $disciplinas;
     }
 
-    public function getQuantidadeDisciplinasByGrade($grade)
+    public function getQuantidadeDisciplinasByGrade($grade, $curso)
     {
-        switch ($grade){
-            case 12009: $grade_num = 3;
-                break;
-            case 12014: $grade_num = 2;
-                break;
-            case 12018: $grade_num = 1;
-                break;
-        }
+        $gradeId = $this->getGradeId($grade, $curso);
+
         try {
             $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade");
-            $query->setParameters(['grade' => $grade_num]);
+            $query->setParameters(['grade' => $gradeId]);
             $disciplinas = $query->getResult();
         } catch (\Exception $e) {
             $disciplinas = null;
@@ -231,6 +221,23 @@ class UsuarioDAO extends BaseDAO
         return sizeof($disciplinas);
     }
 
+    public function getGradeId($gradeCodigo, $curso)
+    {
+        $gradeCodigo = intval($gradeCodigo);
+
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade as g WHERE g.codigo = :grade AND g.curso = :curso");
+            $query->setParameter('grade', $gradeCodigo);
+            $query->setParameter('curso', $curso);
+            $grade = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $grade = null;
+        }
+
+        $gradeId = $grade->getId();
+
+        return $gradeId;
+    }
 
 
     /**

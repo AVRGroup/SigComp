@@ -604,7 +604,7 @@ class AdminController
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
 
         return $this->container->view->render($response, 'home.tpl');
@@ -701,7 +701,7 @@ class AdminController
     {
         $user = $this->container->usuarioDAO->getById($userId);
         $user = $this->container->usuarioDAO->getSingleUsersNotasByGrade($userId, $user->getGrade())[0];
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($user->getGrade(), $periodo);
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($user->getGrade(), $periodo, $user->getCurso());
         $cont = 0;
 
         $user_notas = $user->getNotas();
