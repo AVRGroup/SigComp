@@ -196,6 +196,10 @@ class UsuarioDAO extends BaseDAO
     {
         $gradeId = $this->getGradeId($grade, $curso);
 
+        if(is_null($gradeId)) {
+            return null;
+        }
+
         try {
             $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade AND dg.periodo = :periodo");
             $query->setParameters(['grade' => $gradeId, 'periodo' => $periodo]);
@@ -218,6 +222,7 @@ class UsuarioDAO extends BaseDAO
         } catch (\Exception $e) {
             $disciplinas = null;
         }
+
         return sizeof($disciplinas);
     }
 
@@ -232,6 +237,10 @@ class UsuarioDAO extends BaseDAO
             $grade = $query->getOneOrNullResult();
         } catch (\Exception $e) {
             $grade = null;
+        }
+
+        if(is_null($grade)) {
+            return null;
         }
 
         $gradeId = $grade->getId();
@@ -487,13 +496,11 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
-    public function setPeriodo($results, $periodo){
-        foreach ($results as $user){
-            //if($user->getGrade() == $grade){
-                $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user->getId()}', {$periodo})";
-                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-                $stmt_insert->execute();
-            //}
+    public function setPeriodo($usuarios, $periodo){
+        foreach ($usuarios as $user){
+            $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('{$user->getId()}', {$periodo})";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
         }
     }
 

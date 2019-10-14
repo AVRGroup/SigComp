@@ -251,6 +251,11 @@ class UserController
     public function periodMedalsVerification(Grade $grade, $periodo){
         $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade->getCodigo());
         $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade->getCodigo(), $periodo, $grade->getCurso());
+
+        if(is_null($disciplinas)) {
+            return null;
+        }
+
         $cont = 0;
 
         unset($usrs);
@@ -323,8 +328,11 @@ class UserController
         $grades = $this->container->gradeDAO->getAll();
 
         foreach ($grades as $grade) {
-            for ($i = 1; $i <= 9; $i++) {
-                $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification($grade, $i), $i);
+            for ($periodo = 1; $periodo <= 9; $periodo++) {
+                $usuarios = $this->periodMedalsVerification($grade, $periodo);
+                if($usuarios) {
+                    $this->container->usuarioDAO->setPeriodo($usuarios, $periodo);
+                }
             }
         }
 
