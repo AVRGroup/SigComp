@@ -46,9 +46,11 @@ class AdminController
                         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
                         foreach ($data['disciplinas'] as $disc) {
+
                             if (isset($disciplinas[$disc['codigo']])) {
                                 continue;
                             }
+
                             $disciplina = new Disciplina();
                             $disciplina->setCodigo($disc['codigo']);
                             $disciplina->setCarga($disc['carga']);
@@ -140,10 +142,6 @@ class AdminController
 
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
-                if($usuario->getSituacao() == 1) {
-                    continue;
-                }
-
                 if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
                     continue;
                 }
