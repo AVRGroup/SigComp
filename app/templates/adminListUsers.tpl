@@ -30,9 +30,9 @@
             <th scope="col">Nome ↑↓</th>
             <th scope="col">IRA ↑↓</th>
             <th scope="col">Email ↑↓</th>
-            <th scope="col">Concluido</th>
+            {*<th scope="col">Concluido</th>*}
             <th scope="col"></th>
-            <th scope="col"></th>
+            {*<th scope="col"></th>*}
         </tr>
         </thead>
         <tbody>
@@ -43,13 +43,13 @@
                     <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}">{$user['nome']}</a></td>
                     <td>{number_format($user['ira'], 2)}</td>
                     <td>{$user['email']}</td>
-                    <td><input type="checkbox" disabled {if $user['situacao'] == 1} checked {/if}></td>
+                    {*<td><input type="checkbox" disabled {if $user['situacao'] == 1} checked {/if}></td>*}
                     <td><a href="{base_url}/admin/impersonar-usuario/{$user['id']}"><i class="fa fa-eye"></i></a></td>
-                    <td>
-                        <button type="button" data-id="{$user['id']}" data-nome="{$user['nome']}" class="btn btn-primary concluir-modal" data-toggle="modal" data-target="#concluirCursoModal">
-                            <i class="fa fa-trophy"></i>
-                        </button>
-                    </td>
+                    {*<td>*}
+                        {*<button type="button" data-id="{$user['id']}" data-nome="{$user['nome']}" class="btn btn-primary concluir-modal" data-toggle="modal" data-target="#concluirCursoModal">*}
+                            {*<i class="fa fa-trophy"></i>*}
+                        {*</button>*}
+                    {*</td>*}
                 </tr>
             {/if}
 
