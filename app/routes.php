@@ -49,6 +49,7 @@ $app->group('', function () {
         $this->post('/unset-concluido', '\App\Controller\AdminController:unsetConcluido')->setName('unsetConcluido');
 
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
+        $this->get('/teste-calcula-ira', '\App\Controller\AdminController:testeCalulaIra');
 
 
         $this->get('/impersonar-usuario/{id:[0-9]+}', '\App\Controller\AdminController:impersonarUsuario');

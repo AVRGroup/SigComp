@@ -103,7 +103,7 @@ class Helper
         foreach ($results as $usuario) {
             $nome = self::removeAcento($usuario['nome']);
 
-            if(strpos($nome, $pesquisa) !== false) {
+            if($pesquisa && strpos($nome, $pesquisa) !== false) {
                 array_push($usuariosFiltrados, $usuario);
             }
         }
