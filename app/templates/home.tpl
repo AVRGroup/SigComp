@@ -7,11 +7,11 @@
                 <div class="text-center">
                     <div class="changePic">
 
-                        <div class="changePicButton text-center col-sm-10 col-md-10 align-content-center" data-toggle="modal" data-target="#chagePhotoModal">
-
+                        <div class="changePicButton text-center col-sm-10 col-md-10 ml-lg-4 align-content-center" data-toggle="modal" data-target="#chagePhotoModal" >
                             <i class="fas fa-camera" style="font-size: 30px;"></i>
                             <p>Alterar Foto</p>
                         </div>
+                        
                         <img src="{base_url}/{if $usuario->getFoto()}upload/{$usuario->getFoto()}{else}img/silhueta.jpg{/if}"
                              class="img-thumbnail" alt="{$usuario->getNome()}" width="190" height="190">
                     </div>

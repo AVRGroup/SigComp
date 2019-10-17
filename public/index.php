@@ -9,7 +9,7 @@ date_default_timezone_set('America/Sao_Paulo');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php'; 
 
 session_start();
 
