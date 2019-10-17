@@ -79,7 +79,6 @@
                     {/if}
 
                     {if $loggedUser->isBolsista()}
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a></li>
                     {/if}
 
@@ -88,6 +87,8 @@
                             <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
                         {/if}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
+
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                         {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
                         {if $estaImpersonando == true}
@@ -99,8 +100,6 @@
                         {/if}
 
                         {if $loggedUser->isAdmin()}
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Administrador
