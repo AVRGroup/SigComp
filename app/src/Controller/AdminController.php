@@ -46,9 +46,11 @@ class AdminController
                         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
                         foreach ($data['disciplinas'] as $disc) {
+
                             if (isset($disciplinas[$disc['codigo']])) {
                                 continue;
                             }
+
                             $disciplina = new Disciplina();
                             $disciplina->setCodigo($disc['codigo']);
                             $disciplina->setCarga($disc['carga']);
@@ -140,10 +142,6 @@ class AdminController
 
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
-                if($usuario->getSituacao() == 1) {
-                    continue;
-                }
-
                 if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
                     continue;
                 }
@@ -329,7 +327,6 @@ class AdminController
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];
 
-
             if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
                 $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
             } else {
@@ -338,18 +335,16 @@ class AdminController
                     $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
                 } else {
                     try {
-                        set_time_limit(60 * 60); //Should not Exit
-
                         $nomeArquivo = $uploadedFile->getClientFilename();
-                        $partes = explode('-', $nomeArquivo);
-                        $curso = $partes[0];
-                        $codigo = explode('.', $partes[1])[0];
+
+                        preg_match("/.+(?=-)/" , $nomeArquivo, $cursoGrade);
+                        preg_match("/(?<=\-).+(?=\.)/", $nomeArquivo, $codigoGrade);
 
                         $data = Helper::processGradeCSV($uploadedFile->file);
                         $affectedData = ['disciplinasAdded' => 0];
                         $grade = new Grade();
-                        $grade->setCodigo($codigo);
-                        $grade->setCurso($curso);
+                        $grade->setCodigo($codigoGrade[0]);
+                        $grade->setCurso($cursoGrade[0]);
                         $this->container->gradeDAO->persist($grade);
                         $this->container->gradeDAO->flush();
 
@@ -358,6 +353,15 @@ class AdminController
                         $this->container->view['disciplinas'] = $disciplinas;
 
                         foreach ($data['disciplinas'] as $disc) {
+
+                            if($disc['codigo'] == "Disciplinas Eletivas") {
+                                break;
+                            }
+
+                            if(!isset($disc['codigo']) || !isset($disc['nome'])) {
+                                continue;
+                            }
+
                             $disciplinasGrade = new GradeDisciplina();
                             if (isset($disciplinas[$disc['codigo']])) {
                                 $bool = 1;
@@ -598,7 +602,7 @@ class AdminController
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
 
         return $this->container->view->render($response, 'home.tpl');
@@ -695,7 +699,7 @@ class AdminController
     {
         $user = $this->container->usuarioDAO->getById($userId);
         $user = $this->container->usuarioDAO->getSingleUsersNotasByGrade($userId, $user->getGrade())[0];
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($user->getGrade(), $periodo);
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($user->getGrade(), $periodo, $user->getCurso());
         $cont = 0;
 
         $user_notas = $user->getNotas();

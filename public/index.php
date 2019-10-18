@@ -7,6 +7,7 @@ $MyBBI = new MyBBIntegrator($mybb, $db, $cache, $plugins, $lang, $config);*/
 
 date_default_timezone_set('America/Sao_Paulo');
 ini_set('display_errors', 1);
+ini_set('max_execution_time', 0);
 error_reporting(E_ALL);
 
 require __DIR__ . '/../vendor/autoload.php'; 

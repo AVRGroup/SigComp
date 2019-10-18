@@ -94,7 +94,7 @@ class HomeController
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
 
         return $this->container->view->render($response, 'home.tpl');
     }

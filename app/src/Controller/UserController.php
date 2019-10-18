@@ -15,6 +15,7 @@ use App\Model\Usuario;
 use App\Model\GradeDisciplina;
 use App\Model\Grade;
 use App\Persistence\UsuarioDAO;
+use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -74,7 +75,7 @@ class UserController
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
         return $this->container->view->render($response, 'home.tpl');
     }
@@ -117,19 +118,6 @@ class UserController
         return $this->container->view->render($response, 'adminTest.tpl');
     }
 
-    public function checkPeriodosTestAction(Request $request, Response $response, $args)
-    {
-        $allUsers = $this->container->usuarioDAO->getUsersNotasByGrade(12018);
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo(12018, 1);
-
-        //$allGrades = $this->container->usuarioDAO->getUsersNotasByGrade('12018');
-
-        $this->container->view['usuariosFull'] = $allUsers;
-        $this->container->view['disciplinas'] = $disciplinas;
-        //$this->container->view['gradesFull'] = $allGrades;
-
-        return $this->container->view->render($response, 'checkPeriodos.tpl');
-    }
 
     public function informacoesPessoaisAction(Request $request, Response $response, $args)
     {
@@ -146,40 +134,75 @@ class UserController
                 $sobreMim = $request->getParsedBodyParam('sobre_mim');
                 $nomeReal = $request->getParsedBodyParam('nome_real');
 
-                if($nomeReal == 'on')
+                if($nomeReal == 'on') {
                     $usuario->setNomeReal(0);
-                else
+                } else {
                     $usuario->setNomeReal(1);
+                }
 
-                $usuario->setEmail($email);
+                if(isset($email)) {
+                    $usuario->setEmail($email);
+                }
 
                 $redesComErro = $this->getRedesComErro($facebook, $instagram, $linkedin, $lattes);
 
-                if(in_array("Facebook", $redesComErro))
+                if(in_array("Facebook", $redesComErro)) {
                     $usuario->setFacebook(null);
-                else
+                } elseif(isset($facebook)) {
                     $usuario->setFacebook($facebook);
+                }
 
-                if(in_array("Instagram", $redesComErro))
+                if(in_array("Instagram", $redesComErro)) {
                     $usuario->setInstagram(null);
-                else
+                } elseif(isset($instagram)) {
                     $usuario->setInstagram($instagram);
+                }
 
-                if(in_array("Linkedin", $redesComErro))
+                if(in_array("Linkedin", $redesComErro)) {
                     $usuario->setLinkedin(null);
-                else
+                } elseif(isset($linkedin)) {
                     $usuario->setLinkedin($linkedin);
+                }
 
-                if(in_array("Lattes", $redesComErro))
+                if(in_array("Lattes", $redesComErro)) {
                     $usuario->setLattes(null);
-                else
+                } else {
                     $usuario->setLattes($lattes);
-
+                }
 
                 $this->container->view['errors'] = $redesComErro;
 
+                $newPhotoBase64 = $request->getParsedBodyParam('newPhoto');
 
-                $usuario->setSobremim($sobreMim);
+                if(isset($newPhotoBase64)) {
+                    list(, $data) = explode(',', $newPhotoBase64);
+                    $newPhoto = base64_decode($data);
+
+                    $im = imagecreatefromstring($newPhoto);
+                    if ($im !== false) {
+                        $lastFoto = $user->getFoto();
+
+                        do {
+                            $uuid4 = Uuid::uuid4();
+                            $user->setFoto($uuid4->toString() . '.png'); //Make sure we got an unique name
+                        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto()));
+
+                        file_put_contents($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $user->getFoto(),
+                            $newPhoto);
+
+                        $this->container->usuarioDAO->save($user);
+                        imagedestroy($im);
+
+                        //Delete Last Foto
+                        if ($lastFoto) {
+                            unlink($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $lastFoto);
+                        }
+                    }
+                }
+
+                if(isset($sobreMim)) {
+                    $usuario->setSobremim($sobreMim);
+                }
 
                 $this->container->usuarioDAO->persist($usuario);
                 $this->container->usuarioDAO->flush(); //Commit the transaction
@@ -225,9 +248,14 @@ class UserController
         return $redesComErro;
     }
 
-    public function periodMedalsVerification($grade, $periodo){
-        $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade);
-        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade, $periodo);
+    public function periodMedalsVerification(Grade $grade, $periodo){
+        $users = $this->container->usuarioDAO->getUsersNotasByGrade($grade->getCodigo());
+        $disciplinas = $this->container->usuarioDAO->getDisciplinasByGradePeriodo($grade->getCodigo(), $periodo, $grade->getCurso());
+
+        if(is_null($disciplinas)) {
+            return null;
+        }
+
         $cont = 0;
 
         unset($usrs);
@@ -297,11 +325,15 @@ class UserController
     public function assignMedalsAction(Request $request, Response $response, $args){
 
         $this->container->medalhaUsuarioDAO->truncateTable();
+        $grades = $this->container->gradeDAO->getAll();
 
-        for($i = 1; $i <= 9; $i++){
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12009, $i), $i, 12009);
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12014, $i), $i, 12014);
-            $this->container->usuarioDAO->setPeriodo($this->periodMedalsVerification(12018, $i), $i, 12018);
+        foreach ($grades as $grade) {
+            for ($periodo = 1; $periodo <= 9; $periodo++) {
+                $usuarios = $this->periodMedalsVerification($grade, $periodo);
+                if($usuarios) {
+                    $this->container->usuarioDAO->setPeriodo($usuarios, $periodo);
+                }
+            }
         }
 
         $this->container->usuarioDAO->setByIRA($this->container->usuarioDAO->getByIRA(60, 70), 60);

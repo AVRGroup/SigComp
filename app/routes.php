@@ -20,6 +20,8 @@ $app->group('', function () {
 
     $this->map(['GET', 'POST'], '/informacoes', '\App\Controller\UserController:informacoesPessoaisAction')->setName('informacoesPessoais');
 
+    $this->get(['/avaliacao'], '/avalicao', '\App\Controller\UserController:avaliacao')->setName('avaliacao');
+
     $this->get('/convite-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:conviteAmizadeAction')->setName('conviteAmizade');
     $this->get('/aceitar-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:aceitarConviteAction')->setName('aceitarAmizade');
     $this->get('/recusar-amizade/{id-remetente: [0-9]+}&{id-destinatario: [0-9]+}', '\App\Controller\UserController:rejeitarConviteAction')->setName('recusarAmizade');
@@ -49,6 +51,7 @@ $app->group('', function () {
         $this->post('/unset-concluido', '\App\Controller\AdminController:unsetConcluido')->setName('unsetConcluido');
 
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
+        $this->get('/teste-calcula-ira', '\App\Controller\AdminController:testeCalulaIra');
 
 
         $this->get('/impersonar-usuario/{id:[0-9]+}', '\App\Controller\AdminController:impersonarUsuario');
