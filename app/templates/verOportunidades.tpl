@@ -40,7 +40,7 @@
                             <p class="descricao">{$oportunidade->getDescricao()}</p>
                         {/if}
 
-                        <p><span class="weight-600">Professor:</span> {$oportunidade->getProfessor()}</p>
+                        <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 
                         <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
 
