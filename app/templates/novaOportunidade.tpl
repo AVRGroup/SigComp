@@ -48,7 +48,7 @@
             </div>
 
             <div class="form-row">
-                <label for="nome_professor">Nome do Professor que está oferecendo:</label>
+                <label for="nome_professor">Nome de quem esta oferecendo que está oferecendo:</label>
                 <input class="form-control" type="text" name="nome_professor">
             </div>
 

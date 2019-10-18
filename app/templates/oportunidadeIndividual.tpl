@@ -3,7 +3,7 @@
     <div style="padding: 20px;">
         <div class="text-center" style="margin-top: 20px">
             <p class="oportunidade-unica-descicao">{$oportunidade->getDescricao()}</p>
-            <p style="margin-top: 20px"><span class="weight-600">Professor:</span> {$oportunidade->getProfessor()}</p>
+            <p style="margin-top: 20px"><span class="weight-600">Quem está oferecendo:</span> {$oportunidade->getProfessor()}</p>
             <hr>
 
             {foreach $oportunidade->getDisciplinas() as $disciplina}
