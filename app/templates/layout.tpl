@@ -92,7 +92,7 @@
 
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
 
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="avaliacao"}"> Avaliação </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="avaliacoes"}"> Avaliação </a></li>
 
                         {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
                         {if $estaImpersonando == true}
