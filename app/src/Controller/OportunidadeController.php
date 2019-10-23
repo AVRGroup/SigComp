@@ -24,6 +24,8 @@ class OportunidadeController
         $idUsuario = $_SESSION['id'];
         $usuario = $this->container->usuarioDAO->getById($idUsuario);
 
+        $this->container->view['usuario'] = $usuario;
+
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
 

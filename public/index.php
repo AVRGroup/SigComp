@@ -10,7 +10,7 @@ ini_set('display_errors', 1);
 ini_set('max_execution_time', 0);
 error_reporting(E_ALL);
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php'; 
 
 session_start();
 

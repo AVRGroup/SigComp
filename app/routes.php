@@ -8,12 +8,16 @@ $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('abou
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
 $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:sendMailAction')->setName('sendMail');
 
+$app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
+
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
-
+    
     $this->get('/privacidade', '\App\Controller\HomeController:privacidadeAction')->setName('privacidade');
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
+    
+
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
@@ -83,6 +87,7 @@ $app->group('', function () {
 
         $this->get('/cadastrar-oportunidade', '\App\Controller\OportunidadeController:formCadastrarOportunidade')->setName('cadastrarOportunidade');
         $this->post('/criar-oportunidade', '\App\Controller\OportunidadeController:criarOportunidade')->setName('ciarOportunidade');
+        $this->get('/oportunidade/{id:[0-9]+}/delete', '\App\Controller\OportunidadeController:deleteOportunidade')->setName('deletarOportunidade');
 
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/accept', '\App\Controller\CertificateController:adminAcceptAction')->setName('adminAcceptCertificate');
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/refuse', '\App\Controller\CertificateController:adminRefuseAction')->setName('adminRefuseCertificate');

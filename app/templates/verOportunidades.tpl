@@ -75,7 +75,7 @@
 
                         {if !$usuario->isAluno()}
                             <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-edit"></i></small></a>
-                            <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/edit"><small><i class="fa fa-trash"></i></small></a>
+                            <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-trash"></i></small></a>
                         {/if}
 
                         <a target="_blank" href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link Externo</small></a>
