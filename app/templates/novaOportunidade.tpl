@@ -42,8 +42,11 @@
                 </div>
 
                 <div style="margin-left: 10%;" class="col-3">
-                    <label for="numero_vagas">Quantidade de vagas:</label>
-                    <input type="number" class="form-control" name="numero_vagas">
+                    <label for="numero-vagas">Quantidade de vagas:</label>
+                    <input id="numero-vagas" type="number" class="form-control" name="numero_vagas">
+
+                    <input id="vagas-informadas" type="radio" value="9999" name="informar-vagas" checked> <label for="vagas-informadas">Informar</label>
+                    <input id="vagas-nao-informadas" type="radio" value="-1" name="informar-vagas"> <label for="vagas-nao-informadas">Não Informado</label>
                 </div>
             </div>
 
@@ -57,6 +60,11 @@
                 <div class="form-check form-check-inline">
                     <input id="voluntario" class="form-check-input" name="tem_remuneracao" value="voluntario" type="radio" checked>
                     <label for="voluntario" class="form-check-label">Voluntário</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input id="nao-informado" class="form-check-input" name="tem_remuneracao" value="nao_informado" type="radio">
+                    <label for="nao-informado" class="form-check-label">Não Informado</label>
                 </div>
 
                 <div class="form-check form-check-inline">
@@ -154,12 +162,20 @@
         });
 
 
-        $('input:radio').click(function() {
-            $("#valor-remuneracao").prop("disabled",true);
+        $('#remunerado').click(function() {
+            $("#valor-remuneracao").prop("disabled",false);
+        });
 
-            if($(this).hasClass('escolher-valor')) {
-                $("#valor-remuneracao").prop("disabled",false);
-            }
+        $('#voluntario').click(function() {
+            $("#valor-remuneracao").prop("disabled",true);
+        });
+
+        $('#vagas-nao-informadas').click(function() {
+            $("#numero-vagas").prop("disabled",true);
+        });
+
+        $('#vagas-informadas').click(function() {
+            $("#numero-vagas").prop("disabled",false);
         });
 
     </script>

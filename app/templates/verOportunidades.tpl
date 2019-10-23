@@ -42,7 +42,14 @@
 
                         <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 
-                        <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
+                        <p>
+                            <span class="weight-600">Vagas:</span>
+                            {if $oportunidade->getQuantidadeVagas() == -1}
+                                Não Informado
+                            {else}
+                                {$oportunidade->getQuantidadeVagas()}
+                            {/if}
+                        </p>
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
@@ -51,6 +58,8 @@
                             <span class="weight-600">Remuneração:</span>
                             {if $oportunidade->getRemuneracao() == 0}
                                 Voluntária
+                            {elseif $oportunidade->getRemuneracao() == -1}
+                                Não Informada
                             {else}
                                 R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
                             {/if}
@@ -74,7 +83,7 @@
                         </button>
 
                         {if !$usuario->isAluno()}
-                            <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-edit"></i></small></a>
+                            <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/form-edit"><small><i class="fa fa-edit"></i></small></a>
                             <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-trash"></i></small></a>
                         {/if}
 

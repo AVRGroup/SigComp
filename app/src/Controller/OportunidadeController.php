@@ -85,14 +85,28 @@ class OportunidadeController
         }
 
         $tipo = $request->getParsedBodyParam('tipo_oportunidade');
-        $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+
+        if($request->getParsedBodyParam('informar-vagas') == -1) {
+            $numeroVagas = -1;
+        } else {
+            $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+        }
+
         $professor = $request->getParsedBodyParam('nome_professor');
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
         $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
+
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
-        $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
+        if($temRemuneracao == "nao_informado") {
+            $valorRemuneracao = -1;
+        } elseif($temRemuneracao == 'voluntario') {
+            $valorRemuneracao = 0;
+        } else {
+            $valorRemuneracao = $request->getParsedBodyParam('valor_remuneracao');
+        }
+
         $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
         $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
 
@@ -155,8 +169,59 @@ class OportunidadeController
         $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo());
     }
 
+    public function editOportunidade(Request $request, Response $response, $args)
+    {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+
+        $tipo = $request->getParsedBodyParam('tipo_oportunidade');
+
+        if($request->getParsedBodyParam('informar-vagas') == -1) {
+            $numeroVagas = -1;
+        } else {
+            $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+        }
+
+        $professor = $request->getParsedBodyParam('nome_professor');
+        $descricao = $request->getParsedBodyParam('descricao');
+        $validade = new \DateTime($request->getParsedBodyParam('validade'));
+
+        $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
+        if($temRemuneracao == "nao_informado") {
+            $valorRemuneracao = -1;
+        } elseif($temRemuneracao == 'voluntario') {
+            $valorRemuneracao = 0;
+        } else {
+            $valorRemuneracao = $request->getParsedBodyParam('valor_remuneracao');
+        }
+
+        $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
+        $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
+
+        $oportunidade->setTipo($tipo);
+        $oportunidade->setDescricao($descricao);
+        $oportunidade->setValidade($validade);
+        $oportunidade->setProfessor($professor);
+        $oportunidade->setQuantidadeVagas($numeroVagas);
+        $oportunidade->setRemuneracao($valorRemuneracao);
+        $oportunidade->setCriadoEm(new \DateTime());
+        $oportunidade->setPeriodoMinimo($periodoMinimo);
+        $oportunidade->setPeriodoMaximo($periodoMaximo);
+
+        try {
+            $this->container->oportunidadeDAO->save($oportunidade);
+        } catch (Exception $e) {
+            die(var_dump($e->getMessage()));
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
+    }
+
+
     public function formEditOportunidade(Request $request, Response $response, $args)
     {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+        $this->container->view['oportunidade'] = $oportunidade;
+
         return $this->container->view->render($response, 'editarOportunidade.tpl');
     }
 

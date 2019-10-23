@@ -31,13 +31,24 @@
         <div style="margin-top: 20px" class="text-center" >
             <p>
                 <span style="display: inline-block; margin-right: 20px"> <span class="weight-600">Prazo para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')} </span>
-                <span style="display: inline-block; margin-right: 20px"><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</span>
-                <span class="weight-600">Remuneração:</span>
-                    {if $oportunidade->getRemuneracao() == 0}
-                        Voluntária
+
+                <span style="display: inline-block; margin-right: 20px">
+                    <span class="weight-600">Vagas:</span>
+                    {if $oportunidade->getQuantidadeVagas() == -1}
+                        Não Informado
                     {else}
-                        R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                        {$oportunidade->getQuantidadeVagas()}
                     {/if}
+                </span>
+
+                <span class="weight-600">Remuneração:</span>
+                {if $oportunidade->getRemuneracao() == 0}
+                    Voluntária
+                {elseif $oportunidade->getRemuneracao() == -1}
+                    Não Informada
+                {else}
+                    R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                {/if}
             </p>
         </div>
 

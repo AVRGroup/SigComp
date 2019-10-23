@@ -87,7 +87,9 @@ $app->group('', function () {
 
         $this->get('/cadastrar-oportunidade', '\App\Controller\OportunidadeController:formCadastrarOportunidade')->setName('cadastrarOportunidade');
         $this->post('/criar-oportunidade', '\App\Controller\OportunidadeController:criarOportunidade')->setName('ciarOportunidade');
-        $this->get('/oportunidade/{id:[0-9]+}/delete', '\App\Controller\OportunidadeController:deleteOportunidade')->setName('deletarOportunidade');
+        $this->get('/oportunidade/{id:[0-9]+}/delete', '\App\Controller\OportunidadeController:deleteOportunidade')->setName('deleteOportunidade');
+        $this->get('/oportunidade/{id:[0-9]+}/form-edit', '\App\Controller\OportunidadeController:formEditOportunidade')->setName('formEditOportunidade');
+        $this->post('/oportunidade/{id:[0-9]+}/edit', '\App\Controller\OportunidadeController:editOportunidade')->setName('editOportunidade');
 
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/accept', '\App\Controller\CertificateController:adminAcceptAction')->setName('adminAcceptCertificate');
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/refuse', '\App\Controller\CertificateController:adminRefuseAction')->setName('adminRefuseCertificate');
