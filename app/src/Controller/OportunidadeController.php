@@ -24,6 +24,8 @@ class OportunidadeController
         $idUsuario = $_SESSION['id'];
         $usuario = $this->container->usuarioDAO->getById($idUsuario);
 
+        $this->container->view['usuario'] = $usuario;
+
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
 
@@ -151,6 +153,19 @@ class OportunidadeController
         } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo()));
 
         $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo());
+    }
+
+    public function deleteOportunidade(Request $request, Response $response, $args)
+    {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+
+        try {
+            $this->container->oportunidadeDAO->delete($oportunidade);
+        } catch (Exception $e) {
+            $this->container->view['error'] = $e->getMessage();
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
     }
 
 }
