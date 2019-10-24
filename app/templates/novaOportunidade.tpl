@@ -121,6 +121,13 @@
             </div>
 
             <div class="form-row">
+                <div class="custom-file">
+                    <label class="custom-file-label" for="imagem-oportunidade">Imagem da Oportunidade:</label>
+                    <input  type="file" class="custom-file-input" id="imagem-oportunidade" name="imagem_oportunidade">
+                </div>
+            </div>
+
+            <div class="form-row">
                 <label for="descricao">Descrição da Oportunidade</label>
                 <textarea class="form-control" name="descricao"  cols="30" rows="10"></textarea>
             </div>

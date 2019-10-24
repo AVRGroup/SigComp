@@ -2,6 +2,15 @@
 {block name=content}
     <div style="padding: 20px;">
         <div class="text-center" style="margin-top: 20px">
+
+            <div class="row">
+                {if isset($oportunidade->getArquivoImagem())}
+                    <a class="imagem-oportunidade" href="{base_url}/upload/{$oportunidade->getArquivoImagem()}" target="_blank">
+                        <img class="col-sm-12" src="{base_url}/upload/{$oportunidade->getArquivoImagem()}" alt="imagem">
+                    </a>
+                {/if}
+            </div>
+
             <p class="oportunidade-unica-descicao">{$oportunidade->getDescricao()}</p>
             <p style="margin-top: 20px"><span class="weight-600">Quem está oferecendo:</span> {$oportunidade->getProfessor()}</p>
             <hr>

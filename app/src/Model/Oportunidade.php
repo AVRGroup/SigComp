@@ -63,6 +63,16 @@ class Oportunidade implements ToIdArrayInterface
     protected $extensao;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $arquivo_imagem;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $extensao_imagem;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $periodo_minimo;
@@ -277,6 +287,39 @@ class Oportunidade implements ToIdArrayInterface
     {
         $this->arquivo = $arquivo;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getArquivoImagem()
+    {
+        return $this->arquivo_imagem;
+    }
+
+    /**
+     * @param mixed $arquivo_imagem
+     */
+    public function setArquivoImagem($arquivo_imagem): void
+    {
+        $this->arquivo_imagem = $arquivo_imagem;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtensaoImagem()
+    {
+        return $this->extensao_imagem;
+    }
+
+    /**
+     * @param mixed $extensao_imagem
+     */
+    public function setExtensaoImagem($extensao_imagem): void
+    {
+        $this->extensao_imagem = $extensao_imagem;
+    }
+
 
     /**
      * @return mixed

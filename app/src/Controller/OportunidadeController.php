@@ -96,7 +96,8 @@ class OportunidadeController
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
-        $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
+        $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
+        $imagem = $request->getUploadedFiles()['imagem_oportunidade'];
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         if($temRemuneracao == "nao_informado") {
@@ -121,9 +122,14 @@ class OportunidadeController
         $oportunidade->setPeriodoMinimo($periodoMinimo);
         $oportunidade->setPeriodoMaximo($periodoMaximo);
 
-        if($arquivo->getSize() > 0) {
-            $this->setArquivo($oportunidade, $arquivo);
+        if($pdf->getSize() > 0) {
+            $this->setArquivo($oportunidade, $pdf);
         }
+
+        if($imagem->getSize() > 0) {
+            $this->setArquivoImagem($oportunidade, $imagem);
+        }
+
 
         if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
             foreach ($preRequisitos as $preRequisito) {
@@ -167,6 +173,19 @@ class OportunidadeController
         } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo()));
 
         $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo());
+    }
+
+    public function setArquivoImagem($oportunidade, $arquivo)
+    {
+        $extension = mb_strtolower(pathinfo($arquivo->getClientFilename(), PATHINFO_EXTENSION));
+        $oportunidade->setExtensaoImagem($extension);
+
+        do {
+            $uuid4 = Uuid::uuid4();
+            $oportunidade->setArquivoImagem($uuid4->toString() . '.' . $extension);
+        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivoImagem()));
+
+        $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivoImagem());
     }
 
     public function editOportunidade(Request $request, Response $response, $args)
