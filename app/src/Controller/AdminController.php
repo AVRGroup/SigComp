@@ -65,6 +65,8 @@ class AdminController
                             $usuario->setAtualizadoUltimaCarga(0);
                         }
 
+                        $this->container->usuarioDAO->flush();
+
                         foreach ($data['usuarios'] as $user) {
                             $curso = $user['curso'];
                             if (isset($usuarios[$user['matricula']])) {

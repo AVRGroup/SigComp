@@ -28,6 +28,12 @@ class LoginController
 
     public function loginAction(Request $request, Response $response, $args)
     {
+        $oportunidade = $request->getParam('oportunidade');
+
+        if(isset($oportunidade) && isset($_SESSION['id'])){
+            return $response->withRedirect("oportunidade/$oportunidade");
+        }
+
         if ($request->isPost()) {
             try {
                 $cpf = $request->getParsedBodyParam('cpf');
@@ -74,6 +80,10 @@ class LoginController
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                     }
                     $this->container->usuarioDAO->flush();
+
+                    if(isset($oportunidade)){
+                        return $response->withRedirect("oportunidade/$oportunidade");
+                    }
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
 

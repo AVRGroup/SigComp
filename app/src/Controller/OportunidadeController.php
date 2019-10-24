@@ -40,6 +40,9 @@ class OportunidadeController
 
     public function mostrarOportunidade(Request $request, Response $response, $args)
     {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
+
         $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($_SESSION['id']);
 
