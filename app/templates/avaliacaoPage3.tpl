@@ -8,7 +8,7 @@
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação da disciplina</p>
         <p style="margin-left: 10%; font-weight: 700; margin-bottom: 4%; font-size: 17px">*Faça sua avaliação, sendo 1 [Não] e 5 [Sim].</p>
 
-    <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
+    <div style="margin-left:10%; margin-bottom: 5% ">           <!-- DIV PRINCIPAL -->
 
         <div style="margin-bottom: 3%">
             <p style=" font-size: 20px"> 1 - O material utilizado em aula é atualizado?</p>
@@ -193,7 +193,7 @@
     </div> 
 </div>
     <div class="text-sm-center" >
-            <button class="btn btn-primary btn-lg btn-block" style="margin-bottom: 3%; margin-top: 7%" type="submit">Enviar </button>
+            <button class="btn btn-primary btn-lg btn-block" style="margin-bottom: 1%" type="submit">Enviar </button>
     </div>
     <hr>
       <nav aria-label="navigation">
