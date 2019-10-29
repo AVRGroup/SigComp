@@ -130,7 +130,9 @@
                 <label for="requisitos">Pré-Requisitos:</label>
                 <select name="pre_requisitos[]" multiple="multiple" class="form-control pre-requisitos">
                     {foreach $disciplinas as $disciplina}
-                        <option data-codigo="{$disciplina->getCodigo()}" value="{$disciplina->getId()}">
+                        <option data-codigo="{$disciplina->getCodigo()}" value="{$disciplina->getId()}"
+                                {if $oportunidade->isDisciplinaSelecionada($disciplina)}selected="selected"{/if}
+                        >
                             {$disciplina->getCodigo()}
 
                             {if isset($disciplina->getNome())}

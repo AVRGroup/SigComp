@@ -373,6 +373,7 @@ class Oportunidade implements ToIdArrayInterface
         }
     }
 
+
     public function abreviacao()
     {
         switch ($this->tipo) {
@@ -388,6 +389,19 @@ class Oportunidade implements ToIdArrayInterface
             default:
                 return "outro";
         }
+    }
+
+    public function isDisciplinaSelecionada($disciplina)
+    {
+        $disciplinasSelecionadas = $this->getDisciplinas();
+
+        foreach ($disciplinasSelecionadas as $disciplinasSelecionada) {
+            if ($disciplinasSelecionada->getCodigo() == $disciplina->getCodigo()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getIdentifier()
