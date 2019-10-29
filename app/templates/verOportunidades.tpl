@@ -35,9 +35,13 @@
                         </p>
 
                         {if strlen($oportunidade->getDescricao()) > 120}
-                            <p class="descricao">{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
+                            <div class="descricao">
+                                <p>{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
+                            </div>
                         {else}
-                            <p class="descricao">{$oportunidade->getDescricao()}</p>
+                            <div class="descricao">
+                                <p>{$oportunidade->getDescricao()}</p>
+                            </div>
                         {/if}
 
                         <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>

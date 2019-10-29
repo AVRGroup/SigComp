@@ -265,6 +265,8 @@ body {
 .card-oportunidade .descricao {
     text-align: justify;
     text-justify: inter-word;
+    max-height: 100px;
+    overflow: hidden;
 }
 
 
