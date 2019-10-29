@@ -244,6 +244,9 @@ class OportunidadeController
         $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
         $this->container->view['oportunidade'] = $oportunidade;
 
+        $disciplinas = $this->container->disciplinaDAO->getAll();
+        $this->container->view['disciplinas'] = $disciplinas;
+
         return $this->container->view->render($response, 'editarOportunidade.tpl');
     }
 

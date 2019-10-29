@@ -100,7 +100,7 @@
             <div class="form-row">
                 <div class="col-4">
                     <label for="validade">Data Limite para Inscrição:</label>
-                    <input type="date" name="validade" class="form-control">
+                    <input type="date" name="validade" class="form-control" value="{$oportunidade->getValidade()->format('Y-m-d')}">
                 </div>
             </div>
 
@@ -142,7 +142,10 @@
             </div>
 
             <div class="form-row">
-                <label for="descricao">Descrição da Oportunidade</label>
+                <div class="custom-file">
+                    <label class="custom-file-label" for="imagem-oportunidade">Imagem da Oportunidade:</label>
+                    <input  type="file" class="custom-file-input" id="imagem-oportunidade" name="imagem_oportunidade" value="{$oportunidade->getArquivoImagem()}">
+                </div>
             </div>
 
             <div class="form-row">
@@ -150,7 +153,7 @@
             </div>
             <div id="editor"></div>
 
-            <input type="hidden" id="descricao-oportunidade" name="descricao">
+            <input type="hidden" id="descricao-oportunidade" name="descricao" value="{$oportunidade->getDescricao()}">
 
 
             <button type="submit" class="btn btn-primary" onclick="addContentToInput()" style="margin-top: 5%;">Editar Oportunidade</button>
@@ -173,6 +176,10 @@
             }
         });
 
+        var descricao = document.getElementById("descricao-oportunidade").value
+        if(descricao !== "<p><br></p>") {
+            document.querySelector('#editor').children[0].innerHTML = descricao
+        }
 
         function addContentToInput() {
             var html = document.querySelector('#editor').children[0].innerHTML;
