@@ -1,6 +1,8 @@
 {extends 'layout.tpl'}
 
 {block name=content}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <div class="nova-oportunidade">
         <h4 align="center">Cadastrar Oportunidade</h4>
 
@@ -129,17 +131,36 @@
 
             <div class="form-row">
                 <label for="descricao">Descrição da Oportunidade</label>
-                <textarea class="form-control" name="descricao"  cols="30" rows="10"></textarea>
             </div>
+            <div id="editor"></div>
 
-            <button type="submit" class="btn btn-primary" style="margin-top: 5%;">Cadastrar Oportunidade</button>
+            <input type="hidden" id="descricao-oportunidade" name="descricao">
+
+            <button type="submit" class="btn btn-primary" onclick="addContentToInput()" style="margin-top: 5%;">Cadastrar Oportunidade</button>
         </form>
     </div>
 
 {/block}
 
 {block name="javascript"}
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
+        new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ]
+            }
+        });
+
+
+        function addContentToInput() {
+            var html = document.querySelector('#editor').children[0].innerHTML;
+            document.getElementById("descricao-oportunidade").value = html;
+        }
+
         $(document).ready(function() {
             function formatDisciplina (disciplina) {
                 if (!disciplina.id) {
