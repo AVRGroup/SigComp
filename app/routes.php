@@ -17,7 +17,9 @@ $app->group('', function () {
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
     
-
+    $this->get('/avaliacaoPage01', '\App\Controller\AvaliacaoController:page1')->setName('avaliacaoPage01');
+    $this->get('/avaliacaoPage02', '\App\Controller\AvaliacaoController:page2')->setName('avaliacaoPage02');
+    $this->get('/avaliacaoPage03', '\App\Controller\AvaliacaoController:page3')->setName('avaliacaoPage03');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
