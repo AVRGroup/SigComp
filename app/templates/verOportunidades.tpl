@@ -53,6 +53,10 @@
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
+                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{$oportunidade->getDescricao()}" >
+                        <input type="hidden" class="vagas-{$oportunidade->getId()}" value="{$oportunidade->getQuantidadeVagas()}" >
+                        <input type="hidden" class="professor-{$oportunidade->getId()}" value="{$oportunidade->getProfessor()}" >
+                        <input type="hidden" class="remuneracao-{$oportunidade->getId()}" value="{$oportunidade->getRemuneracao()}" >
 
                         <p>
                             <span class="weight-600">Remuneração:</span>
@@ -77,8 +81,11 @@
                         {/foreach}
 
                         <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
-                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
-                        data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}">
+                            data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
+                            data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}"
+                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{$oportunidade->getDescricao()}"
+                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}"
+                        >
                             Mais Informações
                         </button>
 
@@ -98,13 +105,19 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="maisInformacoesLabel">Pré-Requisitos</h5>
+                    <h5 class="modal-title" id="maisInformacoesLabel">Mais Informações</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <p>Pré Requisitos</p>
                     <div class="disciplinas"></div>
+
+                    <hr>
+
+                    <div class="informacoes"></div>
 
                     <div class="periodos"></div>
 
@@ -133,12 +146,33 @@
             var idOportunidade = button.data('oportunidade')
             var periodoMinimo = button.data('periodo_minimo')
             var periodoMaximo = button.data('periodo_maximo')
+            var professor = button.data('professor')
+            var validade = button.data('validade')
+            var remuneracao = button.data('remuneracao')
+            var descricao = button.data('descricao')
+            var imagem = button.data('imagem')
 
             $(".periodos").append(
                 "<p style='margin-top: 30px'> " +
                     "<span style='font-weight: bold'>Período Mínimo:</span> " + periodoMinimo + " " +
                     "| <span style='font-weight: bold'>Período Maximo:</span> " + periodoMaximo +
                 "</p>"
+            )
+
+            var htmlImagem = ""
+
+            if(imagem) {
+                htmlImagem = "<img style='width:80%; margin: auto' class='text-center mt-3 mb-3' alt='imagem oportunidade' src=' " + imagem + " '>"
+            }
+
+            $(".informacoes").append(
+                "<div class='row'>" +
+                    htmlImagem +
+                    "<div style='text-align: justify;' class='col-sm-12'>" + descricao + "</div>" +
+                    "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
+                    "<div class='col-sm-6'> <b>Remuneração: </b>"+ remuneracao +"</div>" +
+                    "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
+                "</div>"
             )
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
@@ -173,6 +207,7 @@
         $("#maisInformacoes").on("hidden.bs.modal", function () {
             $(".disciplinas").empty()
             $(".periodos").empty()
+            $(".informacoes").empty()
         });
 
 
