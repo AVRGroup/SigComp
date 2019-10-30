@@ -1012,9 +1012,9 @@ class UsuarioDAO extends BaseDAO
         return sizeof($result) > 0;
     }
 
-    public function deleteAbsentUsers()
+    public function deleteAbsentUsers($curso)
     {
-        $sql = "DELETE FROM usuario WHERE atualizado_ultima_carga = 0 AND situacao != 1";
+        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();

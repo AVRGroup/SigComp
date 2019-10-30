@@ -61,10 +61,6 @@ class AdminController
                         $this->container->disciplinaDAO->flush(); //Commit the transaction
                         $usuarios = Helper::convertToIdArray($this->container->usuarioDAO->getAllFetched());
 
-                        foreach ($usuarios as $usuario) {
-                            $usuario->setAtualizadoUltimaCarga(0);
-                        }
-
                         $this->container->usuarioDAO->flush();
 
                         foreach ($data['usuarios'] as $user) {
@@ -77,16 +73,14 @@ class AdminController
                                 }
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
-                                $usuario->setAtualizadoUltimaCarga(1);
-                                $affectedData['usuariosUpdated']++;
 
+                                $affectedData['usuariosUpdated']++;
                             } else {
                                 $usuario = new Usuario();
                                 $usuario->setCurso($user['curso']);
                                 $usuario->setMatricula($user['matricula']);
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
-                                $usuario->setAtualizadoUltimaCarga(1);
 
                                 $this->container->usuarioDAO->persist($usuario);
                                 $affectedData['usuariosAdded']++;
@@ -104,9 +98,6 @@ class AdminController
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                         $this->container->view['affectedData'] = $affectedData;
 
-                        $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo(20183));
-                        $this->container->usuarioDAO->deleteAbsentUsers();
-
                         $this->container->view['success'] = true;
                     } catch (\Exception $e) {
                         $this->container->view['error'] = $e->getMessage();
@@ -120,6 +111,11 @@ class AdminController
             $this->abreviaTodosNomes(true, $curso);
 
             $this->container->usuarioDAO->setPeriodoCorrente();
+            $periodo = $this->getPeriodoAtual();
+
+            $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
+            $this->container->usuarioDAO->deleteAbsentUsers($curso);
+
             return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
         return $this->container->view->render($response, 'adminDataLoad.tpl');
