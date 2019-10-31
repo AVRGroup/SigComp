@@ -40,7 +40,7 @@
 
                     <div class="sobre-mim">
                         <h5>Sobre mim</h5>
-                            <textarea name="sobre_mim" id="sobre-mim"  disabled rows="6" maxlength="100" style="width:100%">{$usuario->getSobreMim()}</textarea>
+                        <textarea name="sobre_mim" id="sobre-mim"  disabled rows="6" maxlength="100" style="width:100%">{$usuario->getSobreMim()}</textarea>
                     </div>
 
                     <div><span style="font-size: 12px">Grade: {$usuario->getGrade()} | Periodo {$periodoAtual}</span> </div>
@@ -52,7 +52,7 @@
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
                 <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
-                          data-content="Indica a sua experiência no curso! Cada aprovação em matérias obrigatórias concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
+                        data-content="Indica a sua experiência no curso! Cada aprovação em matérias obrigatórias concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
                     ?
                 </button>
                 <div class="progress" style="height: 20px;">
@@ -114,12 +114,14 @@
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
 
+                <canvas id="radar"></canvas>
+
             </div>
         </div>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-sx-9">
-                    <p></p>
+                <p></p>
                 <div class="row">
                     <h4 class="text-center col-11">Quadro de medalhas</h4>
                     <div class="col-1">
@@ -133,15 +135,15 @@
                 </div>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
                     {if $usuario->getTipo() !=1 }
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" id="current-tab" role="tab" href="#current">Medalhas Conquistadas</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" id="current-tab" role="tab" href="#current">Medalhas Conquistadas</a>
+                        </li>
                     {/if}
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" id="possible-tab" role="tab" href="#possible">Medalhas Possíveis</a>
                     </li>
                 </ul>
-                    <div class="tab-content" id="badgesTabContent">
+                <div class="tab-content" id="badgesTabContent">
                     {if $usuario->getTipo()!=1 && $usuario->getTipo()!=2}
                         <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
                             <div class="row justify-content-start">
@@ -158,31 +160,31 @@
                                 {if $medalhas[0]['medalha'] != null}
                                     {while $novaLinha === 1}
 
-                                            {$novaLinha = 0}
-                                            {while $i < $numMedalhas}
+                                        {$novaLinha = 0}
+                                        {while $i < $numMedalhas}
 
-                                                {if $numMedalhas >= 1}
-                                                    <div class="col-1.5">
-                                                        <div class="img-thumbnail altura-medalha" style="max-width: 90px;">
-                                                            <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid"">
+                                            {if $numMedalhas >= 1}
+                                                <div class="col-1.5">
+                                                    <div class="img-thumbnail altura-medalha" style="max-width: 90px;">
+                                                        <img src="{base_url}/img/{$medalhas[$i].imagem}" class="img-fluid"">
 
-                                                            <div class="caption">
-                                                                <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
-                                                            </div>
+                                                        <div class="caption">
+                                                            <p class="text-center"><small class="legenda-imagem">{$medalhas[$i].nome}</small></p>
                                                         </div>
-                                                        {$i = $i + 1}
-                                                        {$auxI = $auxI + 1}
                                                     </div>
-                                                {else}
-                                                    <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
-                                                {/if}
+                                                    {$i = $i + 1}
+                                                    {$auxI = $auxI + 1}
+                                                </div>
+                                            {else}
+                                                <h6 style="margin: 30px;" class="text-center">Você ainda não possui nenhuma medalha</h6>
+                                            {/if}
 
-                                                {if $auxI > 6}
-                                                    {$novaLinha = 1}
-                                                    {$auxI = 0}
-                                                    {break}
-                                                {/if}
-                                            {/while}
+                                            {if $auxI > 6}
+                                                {$novaLinha = 1}
+                                                {$auxI = 0}
+                                                {break}
+                                            {/if}
+                                        {/while}
 
                                     {/while}
 
@@ -215,8 +217,8 @@
                                                 <p class="text-center"><small class="legenda-imagem">{$todasMedalhas[$i].nome}</small></p>
                                             </div>
                                         </div>
-                                    {$i = $i + 1}
-                                    {$auxI = $auxI + 1}
+                                        {$i = $i + 1}
+                                        {$auxI = $auxI + 1}
                                     </div>
                                     {if $auxI > 8}
                                         {$novaLinha = 1}
@@ -369,58 +371,76 @@
 
 {/block}
 {block name=javascript}
-<script src="{base_url}/js/croppie.js"></script>
-<script src="{base_url}/js/exif.js"></script>
+    <script src="{base_url}/js/croppie.js"></script>
+    <script src="{base_url}/js/exif.js"></script>
 
-<script>
-    var ctx = document.getElementById('percentilIra').getContext('2d');
-    ctx.height = 200;
+    <script>
+        var ctx = document.getElementById('percentilIra').getContext('2d');
+        ctx.height = 200;
 
-    var posicao = document.getElementById('posicao').value;
+        var posicao = document.getElementById('posicao').value;
 
-    var chart = new Chart(ctx, {
-        type: 'horizontalBar',
+        var chart = new Chart(ctx, {
+            type: 'horizontalBar',
 
-        data: {
-            labels: ['Sua Posição'],
-            datasets: [{
-                label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
-                data: [posicao, 100, 0],
-                backgroundColor: [
-                    'rgba(41, 128, 185, 0.4)'
-                ],
-                borderColor: [
-                    'rgba(41, 128, 185, 1.0)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                enabled: false
-            },
-            legend: {
-                onClick: function (e) {
-                    e.stopPropagation();
-                },
-                labels: {
-                    boxWidth: 0
-                }
-            },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        stepSize: 25,
-                        callback: function(value) {
-                            return value + '%';
-                        }
-                    }
+            data: {
+                labels: ['Sua Posição'],
+                datasets: [{
+                    label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
+                    data: [posicao, 100, 0],
+                    backgroundColor: [
+                        'rgba(41, 128, 185, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(41, 128, 185, 1.0)'
+                    ],
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    enabled: false
+                },
+                legend: {
+                    onClick: function (e) {
+                        e.stopPropagation();
+                    },
+                    labels: {
+                        boxWidth: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            stepSize: 25,
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }]
+                }
             }
-        }
-    });
+        });
 
-</script>
+        var radar = document.getElementById('radar').getContext('2d');
+        var radarChart = new Chart(radar, {
+            type: 'radar',
+            data: {
+                labels: ['Teste1', 'Teste2','Teste3','Teste4','Teste5'],
+                datasets: [{
+                    label: 'Teste',
+                    backgroundColor: "rgba(200,0,0,0.2)",
+                    data: [20, 50, 30, 10, 50]
+                }]
+            },
+            scale: {
+                ticks: {
+                    beginAtZero: true
+                }
+            }
+
+        })
+    </script>
 
 {/block}
