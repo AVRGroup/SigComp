@@ -160,7 +160,7 @@
               <label class="custom-control-label" for="radio29">4</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="radio35" name="customRadio06" class="custom-control-input">
+              <input type="radio" id="radio30" name="customRadio06" class="custom-control-input">
               <label class="custom-control-label" for="radio30">5</label>
             </div>
         </div>
@@ -193,7 +193,7 @@
     </div> 
 </div>
     <div class="text-sm-center" >
-        <button class="btn btn-primary btn-lg btn-block" style="margin-bottom: 1%" type="submit">Enviar </button>
+        <button class="btn btn-primary btn-lg btn-block" href="#" style="margin-bottom: 1%" type="submit">Enviar </button>
     </div>
     <hr>
       <nav aria-label="navigation">
