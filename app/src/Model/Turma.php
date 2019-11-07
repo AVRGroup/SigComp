@@ -27,7 +27,7 @@ class Turma implements ToIdArrayInterface
     protected $codigo;
 
      /**
-     * @ORM\OneToMany(targetEntity="Disciplina", inversedBy="turma_disciplina")
+     * @ORM\ManyToOne(targetEntity="Disciplina")
      * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
      */
     protected $disciplina;
