@@ -201,10 +201,16 @@ class Usuario implements ToIdArrayInterface
      */
     protected $password;
 
+     /**
+     * @ORM\ManyToMany(targetEntity="Avaliacao", mappedBy="usuario")
+     */
+    protected $avaliacoes;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
         $this->notas = new ArrayCollection();
+        $this->avaliacoes = new ArrayCollection();
     }
 
     public function setAtualizadoUltimaCarga($foiAtualizado)

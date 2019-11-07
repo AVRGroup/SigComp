@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use App\Library\ToIdArrayInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="turma")
  */
-class Turma implements ToIdArrayInterface
+class Turma 
 {
 
     /**
