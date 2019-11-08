@@ -31,9 +31,22 @@ class Avaliacao
      */
     protected $alunos;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Turma", inversedBy="avaliacao")
+     * @ORM\JoinTable(name="avaliacao_turma")
+     */
+    protected $turmas;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")
+     * @ORM\JoinColumn(name="avaliacao", referencedColumnName="id", nullable=false)
+     */
+    protected $respostas_avaliacao;
+
     public function __construct()
     {
         $this->alunos = new ArrayCollection();
+        $this->turmas = new ArrayCollection();
     }
 
     /**

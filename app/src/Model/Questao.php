@@ -59,6 +59,12 @@ class Questao
      */
     protected $tipo_questionario = 0;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="questao")
+     * @ORM\JoinColumn(name="questao", referencedColumnName="id", nullable=false)
+     */
+    protected $respostas_avaliacao;
+
     public function __construct()
     {
     }

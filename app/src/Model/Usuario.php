@@ -201,16 +201,29 @@ class Usuario implements ToIdArrayInterface
      */
     protected $password;
 
-     /**
+    /**
      * @ORM\ManyToMany(targetEntity="Avaliacao", mappedBy="usuario")
      */
     protected $avaliacoes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProfessorTurma", mappedBy="usuario")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     */
+    protected $turmas_professor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="usuario")
+     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     */
+    protected $respostas_avaliacao;
 
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
         $this->notas = new ArrayCollection();
         $this->avaliacoes = new ArrayCollection();
+        $this->turmas_professor = new ArrayCollection();
     }
 
     public function setAtualizadoUltimaCarga($foiAtualizado)

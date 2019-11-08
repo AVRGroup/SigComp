@@ -25,14 +25,33 @@ class Turma
      */
     protected $codigo;
 
-     /**
+    /**
      * @ORM\ManyToOne(targetEntity="Disciplina")
      * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
      */
     protected $disciplina;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Avaliacao", mappedBy="turma")
+     */
+    protected $avaliacoes; 
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProfessorTurma", mappedBy="turma")
+     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
+     */
+    protected $turmas_professor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="turma")
+     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
+     */
+    protected $respostas_avaliacao;
+
     public function __construct()
     {
+        $this->avaliacoes = new ArrayCollection();
+        $this->turmas_professor = new ArrayCollection();
     }
 
     /**
