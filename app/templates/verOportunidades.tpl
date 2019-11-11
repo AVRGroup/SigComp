@@ -154,7 +154,6 @@
             var validade = button.data('validade')
             var remuneracao = button.data('remuneracao')
             var descricao = button.data('descricao')
-            console.log(descricao);
             var imagem = button.data('imagem')
 
             $(".periodos").append(
@@ -166,7 +165,9 @@
 
             var htmlImagem = ""
 
-            if(imagem) {
+            var temImagem = imagem.split("/").pop().length > 0
+
+            if(temImagem) {
                 htmlImagem = "<img style='width:80%; margin: auto' class='text-center mt-3 mb-3' alt='imagem oportunidade' src=' " + imagem + " '>"
             }
 
