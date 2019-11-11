@@ -40,6 +40,7 @@
                         <option value="0" {if $oportunidade->getTipo() == 0} selected {/if}>Iniciação Científica</option>
                         <option value="1" {if $oportunidade->getTipo() == 1} selected {/if}>Treinamento Profissional</option>
                         <option value="2" {if $oportunidade->getTipo() == 2} selected {/if}>Estágio</option>
+                        <option value="3" {if $oportunidade->getTipo() == 3} selected {/if}>CLT</option>
                     </select>
                 </div>
 

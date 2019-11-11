@@ -40,6 +40,7 @@
                         <option value="0">Iniciação Científica</option>
                         <option value="1">Treinamento Profissional</option>
                         <option value="2">Estágio</option>
+                        <option value="3">CLT</option>
                     </select>
                 </div>
 
@@ -151,6 +152,7 @@
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['image']
                 ]
             }
         });

@@ -262,6 +262,10 @@ body {
     background-color: #FFFFD1;
 }
 
+.card-oportunidade-clt {
+    background-color: hsla(204, 69%, 61%, 0.15);
+}
+
 .card-oportunidade .descricao {
     text-align: justify;
     text-justify: inter-word;
@@ -305,6 +309,10 @@ body {
 
 .card-oportunidade .btn-estagio {
     background-color: #fae243;
+}
+
+.card-oportunidade .btn-clt {
+    background-color: hsla(204, 69%, 61%, 0.70);
 }
 
 .download-aquivo {
