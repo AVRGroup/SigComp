@@ -80,6 +80,7 @@ class LoginController
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                     }
                     $this->container->usuarioDAO->flush();
+                    
 
                     if(isset($oportunidade)){
                         return $response->withRedirect("oportunidade/$oportunidade");
@@ -132,6 +133,7 @@ class LoginController
 
     public function loginAreaExclusiva(Request $request, Response $response, $args)
     {
+
         $login = $request->getParsedBodyParam('cpf');
         $senha = $request->getParsedBodyParam('password');
         $senha = crypt($senha, $this->container->settings['password_salt']);
@@ -144,6 +146,11 @@ class LoginController
 
         $_SESSION['id'] = $usuario->getId();
 
+        $oportunidade = $request->getParam('oportunidade');
+
+        if(isset($oportunidade)){
+            return $response->withRedirect("oportunidade/$oportunidade");
+        }
         return $this->getRedirecionamentoPorUsuario($usuario, $response);
     }
 
