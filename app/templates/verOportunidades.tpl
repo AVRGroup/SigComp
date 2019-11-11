@@ -57,7 +57,7 @@
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
-                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{$oportunidade->getDescricao()}" >
+                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{htmlspecialchars($oportunidade->getDescricao())}" >
                         <input type="hidden" class="vagas-{$oportunidade->getId()}" value="{$oportunidade->getQuantidadeVagas()}" >
                         <input type="hidden" class="professor-{$oportunidade->getId()}" value="{$oportunidade->getProfessor()}" >
                         <input type="hidden" class="remuneracao-{$oportunidade->getId()}" value="{$oportunidade->getRemuneracao()}" >
@@ -87,7 +87,7 @@
                         <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
                             data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
                             data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}"
-                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{$oportunidade->getDescricao()}"
+                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{htmlspecialchars($oportunidade->getDescricao())}"
                             data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}"
                         >
                             Mais Informações
@@ -154,6 +154,7 @@
             var validade = button.data('validade')
             var remuneracao = button.data('remuneracao')
             var descricao = button.data('descricao')
+            console.log(descricao);
             var imagem = button.data('imagem')
 
             $(".periodos").append(

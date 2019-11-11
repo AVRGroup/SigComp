@@ -156,7 +156,7 @@
             </div>
             <div id="editor"></div>
 
-            <input type="hidden" id="descricao-oportunidade" name="descricao" value="{$oportunidade->getDescricao()}">
+            <input type="hidden" id="descricao-oportunidade" name="descricao" value="{htmlspecialchars($oportunidade->getDescricao())}">
 
 
             <button type="submit" class="btn btn-primary" onclick="addContentToInput()" style="margin-top: 5%;">Editar Oportunidade</button>
