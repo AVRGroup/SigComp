@@ -43,19 +43,20 @@ class Questao
     protected $enunciado;
 
     /**
+     * 0: Fechada
+     * 1: Sim_Nao
+     * 1: Aberta
+     *
+     * @ORM\Column(type="smallint", options={"default" : 0})
+     */
+    protected $tipo = 0;
+    
+    /**
      * 0: Avaliacao_Pessoal
      * 1: Avaliacao_Turma
      * 2: Avaliacao_Professor
      *
      * @ORM\Column(type="smallint", nullable=false)
-     */
-    protected $tipo = 0;
-
-    /**
-     * 0: Fechada
-     * 1: Aberta
-     *
-     * @ORM\Column(type="smallint", options={"default" : 0})
      */
     protected $tipo_questionario = 0;
 
