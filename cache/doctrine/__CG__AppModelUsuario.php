@@ -64,10 +64,10 @@ class Usuario extends \App\Model\Usuario implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos'];
+            return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password'];
         }
 
-        return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos'];
+        return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password'];
     }
 
     /**
@@ -173,6 +173,28 @@ class Usuario extends \App\Model\Usuario implements \Doctrine\ORM\Proxy\Proxy
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function setAtualizadoUltimaCarga($foiAtualizado)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAtualizadoUltimaCarga', [$foiAtualizado]);
+
+        return parent::setAtualizadoUltimaCarga($foiAtualizado);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAtualizadoUltimaCarga()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAtualizadoUltimaCarga', []);
+
+        return parent::getAtualizadoUltimaCarga();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -917,12 +939,67 @@ class Usuario extends \App\Model\Usuario implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function isAluno()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAluno', []);
+
+        return parent::isAluno();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function isAdmin()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAdmin', []);
 
         return parent::isAdmin();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isCoordenador()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isCoordenador', []);
+
+        return parent::isCoordenador();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isBolsista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isBolsista', []);
+
+        return parent::isBolsista();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPassword()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', []);
+
+        return parent::getPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPassword($password): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', [$password]);
+
+        parent::setPassword($password);
     }
 
 }
