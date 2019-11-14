@@ -27,6 +27,8 @@ class AvaliacaoController
 
     public function page1(Request $request, Response $response, $args)
     {
+        $parametro = $request->getParam('disciplina');
+        $this->container->view['parametro'] = $parametro;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
@@ -34,6 +36,8 @@ class AvaliacaoController
 
     public function page2(Request $request, Response $response, $args)
     {
+        $parametro = $request->getParam('disciplina');
+        $this->container->view['parametro'] = $parametro;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(2);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage2.tpl');
@@ -41,6 +45,8 @@ class AvaliacaoController
 
     public function page3(Request $request, Response $response, $args)
     {
+        $parametro = $request->getParam('disciplina');
+        $this->container->view['parametro'] = $parametro;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(1);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage3.tpl');

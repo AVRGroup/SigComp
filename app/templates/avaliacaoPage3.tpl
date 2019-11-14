@@ -3,8 +3,8 @@
 <h2 class="text-center"> Avaliação </h2>
     <hr>
         <div style="border: 0.5px solid; width: 100%; margin-left: 0%; margin-bottom: 2%; margin-top: 2%">
-            {if (isset($_GET['disciplina']))}
-              <p align="center" class="font-italic" style="font-size: 24px;">{$_GET['disciplina']}</p>  
+            {if (isset($parametro))}
+              <p align="center" class="font-italic" style="font-size: 24px;">{$parametro}</p>  
             {/if}
         </div>
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação da turma</p>
@@ -70,9 +70,9 @@
               <span class="sr-only">Anterior</span>
             </a>
           </li>
-          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage01"}">1</a></li>
-          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage02"}">2</a></li>
-          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage03"}">3</a></li>
+          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage01"}?disciplina={$parametro}">1</a></li>
+          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage02"}?disciplina={$parametro}">2</a></li>
+          <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage03"}?disciplina={$parametro}">3</a></li>
           <li class="page-item">
             <a class="page-link" href="#" aria-label="Próximo">
               <span aria-hidden="true">&raquo;</span>
