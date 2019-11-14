@@ -7,11 +7,14 @@
 
     <div class="row container ">
         <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
-            <a href="{path_for name="avaliacaoPage01"}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">DCC013 - Estrutura de dados</a>
-            <a href="#" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">DCC160 - Lógica e fundamentos da computação</a>
-            <a href="#" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">MAT154 - Cálculo I</a>
-            <a href="#" class="text-truncate btn btn-primary btn-lg disabled col-lg-6 col-sm-12" style="margin-top: 1%" tabindex="-1" role="button" aria-disabled="true">DCC120 - Laboratório de programação</a>
-            <a href="#" class="text-truncate btn btn-primary btn-lg disabled col-lg-6 col-sm-12" style="margin-top: 1%" tabindex="-1" role="button" aria-disabled="true">CAD076 - Princípios de administração</a>
+            <div class="row">
+                {$notas_usuario = $usuario->getNotas()}
+                {foreach $notas_usuario as $nota}
+                    {if $nota->getPeriodo() == $periodoPassado}
+                        <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getNome()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">{$nota->getDisciplina()->getNome()}</a>
+                    {/if}
+                {/foreach}
+            </div>
         </div>
     </div>
 

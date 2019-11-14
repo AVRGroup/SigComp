@@ -12,14 +12,14 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
      *      three parameters, being respectively the proxy object to be initialized, the method that triggered the
      *      initialization process and an array of ordered parameters that were passed to that method.
      *
-     * @see \Doctrine\Common\Persistence\Proxy::__setInitializer
+     * @see \Doctrine\Common\Proxy\Proxy::__setInitializer
      */
     public $__initializer__;
 
     /**
      * @var \Closure the callback responsible of loading properties that need to be copied in the cloned object
      *
-     * @see \Doctrine\Common\Persistence\Proxy::__setCloner
+     * @see \Doctrine\Common\Proxy\Proxy::__setCloner
      */
     public $__cloner__;
 
@@ -34,7 +34,7 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
      * @var array properties to be lazy loaded, with keys being the property
      *            names and values being their default values
      *
-     * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
+     * @see \Doctrine\Common\Proxy\Proxy::__getLazyProperties
      */
     public static $lazyPropertiesDefaults = [];
 
@@ -64,10 +64,10 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidade_disciplina'];
+            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidades'];
         }
 
-        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidade_disciplina'];
+        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidades'];
     }
 
     /**
@@ -173,6 +173,17 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function addOportunidade(\App\Model\Oportunidade $oportunidade)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addOportunidade', [$oportunidade]);
+
+        return parent::addOportunidade($oportunidade);
+    }
+
     /**
      * {@inheritDoc}
      */

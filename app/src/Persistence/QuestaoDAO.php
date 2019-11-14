@@ -3,6 +3,7 @@
 namespace App\Persistence;
 
 use Doctrine\ORM\EntityManager;
+use App\Model\Questao;
 
 class QuestaoDAO extends BaseDAO
 {
@@ -47,7 +48,7 @@ class QuestaoDAO extends BaseDAO
 
     /**
      * @param $tipo_questionario
-     * @return Grade[] |null
+     * @return Questao[] |null
      */
     public function getAllByTipoQuestionario($tipo_questionario)
     {
