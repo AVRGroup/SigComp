@@ -69,7 +69,7 @@
                             {elseif $oportunidade->getRemuneracao() == -1}
                                 Não Informada
                             {else}
-                                R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                                R$ {number_format($oportunidade->getRemuneracao(), 2, '.', '')}
                             {/if}
                         </p>
 
@@ -176,7 +176,7 @@
                     htmlImagem +
                     "<div style='text-align: justify;' class='col-sm-12'>" + descricao + "</div>" +
                     "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
-                    "<div class='col-sm-6'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>" +
+                    "<div class='col-sm-6'> <b>Remuneração:</b> R$ "+ remuneracao +".00</div>" +
                     "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
                 "</div>"
             )
