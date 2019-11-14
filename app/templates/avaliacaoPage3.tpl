@@ -65,7 +65,7 @@
       <nav aria-label="navigation">
         <ul class="pagination justify-content-center">
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Anterior">
+            <a class="page-link" href="{path_for name="avaliacaoPage02"}?disciplina={$parametro}" aria-label="Anterior">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Anterior</span>
             </a>
@@ -73,12 +73,7 @@
           <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage01"}?disciplina={$parametro}">1</a></li>
           <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage02"}?disciplina={$parametro}">2</a></li>
           <li class="page-item"><a class="page-link" href="{path_for name="avaliacaoPage03"}?disciplina={$parametro}">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Próximo">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Próximo</span>
-            </a>
-          </li>
+          
         </ul>
       </nav>
 
