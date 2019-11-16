@@ -157,15 +157,17 @@ class UsuarioDAO extends BaseDAO
     }
 
     /**
-    \
+     * \
      * @param $grade
+     * @param $curso
      * @return Usuario[]|null
      */
-    public function getUsersNotasByGrade($grade)
+    public function getUsersNotasByGrade($grade, $curso)
     {
         try {
-            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.grade = :grade AND (n.estado = 'Aprovado' OR n.estado = 'Dispensado')");
+            $query = $this->em->createQuery("SELECT u, n, nd FROM App\Model\Usuario AS u LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.grade = :grade AND u.curso = :curso AND (n.estado = 'Aprovado' OR n.estado = 'Dispensado')");
             $query->setParameter('grade', $grade);
+            $query->setParameter('curso', $curso);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = null;
@@ -1010,9 +1012,9 @@ class UsuarioDAO extends BaseDAO
         return sizeof($result) > 0;
     }
 
-    public function deleteAbsentUsers()
+    public function deleteAbsentUsers($curso)
     {
-        $sql = "DELETE FROM usuario WHERE atualizado_ultima_carga = 0 AND situacao != 1";
+        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();

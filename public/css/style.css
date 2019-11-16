@@ -262,9 +262,15 @@ body {
     background-color: #FFFFD1;
 }
 
+.card-oportunidade-clt {
+    background-color: hsla(204, 69%, 61%, 0.15);
+}
+
 .card-oportunidade .descricao {
     text-align: justify;
     text-justify: inter-word;
+    max-height: 100px;
+    overflow: hidden;
 }
 
 
@@ -305,6 +311,10 @@ body {
     background-color: #fae243;
 }
 
+.card-oportunidade .btn-clt {
+    background-color: hsla(204, 69%, 61%, 0.80);
+}
+
 .download-aquivo {
     display: block;
     margin-top: 20px;
@@ -336,4 +346,10 @@ body {
     padding: 10px;
     margin-left: 10px;
     margin-top: 10px
+}
+
+.imagem-oportunidade {
+    display: block;
+    max-width: 600px;
+    margin: auto;
 }

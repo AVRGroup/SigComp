@@ -2,6 +2,7 @@
 
 namespace App\Persistence;
 
+use App\Model\Oportunidade;
 use Doctrine\ORM\EntityManager;
 
 class OportunidadeDAO extends BaseDAO
@@ -12,7 +13,7 @@ class OportunidadeDAO extends BaseDAO
         $this->em = $db;
     }
 
-    public function getById($id)
+    public function getById($id) : Oportunidade
     {
         try {
             $query = $this->em->createQuery("SELECT u FROM App\Model\Oportunidade AS u WHERE u.id = :id");

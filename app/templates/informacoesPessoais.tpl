@@ -54,7 +54,7 @@
             </div>
 
         </div>
-        
+
         <button style="margin-top: 2%" type="button" class="btn btn-success" data-toggle="modal" data-target="#chagePhotoModal">
             Alterar Foto de Perfil
         </button>

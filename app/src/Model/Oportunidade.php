@@ -42,7 +42,7 @@ class Oportunidade implements ToIdArrayInterface
     protected $remuneracao;
 
     /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
+     * @ORM\Column(type="string", length=20000, nullable=true)
      */
     protected $descricao;
 
@@ -61,6 +61,16 @@ class Oportunidade implements ToIdArrayInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $extensao;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $arquivo_imagem;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $extensao_imagem;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -281,6 +291,39 @@ class Oportunidade implements ToIdArrayInterface
     /**
      * @return mixed
      */
+    public function getArquivoImagem()
+    {
+        return $this->arquivo_imagem;
+    }
+
+    /**
+     * @param mixed $arquivo_imagem
+     */
+    public function setArquivoImagem($arquivo_imagem): void
+    {
+        $this->arquivo_imagem = $arquivo_imagem;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtensaoImagem()
+    {
+        return $this->extensao_imagem;
+    }
+
+    /**
+     * @param mixed $extensao_imagem
+     */
+    public function setExtensaoImagem($extensao_imagem): void
+    {
+        $this->extensao_imagem = $extensao_imagem;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getExtensao()
     {
         return $this->extensao;
@@ -325,10 +368,14 @@ class Oportunidade implements ToIdArrayInterface
             case 2:
                 return "Estágio";
                 break;
+            case 3:
+                return "CLT";
+                break;
             default:
                 return "Oportunidade";
         }
     }
+
 
     public function abreviacao()
     {
@@ -342,9 +389,25 @@ class Oportunidade implements ToIdArrayInterface
             case 2:
                 return "estagio";
                 break;
+            case 3:
+                return "clt";
+                break;
             default:
                 return "outro";
         }
+    }
+
+    public function isDisciplinaSelecionada($disciplina)
+    {
+        $disciplinasSelecionadas = $this->getDisciplinas();
+
+        foreach ($disciplinasSelecionadas as $disciplinasSelecionada) {
+            if ($disciplinasSelecionada->getCodigo() == $disciplina->getCodigo()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getIdentifier()

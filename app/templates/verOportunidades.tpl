@@ -35,24 +35,41 @@
                         </p>
 
                         {if strlen($oportunidade->getDescricao()) > 120}
-                            <p class="descricao">{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
+                            <div class="descricao">
+                                <p>{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
+                            </div>
                         {else}
-                            <p class="descricao">{$oportunidade->getDescricao()}</p>
+                            <div class="descricao">
+                                <p>{$oportunidade->getDescricao()}</p>
+                            </div>
                         {/if}
 
                         <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 
-                        <p><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</p>
+                        <p>
+                            <span class="weight-600">Vagas:</span>
+                            {if $oportunidade->getQuantidadeVagas() == -1}
+                                Não Informado
+                            {else}
+                                {$oportunidade->getQuantidadeVagas()}
+                            {/if}
+                        </p>
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
+                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{htmlspecialchars($oportunidade->getDescricao())}" >
+                        <input type="hidden" class="vagas-{$oportunidade->getId()}" value="{$oportunidade->getQuantidadeVagas()}" >
+                        <input type="hidden" class="professor-{$oportunidade->getId()}" value="{$oportunidade->getProfessor()}" >
+                        <input type="hidden" class="remuneracao-{$oportunidade->getId()}" value="{$oportunidade->getRemuneracao()}" >
 
                         <p>
                             <span class="weight-600">Remuneração:</span>
                             {if $oportunidade->getRemuneracao() == 0}
                                 Voluntária
+                            {elseif $oportunidade->getRemuneracao() == -1}
+                                Não Informada
                             {else}
-                                R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                                R$ {number_format($oportunidade->getRemuneracao(), 2, '.', '')}
                             {/if}
                         </p>
 
@@ -68,11 +85,20 @@
                         {/foreach}
 
                         <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
-                        data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
-                        data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}">
+                            data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
+                            data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}"
+                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{htmlspecialchars($oportunidade->getDescricao())}"
+                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}"
+                        >
                             Mais Informações
                         </button>
-                        <a target="_blank" href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link Externo</small></a>
+
+                        {if !$usuario->isAluno()}
+                            <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/form-edit"><small><i class="fa fa-edit"></i></small></a>
+                            <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-trash"></i></small></a>
+                            <a target="_blank" href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link Externo</small></a>
+                        {/if}
+
                     </div>
                 </div>
             {/foreach}
@@ -80,16 +106,22 @@
     </div>
 
     <div class="modal fade" id="maisInformacoes" tabindex="-1" role="dialog" aria-labelledby="maisInformacoesLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="maisInformacoesLabel">Pré-Requisitos</h5>
+                    <h5 class="modal-title" id="maisInformacoesLabel">Mais Informações</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <p>Pré Requisitos</p>
                     <div class="disciplinas"></div>
+
+                    <hr>
+
+                    <div class="informacoes"></div>
 
                     <div class="periodos"></div>
 
@@ -118,12 +150,35 @@
             var idOportunidade = button.data('oportunidade')
             var periodoMinimo = button.data('periodo_minimo')
             var periodoMaximo = button.data('periodo_maximo')
+            var professor = button.data('professor')
+            var validade = button.data('validade')
+            var remuneracao = button.data('remuneracao')
+            var descricao = button.data('descricao')
+            var imagem = button.data('imagem')
 
             $(".periodos").append(
                 "<p style='margin-top: 30px'> " +
                     "<span style='font-weight: bold'>Período Mínimo:</span> " + periodoMinimo + " " +
                     "| <span style='font-weight: bold'>Período Maximo:</span> " + periodoMaximo +
                 "</p>"
+            )
+
+            var htmlImagem = ""
+
+            var temImagem = imagem.split("/").pop().length > 0
+
+            if(temImagem) {
+                htmlImagem = "<img style='width:80%; margin: auto' class='text-center mt-3 mb-3' alt='imagem oportunidade' src=' " + imagem + " '>"
+            }
+
+            $(".informacoes").append(
+                "<div class='row'>" +
+                    htmlImagem +
+                    "<div style='text-align: justify;' class='col-sm-12'>" + descricao + "</div>" +
+                    "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
+                    "<div class='col-sm-6'> <b>Remuneração:</b> R$ "+ remuneracao +".00</div>" +
+                    "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
+                "</div>"
             )
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
@@ -158,6 +213,7 @@
         $("#maisInformacoes").on("hidden.bs.modal", function () {
             $(".disciplinas").empty()
             $(".periodos").empty()
+            $(".informacoes").empty()
         });
 
 

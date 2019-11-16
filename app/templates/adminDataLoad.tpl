@@ -21,8 +21,8 @@
         </div>
     {/if}
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <b>Atenção!</b> Efetue um backup do banco dados antes de enviar uma nova carga!
+    <div class="alert alert-warning alert-dismissible fade show" id="alerta" role="alert">
+        <b>Atenção!</b> Essa operação demora alguns minutos
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -33,9 +33,21 @@
                 <input type="file" class="custom-file-input" id="data" name="data">
                 <label class="custom-file-label" for="data">Selecionar .CSV ou .XLSX</label>
             </div>
+
             <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Enviar</button>
+                <button class="btn btn-primary" id="enviar" type="submit">Enviar</button>
             </div>
         </div>
     </form>
+{/block}
+{block name=javascript}
+    <script type="text/javascript">
+        $('#alerta').hide()
+
+        $('#enviar').click(function () {
+            console.log('teste');
+            $('#alerta').show()
+        })
+    </script>
+
 {/block}

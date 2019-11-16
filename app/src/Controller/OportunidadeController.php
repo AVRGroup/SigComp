@@ -24,6 +24,8 @@ class OportunidadeController
         $idUsuario = $_SESSION['id'];
         $usuario = $this->container->usuarioDAO->getById($idUsuario);
 
+        $this->container->view['usuario'] = $usuario;
+
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
 
@@ -38,6 +40,9 @@ class OportunidadeController
 
     public function mostrarOportunidade(Request $request, Response $response, $args)
     {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
+
         $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($_SESSION['id']);
 
@@ -83,14 +88,29 @@ class OportunidadeController
         }
 
         $tipo = $request->getParsedBodyParam('tipo_oportunidade');
-        $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+
+        if($request->getParsedBodyParam('informar-vagas') == -1) {
+            $numeroVagas = -1;
+        } else {
+            $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+        }
+
         $professor = $request->getParsedBodyParam('nome_professor');
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
-        $arquivo = $request->getUploadedFiles()['pdf_oportunidade'];
+        $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
+        $imagem = $request->getUploadedFiles()['imagem_oportunidade'];
+
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
-        $valorRemuneracao = $temRemuneracao == 'voluntario' ? 0 : $request->getParsedBodyParam('valor_remuneracao');
+        if($temRemuneracao == "nao_informado") {
+            $valorRemuneracao = -1;
+        } elseif($temRemuneracao == 'voluntario') {
+            $valorRemuneracao = 0;
+        } else {
+            $valorRemuneracao = $request->getParsedBodyParam('valor_remuneracao');
+        }
+
         $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
         $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
 
@@ -105,9 +125,14 @@ class OportunidadeController
         $oportunidade->setPeriodoMinimo($periodoMinimo);
         $oportunidade->setPeriodoMaximo($periodoMaximo);
 
-        if($arquivo->getSize() > 0) {
-            $this->setArquivo($oportunidade, $arquivo);
+        if($pdf->getSize() > 0) {
+            $this->setArquivo($oportunidade, $pdf);
         }
+
+        if($imagem->getSize() > 0) {
+            $this->setArquivoImagem($oportunidade, $imagem);
+        }
+
 
         if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
             foreach ($preRequisitos as $preRequisito) {
@@ -151,6 +176,92 @@ class OportunidadeController
         } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo()));
 
         $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivo());
+    }
+
+    public function setArquivoImagem($oportunidade, $arquivo)
+    {
+        $extension = mb_strtolower(pathinfo($arquivo->getClientFilename(), PATHINFO_EXTENSION));
+        $oportunidade->setExtensaoImagem($extension);
+
+        do {
+            $uuid4 = Uuid::uuid4();
+            $oportunidade->setArquivoImagem($uuid4->toString() . '.' . $extension);
+        } while (file_exists($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivoImagem()));
+
+        $arquivo->moveTo($this->container->settings['upload']['path'] . DIRECTORY_SEPARATOR . $oportunidade->getArquivoImagem());
+    }
+
+    public function editOportunidade(Request $request, Response $response, $args)
+    {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+
+        $tipo = $request->getParsedBodyParam('tipo_oportunidade');
+
+        if($request->getParsedBodyParam('informar-vagas') == -1) {
+            $numeroVagas = -1;
+        } else {
+            $numeroVagas = $request->getParsedBodyParam('numero_vagas');
+        }
+
+        $professor = $request->getParsedBodyParam('nome_professor');
+        $descricao = $request->getParsedBodyParam('descricao');
+        $validade = new \DateTime($request->getParsedBodyParam('validade'));
+
+        $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
+        if($temRemuneracao == "nao_informado") {
+            $valorRemuneracao = -1;
+        } elseif($temRemuneracao == 'voluntario') {
+            $valorRemuneracao = 0;
+        } else {
+            $valorRemuneracao = $request->getParsedBodyParam('valor_remuneracao');
+        }
+
+        $periodoMinimo = intval($request->getParsedBodyParam('periodo_minimo'));
+        $periodoMaximo = intval($request->getParsedBodyParam('periodo_maximo'));
+
+        $oportunidade->setTipo($tipo);
+        $oportunidade->setDescricao($descricao);
+        $oportunidade->setValidade($validade);
+        $oportunidade->setProfessor($professor);
+        $oportunidade->setQuantidadeVagas($numeroVagas);
+        $oportunidade->setRemuneracao($valorRemuneracao);
+        $oportunidade->setCriadoEm(new \DateTime());
+        $oportunidade->setPeriodoMinimo($periodoMinimo);
+        $oportunidade->setPeriodoMaximo($periodoMaximo);
+
+        try {
+            $this->container->oportunidadeDAO->save($oportunidade);
+        } catch (Exception $e) {
+            die(var_dump($e->getMessage()));
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
+    }
+
+
+    public function formEditOportunidade(Request $request, Response $response, $args)
+    {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+        $this->container->view['oportunidade'] = $oportunidade;
+
+        $disciplinas = $this->container->disciplinaDAO->getAll();
+        $this->container->view['disciplinas'] = $disciplinas;
+
+
+        return $this->container->view->render($response, 'editarOportunidade.tpl');
+    }
+
+    public function deleteOportunidade(Request $request, Response $response, $args)
+    {
+        $oportunidade = $this->container->oportunidadeDAO->getById($args['id']);
+
+        try {
+            $this->container->oportunidadeDAO->delete($oportunidade);
+        } catch (Exception $e) {
+            $this->container->view['error'] = $e->getMessage();
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verOportunidades'));
     }
 
 }

@@ -2,6 +2,17 @@
 {block name=content}
     <div style="padding: 20px;">
         <div class="text-center" style="margin-top: 20px">
+            {if !$usuario->isAluno()}
+                <div style="margin-bottom: 5%"><b>Link para enviar no email:</b> {base_url}/login?oportunidade={$oportunidade->getId()}</div>
+            {/if}
+            <div class="row">
+                {if isset($oportunidade->getArquivoImagem())}
+                    <a class="imagem-oportunidade" href="{base_url}/upload/{$oportunidade->getArquivoImagem()}" target="_blank">
+                        <img class="col-sm-12" src="{base_url}/upload/{$oportunidade->getArquivoImagem()}" alt="imagem">
+                    </a>
+                {/if}
+            </div>
+
             <p class="oportunidade-unica-descicao">{$oportunidade->getDescricao()}</p>
             <p style="margin-top: 20px"><span class="weight-600">Quem está oferecendo:</span> {$oportunidade->getProfessor()}</p>
             <hr>
@@ -31,13 +42,24 @@
         <div style="margin-top: 20px" class="text-center" >
             <p>
                 <span style="display: inline-block; margin-right: 20px"> <span class="weight-600">Prazo para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')} </span>
-                <span style="display: inline-block; margin-right: 20px"><span class="weight-600">Vagas:</span> {$oportunidade->getQuantidadeVagas()}</span>
-                <span class="weight-600">Remuneração:</span>
-                    {if $oportunidade->getRemuneracao() == 0}
-                        Voluntária
+
+                <span style="display: inline-block; margin-right: 20px">
+                    <span class="weight-600">Vagas:</span>
+                    {if $oportunidade->getQuantidadeVagas() == -1}
+                        Não Informado
                     {else}
-                        R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                        {$oportunidade->getQuantidadeVagas()}
                     {/if}
+                </span>
+
+                <span class="weight-600">Remuneração:</span>
+                {if $oportunidade->getRemuneracao() == 0}
+                    Voluntária
+                {elseif $oportunidade->getRemuneracao() == -1}
+                    Não Informada
+                {else}
+                    R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                {/if}
             </p>
         </div>
 
