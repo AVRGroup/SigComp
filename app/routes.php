@@ -21,6 +21,12 @@ $app->group('', function () {
     $this->get('/avaliacaoPage02', '\App\Controller\AvaliacaoController:page2')->setName('avaliacaoPage02');
     $this->get('/avaliacaoPage03', '\App\Controller\AvaliacaoController:page3')->setName('avaliacaoPage03');
 
+    $this->map(['GET', 'POST'], '/store-avaliacao-1', '\App\Controller\AvaliacaoController:storePage1')->setName('store-avaliacao-1');
+    $this->map(['GET', 'POST'], '/store-avaliacao-2', '\App\Controller\AvaliacaoController:storePage2')->setName('store-avaliacao-2');
+    $this->map(['GET', 'POST'], '/store-avaliacao-3', '\App\Controller\AvaliacaoController:storePage3')->setName('store-avaliacao-3');
+
+    $this->post('Enviar', '\App\Controller\AvaliacaoController:Enviar')->setName('Enviar');
+
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
 

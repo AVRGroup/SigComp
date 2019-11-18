@@ -24,7 +24,7 @@ class AvaliacaoController
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         return $this->container->view->render($response, 'avaliacoes.tpl');
     }
-
+    
     public function page1(Request $request, Response $response, $args)
     {
         $parametro = $request->getParam('disciplina');
@@ -34,6 +34,7 @@ class AvaliacaoController
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
     }
 
+    /*
     public function page2(Request $request, Response $response, $args)
     {
         $parametro = $request->getParam('disciplina');
@@ -50,7 +51,7 @@ class AvaliacaoController
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(1);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage3.tpl');
-    }
+    }*/
 
     public function getPeriodoAtual()
     {
@@ -85,4 +86,80 @@ class AvaliacaoController
         return intval($periodoAnterior);
     }
 
+    public function storePage1(Request $request, Response $response, $args)
+    {
+        $parametro = $request->getParam('disciplina');
+        $this->container->view['parametro'] = $parametro;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+        $this->container->view['questoes'] = $questoes;
+
+
+        $questao1 = $request->getParsedBodyParam('CustomRadio01');
+
+        if(isset($questao1)){
+
+                return $this->container->view->render($response, 'avaliacaoPage1.tpl');
+
+        }   else {
+            
+            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+            return $this->container->view->render($response, 'avaliacaoPage1.tpl');
+        }
+    }
+
+    public function storePage2(Request $request, Response $response, $args)
+    {
+       $parametro = $request->getParam('disciplina');
+       $this->container->view['parametro'] = $parametro;
+       $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+       $this->container->view['questoes'] = $questoes;
+
+        $questao1 = $request->getParsedBodyParam('CustomRadio02');
+
+        if(isset($questao1)){
+
+            return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+
+        }   else {
+            
+            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+            return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+        }
+    }
+
+    public function storePage3(Request $request, Response $response, $args)
+    {
+        $parametro = $request->getParam('disciplina');
+        $this->container->view['parametro'] = $parametro;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+        $this->container->view['questoes'] = $questoes;
+
+        $questao1 = $request->getParsedBodyParam('CustomRadio03');
+
+        if(isset($questao1)){
+
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl');
+
+        }   else {
+            
+            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl');     
+        }
+    }
+
+    public function Enviar(Request $request, Response $response, $args)
+    {
+        $questao1 = $request->getParsedBodyParam('CustomRadio03');
+
+        if(isset($questao1)){
+
+            //Aqui a função vai enviar os dados pro banco 
+
+        }   else {
+            
+            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl');     
+        }
+
+    }
 }
