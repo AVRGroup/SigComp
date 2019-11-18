@@ -31,23 +31,23 @@
             <form method="POST" action="{base_url}/store-avaliacao-1">    <!-- Começa o formulario -->
 
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio1" name=customRadio01 class="custom-control-input">
+                <input type="radio" id="radio1" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio1">1</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio2" name="customRadio01" class="custom-control-input">
+                <input type="radio" id="radio2" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio2">2</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio3" name="customRadio01" class="custom-control-input">
+                <input type="radio" id="radio3" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio3">3</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio4" name="customRadio01" class="custom-control-input">
+                <input type="radio" id="radio4" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio4">4</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio5" name="customRadio01" class="custom-control-input">
+                <input type="radio" id="radio5" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio5">5</label>
               </div>
             </form>
