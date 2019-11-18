@@ -23,13 +23,15 @@
 
   <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
     <div style="margin-bottom: 3%">
-      {foreach $questoes as $questao}
-        <p style=" font-size: 20px"> {$questao->getNumero()}- {$questao->getEnunciado()}</p> 
-        {if $questao->getTipo() == 0 }
+      
+      <div style=" font-size: 20px">
+        <form method="POST" action="{base_url}/store-avaliacao-1">    <!-- Começa o formulario -->
+      
+          {foreach $questoes as $questao}
 
-          <div style=" font-size: 20px">
-            <form method="POST" action="{base_url}/store-avaliacao-1">    <!-- Começa o formulario -->
-
+            <p style=" font-size: 20px"> {$questao->getNumero()}- {$questao->getEnunciado()}</p> 
+            
+            {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="radio1" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio1">1</label>
@@ -50,29 +52,25 @@
                 <input type="radio" id="radio5" name="customRadio01" class="custom-control-input">
                 <label class="custom-control-label" for="radio5">5</label>
               </div>
-            </form>
-          </div>
 
-        {/if}
+            {/if}
 
-        {if $questao->getTipo() == 1 }
-          <div style=" font-size: 20px">
-            <form method="POST" action="{base_url}/store-avaliacao-1">
-              <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio1" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label" for="radio1">Sim</label>
-              </div>
-              <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" value="radio2" name="customRadio" class="custom-control-input">
-                <label class="custom-control-label" for="radio2">Não</label>
-              </div>
-            </form>
-          </div>
+            {if $questao->getTipo() == 1 }
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="radio1" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="radio1">Sim</label>
+                  </div>
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="radio2" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="radio2">Não</label>
+                  </div>
 
-        {else}
+            {else}
 
-        {/if}
-      {/foreach}
+            {/if}
+          {/foreach}
+        </form>
+      </div>
     </div>    
 </div>    
 
