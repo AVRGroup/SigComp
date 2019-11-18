@@ -34,15 +34,9 @@
                             <span class="borda-titulo-{$oportunidade->abreviacao()}">{$oportunidade->getNomeTipo()}</span>
                         </p>
 
-                        {if strlen($oportunidade->getDescricao()) > 120}
-                            <div class="descricao">
-                                <p>{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
-                            </div>
-                        {else}
-                            <div class="descricao">
-                                <p>{$oportunidade->getDescricao()}</p>
-                            </div>
-                        {/if}
+                        <div class="descricao">
+                            <p> {$oportunidade->getDescricao()}</p>
+                        </div>
 
                         <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 

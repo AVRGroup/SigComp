@@ -270,9 +270,10 @@ body {
     text-align: justify;
     text-justify: inter-word;
     max-height: 100px;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 
 .card-oportunidade .titulo {
     font-size: 1.4em;
