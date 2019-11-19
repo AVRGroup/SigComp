@@ -11,7 +11,7 @@
                 {$notas_usuario = $usuario->getNotas()}
                 {foreach $notas_usuario as $nota}
                     {if $nota->getPeriodo() == $periodoPassado}
-                        <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getNome()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">{$nota->getDisciplina()->getNome()}</a>
+                        <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getNome()}&codigo={$nota->getDisciplina()->getCodigo()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true">{$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</a>
                     {/if}
                 {/foreach}
             </div>

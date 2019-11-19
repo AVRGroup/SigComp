@@ -27,8 +27,10 @@ class AvaliacaoController
     
     public function page1(Request $request, Response $response, $args)
     {
-        $parametro = $request->getParam('disciplina');
-        $this->container->view['parametro'] = $parametro;
+        $disciplina = $request->getParam('disciplina');
+        $this->container->view['disciplina'] = $disciplina;
+        $codigo = $request->getParam('codigo');
+        $this->container->view['codigo'] = $codigo;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
@@ -88,8 +90,10 @@ class AvaliacaoController
 
     public function storePage1(Request $request, Response $response, $args)
     {
-        $parametro = $request->getParam('disciplina');
-        $this->container->view['parametro'] = $parametro;
+        $disciplina = $request->getParam('disciplina');
+        $this->container->view['disciplina'] = $disciplina;
+        $codigo = $request->getParam('codigo');
+        $this->container->view['codigo'] = $codigo;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
         $this->container->view['questoes'] = $questoes;
 
@@ -109,10 +113,12 @@ class AvaliacaoController
 
     public function storePage2(Request $request, Response $response, $args)
     {
-       $parametro = $request->getParam('disciplina');
-       $this->container->view['parametro'] = $parametro;
-       $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
-       $this->container->view['questoes'] = $questoes;
+        $disciplina = $request->getParam('disciplina');
+        $this->container->view['disciplina'] = $disciplina;
+        $codigo = $request->getParam('codigo');
+        $this->container->view['codigo'] = $codigo;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+        $this->container->view['questoes'] = $questoes;
 
         $questao1 = $request->getParsedBodyParam('CustomRadio02');
 
@@ -129,9 +135,11 @@ class AvaliacaoController
 
     public function storePage3(Request $request, Response $response, $args)
     {
-        $parametro = $request->getParam('disciplina');
-        $this->container->view['parametro'] = $parametro;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+        $disciplina = $request->getParam('disciplina');
+        $this->container->view['disciplina'] = $disciplina;
+        $codigo = $request->getParam('codigo');
+        $this->container->view['codigo'] = $codigo;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(1);
         $this->container->view['questoes'] = $questoes;
 
         $questao1 = $request->getParsedBodyParam('CustomRadio03');

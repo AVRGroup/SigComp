@@ -3,8 +3,8 @@
 <h2 class="text-center"> Avaliação </h2>
     <hr>
         <div style="border: 0.5px solid; width: 100%; margin-left: 0%; margin-bottom: 2%; margin-top: 2%">
-            {if (isset($parametro))}
-              <p align="center" class="font-italic" style="font-size: 24px;">{$parametro}</p>  
+            {if (isset($codigo) || isset($disciplina))}
+              <p align="center" class="font-italic" style="font-size: 24px;">{$codigo} - {$disciplina}</p>  
             {/if}
         </div>
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação pessoal</p>
@@ -33,37 +33,37 @@
             
             {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1" name="customRadio01" class="custom-control-input">
-                <label class="custom-control-label" for="radio1">1</label>
+                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio1{$questao->getNumero()}">1</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2" name="customRadio01" class="custom-control-input">
-                <label class="custom-control-label" for="radio2">2</label>
+                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio2{$questao->getNumero()}">2</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio3" name="customRadio01" class="custom-control-input">
-                <label class="custom-control-label" for="radio3">3</label>
+                <input type="radio" id="radio3{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio3{$questao->getNumero()}">3</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio4" name="customRadio01" class="custom-control-input">
-                <label class="custom-control-label" for="radio4">4</label>
+                <input type="radio" id="radio4{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio4{$questao->getNumero()}">4</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio5" name="customRadio01" class="custom-control-input">
-                <label class="custom-control-label" for="radio5">5</label>
+                <input type="radio" id="radio5{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio5{$questao->getNumero()}">5</label>
               </div>
 
             {/if}
 
             {if $questao->getTipo() == 1 }
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" value="radio1" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="radio1">Sim</label>
-                  </div>
-                  <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" value="radio2" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="radio2">Não</label>
-                  </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
+                <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
+              </div>
 
             {else}
 
@@ -78,11 +78,11 @@
             <nav aria-label="navigation">
               <ul class="pagination justify-content-center">
                 
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-1"}?disciplina={$parametro}">1</a></li>
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$parametro}">2</a></li>
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-3"}?disciplina={$parametro}">3</a></li>
+                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-1"}?disciplina={$disciplina}&codigo={$codigo}">1</a></li>
+                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$disciplina}&codigo={$codigo}">2</a></li>
+                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-3"}?disciplina={$disciplina}&codigo={$codigo}">3</a></li>
                 <li class="page-item">
-                  <a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$parametro}" aria-label="Próximo">
+                  <a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$disciplina}&codigo={$codigo}" aria-label="Próximo">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Próximo</span>
                   </a>
