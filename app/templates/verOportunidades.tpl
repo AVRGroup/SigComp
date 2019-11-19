@@ -89,7 +89,7 @@
 
                         {if !$usuario->isAluno()}
                             <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/form-edit"><small><i class="fa fa-edit"></i></small></a>
-                            <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-trash"></i></small></a>
+                            <button style="color: darkred; margin-left: 2%" class="btn btn-link" onclick="aletarDelecao('{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete')"><small><i class="fa fa-trash"></i></small></button>
                             <a target="_blank" href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link Externo</small></a>
                         {/if}
 
@@ -168,12 +168,14 @@
             $(".informacoes").append(
                 "<div class='row'>" +
                     htmlImagem +
-                    "<div style='text-align: justify;' class='col-sm-12'>" + descricao + "</div>" +
+                    "<div style='text-align: justify;' class='col-sm-12 descricao-oportunidade'>" + descricao + "</div>" +
                     "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
                     "<div class='col-sm-6'> <b>Remuneração:</b> R$ "+ remuneracao +".00</div>" +
                     "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
                 "</div>"
             )
+
+            $("img").css("width", "100%")
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
                 var nome = disciplina.value.substr(0, disciplina.value.indexOf('-'))
@@ -338,6 +340,11 @@
             return new Date(data[2], data[1] - 1, data[0] );
         }
 
+        function aletarDelecao(urlDelecao) {
+            if(window.confirm("Tem certeza que deseja excluir essa oportunidade?")) {
+                window.location.href = urlDelecao
+            }
+        }
     </script>
 
 {/block}
