@@ -42,7 +42,7 @@ class Oportunidade implements ToIdArrayInterface
     protected $remuneracao;
 
     /**
-     * @ORM\Column(type="string", length=20000, nullable=true)
+     * @ORM\Column(type="string", length=2000000, nullable=true)
      */
     protected $descricao;
 

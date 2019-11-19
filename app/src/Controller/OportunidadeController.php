@@ -102,6 +102,7 @@ class OportunidadeController
         $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
         $imagem = $request->getUploadedFiles()['imagem_oportunidade'];
 
+
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         if($temRemuneracao == "nao_informado") {
             $valorRemuneracao = -1;
