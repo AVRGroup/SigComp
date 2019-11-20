@@ -97,12 +97,24 @@ class AvaliacaoController
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
         $this->container->view['questoes'] = $questoes;
 
+        //Salvando as respostas no vetor
+        $respostas1 = array();
+        $i = 1;
+        foreach ($questoes as $questao)
+        {
+            if(isset($_REQUEST["customRadio1_$i"]))
+            {
+                $respostas1[] = $_REQUEST["customRadio1_$i"];
+            }
+            $i = $i + 1;
+        }
+        
+        //echo "<script>console.log('Debug Objects: " . $q[0] . "' );</script>";
 
-        $questao1 = $request->getParsedBodyParam('CustomRadio01');
+        if(count($respostas1) == count($questoes)){
 
-        if(isset($questao1)){
-
-                return $this->container->view->render($response, 'avaliacaoPage1.tpl');
+                return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+                
 
         }   else {
             

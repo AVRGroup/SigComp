@@ -33,61 +33,44 @@
             
             {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">1</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="1"> 1
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio2{$questao->getNumero()}">2</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="2"> 2
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio3{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio3{$questao->getNumero()}">3</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="3"> 3
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio4{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio4{$questao->getNumero()}">4</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="4"> 4
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio5{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio5{$questao->getNumero()}">5</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="5"> 5
               </div>
 
             {/if}
 
             {if $questao->getTipo() == 1 }
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="sim"> Sim
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio01{$questao->getNumero()}" class="custom-control-input">
-                <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
+                <input type=radio name="customRadio1_{$questao->getNumero()}" value="nao"> Não
               </div>
 
             {else}
 
             {/if}
           {/foreach}
-        </form>
-      </div>
-    </div>    
-</div>    
+        
+        </div>
+      </div>    
+  </div>    
 
-          <hr>
-            <nav aria-label="navigation">
-              <ul class="pagination justify-content-center">
-                
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-1"}?disciplina={$disciplina}&codigo={$codigo}">1</a></li>
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$disciplina}&codigo={$codigo}">2</a></li>
-                <li class="page-item"><a class="page-link" href="{path_for name="store-avaliacao-3"}?disciplina={$disciplina}&codigo={$codigo}">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="{path_for name="store-avaliacao-2"}?disciplina={$disciplina}&codigo={$codigo}" aria-label="Próximo">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Próximo</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+      <hr>
+        <nav aria-label="navigation" class="pagination justify-content-center">
+              <input class="page-item" type="submit" value="Próximo" />
+          </form>
+        </nav>
     
 {/block}

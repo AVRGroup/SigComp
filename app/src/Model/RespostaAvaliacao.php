@@ -27,7 +27,7 @@ class RespostaAvaliacao
 
     /**
      * @ORM\ManyToOne(targetEntity="Turma", inversedBy="resposta_avaliacao")
-     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=true)
      */
     protected $turma;
 
