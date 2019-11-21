@@ -39,21 +39,16 @@ class AvaliacaoController
     /*
     public function page2(Request $request, Response $response, $args)
     {
-        $parametro = $request->getParam('disciplina');
-        $this->container->view['parametro'] = $parametro;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(2);
-        $this->container->view['questoes'] = $questoes;
-        return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+        $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+        $this->container->view['questoes2'] = $questoes2;
     }
 
     public function page3(Request $request, Response $response, $args)
     {
-        $parametro = $request->getParam('disciplina');
-        $this->container->view['parametro'] = $parametro;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(1);
-        $this->container->view['questoes'] = $questoes;
-        return $this->container->view->render($response, 'avaliacaoPage3.tpl');
-    }*/
+        $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+        $this->container->view['questoes3'] = $questoes3;
+    }
+    */
 
     public function getPeriodoAtual()
     {
@@ -90,34 +85,47 @@ class AvaliacaoController
 
     public function storePage1(Request $request, Response $response, $args)
     {
-        $disciplina = $request->getParam('disciplina');
-        $this->container->view['disciplina'] = $disciplina;
-        $codigo = $request->getParam('codigo');
-        $this->container->view['codigo'] = $codigo;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
         $this->container->view['questoes'] = $questoes;
+
+        $codigo = $request->getParsedBodyParam("codigo");
+        $disciplina = $request->getParsedBodyParam("disciplina");
+        $this->container->view['disciplina'] = $disciplina;
+        $this->container->view['codigo'] = $codigo;
 
         //Salvando as respostas no vetor
         $respostas1 = array();
         $i = 1;
         foreach ($questoes as $questao)
         {
-            if(isset($_REQUEST["customRadio1_$i"]))
+            if($request->getParsedBodyParam("customRadio1_$i") !== null)
             {
-                $respostas1[] = $_REQUEST["customRadio1_$i"];
+                $respostas1[] = $request->getParsedBodyParam("customRadio1_$i");
             }
             $i = $i + 1;
         }
         
-        //echo "<script>console.log('Debug Objects: " . $q[0] . "' );</script>";
+        /*
+        $j = 0;
+        foreach ($respostas1 as $r)
+        {
+            echo "<script>console.log('Debug Objects: " . $respostas1[$j] . "' );</script>";
+            $j = $j + 1;
+        }
+        */
 
         if(count($respostas1) == count($questoes)){
 
-                return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+            $a = array("1","2", "3", "4", "5", "6");
+            $this->container->view['a'] = $a;
+
+            $this->container->view['respostas1'] = $respostas1;   
+            $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+            $this->container->view['questoes2'] = $questoes2;
+            return $this->container->view->render($response, 'avaliacaoPage2.tpl');
                 
 
         }   else {
-            
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage1.tpl');
         }
@@ -125,21 +133,47 @@ class AvaliacaoController
 
     public function storePage2(Request $request, Response $response, $args)
     {
-        $disciplina = $request->getParam('disciplina');
+        $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+        $this->container->view['questoes2'] = $questoes2;
+        $codigo = $request->getParsedBodyParam("codigo");
+        $disciplina = $request->getParsedBodyParam("disciplina");
         $this->container->view['disciplina'] = $disciplina;
-        $codigo = $request->getParam('codigo');
         $this->container->view['codigo'] = $codigo;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(2);
-        $this->container->view['questoes'] = $questoes;
+        $respostas1 = $request->getParsedBodyParam("respostas1");
+        $this->container->view['respostas1'] = $respostas1;
+        
+              
+       //Salvando as respostas no vetor
+       $respostas2 = array();
+       $i = 1;
+       foreach ($questoes2 as $questao)
+       {
+           if($request->getParsedBodyParam("customRadio2_$i") !== null)
+           {
+               $respostas2[] = $request->getParsedBodyParam("customRadio2_$i");
+           }
+           $i = $i + 1;
+       }
 
-        $questao1 = $request->getParsedBodyParam('CustomRadio02');
+       $respostas1_2 = array_merge($respostas1, $respostas2);
+       die(var_dump($respostas1_2));
+       
+       /*$respostas1_2 = $respostas1 + $respostas2;
+       $j = 0;
+       foreach($respostas1_2 as $r)
+       {
+        echo "<script>console.log('Debug Objects: " . $respostas1_2[$j] . "' );</script>";
+        $j = $j + 1;
+       }*/
 
-        if(isset($questao1)){
 
-            return $this->container->view->render($response, 'avaliacaoPage2.tpl');
+        if(count($respostas2) == count($questoes2)){
+            $this->container->view['respostas1_2'] = $respostas1_2;
+            $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+            $this->container->view['questoes3'] = $questoes3;
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl');
 
         }   else {
-            
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage2.tpl');
         }
@@ -147,24 +181,33 @@ class AvaliacaoController
 
     public function storePage3(Request $request, Response $response, $args)
     {
-        $disciplina = $request->getParam('disciplina');
+        $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+        $this->container->view['questoes3'] = $questoes3;
+        $codigo = $request->getParsedBodyParam("codigo");
+        $disciplina = $request->getParsedBodyParam("disciplina");
         $this->container->view['disciplina'] = $disciplina;
-        $codigo = $request->getParam('codigo');
         $this->container->view['codigo'] = $codigo;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(1);
-        $this->container->view['questoes'] = $questoes;
 
-        $questao1 = $request->getParsedBodyParam('CustomRadio03');
-
-        if(isset($questao1)){
-
-            return $this->container->view->render($response, 'avaliacaoPage3.tpl');
-
-        }   else {
-            
-            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
-            return $this->container->view->render($response, 'avaliacaoPage3.tpl');     
+        $respostas3 = array();
+        $i = 1;
+        foreach ($questoes3 as $questao)
+        {
+            if($request->getParsedBodyParam("customRadio3_$i") !== null)
+            {
+                $respostas3[] = $request->getParsedBodyParam("customRadio3_$i");
+            }
+            $i = $i + 1;
         }
+ 
+         if(count($respostas3) == count($questoes3)){
+ 
+             //Enviar
+ 
+         }   else {
+             
+             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
+         }
     }
 
     public function Enviar(Request $request, Response $response, $args)
