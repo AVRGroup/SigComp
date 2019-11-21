@@ -76,13 +76,13 @@
 
             {/if}
           {/foreach}
-        </form>
       </div>
     </div>    
 </div>  
-    <div class="text-sm-center" >
-        <button class="btn btn-primary btn-lg btn-block" href="{path_for name="Enviar"}?disciplina={$disciplina}&codigo={$codigo}" style="margin-bottom: 1%" type="submit">Enviar </button>
-    </div>
+    <nav aria-label="navigation" class="pagination justify-content-center">
+        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Enviar</button>  
+      </form>
+    </nav>
     
 
 {/block}

@@ -156,7 +156,6 @@ class AvaliacaoController
        }
 
        $respostas1_2 = array_merge($respostas1, $respostas2);
-       die(var_dump($respostas1_2));
        
        /*$respostas1_2 = $respostas1 + $respostas2;
        $j = 0;
@@ -187,6 +186,8 @@ class AvaliacaoController
         $disciplina = $request->getParsedBodyParam("disciplina");
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
+        $respostas1_2 = $request->getParsedBodyParam("respostas1_2");
+        $this->container->view['respostas1_2'] = $respostas1_2;
 
         $respostas3 = array();
         $i = 1;
@@ -198,6 +199,8 @@ class AvaliacaoController
             }
             $i = $i + 1;
         }
+
+        $respostasFinais = array_merge($respostas1_2, $respostas3);
  
          if(count($respostas3) == count($questoes3)){
  
@@ -210,19 +213,4 @@ class AvaliacaoController
          }
     }
 
-    public function Enviar(Request $request, Response $response, $args)
-    {
-        $questao1 = $request->getParsedBodyParam('CustomRadio03');
-
-        if(isset($questao1)){
-
-            //Aqui a função vai enviar os dados pro banco 
-
-        }   else {
-            
-            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
-            return $this->container->view->render($response, 'avaliacaoPage3.tpl');     
-        }
-
-    }
 }

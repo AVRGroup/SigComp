@@ -79,7 +79,7 @@
 
       <hr>
         <nav aria-label="navigation" class="pagination justify-content-center">
-              <input class="page-item" type="submit" value="Próximo" />
+              <button style="margin-top: 2%" class="btn btn-primary" type="submit">Próximo</button>
           </form>
         </nav>
     

@@ -28,7 +28,7 @@
     <div style="margin-bottom: 3%">
       <div style=" font-size: 20px">
         <form method="POST" action="{base_url}/store-avaliacao-2">    <!-- Começa o formulario -->
-        
+
         {foreach $respostas1 as $r}
           <input type="hidden" name="respostas1[]" value="{$r}">
         {/foreach}
@@ -84,8 +84,8 @@
 </div> 
   <hr>
       <nav aria-label="navigation" class="pagination justify-content-center">
-              <input class="page-item" type="submit" value="Próximo" />
-      </form>
-        </nav>
+        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Próximo</button>
+        </form>
+      </nav>
 
 {/block}
