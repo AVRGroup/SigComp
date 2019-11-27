@@ -68,8 +68,8 @@
                 <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
               </div>
                <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio3_{$questao->getNumero()}" class="custom-control-input" value="nao">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">Não</label>
+                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio3_{$questao->getNumero()}" class="custom-control-input" value="nao">
+                <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
               </div>
 
             {else}

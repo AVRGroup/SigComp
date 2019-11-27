@@ -44,4 +44,11 @@ class AvaliacaoDAO extends BaseDAO
         return $avaliacao;
     }
 
+    public function gravarAvaliacao()
+    {
+        $sql_insert = "INSERT INTO db_gamificacao.resposta_avaliacao (professor,turma,avaliacao,questao,resposta) VALUES ('{$idProfessor}', {$idTurma}, {$idAvaliacao}, {$idQuestao}, {$resposta})";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+    }
+
 }

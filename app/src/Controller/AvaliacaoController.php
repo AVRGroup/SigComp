@@ -201,6 +201,7 @@ class AvaliacaoController
         }
 
         $respostasFinais = array_merge($respostas1_2, $respostas3);
+        die(var_dump($respostasFinais));
  
          if(count($respostas3) == count($questoes3)){
  

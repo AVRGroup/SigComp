@@ -43,6 +43,11 @@ class RespostaAvaliacao
      */
     protected $questao;
 
+    /**
+     * @ORM\Column(type="smallint", length=255, nullable=false)
+     */
+    protected $resposta;
+
     public function __construct()
     {
     }

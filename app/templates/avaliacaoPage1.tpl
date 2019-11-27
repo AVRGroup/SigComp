@@ -4,12 +4,12 @@
     <hr>
         <div style="border: 0.5px solid; width: 100%; margin-left: 0%; margin-bottom: 2%; margin-top: 2%">
             {if (isset($codigo) || isset($disciplina))}
-              <p align="center" class="font-italic" style="font-size: 24px;">{$codigo} - {$disciplina}</p>  
+              <p align="center" class="font-italic" style="font-size: 24px;">{$codigo} - {$disciplina}</p>
             {/if}
         </div>
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação pessoal</p>
         <p style="margin-left: 10%; font-weight: 700; margin-bottom: 4%; font-size: 17px">*Faça sua avaliação, sendo 1 [Discordo Totalmente] e 5 [Concordo Totalmente].</p>
-        
+
         <div align="center" style="margin-bottom: 4%;">
           {if isset($incompleto)}
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -23,17 +23,17 @@
 
   <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
     <div style="margin-bottom: 3%">
-      
+
       <div style=" font-size: 20px">
         <form method="POST" action="{base_url}/store-avaliacao-1">    <!-- Começa o formulario -->
-      
+
           <input type="hidden" name="codigo" value="{$codigo}">
           <input type="hidden" name="disciplina" value="{$disciplina}">
 
           {foreach $questoes as $questao}
 
-            <p style=" font-size: 20px"> {$questao->getNumero()}- {$questao->getEnunciado()}</p> 
-            
+            <p style=" font-size: 20px"> {$questao->getNumero()}- {$questao->getEnunciado()}</p>
+
             {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="1">
@@ -64,23 +64,23 @@
                 <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
               </div>
                <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="nao">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">Não</label>
+                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="nao">
+                <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
               </div>
 
             {else}
 
             {/if}
           {/foreach}
-        
+
         </div>
-      </div>    
-  </div>    
+      </div>
+  </div>
 
       <hr>
         <nav aria-label="navigation" class="pagination justify-content-center">
               <button style="margin-top: 2%" class="btn btn-primary" type="submit">Próximo</button>
           </form>
         </nav>
-    
+
 {/block}
