@@ -44,11 +44,27 @@ class AvaliacaoDAO extends BaseDAO
         return $avaliacao;
     }
 
-    public function gravarAvaliacao()
+    /**
+     * @param $aluno_id, $turma_id
+     * @return Avaliacao|null
+     */
+    public function gravarAvaliacao($aluno_id, $turma_id)
     {
-        $sql_insert = "INSERT INTO db_gamificacao.resposta_avaliacao (professor,turma,avaliacao,questao,resposta) VALUES ('{$idProfessor}', {$idTurma}, {$idAvaliacao}, {$idQuestao}, {$resposta})";
+        $sql_insert = "INSERT INTO db_gamificacao.avaliacao (`data`, `aluno`, `turma`) VALUES (CURDATE(), {$aluno_id}, {$turma_id})";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
+
+        try {
+            $query = $this->em->createQuery("SELECT a FROM App\Model\Avaliacao AS a WHERE a.aluno = :aluno_id AND a.turma = :turma_id");
+            $query->setParameter('aluno_id', $aluno_id);
+            $query->setParameter('turma_id', $turma_id);
+            $avaliacao = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $avaliacao = null;
+        }
+
+        return $avaliacao;
+
     }
 
 }

@@ -93,7 +93,7 @@ class UsuarioDAO extends BaseDAO
 
 
     /**
-\     * @return Usuario[]|null
+     * @return Usuario[]|null
      */
     public function getAllFetched()
     {

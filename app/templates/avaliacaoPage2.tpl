@@ -66,11 +66,11 @@
 
             {if $questao->getTipo() == 1 }
                <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio2_{$questao->getNumero()}" class="custom-control-input" value="sim">
+                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio2_{$questao->getNumero()}" class="custom-control-input" value="1">
                 <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
               </div>
                <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio2_{$questao->getNumero()}" class="custom-control-input" value="nao">
+                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio2_{$questao->getNumero()}" class="custom-control-input" value="0">
                 <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
               </div>
 

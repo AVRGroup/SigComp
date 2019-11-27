@@ -6,6 +6,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Model\Usuario;
 use App\Model\Questao;
+use App\Model\Avaliacao;
+use App\Model\RespostaAvaliacao;
 
 class AvaliacaoController
 {
@@ -201,17 +203,40 @@ class AvaliacaoController
         }
 
         $respostasFinais = array_merge($respostas1_2, $respostas3);
-        die(var_dump($respostasFinais));
+        //die(var_dump($respostasFinais));
  
-         if(count($respostas3) == count($questoes3)){
+        if(count($respostas3) == count($questoes3)){
  
-             //Enviar
+            //Enviar
+            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            $idUsuario = $usuario->getId();
+            if($idUsuario !== null){
+                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1);
+
+                 if($avaliacao !== null){
+
+                    $q0 = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+                    $q2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+                    $q1 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+
+                    $q = array_merge($q0, $q2);
+                    $questoes = array_merge($q, $q1);
+
+                    $this->container->respostaAvaliacaoDAO->gravarResposta(257, 1, $avaliacao->getID(), $questoes, $respostasFinais);
+
+                    $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+                    $this->container->view['usuario'] = $usuario;
+                    $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+                    $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+                    return $this->container->view->render($response, 'avaliacoes.tpl');
+                }
+            }
  
-         }   else {
+        }   else {
              
-             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
-             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
-         }
+            $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl');
+        }
     }
 
 }

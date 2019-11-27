@@ -24,18 +24,18 @@ class Avaliacao
      * @ORM\Column(type="date", nullable=false)
      */
     protected $data;
-   
-    /**
-     * @ORM\ManyToMany(targetEntity="Usuario", inversedBy="avaliacao")
-     * @ORM\JoinTable(name="aluno_avaliacao")
-     */
-    protected $alunos;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Turma", inversedBy="avaliacao")
-     * @ORM\JoinTable(name="avaliacao_turma")
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="avaliacao")
+     * @ORM\JoinColumn(name="aluno", referencedColumnName="id", nullable=false)
      */
-    protected $turmas;
+    protected $aluno;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Turma", inversedBy="avaliacao")
+     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
+     */
+    protected $turma;
 
     /**
      * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")

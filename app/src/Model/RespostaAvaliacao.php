@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use App\Model\Questao;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
