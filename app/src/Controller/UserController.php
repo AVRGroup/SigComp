@@ -18,6 +18,7 @@ use App\Persistence\UsuarioDAO;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use GuzzleHttp\Client;
 
 class UserController
 {
@@ -392,6 +393,25 @@ class UserController
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 
+    public function buscaCEP(Request $request, Response $response, $args){
+
+        $id = $_POST['nameCEP'];
+       
+        $client = new Client();
+        $res = $client->request('GET', 'viacep.com.br/ws/' . $id . '/json/');
+
+        if($res->getStatusCode() !== 200){
+            echo 'Caminho inexistente';
+        };
+    
+        echo $res->getBody();
+    }
+
+    public function indexBusca(Request $request, Response $response, $args){
+
+        return $this->container->view->render($response, 'buscaCEP.tpl');
+
+    }
 
 }
 

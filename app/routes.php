@@ -10,6 +10,9 @@ $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:
 
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
+$app->get('/teste','\App\Controller\UserController:indexBusca')->setName('buscaCEP');
+$app->post('/pageBuscaCEP','\App\Controller\UserController:buscaCEP')->setName('pageBuscaCEP');
+
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
     
