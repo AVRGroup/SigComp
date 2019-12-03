@@ -55,4 +55,18 @@ class DisciplinaDAO extends BaseDAO
         return $disciplina;
     }
 
+    public function getByGrade($grade)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT d FROM App\Model\Disciplina AS d LEFT JOIN d.disciplinas_grade AS dg WHERE dg.grade = :grade");
+            $query->setParameter('grade', $grade);
+            $disciplinas = $query->getResult();
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            $disciplinas = null;
+        }
+
+        return $disciplinas;
+    }
+
 }

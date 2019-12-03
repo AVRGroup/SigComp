@@ -81,6 +81,9 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
 
         $this->map(['GET', 'POST'], '/relatorio/periodizado', '\App\Controller\AdminController:listPeriodizadosAction')->setName('relatorioPeriodizado');
+
+        $this->get('/editar-grade', '\App\Controller\GrupoController:index')->setName('verGrade');
+
     })->add('\App\Middleware\AdminMiddleware');
 
     $this->group('/admin', function () {
