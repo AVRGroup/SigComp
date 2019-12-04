@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Model\Grupo;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -22,8 +23,8 @@ class GrupoController
 
         $codigoGrade = $request->getQueryParam('grade');
 
-        if(isset($grade)) {
-            $grade = $this->container->gradeDAO->getByCodigo($codigoGrade);
+        if(isset($codigoGrade)) {
+            $grade = $this->container->gradeDAO->getByCodigoCurso($codigoGrade, $usuario->getCurso());
         } else {
             $grade = $this->container->gradeDAO->getFirstByCurso($curso);
         }
@@ -32,9 +33,46 @@ class GrupoController
 
         $todasGrades = $this->container->gradeDAO->getAllByCurso($curso);
 
+        $grupos = $this->container->grupoDAO->getAllByCurso($curso);
+
         $this->container->view['disciplinas'] = $disciplinas;
-        $this->container->view['$todasGrades'] = $todasGrades;
+        $this->container->view['todasGrades'] = $todasGrades;
+        $this->container->view['grupos'] = $grupos;
+        $this->container->view['gradeSelecionada'] = $grade;
 
         return $this->container->view->render($response, 'verGrade.tpl');
     }
+
+    public function create(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+
+        $this->container->view['grupos'] = $grupos;
+
+        return $this->container->view->render($response, 'novoGrupo.tpl');
+    }
+
+    public function store(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $nome = $request->getParsedBodyParam('nome');
+
+        $grupo = new Grupo();
+        $grupo->setNome($nome);
+        $grupo->setCurso($usuario->getCurso());
+
+        $this->container->grupoDAO->save($grupo);
+
+        return $response->withRedirect($this->container->router->pathFor('createGrupo'));
+    }
+    
+    
+    public function storeDisciplinaGrupo(Request $request, Response $response, $args)
+    {
+        die(var_dump($request->getParsedBodyParam('grupo')));
+    }
+
+
 }

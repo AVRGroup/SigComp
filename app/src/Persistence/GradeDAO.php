@@ -72,6 +72,19 @@ class GradeDAO extends BaseDAO
         return $grade;
     }
 
+    public function getByCodigoCurso($codigo, $curso)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.codigo = :codigo AND g.curso = :curso");
+            $query->setParameter('codigo', $codigo);
+            $query->setParameter('curso', $curso);
+            $grade = $query->getResult();
+        } catch (\Exception $e) {
+            $grade = null;
+        }
+        return $grade[0];
+    }
+
     public function getFirstByCurso($curso)
     {
         try {

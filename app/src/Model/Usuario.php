@@ -285,6 +285,10 @@ class Usuario implements ToIdArrayInterface
      */
     public function getCurso()
     {
+        if(!isset($this->curso)) {
+            return "35A";
+        }
+
         return $this->curso;
     }
 

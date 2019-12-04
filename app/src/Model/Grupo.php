@@ -35,4 +35,47 @@ class Grupo
      */
     protected $curso;
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * @param mixed $nome
+     */
+    public function setNome($nome): void
+    {
+        $this->nome = $nome;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurso()
+    {
+        return $this->curso;
+    }
+
+    /**
+     * @param mixed $curso
+     */
+    public function setCurso($curso): void
+    {
+        $this->curso = $curso;
+    }
+
+
+
 }
