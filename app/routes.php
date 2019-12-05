@@ -10,6 +10,8 @@ $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:
 
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
+$app->get('/questoes', '\App\Controller\QuestaoController:index')->setName('questoes');
+
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
     
@@ -17,8 +19,7 @@ $app->group('', function () {
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
     
-    $app->get('/questoes', '\App\Controller\QuestaoController:index')->setName('questoes');
-    $this->map(['GET', 'POST'], '/store-questao', '\App\Controller\QuestaoController:store')->setName('store-questao');
+    $this->map(['GET', 'POST'], '/storeQuestao', '\App\Controller\QuestaoController:storeQuestao')->setName('storeQuestao');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');

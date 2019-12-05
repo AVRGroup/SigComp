@@ -60,4 +60,14 @@ class QuestaoDAO extends BaseDAO
         }
         return $questoes;
     }
+
+     /**
+     * @param $enunciado, $numero
+     */
+    public function garavaQuestao($enunciado, $numero)
+    {
+        $sql_insert = "INSERT INTO db_gamificacao.questao (`numero`, `enunciado`, `tipo`, `tipo_questionario`) VALUES ('{$numero}', '{$enunciado}', 0, 0)";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+    }
 }
