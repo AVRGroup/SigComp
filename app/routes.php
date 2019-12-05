@@ -17,7 +17,8 @@ $app->group('', function () {
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
     
-
+    $app->get('/questoes', '\App\Controller\QuestaoController:index')->setName('questoes');
+    $this->map(['GET', 'POST'], '/store-questao', '\App\Controller\QuestaoController:store')->setName('store-questao');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
