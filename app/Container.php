@@ -12,6 +12,7 @@ use App\Persistence\MedalhaUsuarioDAO;
 use App\Persistence\CategoriaDAO;
 use App\Persistence\TopicoDAO;
 use App\Persistence\RespostaDAO;
+use App\Persistence\QuestaoDAO;
 use \Doctrine\ORM\EntityManager;
 use Slim\Views\Smarty;
 
@@ -27,6 +28,7 @@ use Slim\Views\Smarty;
  * @property TopicoDAO topicoDAO
  * @property RespostaDAO respostaDAO
  * @property OportunidadeDAO oportunidadeDAO
+ * @property QuestaoDAO questaoDAO
  * @property GrupoDAO grupoDAO
  * @property Smarty view
  * @property EntityManager db
@@ -127,6 +129,10 @@ class Container extends \Slim\Container
 
         $this['oportunidadeDAO'] = function () {
             return new OportunidadeDAO($this->db);
+        };
+
+        $this['questaoDAO'] = function () {
+            return new QuestaoDAO($this->db);
         };
 
         $this['grupoDAO'] = function () {
