@@ -84,6 +84,11 @@ class Disciplina implements ToIdArrayInterface
      */
     protected $oportunidades;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Grupo")
+     */
+    protected $grupo;
+
     public function __construct()
     {
         $this->notas = new ArrayCollection();
@@ -282,6 +287,22 @@ class Disciplina implements ToIdArrayInterface
     {
         $this->fatorForca = $fatorForca;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
+    }
+
+    /**
+     * @param mixed $grupo
+     */
+    public function setGrupo($grupo): void
+    {
+        $this->grupo = $grupo;
     }
 
 

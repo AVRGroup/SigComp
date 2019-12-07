@@ -47,6 +47,8 @@
 
                 </div>
             </div>
+
+            {if $usuario->isAluno() && (isset($isAdmin) && !$isAdmin)}
             <div class="col-sm-8 col-md-8 col-lg-9 col-xs-12">
                 <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
@@ -114,7 +116,12 @@
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
 
-                <canvas id="radar"></canvas>
+                {else}
+                    <div class="col-sm-4 col-md-4 col-lg-9 col-xs-12">
+                        <canvas id="radar"></canvas>
+                    </div>
+                {/if}
+
 
             </div>
         </div>
@@ -427,16 +434,37 @@
         var radarChart = new Chart(radar, {
             type: 'radar',
             data: {
-                labels: ['Teste1', 'Teste2','Teste3','Teste4','Teste5'],
-                datasets: [{
-                    label: 'Teste',
-                    backgroundColor: "rgba(200,0,0,0.2)",
-                    data: [20, 50, 30, 10, 50]
-                }]
+                labels: ['Computação Científica', 'Desenvolvimento de Sistemas','Fundamentos em Computação','Matemática e suas Tecnologias','Multidisciplinaridade'],
+                datasets: [
+                    {
+                        label: "Como está seu desempenho nas diversas competências do seu curso",
+                        backgroundColor: "rgba(41, 128, 185, 0.7)",
+                        data: [65, 90, 80, 60, 80]
+                    },
+                    {
+                        label: "",
+                        backgroundColor: "rgba(231, 76, 60, 0.3)",
+                        data: [80, 80, 70, 65, 85]
+                    },
+
+                ]
             },
-            scale: {
-                ticks: {
-                    beginAtZero: true
+            options: {
+                legend: {
+                    onClick: function (e) {
+                        e.stopPropagation();
+                    },
+                    labels: {
+                        boxWidth: 0
+                    }
+                },
+                scale: {
+                    ticks: {
+                        beginAtZero: true,
+                        max: 100,
+                        min: 0,
+                        stepSize: 20
+                    }
                 }
             }
 
