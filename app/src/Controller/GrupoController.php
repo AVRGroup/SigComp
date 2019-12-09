@@ -40,7 +40,7 @@ class GrupoController
         $this->container->view['grupos'] = $grupos;
         $this->container->view['gradeSelecionada'] = $grade;
 
-        return $this->container->view->render($response, 'verGrade.tpl');
+        return $this->container->view->render($response, 'verGrupo.tpl');
     }
 
     public function create(Request $request, Response $response, $args)

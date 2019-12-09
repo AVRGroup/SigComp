@@ -9,7 +9,7 @@
     <div class="form-row mt-4">
         <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
             {foreach $todasGrades as $grade}
-                <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/editar-grade?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
+                <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/editar-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
             {/foreach}
         </select>
     </div>
