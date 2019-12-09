@@ -6,15 +6,16 @@
         <a href="{base_url}/admin/create-grupo" class="btn btn-primary btn-lg">Criar Novo Grupo</a>
     </div>
 
-    <div class="form-row mt-4">
-        <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-            {foreach $todasGrades as $grade}
-                <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/editar-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
-            {/foreach}
-        </select>
-    </div>
 
     <form action="{base_url}/admin/store-disciplina-grupo" method="post">
+        <div class="form-row mt-4">
+            <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                {foreach $todasGrades as $grade}
+                    <option value="{$grade->getId()}" {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/editar-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
+                {/foreach}
+            </select>
+        </div>
+
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">
             <tr style="font-size: 13px;">
@@ -30,8 +31,12 @@
                     <td>{$disciplina->getNome()}</td>
                     <td>
                         <select class="form-control" name="{$disciplina->getCodigo()}" id="grupo">
+                            <option value="">Selecione um grupo</option>
                             {foreach $grupos as $grupo}
-                                <option value="{$grupo->getId()}">{$grupo->getNome()}</option>
+                                <option value="{$grupo->getId()}"
+                                        {if isset($disciplina->getGrupo()) && $disciplina->getGrupo()->getId() == $grupo->getId() } selected {/if}>
+                                    {$grupo->getNome()}
+                                </option>
                             {/foreach}
                         </select>
                     </td>
@@ -40,7 +45,6 @@
             </tbody>
         </table>
 
-        <a href="#" class="btn btn-warning">Replicar para as outras grades</a>
         <button type="submit" class="btn btn-success">Salvar</button>
 
     </form>

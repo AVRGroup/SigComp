@@ -71,7 +71,24 @@ class GrupoController
     
     public function storeDisciplinaGrupo(Request $request, Response $response, $args)
     {
-        die(var_dump($request->getParsedBodyParam('grupo')));
+        $gradeId = $request->getParsedBodyParam('grade-selecionada');
+
+        $disciplinas = $this->container->disciplinaDAO->getByGrade($gradeId);
+
+        foreach ($disciplinas as $disciplina) {
+            $grupoId = $request->getParsedBodyParam($disciplina->getCodigo());
+
+            $grupo = $this->container->grupoDAO->getGrupoById($grupoId);
+
+            if(isset($grupo) && sizeof($grupo) > 0) {
+                $grupo = $grupo[0];
+
+                $disciplina->setGrupo($grupo);
+                $this->container->disciplinaDAO->save($disciplina);
+            }
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verGrupo'));
     }
 
 
