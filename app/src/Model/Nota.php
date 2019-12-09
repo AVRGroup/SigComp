@@ -144,7 +144,7 @@ class Nota
     /**
      * @return Disciplina
      */
-    public function getDisciplina()
+    public function getDisciplina(): Disciplina
     {
         return $this->disciplina;
     }

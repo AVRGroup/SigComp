@@ -430,23 +430,24 @@
             }
         });
 
+        var grupos = {json_encode($grupos)}
+        var nomeGrupos = []
+        var valorGrupos = []
+        for(let grupo in grupos) {
+            nomeGrupos.push(grupo)
+            valorGrupos.push(grupos[grupo])
+        }
         var radar = document.getElementById('radar').getContext('2d');
         var radarChart = new Chart(radar, {
             type: 'radar',
             data: {
-                labels: ['Computação Científica', 'Desenvolvimento de Sistemas','Fundamentos em Computação','Matemática e suas Tecnologias','Multidisciplinaridade'],
+                labels: nomeGrupos,
                 datasets: [
                     {
                         label: "Como está seu desempenho nas diversas competências do seu curso",
                         backgroundColor: "rgba(41, 128, 185, 0.7)",
-                        data: [65, 90, 80, 60, 80]
-                    },
-                    {
-                        label: "",
-                        backgroundColor: "rgba(231, 76, 60, 0.3)",
-                        data: [80, 80, 70, 65, 85]
-                    },
-
+                        data: valorGrupos
+                    }
                 ]
             },
             options: {

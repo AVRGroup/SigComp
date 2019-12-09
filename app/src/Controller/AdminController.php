@@ -602,10 +602,49 @@ class AdminController
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
-
+        $this->container->view['grupos'] = $this->getGruposComPontuacao($usuario);
         return $this->container->view->render($response, 'home.tpl');
     }
 
+    public function getGruposComPontuacao(Usuario $usuario)
+    {
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+        $notas = $usuario->getNotas();
+
+        $gruposComPontuacao = [];
+        $quantidadeDeDisciplinasNoGrupo = [];
+
+
+        foreach ($notas as $nota) {
+            $disciplina = $nota->getDisciplina();
+            $grupo = $disciplina->getGrupo();
+
+            if(isset($grupo)) {
+                if(!isset($gruposComPontuacao[$grupo->getNome()])) {
+                    $gruposComPontuacao[$grupo->getNome()] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] = 1;
+                } else {
+                    $gruposComPontuacao[$grupo->getNome()] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] += 1;
+                }
+            } else {
+                if(!isset($gruposComPontuacao["Multidisciplinaridade"])) {
+                    $gruposComPontuacao["Multidisciplinaridade"] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] = 1;
+                } else {
+                    $gruposComPontuacao["Multidisciplinaridade"] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] += 1;
+                }
+            }
+
+        }
+
+        foreach ($gruposComPontuacao as $grupo => $valor) {
+            $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasNoGrupo[$grupo];
+        }
+
+        return $gruposComPontuacao;
+    }
 
     public function getPeriodoPassado()
     {
