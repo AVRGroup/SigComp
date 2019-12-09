@@ -445,7 +445,9 @@
                 datasets: [
                     {
                         label: "Como está seu desempenho nas diversas competências do seu curso",
-                        backgroundColor: "rgba(41, 128, 185, 0.7)",
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
                         data: valorGrupos
                     }
                 ]
@@ -461,11 +463,21 @@
                 },
                 scale: {
                     ticks: {
-                        beginAtZero: true,
-                        max: 100,
-                        min: 0,
-                        stepSize: 20
-                    }
+                        beginAtZero: false,
+                        max: 90,
+                        min: 10,
+                        stepSize: 15,
+                        callback: function(value, index, values) {
+                            if(index === 1) {
+                                return "<" + value
+                            }
+                            if (index === 6) {
+                                return ">" + value
+                            }
+
+                            return value
+                        }
+                    },
                 }
             }
 
