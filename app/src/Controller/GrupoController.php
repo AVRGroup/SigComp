@@ -91,5 +91,32 @@ class GrupoController
         return $response->withRedirect($this->container->router->pathFor('verGrupo'));
     }
 
+    public function edit(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+
+        $this->container->view['grupos'] = $grupos;
+
+        return $this->container->view->render($response, 'editGrupo.tpl');
+    }
+
+    public function update(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+
+        foreach ($grupos as $grupo) {
+            $ordem = $request->getParsedBodyParam("posicao-grupo-". $grupo->getId());
+            if(isset($ordem)) {
+                $grupo->setNome($ordem . '-' . $grupo->getNome());
+                $this->container->grupoDAO->save($grupo);
+            }
+        }
+
+        return $response->withRedirect($this->container->router->pathFor('verGrupo'));
+    }
+
 
 }

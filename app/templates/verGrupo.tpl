@@ -11,10 +11,12 @@
         <div class="form-row mt-4">
             <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                 {foreach $todasGrades as $grade}
-                    <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/editar-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
+                    <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/ver-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
                 {/foreach}
             </select>
         </div>
+
+        <a class="btn btn-success mt-4" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
 
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">

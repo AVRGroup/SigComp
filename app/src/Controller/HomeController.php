@@ -95,14 +95,13 @@ class HomeController
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
-        $this->container->view['grupos'] = $this->getGruposComPontuacao($user);
-
+        $grupos = $this->getGruposComPontuacao($user);
+        $this->container->view['grupos'] = $grupos;
         return $this->container->view->render($response, 'home.tpl');
     }
 
     public function getGruposComPontuacao(Usuario $usuario)
     {
-        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
         $notas = $usuario->getNotas();
 
         $gruposComPontuacao = [];
@@ -114,20 +113,20 @@ class HomeController
             $grupo = $disciplina->getGrupo();
 
             if(isset($grupo)) {
-                if(!isset($gruposComPontuacao[$grupo->getNome()])) {
-                    $gruposComPontuacao[$grupo->getNome()] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] = 1;
+                if(!isset($gruposComPontuacao[$grupo->getNomeInteiro()])) {
+                    $gruposComPontuacao[$grupo->getNomeInteiro()] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] = 1;
                 } else {
-                    $gruposComPontuacao[$grupo->getNome()] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] += 1;
+                    $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] += 1;
                 }
             } else {
-                if(!isset($gruposComPontuacao["Multidisciplinaridade"])) {
-                    $gruposComPontuacao["Multidisciplinaridade"] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] = 1;
+                if(!isset($gruposComPontuacao["3-Multidisciplinaridade"])) {
+                    $gruposComPontuacao["3-Multidisciplinaridade"] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] = 1;
                 } else {
-                    $gruposComPontuacao["Multidisciplinaridade"] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] += 1;
+                    $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] += 1;
                 }
             }
 
@@ -135,6 +134,16 @@ class HomeController
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
             $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasNoGrupo[$grupo];
+        }
+
+        ksort($gruposComPontuacao);
+
+        foreach ($gruposComPontuacao as $nomeGrupo => $valor) {
+            $nomeSemHifen = explode("-", $nomeGrupo)[1];
+
+            $gruposComPontuacao[$nomeSemHifen] = $valor;
+
+            unset($gruposComPontuacao[$nomeGrupo]);
         }
 
         return $gruposComPontuacao;

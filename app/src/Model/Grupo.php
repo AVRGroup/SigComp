@@ -49,7 +49,22 @@ class Grupo
      */
     public function getNome()
     {
+        $nome = explode('-', $this->nome);
+
+        return $nome[1];
+    }
+
+    public function getNomeInteiro()
+    {
         return $this->nome;
+    }
+
+
+    public function getOrdem()
+    {
+        $nome = explode('-', $this->nome);
+
+        return $nome[0];
     }
 
     /**
@@ -59,6 +74,7 @@ class Grupo
     {
         $this->nome = $nome;
     }
+
 
     /**
      * @return mixed

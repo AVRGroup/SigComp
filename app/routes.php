@@ -84,10 +84,12 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'], '/relatorio/periodizado', '\App\Controller\AdminController:listPeriodizadosAction')->setName('relatorioPeriodizado');
 
-        $this->get('/editar-grupo', '\App\Controller\GrupoController:index')->setName('verGrupo');
+        $this->get('/ver-grupo', '\App\Controller\GrupoController:index')->setName('verGrupo');
         $this->get('/create-grupo', '\App\Controller\GrupoController:create')->setName('createGrupo');
         $this->post('/store-grupo', '\App\Controller\GrupoController:store')->setName('storeGrupo');
         $this->post('/store-disciplina-grupo', '\App\Controller\GrupoController:storeDisciplinaGrupo')->setName('storeDisciplinaGrupo');
+        $this->get('/editar-grupos', '\App\Controller\GrupoController:edit')->setName('editGrupo');
+        $this->post('/update-grupos', '\App\Controller\GrupoController:update')->setName('updateGrupo');
 
 
         $this->get('/editar-grade', '\App\Controller\GradeController:index')->setName('verGrade');

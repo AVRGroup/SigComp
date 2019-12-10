@@ -608,7 +608,6 @@ class AdminController
 
     public function getGruposComPontuacao(Usuario $usuario)
     {
-        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
         $notas = $usuario->getNotas();
 
         $gruposComPontuacao = [];
@@ -620,20 +619,20 @@ class AdminController
             $grupo = $disciplina->getGrupo();
 
             if(isset($grupo)) {
-                if(!isset($gruposComPontuacao[$grupo->getNome()])) {
-                    $gruposComPontuacao[$grupo->getNome()] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] = 1;
+                if(!isset($gruposComPontuacao[$grupo->getNomeInteiro()])) {
+                    $gruposComPontuacao[$grupo->getNomeInteiro()] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] = 1;
                 } else {
-                    $gruposComPontuacao[$grupo->getNome()] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNome()] += 1;
+                    $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] += 1;
                 }
             } else {
-                if(!isset($gruposComPontuacao["Multidisciplinaridade"])) {
-                    $gruposComPontuacao["Multidisciplinaridade"] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] = 1;
+                if(!isset($gruposComPontuacao["3-Multidisciplinaridade"])) {
+                    $gruposComPontuacao["3-Multidisciplinaridade"] = $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] = 1;
                 } else {
-                    $gruposComPontuacao["Multidisciplinaridade"] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["Multidisciplinaridade"] += 1;
+                    $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
+                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] += 1;
                 }
             }
 
@@ -641,6 +640,16 @@ class AdminController
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
             $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasNoGrupo[$grupo];
+        }
+
+        ksort($gruposComPontuacao);
+
+        foreach ($gruposComPontuacao as $nomeGrupo => $valor) {
+            $nomeSemHifen = explode("-", $nomeGrupo)[1];
+
+            $gruposComPontuacao[$nomeSemHifen] = $valor;
+
+            unset($gruposComPontuacao[$nomeGrupo]);
         }
 
         return $gruposComPontuacao;

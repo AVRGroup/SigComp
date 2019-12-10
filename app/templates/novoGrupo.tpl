@@ -2,7 +2,7 @@
 
 {block name=content}
     <h3 class="text-center">Criar Novo Grupo</h3>
-    <a href="{base_url}/admin/editar-grupo" class="btn btn-primary mb-4">Voltar</a>
+    <a href="{base_url}/admin/ver-grupo" class="btn btn-primary mb-4">Voltar</a>
 
     <p>Grupo já cadastrados para seu curso:</p>
     <ul>
