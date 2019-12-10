@@ -7,6 +7,7 @@
     </div>
 
 
+
     <form action="{base_url}/admin/store-disciplina-grupo" method="post">
         <div class="form-row mt-4">
             <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
@@ -15,7 +16,6 @@
                 {/foreach}
             </select>
         </div>
-
         <a class="btn btn-success mt-4" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
 
         <table style="margin-top: 4%" id="tabela" class="table table-hover">

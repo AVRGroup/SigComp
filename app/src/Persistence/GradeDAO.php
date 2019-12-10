@@ -96,4 +96,5 @@ class GradeDAO extends BaseDAO
         }
         return $grades[0];
     }
+
 }
