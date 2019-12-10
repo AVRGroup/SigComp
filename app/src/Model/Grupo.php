@@ -51,7 +51,12 @@ class Grupo
     {
         $nome = explode('-', $this->nome);
 
-        return $nome[1];
+        if(isset($nome[1])) {
+            return $nome[1];
+        }
+
+        return $nome;
+
     }
 
     public function getNomeInteiro()
