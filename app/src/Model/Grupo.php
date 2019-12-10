@@ -55,7 +55,7 @@ class Grupo
             return $nome[1];
         }
 
-        return $nome;
+        return $nome[0];
 
     }
 
