@@ -258,7 +258,9 @@
     //Fim do contador de caracteres da pagina InformacoesPessoais
 
     $(function () {
-        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').popover({
+            html:true
+        })
     });
 
     //Botao da pargina de certificados para adicionar mais inputs

@@ -39,4 +39,13 @@ class GrupoDAO extends BaseDAO
 
         return $grupo;
     }
+
+    public function getQuantidadeDeDisciplinasPorGrupoPorCurso($curso)
+    {
+        $sql = "SELECT grupo_id, COUNT(*) FROM disciplina GROUP_BY grupo_id";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+        return $results;
+    }
 }

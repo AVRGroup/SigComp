@@ -16,7 +16,7 @@
             </select>
         </div>
 
-        <a class="btn btn-success mt-4" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
+        <a class="btn btn-success mt-4w" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
 
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">

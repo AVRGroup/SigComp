@@ -47,6 +47,8 @@ $app->group('', function () {
     $this->get('/oportunidade/{id: [0-9]+}', '\App\Controller\OportunidadeController:mostrarOportunidade');
     $this->get('/sair-impersonar', '\App\Controller\AdminController:sairImpersonar')->setName('sairImpersonar');
 
+    $this->get('/info-radar-chart', '\App\Controller\UserController:infoRadarChart');
+
     $this->group('/admin', function () {
 
         $this->map(['GET', 'POST'],'/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');

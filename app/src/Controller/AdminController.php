@@ -606,13 +606,12 @@ class AdminController
         return $this->container->view->render($response, 'home.tpl');
     }
 
-    public function getGruposComPontuacao(Usuario $usuario)
+    public function getGruposComPontuacao(Usuario $usuario, $isTotal = false)
     {
         $notas = $usuario->getNotas();
 
         $gruposComPontuacao = [];
-        $quantidadeDeDisciplinasNoGrupo = [];
-
+        $quantidadeDeDisciplinasRealizadasNoGrupo = [];
 
         foreach ($notas as $nota) {
             $disciplina = $nota->getDisciplina();
@@ -621,25 +620,25 @@ class AdminController
             if(isset($grupo)) {
                 if(!isset($gruposComPontuacao[$grupo->getNomeInteiro()])) {
                     $gruposComPontuacao[$grupo->getNomeInteiro()] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] = 1;
+                    $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] = 1;
                 } else {
                     $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo[$grupo->getNomeInteiro()] += 1;
+                    $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] += 1;
                 }
             } else {
                 if(!isset($gruposComPontuacao["3-Multidisciplinaridade"])) {
                     $gruposComPontuacao["3-Multidisciplinaridade"] = $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] = 1;
+                    $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] = 1;
                 } else {
                     $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
-                    $quantidadeDeDisciplinasNoGrupo["3-Multidisciplinaridade"] += 1;
+                    $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
                 }
             }
 
         }
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
-            $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasNoGrupo[$grupo];
+            $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
         }
 
         ksort($gruposComPontuacao);

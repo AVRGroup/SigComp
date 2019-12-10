@@ -325,9 +325,24 @@ class Usuario implements ToIdArrayInterface
      */
     public function getGrade()
     {
+        if(!isset($this->grade)) {
+            return 1;
+        }
         return $this->grade;
     }
 
+    public function getGradeId($container)
+    {
+        $grades = $container->gradeDAO->getAllByCurso($this->curso);
+
+        foreach ($grades as $grade) {
+            if($grade->getCodigo() == $this->grade) {
+                return $grade->getId();
+            }
+        }
+
+        return 1;
+    }
     /**
      * @param mixed $grade
      * @return Usuario

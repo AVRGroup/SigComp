@@ -117,8 +117,21 @@
                 </div>
 
                 {else}
-                    <div class="col-sm-4 col-md-4 col-lg-9 col-xs-12">
+                    <div class="col-lg-9 col-xs-12 text-center">
+                        <div class="col-sm-2 col-md-2 col-xs-2 float-right">
+                            <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                                    title="Informações"
+                                    data-content="Esse gráfico representa seu desepenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
+                                    afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
+                                ?
+                            </button>
+                        </div>
                         <canvas id="radar"></canvas>
+                        <div class="mt-3">
+                            <button onclick="" class="btn btn-success">Disciplinas já realizadas</>
+                            <button class="btn btn-primary ml-4">Todas as disciplinas</>
+                            <button class="btn btn-danger ml-4">Sobreposto</>
+                        </div>
                     </div>
                 {/if}
 
@@ -381,6 +394,7 @@
     <script src="{base_url}/js/croppie.js"></script>
     <script src="{base_url}/js/exif.js"></script>
 
+
     <script>
         var ctx = document.getElementById('percentilIra').getContext('2d');
         ctx.height = 200;
@@ -430,13 +444,38 @@
             }
         });
 
-        var grupos = {json_encode($grupos)}
+        var radarAtivo = 0
+        function setRadarAtivo (radar) {
+            radarAtivo = radar
+        }
+
+        var gruposJaRealizados = {json_encode($grupos)}
+        var gruposTodasDisciplinas = {json_encode($grupos)}
+        var gruposSobreposto = {json_encode($grupos)}
+
+        var grupos = []
         var nomeGrupos = []
         var valorGrupos = []
+
+        switch(radarAtivo) {
+            case 1:
+                grupos = gruposTodasDisciplinas
+                break
+            case 2:
+                break
+            default:
+                grupos = gruposJaRealizados
+        }
+
         for(let grupo in grupos) {
             nomeGrupos.push(grupo)
             valorGrupos.push(grupos[grupo])
         }
+
+        var datasetSobreposto = {
+            label: ""
+        }
+
         var radar = document.getElementById('radar').getContext('2d');
         var radarChart = new Chart(radar, {
             type: 'radar',
@@ -449,7 +488,9 @@
                         borderColor: "rgba(41, 128, 185, 0.8)",
                         lineTension: 0.02,
                         data: valorGrupos
-                    }
+                    },
+                    datasetSobreposto
+
                 ]
             },
             options: {
@@ -463,9 +504,9 @@
                 },
                 scale: {
                     ticks: {
-                        beginAtZero: false,
+                        beginAtZero: true,
                         max: 90,
-                        min: 10,
+                        min: 0,
                         stepSize: 15,
                         callback: function(value, index, values) {
                             if(index === 1) {
@@ -480,8 +521,6 @@
                     },
                 }
             }
-
         })
     </script>
-
 {/block}

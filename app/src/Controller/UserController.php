@@ -392,6 +392,16 @@ class UserController
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 
+    public function infoRadarChart(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $disciplinas = $this->container->disciplinaDAO->getByGrade($usuario->getGradeId($this->container));
+
+        $this->container->view['disciplinas'] = $disciplinas;
+
+        return $this->container->view->render($response, 'infoRadarChart.tpl');
+    }
 
 }
 

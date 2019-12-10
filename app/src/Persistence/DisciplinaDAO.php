@@ -68,5 +68,4 @@ class DisciplinaDAO extends BaseDAO
 
         return $disciplinas;
     }
-
 }
