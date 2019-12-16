@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Model\Grupo;
+use App\Model\GrupoDisciplinaCurso;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -39,6 +40,8 @@ class GrupoController
         $this->container->view['todasGrades'] = $todasGrades;
         $this->container->view['grupos'] = $grupos;
         $this->container->view['gradeSelecionada'] = $grade;
+        $this->container->view['container'] = $this->container;
+        $this->container->view['curso'] = $curso;
 
         return $this->container->view->render($response, 'verGrupo.tpl');
     }
@@ -72,23 +75,36 @@ class GrupoController
     public function storeDisciplinaGrupo(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $curso = $usuario->getCurso();
         $grade = $request->getParsedBodyParam('grade-selecionada');
         $grade = explode("?", $grade)[1];
         $codGrade = explode("=", $grade)[1];
 
-        $gradeId = $this->container->gradeDAO->getByCodigoCurso($codGrade, $usuario->getCurso());
+        $grade = $this->container->gradeDAO->getByCodigoCurso($codGrade, $curso);
 
-        $disciplinas = $this->container->disciplinaDAO->getByGrade($gradeId);
+        $disciplinas = $this->container->disciplinaDAO->getByGrade($grade->getId());
+
 
         foreach ($disciplinas as $disciplina) {
             $grupoId = $request->getParsedBodyParam($disciplina->getCodigo());
 
-            $grupo = $this->container->grupoDAO->getGrupoById($grupoId);
-            if(isset($grupo) && sizeof($grupo) > 0) {
-                $grupo = $grupo[0];
+            if($grupoId) {
+                $grupoDisciplina = $this->container->grupoDisciplinaCursoDAO->getByDisciplinaCurso($disciplina->getId(), $curso);
 
-                $disciplina->setGrupo($grupo);
-                $this->container->disciplinaDAO->save($disciplina);
+                if(isset($grupoDisciplina)) {
+                    $this->container->grupoDisciplinaCursoDAO->delete($grupoDisciplina);
+                }
+
+                $grupoDisciplina = new GrupoDisciplinaCurso();
+                $grupoDisciplina->setCurso($curso);
+                $grupoDisciplina->setGrupo($grupoId);
+                $grupoDisciplina->setDisciplina($disciplina->getId());
+
+                try {
+                    $this->container->grupoDisciplinaCursoDAO->save($grupoDisciplina);
+                } catch (\Exception $e) {
+                    die(var_dump($e->getMessage()));
+                }
             }
         }
 

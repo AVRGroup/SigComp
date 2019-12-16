@@ -2,6 +2,7 @@
 
 use App\Persistence\DisciplinaDAO;
 use App\Persistence\GrupoDAO;
+use App\Persistence\GrupoDisciplinaCursoDAO;
 use App\Persistence\NotaDAO;
 use App\Persistence\OportunidadeDAO;
 use App\Persistence\UsuarioDAO;
@@ -30,6 +31,7 @@ use Slim\Views\Smarty;
  * @property OportunidadeDAO oportunidadeDAO
  * @property QuestaoDAO questaoDAO
  * @property GrupoDAO grupoDAO
+ * @property GrupoDisciplinaCursoDAO grupoDisciplinaCursoDAO
  * @property Smarty view
  * @property EntityManager db
  */
@@ -137,6 +139,10 @@ class Container extends \Slim\Container
 
         $this['grupoDAO'] = function () {
             return new GrupoDAO($this->db);
+        };
+
+        $this['grupoDisciplinaCursoDAO'] = function () {
+            return new GrupoDisciplinaCursoDAO($this->db);
         };
     }
 

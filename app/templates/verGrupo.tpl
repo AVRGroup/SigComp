@@ -36,7 +36,7 @@
                             <option value="">Selecione um grupo</option>
                             {foreach $grupos as $grupo}
                                 <option value="{$grupo->getId()}"
-                                        {if isset($disciplina->getGrupo()) && $disciplina->getGrupo()->getId() == $grupo->getId() } selected {/if}>
+                                        {if isset($disciplina->getGrupo($container, $curso)) && $disciplina->getGrupo($container, $curso)->getId() == $grupo->getId() } selected {/if}>
                                     {$grupo->getNome()}
                                 </option>
                             {/foreach}
