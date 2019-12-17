@@ -483,14 +483,11 @@
                 labels: nomeGrupos,
                 datasets: [
                     {
-                        label: "Como está seu desempenho nas diversas competências do seu curso",
                         backgroundColor: "rgba(41, 128, 185, 0.5)",
                         borderColor: "rgba(41, 128, 185, 0.8)",
                         lineTension: 0.02,
-                        data: valorGrupos
+                        data: valorGrupos,
                     },
-                    datasetSobreposto
-
                 ]
             },
             options: {
@@ -498,8 +495,21 @@
                     onClick: function (e) {
                         e.stopPropagation();
                     },
+                    display: false,
                     labels: {
                         boxWidth: 0
+                    }
+                },
+                title: {
+                    display: true,
+                    text: "Seu desempenho nas diversas competências do seu curso"
+                },
+                tooltips: {
+                    displayColors: false,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
+                        }
                     }
                 },
                 scale: {
