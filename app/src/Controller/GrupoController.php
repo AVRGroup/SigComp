@@ -31,7 +31,7 @@ class GrupoController
         }
 
         if(!isset($grade)) {
-            return $response->withRedirect($this->container->router->pathFor('home'));
+            return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
         }
 
         $disciplinas = $this->container->disciplinaDAO->getByGrade($grade->getId());

@@ -518,6 +518,7 @@
                         max: 90,
                         min: 0,
                         stepSize: 15,
+                        backdropColor: '#fafafa',
                         callback: function(value, index, values) {
                             if(index === 1) {
                                 return "<" + value
