@@ -13,6 +13,14 @@
         {/foreach}
     </ul>
 
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <b>Atenção!</b> Só é possível cadastrar 4 grupos para um curso. O 5º grupo sempre será reservado para as disciplinas eletivas e optativas.
+        Seu nome padrão é "Multidisciplinaridade", mas pode ser editado.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <div class="form-group">
         <form action="{base_url}/admin/store-grupo" method="post">
             <label for="nome" class="mt-4"><strong>Nome do grupo:</strong></label>
