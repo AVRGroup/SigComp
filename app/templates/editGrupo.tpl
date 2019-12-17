@@ -24,7 +24,10 @@
                                 <option value="5" {if 5 == $grupo->getOrdem()} selected {/if}>5º</option>
                             </select>
                         </td>
-                        <td></td>
+                        <td>
+                            <a href="#" style="display: inline-block; margin-left: 10%"><i class="fa fa-trash" style="color: #fa5d49"></i></a>
+                            <a href="{base_url}/admin/change-name/{$grupo->getId()}" style="display: inline-block; margin-left: 10%"><i class="fa fa-edit" style="color: #817dfa"></i></a>
+                        </td>
                     </tr>
                 {/foreach}
             </tbody>

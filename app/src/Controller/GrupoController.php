@@ -126,6 +126,8 @@ class GrupoController
         return $this->container->view->render($response, 'editGrupo.tpl');
     }
 
+
+
     public function update(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
@@ -142,5 +144,32 @@ class GrupoController
         return $response->withRedirect($this->container->router->pathFor('verGrupo'));
     }
 
+    public function changeNameForm(Request $request, Response $response, $args)
+    {
+        $grupoId = $request->getAttribute('grupo');
 
+        $grupo = $this->container->grupoDAO->getGrupoById($grupoId)[0];
+
+        $this->container->view['grupo'] = $grupo;
+
+        return $this->container->view->render($response, 'changeNameForm.tpl');
+    }
+
+    public function changeNameAction(Request $request, Response $response, $args)
+    {
+        $grupoId = $request->getAttribute('grupo');
+
+        $nome = $request->getParsedBodyParam('nome');
+
+        $grupo = $this->container->grupoDAO->getGrupoById($grupoId)[0];
+        $ordem = $grupo->getOrdem();
+
+        $nome = $ordem . '-' . $nome;
+
+        $grupo->setNome($nome);
+        $this->container->grupoDAO->save($grupo);
+
+
+        return $response->withRedirect($this->container->router->pathFor('editGrupo'));
+    }
 }
