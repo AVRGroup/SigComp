@@ -30,6 +30,10 @@ class GrupoController
             $grade = $this->container->gradeDAO->getFirstByCurso($curso);
         }
 
+        if(!isset($grade)) {
+            return $response->withRedirect($this->container->router->pathFor('home'));
+        }
+
         $disciplinas = $this->container->disciplinaDAO->getByGrade($grade->getId());
 
         $todasGrades = $this->container->gradeDAO->getAllByCurso($curso);

@@ -121,7 +121,7 @@
                         <div class="col-sm-2 col-md-2 col-xs-2 float-right">
                             <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                     title="Informações"
-                                    data-content="Esse gráfico representa seu desepenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
+                                    data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
                                     afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
                                 ?
                             </button>

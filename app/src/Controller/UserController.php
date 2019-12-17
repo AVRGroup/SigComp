@@ -399,6 +399,8 @@ class UserController
         $disciplinas = $this->container->disciplinaDAO->getByGrade($usuario->getGradeId($this->container));
 
         $this->container->view['disciplinas'] = $disciplinas;
+        $this->container->view['curso'] = $usuario->getCurso();
+        $this->container->view['container'] = $this->container;
 
         return $this->container->view->render($response, 'infoRadarChart.tpl');
     }

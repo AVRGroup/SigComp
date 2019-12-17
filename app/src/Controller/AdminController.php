@@ -615,7 +615,7 @@ class AdminController
 
         foreach ($notas as $nota) {
             $disciplina = $nota->getDisciplina();
-            $grupo = $disciplina->getGrupo();
+            $grupo = $disciplina->getGrupo($this->container, $usuario->getCurso());
 
             if(isset($grupo)) {
                 if(!isset($gruposComPontuacao[$grupo->getNomeInteiro()])) {

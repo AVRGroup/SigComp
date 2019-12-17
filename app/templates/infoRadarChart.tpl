@@ -17,7 +17,7 @@
                 {foreach $disciplinas as $disciplina}
                     <tr>
                         <td>{$disciplina->getNome()}</td>
-                        <td>{$disciplina->getGrupo()->getNome()}</td>
+                        <td>{$disciplina->getGrupo($container, $curso)->getNome()}</td>
                     </tr>
                 {/foreach}
             </tbody>
