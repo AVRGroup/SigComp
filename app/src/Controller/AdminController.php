@@ -610,35 +610,39 @@ class AdminController
     {
         $notas = $usuario->getNotas();
 
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+
         $gruposComPontuacao = [];
         $quantidadeDeDisciplinasRealizadasNoGrupo = [];
+
+        foreach ($grupos as $grupo) {
+            $gruposComPontuacao[$grupo->getNomeInteiro()] = 0;
+            $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] = 0;
+        }
+        $gruposComPontuacao["3-Multidisciplinaridade"] = 0;
+        $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] = 0;
 
         foreach ($notas as $nota) {
             $disciplina = $nota->getDisciplina();
             $grupo = $disciplina->getGrupo($this->container, $usuario->getCurso());
 
             if(isset($grupo)) {
-                if(!isset($gruposComPontuacao[$grupo->getNomeInteiro()])) {
-                    $gruposComPontuacao[$grupo->getNomeInteiro()] = $nota->getValor();
-                    $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] = 1;
-                } else {
-                    $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
-                    $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] += 1;
-                }
+                $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
+                $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] += 1;
             } else {
-                if(!isset($gruposComPontuacao["3-Multidisciplinaridade"])) {
-                    $gruposComPontuacao["3-Multidisciplinaridade"] = $nota->getValor();
-                    $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] = 1;
-                } else {
-                    $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
-                    $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
-                }
+                $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
+                $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
             }
 
         }
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
-            $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
+            if ($quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] == 0) {
+                $gruposComPontuacao[$grupo] = 0;
+            }
+            else {
+                $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
+            }
         }
 
         ksort($gruposComPontuacao);
