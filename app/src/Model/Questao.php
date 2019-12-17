@@ -12,14 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Questao
 {
-
-    //Tipos de questionário
-    const AVALIACAO_PESSOAL = 0;
-
-    const AVALIACAO_TURMA = 1;
-
-    const AVALIACAO_PROFESSOR = 2;
-
     //Tipos de questões
     const FECHADA = 0;
 
@@ -33,7 +25,7 @@ class Questao
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=false)
      */
     protected $numero;
 
@@ -52,23 +44,21 @@ class Questao
     protected $tipo = 0;
     
     /**
-     * 0: Avaliacao_Pessoal
-     * 1: Avaliacao_Turma
-     * 2: Avaliacao_Professor
-     *
-     * @ORM\Column(type="smallint", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Questionario", inversedBy="questoes_questionario")
+     * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
      */
-    protected $tipo_questionario = 0;
+    protected $questionario;
 
     /**
-     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="questao")
-     * @ORM\JoinColumn(name="questao", referencedColumnName="id", nullable=false)
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")
+     * @ORM\JoinColumn(name="avaliacao", referencedColumnName="id", nullable=false)
      */
-    protected $respostas_avaliacao;
+    protected $resposta_avaliacao;
 
     public function __construct()
     {
     }
+
 
     /**
      * @return mixed
@@ -145,18 +135,18 @@ class Questao
     /**
      * @return mixed
      */
-    public function getTipoQuestionario()
+    public function getQuestionario()
     {
-        return $this->tipo_questionario;
+        return $this->questionario;
     }
 
     /**
      * @param mixed $tipo_questionario
      * @return Questao
      */
-    public function setTipoQuestionario($tipo_questionario)
+    public function setQuestionario($questionario)
     {
-        $this->tipo_questionario = $tipo_questionario;
+        $this->questionario = $questionario;
         return $this;
     }
 

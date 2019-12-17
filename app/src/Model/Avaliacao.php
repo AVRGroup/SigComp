@@ -26,27 +26,33 @@ class Avaliacao
     protected $data;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="avaliacao")
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="avaliacoes_aluno")
      * @ORM\JoinColumn(name="aluno", referencedColumnName="id", nullable=false)
      */
     protected $aluno;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Turma", inversedBy="avaliacao")
+     * @ORM\ManyToOne(targetEntity="Turma", inversedBy="avaliacoes_turma")
      * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
      */
     protected $turma;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Questionario", inversedBy="avaliacoes_questionario")
+     * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
+     */
+    protected $questionario;
+
+    /**
      * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")
      * @ORM\JoinColumn(name="avaliacao", referencedColumnName="id", nullable=false)
      */
-    protected $respostas_avaliacao;
+    protected $resposta_avaliacao;
 
     public function __construct()
     {
-        $this->alunos = new ArrayCollection();
-        $this->turmas = new ArrayCollection();
+        $this->aluno = new ArrayCollection();
+        $this->turma = new ArrayCollection();
     }
 
     /**

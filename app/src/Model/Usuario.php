@@ -202,28 +202,22 @@ class Usuario implements ToIdArrayInterface
     protected $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=true)
+     * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="aluno")
+     * @ORM\JoinColumn(name="aluno", referencedColumnName="id", nullable=true)
      */
-    protected $avaliacoes;
+    protected $avaliacoes_aluno;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfessorTurma", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
+     * @ORM\OneToMany(targetEntity="ProfessorTurma", mappedBy="professor")
+     * @ORM\JoinColumn(name="professor", referencedColumnName="id", nullable=false)
      */
     protected $turmas_professor;
-
-    /**
-     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="usuario")
-     * @ORM\JoinColumn(name="usuario", referencedColumnName="id", nullable=false)
-     */
-    protected $respostas_avaliacao;
 
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
         $this->notas = new ArrayCollection();
-        $this->avaliacoes = new ArrayCollection();
+        $this->avaliacoes_aluno = new ArrayCollection();
         $this->turmas_professor = new ArrayCollection();
     }
 

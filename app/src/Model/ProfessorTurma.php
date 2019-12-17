@@ -20,7 +20,7 @@ class ProfessorTurma
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="professor_turma")
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="turmas_professor")
      * @ORM\JoinColumn(name="professor", referencedColumnName="id", nullable=false)
      */
     protected $professor;
@@ -30,6 +30,12 @@ class ProfessorTurma
      * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
      */
     protected $turma;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="professor_turma")
+     * @ORM\JoinColumn(name="professor_turma", referencedColumnName="id", nullable=false)
+     */
+    protected $avaliacao;
 
     public function __construct()
     {

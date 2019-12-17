@@ -22,16 +22,10 @@ class RespostaAvaliacao
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="resposta_avaliacao")
-     * @ORM\JoinColumn(name="professor", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ProfessorTurma", inversedBy="avaliacao")
+     * @ORM\JoinColumn(name="professor_turma", referencedColumnName="id", nullable=true)
      */
-    protected $professor;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Turma", inversedBy="resposta_avaliacao")
-     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=true)
-     */
-    protected $turma;
+    protected $professor_turma;
 
     /**
      * @ORM\ManyToOne(targetEntity="Avaliacao", inversedBy="resposta_avaliacao")

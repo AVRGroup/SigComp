@@ -26,10 +26,20 @@ class Turma
     protected $codigo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Disciplina")
+     * @ORM\ManyToOne(targetEntity="Disciplina", inversedBy="turmas_disciplina")
      * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
      */
     protected $disciplina;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="turma")
+     * @ORM\JoinColumn(name="turma", referencedColumnName="id", nullable=false)
+     */
+    protected $avaliacoes_turma;
+
+    public function __construct()
+    {
+    }
 
     /**
      * @return mixed

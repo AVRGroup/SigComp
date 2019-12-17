@@ -50,10 +50,11 @@ class QuestaoDAO extends BaseDAO
      * @param $tipo_questionario
      * @return Questao[] |null
      */
-    public function getAllByTipoQuestionario($tipo_questionario)
+    public function getAllByTipoQuestionario($periodo, $tipo_questionario)
     {
         try {
-            $query = $this->em->createQuery("SELECT q FROM App\Model\Questao AS q WHERE q.tipo_questionario = :tipo_questionario");
+            $query = $this->em->createQuery("SELECT q FROM App\Model\Questao AS q WHERE q.questionario IN (SELECT id FROM App\Model\Questionario as qt WHERE qt.periodo = :periodo AND qt.tipo_questionario = :tipo_questionario)");
+            $query->setParameter('periodo', $periodo);
             $query->setParameter('tipo_questionario', $tipo_questionario);
             $questoes = $query->getResult();
         } catch (\Exception $e) {
