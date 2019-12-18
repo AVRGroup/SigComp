@@ -1,8 +1,10 @@
 {extends 'layout.tpl'}
 {block name=content}
-
 <div class="container">
     <h3 class="text-center mb-5">Editar Grupos</h3>
+
+    <a href="{base_url}/admin/ver-grupo" class="btn btn-primary mb-4">Voltar</a>
+
     <form action="{base_url}/admin/update-grupos" method="post">
         <table class="table table-hover">
             <thead class="thead-light">
@@ -25,7 +27,7 @@
                             </select>
                         </td>
                         <td>
-                            <a href="#" style="display: inline-block; margin-left: 10%"><i class="fa fa-trash" style="color: #fa5d49"></i></a>
+                            <button type="button" class="btn btn-link" onclick="alertar('{$grupo->getId()}', '{$grupo->getNome()}')" style="display: inline-block; margin-left: 10%"><i class="fa fa-trash" style="color: #fa5d49"></i></button>
                             <a href="{base_url}/admin/change-name/{$grupo->getId()}" style="display: inline-block; margin-left: 10%"><i class="fa fa-edit" style="color: #817dfa"></i></a>
                         </td>
                     </tr>
@@ -38,4 +40,15 @@
 
 </div>
 
+
+    <script type="application/javascript">
+        function alertar (id, nome) {
+            var resposta = confirm("Tem certeza que deseja apagar o grupo " + nome + "?")
+
+            if(resposta) {
+                window.location.href = "{base_url}/admin/destroy/" + id;
+            }
+        }
+
+    </script>
 {/block}

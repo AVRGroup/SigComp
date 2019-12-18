@@ -52,4 +52,11 @@ class GrupoDisciplinaCursoDAO extends BaseDAO
 
         return $gdc[0];
     }
+
+    public function deleteByGrupoCurso($grupoId, $curso)
+    {
+        $sql = "DELETE FROM grupo_disciplina_curso WHERE grupo = $grupoId AND curso = '$curso'";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
 }

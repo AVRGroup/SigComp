@@ -94,6 +94,7 @@ $app->group('', function () {
         $this->post('/update-grupos', '\App\Controller\GrupoController:update')->setName('updateGrupo');
         $this->get('/change-name/{grupo: [0-9]+}', '\App\Controller\GrupoController:changeNameForm')->setName('changeNameForm');
         $this->post('/change-name-action/{grupo: [0-9]+}', '\App\Controller\GrupoController:changeNameAction')->setName('changeNameAction');
+        $this->get('/destroy/{grupo: [0-9]+}', '\App\Controller\GrupoController:destroy')->setName('destroyGrupo');
 
 
         $this->get('/editar-grade', '\App\Controller\GradeController:index')->setName('verGrade');

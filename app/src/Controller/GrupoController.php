@@ -172,4 +172,18 @@ class GrupoController
 
         return $response->withRedirect($this->container->router->pathFor('editGrupo'));
     }
+
+    public function destroy(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $grupoId = $request->getAttribute('grupo');
+        $grupo = $this->container->grupoDAO->getGrupoById($grupoId)[0];
+
+        $this->container->grupoDisciplinaCursoDAO->deleteByGrupoCurso($grupoId, $usuario->getCurso());
+        
+        $this->container->grupoDAO->delete($grupo);
+
+        return $response->withRedirect($this->container->router->pathFor('editGrupo'));
+    }
 }
