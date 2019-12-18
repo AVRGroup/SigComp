@@ -128,9 +128,9 @@
                         </div>
                         <canvas id="radar"></canvas>
                         <div class="mt-3">
-                            <button onclick="" class="btn btn-success">Disciplinas já realizadas</>
-                            <button class="btn btn-primary ml-4">Todas as disciplinas</>
-                            <button class="btn btn-danger ml-4">Sobreposto</>
+                            <button onclick="setRadarRealizadas()" class="btn btn-success">Disciplinas já realizadas</>
+                            <button onclick="setRadarTodas(1)" class="btn btn-primary ml-4">Todas as disciplinas</>
+                            <button onclick="setRadarSobreposto()" class="btn btn-danger ml-4">Sobreposto</>
                         </div>
                     </div>
                 {/if}
@@ -444,94 +444,156 @@
             }
         });
 
-        var radarAtivo = 0
-        function setRadarAtivo (radar) {
-            radarAtivo = radar
-        }
-
         var gruposJaRealizados = {json_encode($grupos)}
-        var gruposTodasDisciplinas = {json_encode($grupos)}
+        var gruposTodasDisciplinas = {json_encode($gruposCursoInteiro)}
         var gruposSobreposto = {json_encode($grupos)}
 
         var grupos = []
+        var gruposTotal = []
         var nomeGrupos = []
         var valorGrupos = []
+        var valorGruposTodos = []
 
-        switch(radarAtivo) {
-            case 1:
-                grupos = gruposTodasDisciplinas
-                break
-            case 2:
-                break
-            default:
-                grupos = gruposJaRealizados
-        }
+        var numeroRadar = 0
 
+        grupos = gruposJaRealizados
+        gruposTotal = gruposTodasDisciplinas
         for(let grupo in grupos) {
             nomeGrupos.push(grupo)
             valorGrupos.push(grupos[grupo])
+            valorGruposTodos.push(gruposTotal[grupo])
         }
 
-        var datasetSobreposto = {
-            label: ""
-        }
 
         var radar = document.getElementById('radar').getContext('2d');
-        var radarChart = new Chart(radar, {
-            type: 'radar',
-            data: {
+
+        var opcoes = {
+            legend: {
+                onClick: function (e) {
+                    e.stopPropagation();
+                },
+                display: false,
+                    labels: {
+                    boxWidth: 0
+                }
+            },
+            title: {
+                display: true,
+                    text: "Seu desempenho nas diversas competências do seu curso"
+            },
+            tooltips: {
+                displayColors: false,
+                    callbacks: {
+                    label: function (tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
+                    }
+                }
+            },
+            scale: {
+                ticks: {
+                    beginAtZero: true,
+                        max: 90,
+                        min: 0,
+                        stepSize: 15,
+                        backdropColor: '#fafafa',
+                        callback: function (value, index, values) {
+                        if (index === 1) {
+                            return "<" + value
+                        }
+                        if (index === 6) {
+                            return ">" + value
+                        }
+
+                        return value
+                    }
+                },
+            }
+        }
+
+        if(numeroRadar === 0) {
+            var radarChart = new Chart(radar, {
+                type: 'radar',
+                data: {
+                    labels: nomeGrupos,
+                    datasets: [
+                        {
+                            backgroundColor: "rgba(41, 128, 185, 0.5)",
+                            borderColor: "rgba(41, 128, 185, 0.8)",
+                            lineTension: 0.02,
+                            data: valorGrupos,
+                        },
+                    ]
+                },
+                options: opcoes
+            })
+        } else {
+            var radarChart = new Chart(radar, {
+                type: 'radar',
+                data: {
+                    labels: nomeGrupos,
+                    datasets: [
+                        {
+                            backgroundColor: "rgba(41, 128, 185, 0.5)",
+                            borderColor: "rgba(41, 128, 185, 0.8)",
+                            lineTension: 0.02,
+                            data: valorGruposTodos,
+                        },
+                    ]
+                },
+                options: opcoes
+            })
+        }
+
+
+        function setRadarRealizadas() {
+            radarChart.config.data = {
                 labels: nomeGrupos,
                 datasets: [
                     {
                         backgroundColor: "rgba(41, 128, 185, 0.5)",
                         borderColor: "rgba(41, 128, 185, 0.8)",
                         lineTension: 0.02,
-                        data: valorGrupos,
-                    },
+                        data: valorGrupos
+                    }
                 ]
-            },
-            options: {
-                legend: {
-                    onClick: function (e) {
-                        e.stopPropagation();
-                    },
-                    display: false,
-                    labels: {
-                        boxWidth: 0
-                    }
-                },
-                title: {
-                    display: true,
-                    text: "Seu desempenho nas diversas competências do seu curso"
-                },
-                tooltips: {
-                    displayColors: false,
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
-                        }
-                    }
-                },
-                scale: {
-                    ticks: {
-                        beginAtZero: true,
-                        max: 90,
-                        min: 0,
-                        stepSize: 15,
-                        backdropColor: '#fafafa',
-                        callback: function(value, index, values) {
-                            if(index === 1) {
-                                return "<" + value
-                            }
-                            if (index === 6) {
-                                return ">" + value
-                            }
-
-                            return value
-                        }
-                    },
-                }
             }
-        })
+            radarChart.update()
+        }
+
+        function setRadarTodas() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(250,93,73,0.5)",
+                        borderColor: "rgba(250,93,73,0.8)",
+                        lineTension: 0.02,
+                        data: valorGruposTodos
+                    }
+                ]
+            }
+            radarChart.update()
+        }
+
+        function setRadarSobreposto() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos
+                    },
+                    {
+                        backgroundColor: "rgba(250,93,73,0.3)",
+                        borderColor: "rgba(250,93,73,0.5)",
+                        lineTension: 0.02,
+                        data: valorGruposTodos
+                    }
+                ]
+            }
+            radarChart.update()
+        }
     </script>
 {/block}

@@ -97,32 +97,53 @@ class HomeController
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
         $grupos = $this->getGruposComPontuacao($user);
         $this->container->view['grupos'] = $grupos;
+        $this->container->view['gruposCursoInteiro'] = $this->getGruposComPontuacao($usuario, true);
+
         return $this->container->view->render($response, 'home.tpl');
     }
 
-    public function getGruposComPontuacao(Usuario $usuario)
+    public function getGruposComPontuacao(Usuario $usuario, $isTotal = false)
     {
-        $notas = $usuario->getNotas();
+        $disciplinas = $this->container->disciplinaDAO->getByGrade($usuario->getGradeId($this->container));
+        $quantidadeDeDisciplinasRealizadasNoCurso = [];
 
-        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+        foreach ($disciplinas as $disciplina) {
+            $grupo = $disciplina->getGrupo($this->container, $usuario->getCurso());
+            $nomeGrupo = $grupo->getNomeInteiro();
+            if(!isset($quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo])) {
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] = 0;
+            } else {
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] += 1;
+            }
+        }
 
         $gruposComPontuacao = [];
         $quantidadeDeDisciplinasRealizadasNoGrupo = [];
 
+        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
         foreach ($grupos as $grupo) {
-            $gruposComPontuacao[$grupo->getNomeInteiro()] = 0;
-            $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] = 0;
+            $nomeGrupo = $grupo->getNomeInteiro();
+            $gruposComPontuacao[$nomeGrupo] = 0;
+            $quantidadeDeDisciplinasRealizadasNoGrupo[$nomeGrupo] = 0;
         }
+
         $gruposComPontuacao["3-Multidisciplinaridade"] = 0;
         $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] = 0;
 
+        $notas = $usuario->getNotas();
         foreach ($notas as $nota) {
             $disciplina = $nota->getDisciplina();
+
+            if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Rep Nota" || $nota->getEstado() == "Reprovado" || $nota->getEstado() == "Rep Freq" || $nota->getEstado() == "Sem Conceito") {
+                continue;
+            }
+
             $grupo = $disciplina->getGrupo($this->container, $usuario->getCurso());
 
             if(isset($grupo)) {
-                $gruposComPontuacao[$grupo->getNomeInteiro()] += $nota->getValor();
-                $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo->getNomeInteiro()] += 1;
+                $nomeGrupo = $grupo->getNomeInteiro();
+                $gruposComPontuacao[$nomeGrupo] += $nota->getValor();
+                $quantidadeDeDisciplinasRealizadasNoGrupo[$nomeGrupo] += 1;
             } else {
                 $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
                 $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
@@ -130,12 +151,19 @@ class HomeController
 
         }
 
+        $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
+
         foreach ($gruposComPontuacao as $grupo => $valor) {
-            if ($quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] == 0) {
-                $gruposComPontuacao[$grupo] = 0;
-            }
-            else {
-                $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
+            if ($isTotal) {
+                echo "$grupo ==> $quantidadeDeDisciplinasRealizadasNoCurso[$grupo] <br>";
+                $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoCurso[$grupo];
+            } else {
+                echo "$grupo ==> $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] <br>";
+                if ($quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] == 0) {
+                    $gruposComPontuacao[$grupo] = 0;
+                } else {
+                    $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
+                }
             }
         }
 
