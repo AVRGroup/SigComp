@@ -2,6 +2,8 @@
 {extends 'layout.tpl'}
 {block name=content}
     <div class="container">
+        <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
+
         <div class="row">
             <div class="col-sm-4 col-md-4 col-lg-3 col-xs-12">
                 <div class="text-center">
@@ -50,7 +52,6 @@
 
             {if $usuario->isAluno() && (isset($isAdmin) && !$isAdmin)}
             <div class="col-sm-8 col-md-8 col-lg-9 col-xs-12">
-                <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
                 <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
                 <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
@@ -115,28 +116,26 @@
                 <div class="progress" style="height: 20px;">
                     <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
                 </div>
-
-                {else}
-                    <div class="col-lg-9 col-xs-12 text-center">
-                        <div class="col-sm-2 col-md-2 col-xs-2 float-right">
-                            <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
-                                    title="Informações"
-                                    data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
-                                    afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
-                                ?
-                            </button>
-                        </div>
-                        <canvas id="radar"></canvas>
-                        <div class="mt-3">
-                            <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                            <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
-                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
-                        </div>
-                    </div>
-                {/if}
-
-
             </div>
+
+            {else}
+                <div class="col-lg-9 col-xs-12 text-center">
+                    <div class="col-sm-2 col-md-2 col-xs-2 float-right">
+                        <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                                title="Informações"
+                                data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
+                                afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
+                            ?
+                        </button>
+                    </div>
+                    <canvas id="radar"></canvas>
+                    <div class="mt-3">
+                        <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                        <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
+                        <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                    </div>
+                </div>
+            {/if}
         </div>
 
         <div class="row">
