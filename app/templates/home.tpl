@@ -395,54 +395,57 @@
 
 
     <script>
-        var ctx = document.getElementById('percentilIra').getContext('2d');
-        ctx.height = 200;
+        var element = document.getElementById('percentilIra');
+        if(element) {
+            var ctx = element.getContext('2d')
 
-        var posicao = document.getElementById('posicao').value;
+            ctx.height = 200;
 
-        var chart = new Chart(ctx, {
-            type: 'horizontalBar',
+            var posicao = document.getElementById('posicao').value;
 
-            data: {
-                labels: ['Sua Posição'],
-                datasets: [{
-                    label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
-                    data: [posicao, 100, 0],
-                    backgroundColor: [
-                        'rgba(41, 128, 185, 0.4)'
-                    ],
-                    borderColor: [
-                        'rgba(41, 128, 185, 1.0)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                    enabled: false
-                },
-                legend: {
-                    onClick: function (e) {
-                        e.stopPropagation();
-                    },
-                    labels: {
-                        boxWidth: 0
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            stepSize: 25,
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
+            var chart = new Chart(ctx, {
+                type: 'horizontalBar',
+
+                data: {
+                    labels: ['Sua Posição'],
+                    datasets: [{
+                        label: 'Seu IRA é maior que ' + posicao + '% dos alunos do seu curso',
+                        data: [posicao, 100, 0],
+                        backgroundColor: [
+                            'rgba(41, 128, 185, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(41, 128, 185, 1.0)'
+                        ],
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        enabled: false
+                    },
+                    legend: {
+                        onClick: function (e) {
+                            e.stopPropagation();
+                        },
+                        labels: {
+                            boxWidth: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                stepSize: 25,
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            }
+                        }]
+                    }
                 }
-            }
-        });
-
+            });
+        }
         var gruposJaRealizados = {json_encode($grupos)}
         var gruposTodasDisciplinas = {json_encode($gruposCursoInteiro)}
         var gruposSobreposto = {json_encode($grupos)}
