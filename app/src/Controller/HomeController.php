@@ -159,12 +159,19 @@ class HomeController
         $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
+
             if( $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] > $quantidadeDeDisciplinasRealizadasNoCurso[$grupo]) {
                 $quantidadeDeDisciplinasRealizadasNoCurso[$grupo] = $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
             }
 
             if ($isTotal) {
-                $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoCurso[$grupo];
+                if($quantidadeDeDisciplinasRealizadasNoCurso[$grupo] == 0) {
+                    $gruposComPontuacao[$grupo] = 0;
+                }
+                else {
+                    $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoCurso[$grupo];
+                }
+
             } else {
                 if ($quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] == 0) {
                     $gruposComPontuacao[$grupo] = 0;
@@ -172,6 +179,7 @@ class HomeController
                     $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
                 }
             }
+
         }
 
         ksort($gruposComPontuacao);
