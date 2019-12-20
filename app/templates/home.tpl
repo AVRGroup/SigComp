@@ -492,18 +492,14 @@
             scale: {
                 ticks: {
                     beginAtZero: true,
-                        max: 90,
+                        max: 100,
                         min: 0,
-                        stepSize: 15,
+                        stepSize: 20,
                         backdropColor: '#fafafa',
                         callback: function (value, index, values) {
                         if (index === 1) {
                             return "<" + value
                         }
-                        if (index === 6) {
-                            return ">" + value
-                        }
-
                         return value
                     }
                 },
