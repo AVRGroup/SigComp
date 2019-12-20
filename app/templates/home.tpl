@@ -128,9 +128,9 @@
                         </div>
                         <canvas id="radar"></canvas>
                         <div class="mt-3">
-                            <button onclick="setRadarRealizadas()" class="btn btn-success">Disciplinas já realizadas</>
-                            <button onclick="setRadarTodas(1)" class="btn btn-primary ml-4">Todas as disciplinas</>
-                            <button onclick="setRadarSobreposto()" class="btn btn-danger ml-4">Sobreposto</>
+                            <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                            <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
+                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
                         </div>
                     </div>
                 {/if}
@@ -506,39 +506,22 @@
             }
         }
 
-        if(numeroRadar === 0) {
-            var radarChart = new Chart(radar, {
-                type: 'radar',
-                data: {
-                    labels: nomeGrupos,
-                    datasets: [
-                        {
-                            backgroundColor: "rgba(41, 128, 185, 0.5)",
-                            borderColor: "rgba(41, 128, 185, 0.8)",
-                            lineTension: 0.02,
-                            data: valorGrupos,
-                        },
-                    ]
-                },
-                options: opcoes
-            })
-        } else {
-            var radarChart = new Chart(radar, {
-                type: 'radar',
-                data: {
-                    labels: nomeGrupos,
-                    datasets: [
-                        {
-                            backgroundColor: "rgba(41, 128, 185, 0.5)",
-                            borderColor: "rgba(41, 128, 185, 0.8)",
-                            lineTension: 0.02,
-                            data: valorGruposTodos,
-                        },
-                    ]
-                },
-                options: opcoes
-            })
-        }
+        var radarChart = new Chart(radar, {
+            type: 'radar',
+            data: {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos,
+                    },
+                ]
+            },
+            options: opcoes
+        })
+
 
 
         function setRadarRealizadas() {
@@ -561,8 +544,8 @@
                 labels: nomeGrupos,
                 datasets: [
                     {
-                        backgroundColor: "rgba(250,93,73,0.5)",
-                        borderColor: "rgba(250,93,73,0.8)",
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
                         lineTension: 0.02,
                         data: valorGruposTodos
                     }
@@ -582,8 +565,8 @@
                         data: valorGrupos
                     },
                     {
-                        backgroundColor: "rgba(250,93,73,0.3)",
-                        borderColor: "rgba(250,93,73,0.5)",
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
                         lineTension: 0.02,
                         data: valorGruposTodos
                     }

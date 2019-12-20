@@ -316,6 +316,11 @@ body {
     background-color: hsla(204, 69%, 61%, 0.80);
 }
 
+.btn-radar-sobreposto {
+    background-color: #0db2e0 !important;
+    color: white;
+}
+
 .download-aquivo {
     display: block;
     margin-top: 20px;
