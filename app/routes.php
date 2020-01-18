@@ -97,7 +97,9 @@ $app->group('', function () {
         $this->get('/destroy/{grupo: [0-9]+}', '\App\Controller\GrupoController:destroy')->setName('destroyGrupo');
 
 
-        $this->get('/editar-grade', '\App\Controller\GradeController:index')->setName('verGrade');
+        $this->get('/ver-grade', '\App\Controller\GradeController:index')->setName('verGrade');
+        $this->get('/editar-grade/{disciplina: [0-9]+}', '\App\Controller\GradeController:edit')->setName('editGrade');
+        $this->post('/update-disciplina/{disciplina: [0-9]+}', '\App\Controller\GradeController:update')->setName('updateGrade');
 
     })->add('\App\Middleware\AdminMiddleware');
 

@@ -1,6 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h3 class="text-center">Editar Grade</h3>
+    <h3 class="text-center">Editar Grupos</h3>
 
     <div class="text-center mt-4">
         <a href="{base_url}/admin/create-grupo" class="btn btn-primary btn-lg">Criar Novo Grupo</a>
