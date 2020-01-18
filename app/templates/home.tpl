@@ -50,92 +50,22 @@
                 </div>
             </div>
 
-            {if $usuario->isAluno() && (isset($isAdmin) && !$isAdmin)}
-            <div class="col-sm-8 col-md-8 col-lg-9 col-xs-12">
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
-                        data-content="Indica a sua experiência no curso! Cada aprovação em matérias obrigatórias concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($xpTotal) }%;">{floor(((100 * $usuario->getExperiencia())/($xpTotal)))|string_format:"%.2f"}%</div>
+            <div class="col-lg-9 col-xs-12 text-center">
+                <div class="col-sm-2 col-md-2 col-xs-2 float-right">
+                    <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                            title="Informações"
+                            data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
+                            afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
+                        ?
+                    </button>
                 </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Força:</b> {$usuario->getForca()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="FOR"
-                        data-content="Aplicação das teorias matemáticas. Suas notas em matérias como
-                                        Equações Diferenciais, GA e os Cálculos aumentam sua força">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getForca())/110}%;">{((100 * $usuario->getForca())/110)|string_format:"%.2f"}%</div>
-                </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Destreza:</b> {$usuario->getDestreza()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="DEX"
-                        data-content="Mão na massa: programar! Suas notas em matérias como os Labs de Programação e Grafos aumentam sua destreza">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getDestreza())/140}%;">{((100 * $usuario->getDestreza())/140)|string_format:"%.2f"}%</div>
-                </div>
-
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Inteligência:</b> {$usuario->getInteligencia()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="INT"
-                        data-content="Aprender novas linguagens e suas lógicas. Suas notas em matérias como Algoritmos, Estrutura de dados e Circuitos digitais
-                                        aumentam sua inteligência">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {((100*$usuario->getInteligencia())/170)}%;">{((100 * $usuario->getInteligencia())/170)|string_format:"%.2f"}%</div>
-                </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Sabedoria:</b> {$usuario->getSabedoria()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="SAB"
-                        data-content="Aplicação da computação em problemas. Suas notas em matérias como Banco de Dados, Modelagem de Sistemas e Pesquisa Operacional aumentam sua sabedoria">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getSabedoria())/160}%;">{((100 * $usuario->getSabedoria())/160)|string_format:"%.2f"}%</div>
-                </div>
-
-
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Cultura:</b> {$usuario->getCultura()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="CULT"
-                        data-content="Participação em eventos. Cada certificado seu que foi aprovado condece +10 de cultura">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
+                <canvas id="radar"></canvas>
+                <div class="mt-3">
+                    <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                    <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
+                    <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
                 </div>
             </div>
-
-            {else}
-                <div class="col-lg-9 col-xs-12 text-center">
-                    <div class="col-sm-2 col-md-2 col-xs-2 float-right">
-                        <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
-                                title="Informações"
-                                data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
-                                afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
-                            ?
-                        </button>
-                    </div>
-                    <canvas id="radar"></canvas>
-                    <div class="mt-3">
-                        <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                        <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
-                        <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
-                    </div>
-                </div>
-            {/if}
         </div>
 
         <div class="row">
