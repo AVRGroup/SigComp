@@ -12,7 +12,7 @@
         </select>
     </div>
 
-    {if $sucesso}
+    {if isset($sucesso) && $sucesso}
         <div class="alert alert-success alert-dismissable show fade mt-4">
             Disciplina alterada com sucesso
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
