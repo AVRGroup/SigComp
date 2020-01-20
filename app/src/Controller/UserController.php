@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Library\CalculateAttributes;
+use App\Library\Helper;
 use App\Library\Integra\getUserInformation;
 use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
@@ -57,25 +58,30 @@ class UserController
 
     public function visualizarAmigoAction(Request $request, Response $response, $args)
     {
-        $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
+        $amigo = $this->container->usuarioDAO->getByIdFetched($args['id']);
+        $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
 
-        if(!$usuario) {
+        if(!$amigo) {
             return $response->withRedirect($this->container->router->pathFor('home'));
         }
 
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($amigo->getId());
 
-        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
-
-        $this->container->view['usuario'] = $usuario;
+        $this->container->view['visaoAmigo'] = true;
+        $this->container->view['usuario'] = $amigo;
         $this->container->view['medalhas'] = $medalhasUsuario;
-        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
+        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($amigo->getId());
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();;
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($amigo->getGrade(), $amigo->getCurso()) * 100;
+
+        $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $amigo);;
+        $this->container->view['gruposCursoInteiro'] = Helper::getGruposComPontuacao($this->container, $amigo, true);
+
+        $this->container->view['gruposCursoInteiroUsuarioLogado'] = Helper::getGruposComPontuacao($this->container, $usuarioLogado, true);
 
         return $this->container->view->render($response, 'home.tpl');
     }

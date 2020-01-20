@@ -59,12 +59,19 @@
                         ?
                     </button>
                 </div>
+
                 <canvas id="radar"></canvas>
+
                 <div class="mt-3">
-                    <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                    <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
-                    <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                    {if isset($visaoAmigo) && $visaoAmigo}
+                        <button onclick="" class="btn btn-success">Comparar com suas notas</button>
+                    {else}
+                        <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                        <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
+                        <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                    {/if}
                 </div>
+
             </div>
         </div>
 
@@ -376,6 +383,11 @@
                 }
             });
         }
+
+
+        /***************************************
+         * **************RADAR CHART**********
+         ***************************************/
         var gruposJaRealizados = {json_encode($grupos)}
         var gruposTodasDisciplinas = {json_encode($gruposCursoInteiro)}
         var gruposSobreposto = {json_encode($grupos)}
