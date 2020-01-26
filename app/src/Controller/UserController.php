@@ -80,8 +80,7 @@ class UserController
 
         $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $amigo);;
         $this->container->view['gruposCursoInteiro'] = Helper::getGruposComPontuacao($this->container, $amigo, true);
-
-        $this->container->view['gruposCursoInteiroUsuarioLogado'] = Helper::getGruposComPontuacao($this->container, $usuarioLogado, true);
+        $this->container->view['gruposUsuarioLogado'] = Helper::getGruposComPontuacao($this->container, $usuarioLogado);
 
         return $this->container->view->render($response, 'home.tpl');
     }

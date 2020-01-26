@@ -64,10 +64,10 @@
 
                 <div class="mt-3">
                     {if isset($visaoAmigo) && $visaoAmigo}
-                        <button onclick="" class="btn btn-success">Comparar com suas notas</button>
+                        <button onclick="setRadarSobrepostoAmigo()" class="btn btn-success">Comparar com suas notas</button>
                     {else}
                         <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                        <button onclick="setRadarTodas(1)" class="btn btn-success ml-4">Todas as disciplinas</>
+                        <button onclick="setRadarTodas()" class="btn btn-success ml-4">Todas as disciplinas</>
                         <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
                     {/if}
                 </div>
@@ -391,21 +391,31 @@
         var gruposJaRealizados = {json_encode($grupos)}
         var gruposTodasDisciplinas = {json_encode($gruposCursoInteiro)}
         var gruposSobreposto = {json_encode($grupos)}
+        var gruposUsuarioLogado
+        {if isset($gruposUsuarioLogado)}
+            gruposUsuarioLogado = {json_encode($gruposUsuarioLogado)}
+        {else}
+            gruposUsuarioLogado = []
+        {/if}
 
         var grupos = []
         var gruposTotal = []
+        var gruposLogado = []
         var nomeGrupos = []
         var valorGrupos = []
         var valorGruposTodos = []
+        var valorGruposUsuarioLogado = []
 
         var numeroRadar = 0
 
         grupos = gruposJaRealizados
         gruposTotal = gruposTodasDisciplinas
+        gruposLogado = gruposUsuarioLogado
         for(let grupo in grupos) {
             nomeGrupos.push(grupo)
             valorGrupos.push(grupos[grupo])
             valorGruposTodos.push(gruposTotal[grupo])
+            valorGruposUsuarioLogado.push(gruposLogado[grupo])
         }
 
 
@@ -517,6 +527,28 @@
                 ]
             }
             radarChart.update()
+        }
+
+        function setRadarSobrepostoAmigo() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos
+                    },
+                    {
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
+                        lineTension: 0.02,
+                        data: valorGruposUsuarioLogado
+                    }
+                ]
+            }
+            radarChart.update()
+
         }
     </script>
 {/block}
