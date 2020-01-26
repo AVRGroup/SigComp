@@ -130,9 +130,9 @@ class Helper
 
             $nomeGrupo = $grupo->getNomeInteiro();
             if(!isset($quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo])) {
-                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] = 0;
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] = 1;
             } else {
-                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] += 1;
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] ++;
             }
         }
 
@@ -154,16 +154,23 @@ class Helper
 
         foreach ($notas as $nota) {
             $disciplina = $nota->getDisciplina();
+            $estado = $nota->getEstado();
 
-            if($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Rep Nota" || $nota->getEstado() == "Reprovado" || $nota->getEstado() == "Rep Freq" || $nota->getEstado() == "Sem Conceito") {
+            if($estado == "Matriculado" || $estado == "Trancado" || $estado == "Sem Conceito") {
                 continue;
             }
+
             $grupo = $disciplina->getGrupo($container, $usuario->getCurso());
 
             if(isset($grupo)) {
                 $nomeGrupo = $grupo->getNomeInteiro();
                 $gruposComPontuacao[$nomeGrupo] += $nota->getValor();
                 $quantidadeDeDisciplinasRealizadasNoGrupo[$nomeGrupo] += 1;
+
+                if($estado == "Rep Nota" || $estado == "Rep Freq" || $estado == "Reprovado") {
+                    $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo]++;
+                }
+
             } else {
                 $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
                 $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
@@ -174,11 +181,6 @@ class Helper
         $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
-
-            if( $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] > $quantidadeDeDisciplinasRealizadasNoCurso[$grupo]) {
-                $quantidadeDeDisciplinasRealizadasNoCurso[$grupo] = $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
-            }
-
             if ($isTotal) {
                 if($quantidadeDeDisciplinasRealizadasNoCurso[$grupo] == 0) {
                     $gruposComPontuacao[$grupo] = 0;
@@ -198,7 +200,6 @@ class Helper
         }
 
         ksort($gruposComPontuacao);
-
         foreach ($gruposComPontuacao as $nomeGrupo => $valor) {
             $nomeSemHifen = explode("-", $nomeGrupo)[1];
 
@@ -206,7 +207,6 @@ class Helper
 
             unset($gruposComPontuacao[$nomeGrupo]);
         }
-
         return $gruposComPontuacao;
     }
 

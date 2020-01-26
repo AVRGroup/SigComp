@@ -64,10 +64,10 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidade_disciplina'];
+            return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidades'];
         }
 
-        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidade_disciplina'];
+        return ['__isInitialized__', 'id', 'codigo', 'nome', 'carga', 'experiencia', 'fatorInteligencia', 'fatorCarisma', 'fatorSabedoria', 'fatorDestreza', 'fatorForca', 'notas', 'disciplinas_grade', 'oportunidades'];
     }
 
     /**
@@ -173,6 +173,17 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function addOportunidade(\App\Model\Oportunidade $oportunidade)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addOportunidade', [$oportunidade]);
+
+        return parent::addOportunidade($oportunidade);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -428,6 +439,17 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdentifier', []);
 
         return parent::getIdentifier();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGrupo(\Container $container, $curso)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGrupo', [$container, $curso]);
+
+        return parent::getGrupo($container, $curso);
     }
 
 }
