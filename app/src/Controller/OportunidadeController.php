@@ -130,7 +130,7 @@ class OportunidadeController
             $this->setArquivo($oportunidade, $pdf);
         }
 
-        if($imagem->getSize() > 0) {
+        if(isset($imagem) && $imagem->getSize() > 0) {
             $this->setArquivoImagem($oportunidade, $imagem);
         }
 
