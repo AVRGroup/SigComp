@@ -68,7 +68,6 @@ $app->group('', function () {
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
-        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
 
@@ -115,6 +114,10 @@ $app->group('', function () {
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/refuse', '\App\Controller\CertificateController:adminRefuseAction')->setName('adminRefuseCertificate');
         $this->map(['GET', 'POST'],'/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
     })->add('\App\Middleware\BolsistaMiddleware');
+
+    $this->group('/admin', function () {
+        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+    })->add('\App\Middleware\ProfessorMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');
 

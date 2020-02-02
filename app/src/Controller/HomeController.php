@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Library\CalculateAttributes;
 use App\Library\Helper;
+use App\Library\Integra\isValidProfile;
 use App\Model\Disciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
@@ -25,7 +26,11 @@ class HomeController
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
 
-        if(!$user->isAluno()) {
+        if($user->isProfessor()) {
+            return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+        }
+
+        if($user->isBolsista()) {
             return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
         }
 

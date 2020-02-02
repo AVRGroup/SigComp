@@ -806,35 +806,26 @@ class Usuario implements ToIdArrayInterface
     }
 
     public function isAluno(){
-        if($this->getTipo() == 0){
-            return true;
-        }
-
-        return false;
+        return $this->getTipo() == 0;
     }
 
     public function isAdmin(){
-        if($this->getTipo() == 1){
-            return true;
-        }
-
-        return false;
+        return $this->getTipo() == 1;
     }
 
-    public function isCoordenador(){
-        if($this->getTipo() == 2){
-            return true;
-        }
-
-        return false;
+    public function isCoordenador()
+    {
+        return $this->getTipo() == 2;
     }
 
-    public function isBolsista(){
-        if($this->getTipo() == 3){
-            return true;
-        }
+    public function isBolsista()
+    {
+        return $this->getTipo() == 3;
+    }
 
-        return false;
+    public function isProfessor()
+    {
+        return $this->getTipo() == 4;
     }
 
     /**
