@@ -91,7 +91,7 @@
                         {/if}
 
                         {if $loggedUser->isProfessor()}
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{path_for name="adminListUsers"}">Ver Alunos</a></li>
                         {/if}
 
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>

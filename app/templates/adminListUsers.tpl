@@ -1,8 +1,10 @@
 {extends 'layout.tpl'}
 {block name=content}
-
-    <!--suppress ALL -->
-    <h3 class="text-center mb-4">Gerenciar Usuários</h3>
+    {if $loggedUser->isProfessor()}
+        <h3 class="text-center mb-4">Ver Alunos</h3>
+    {else}
+        <h3 class="text-center mb-4">Gerenciar Usuários</h3>
+    {/if}
 
     <form class="form-row" method="post">
         <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
