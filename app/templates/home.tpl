@@ -64,11 +64,29 @@
 
                 <div class="mt-3">
                     {if isset($visaoAmigo) && $visaoAmigo}
-                        <button onclick="setRadarSobrepostoAmigo()" class="btn btn-success">Comparar com suas notas</button>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarSobrepostoAmigo()" class="btn btn-success">Comparar com suas notas</button>
+                            <span class="custom-tooltiptext">Compare as suas notas (em verde) com as do seu amigo</span>
+                        </div>
                     {else}
-                        <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                        <button onclick="setRadarTodas()" class="btn btn-success ml-4">Todas as disciplinas</>
-                        <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                            <span class="custom-tooltiptext">Esse grafico leva em conta apenas as disciplinas que você já realizou</span>
+                        </div>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarTodas()" class="btn btn-success ml-4">Todas as disciplinas</>
+                            <span class="custom-tooltiptext">
+                                Esse gráfico mostra como estão suas notas
+                                <br>
+                                levando em conta todas as disciplinas da grade.
+                                <br>  As que ainda não foram realizadas têm nota zero
+                            </span>
+                        </div>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                            <span class="custom-tooltiptext">Sobreponha os dois gráficos para conseguir uma melhor comparação</span>
+                        </div>
+                        </div>
                     {/if}
                 </div>
 

@@ -359,3 +359,44 @@ body {
     max-width: 600px;
     margin: auto;
 }
+
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.custom-tooltip .custom-tooltiptext {
+    visibility: hidden;
+    width: 500px;
+    background-color: #333;
+    color: white;
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -250px;
+    margin-bottom: 5px;
+
+    /* Position the custom-tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.custom-tooltip .custom-tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Show the custom-tooltip text when you mouse over the custom-tooltip container */
+.custom-tooltip:hover .custom-tooltiptext {
+    visibility: visible;
+}
