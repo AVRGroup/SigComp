@@ -21,11 +21,11 @@ class RespostaAvaliacaoDAO extends BaseDAO
      /**
      * @param $professor_id, $turma_id, $avaliacao_id, $questoes, $respostas
      */
-    public function gravarResposta($professor_id, $turma_id, $avaliacao_id, $questoes, $respostas)
+    public function gravarResposta($professor_turma, $avaliacao_id, $questoes, $respostas)
     {
         $i = 0;
         foreach ($questoes as $questao){
-            $sql_insert = "INSERT INTO db_gamificacao.resposta_avaliacao (`professor`, `turma`, `avaliacao`, `questao`, `resposta`) VALUES ({$professor_id}, {$turma_id}, {$avaliacao_id}, {$questao->getId()}, {$respostas[$i]})";
+            $sql_insert = "INSERT INTO db_gamificacao.resposta_avaliacao (`professor_turma`, `avaliacao`, `questao`, `resposta`) VALUES ({$professor_turma}, {$avaliacao_id}, {$questao->getId()}, {$respostas[$i]})";
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
             $i = $i + 1;

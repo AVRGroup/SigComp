@@ -3,12 +3,13 @@
 namespace App\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\Questionario
  *
  * @ORM\Entity()
- * @ORM\Table(name="questionario")
+ * @ORM\Table(name="questionario", uniqueConstraints={@UniqueConstraint(name="unique_questionario", columns={"periodo", "tipo_questionario"})})
  */
 class Questionario
 {
@@ -85,7 +86,7 @@ class Questionario
 
     /**
      * @param mixed $periodo
-     * @return Questao
+     * @return Questionario
      */
     public function setPeriodo($periodo)
     {
@@ -103,7 +104,7 @@ class Questionario
 
     /**
      * @param mixed $tipo_questionario
-     * @return Questao
+     * @return Questionario
      */
     public function setTipoQuestionario($tipo_questionario)
     {

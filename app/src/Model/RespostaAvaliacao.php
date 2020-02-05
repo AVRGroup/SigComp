@@ -5,12 +5,13 @@ namespace App\Model;
 use App\Model\Questao;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\RespostaAvaliacao
  *
  * @ORM\Entity()
- * @ORM\Table(name="resposta_avaliacao")
+ * @ORM\Table(name="resposta_avaliacao", uniqueConstraints={@UniqueConstraint(name="unique_resposta_avaliacao", columns={"avaliacao", "questao"})})
  */
 class RespostaAvaliacao
 {

@@ -3,12 +3,13 @@
 namespace App\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\Turma
  *
  * @ORM\Entity()
- * @ORM\Table(name="turma")
+ * @ORM\Table(name="turma", uniqueConstraints={@UniqueConstraint(name="unique_turma", columns={"codigo", "disciplina"})})
  */
 class Turma 
 {

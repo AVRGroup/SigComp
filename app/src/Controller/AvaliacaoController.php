@@ -29,11 +29,14 @@ class AvaliacaoController
     
     public function page1(Request $request, Response $response, $args)
     {
+        //$this->container->questaoDAO->inicializaQuestoes();
         $disciplina = $request->getParam('disciplina');
         $this->container->view['disciplina'] = $disciplina;
         $codigo = $request->getParam('codigo');
         $this->container->view['codigo'] = $codigo;
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+        $periodoPassado = $this->getPeriodoPassado();
+        $this->container->view['periodoPassado'] = $periodoPassado;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 0);
         $this->container->view['questoes'] = $questoes;
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
     }
@@ -87,9 +90,10 @@ class AvaliacaoController
 
     public function storePage1(Request $request, Response $response, $args)
     {
-        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario(0);
+        $periodoPassado = $this->getPeriodoPassado();
+        $this->container->view['periodoPassado'] = $periodoPassado;
+        $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 0);       
         $this->container->view['questoes'] = $questoes;
-
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
         $this->container->view['disciplina'] = $disciplina;
@@ -117,12 +121,8 @@ class AvaliacaoController
         */
 
         if(count($respostas1) == count($questoes)){
-
-            $a = array("1","2", "3", "4", "5", "6");
-            $this->container->view['a'] = $a;
-
             $this->container->view['respostas1'] = $respostas1;   
-            $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+            $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 2);
             $this->container->view['questoes2'] = $questoes2;
             return $this->container->view->render($response, 'avaliacaoPage2.tpl');
                 
@@ -135,7 +135,9 @@ class AvaliacaoController
 
     public function storePage2(Request $request, Response $response, $args)
     {
-        $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
+        $periodoPassado = $this->getPeriodoPassado();
+        $this->container->view['periodoPassado'] = $periodoPassado;
+        $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 2);
         $this->container->view['questoes2'] = $questoes2;
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
@@ -170,7 +172,7 @@ class AvaliacaoController
 
         if(count($respostas2) == count($questoes2)){
             $this->container->view['respostas1_2'] = $respostas1_2;
-            $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+            $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 1);
             $this->container->view['questoes3'] = $questoes3;
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
 
@@ -182,7 +184,9 @@ class AvaliacaoController
 
     public function storePage3(Request $request, Response $response, $args)
     {
-        $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
+        $periodoPassado = $this->getPeriodoPassado();
+        $this->container->view['periodoPassado'] = $periodoPassado;
+        $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 1);
         $this->container->view['questoes3'] = $questoes3;
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
@@ -211,25 +215,68 @@ class AvaliacaoController
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
             if($idUsuario !== null){
-                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1);
 
-                 if($avaliacao !== null){
-
-                    $q0 = $this->container->questaoDAO->getAllByTipoQuestionario(0);
-                    $q2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
-                    $q1 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
-
-                    $q = array_merge($q0, $q2);
-                    $questoes = array_merge($q, $q1);
-
-                    $this->container->respostaAvaliacaoDAO->gravarResposta(257, 1, $avaliacao->getID(), $questoes, $respostasFinais);
-
-                    $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-                    $this->container->view['usuario'] = $usuario;
-                    $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-                    $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
-                    return $this->container->view->render($response, 'avaliacoes.tpl');
+                //Avaliação Pessoal
+                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($periodoPassado, 0);
+                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
+                if($avaliacao !== null){
+                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 0);
+                    $r0 = array();
+                    $qtd = 0;
+                    foreach ($questoes as $q)
+                    {
+                        $r0[] = $respostasFinais[$qtd];
+                        $qtd++;
+                    }
+                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r0);
                 }
+                else{
+                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
+                    die();
+                }
+                
+                //Avaliação do Professor
+                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($periodoPassado, 2);
+                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
+                if($avaliacao !== null){
+                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 2);
+                    $r2 = array();
+                    foreach ($questoes as $q)
+                    {
+                        $r2[] = $respostasFinais[$qtd];
+                        $qtd++;
+                    }
+                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r2);
+                }
+                else{
+                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
+                    die();
+                }
+
+                //Avaliação da Turma
+                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($periodoPassado, 1);
+                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
+                if($avaliacao !== null){
+                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($periodoPassado, 1);
+                    $r1 = array();
+                    foreach ($questoes as $q)
+                    {
+                        $r1[] = $respostasFinais[$qtd];
+                        $qtd++;
+                    }
+                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r1);
+                }
+                else{
+                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
+                    die();
+                }
+
+                $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+                $this->container->view['usuario'] = $usuario;
+                $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+                $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+                return $this->container->view->render($response, 'avaliacoes.tpl');
+            
             }
  
         }   else {

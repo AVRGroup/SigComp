@@ -4,12 +4,13 @@ namespace App\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\Avaliacao
  *
  * @ORM\Entity()
- * @ORM\Table(name="avaliacao")
+ * @ORM\Table(name="avaliacao", uniqueConstraints={@UniqueConstraint(name="unique_avaliacao", columns={"aluno", "turma", "questionario"})})
  */
 class Avaliacao  
 {
