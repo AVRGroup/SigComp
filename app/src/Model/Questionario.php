@@ -27,11 +27,6 @@ class Questionario
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
-    protected $periodo;
     
     /**
      * 0: Avaliacao_Pessoal
@@ -41,6 +36,12 @@ class Questionario
      * @ORM\Column(type="smallint", nullable=false)
      */
     protected $tipo_questionario = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $versao;
 
     /**
      * @ORM\OneToMany(targetEntity="Questao", mappedBy="questionario")
