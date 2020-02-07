@@ -24,6 +24,7 @@ class AvaliacaoController
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+        $this->container->questaoDAO->inicializaQuestoes();
         return $this->container->view->render($response, 'avaliacoes.tpl');
     }
     
