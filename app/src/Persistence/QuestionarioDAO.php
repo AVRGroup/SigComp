@@ -45,4 +45,39 @@ class QuestionarioDAO extends BaseDAO
         return $questionario;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getUltimaVersao()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT MAX(q.versao) FROM App\Model\Questionario AS q");
+            $questionario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $questionario = null;
+        }
+
+        return $questionario;
+    }
+
+    /**
+     * @param $versao
+     * @return int|null
+     */
+    public function getIdByVersao($versao)
+    {
+        
+        try {
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
+            $query->setParameter('versao', $versao);
+            $questionario = $query->getOneOrNullResult();
+            $id_questionario = $questionario->getId();
+        } catch (\Exception $e) {
+            $questionario = null;
+            $id_questionario = null;
+        }
+return $id_questionario;
+    }
+
+
 }

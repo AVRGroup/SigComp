@@ -76,6 +76,33 @@ class QuestaoDAO extends BaseDAO
     }
 
     /**
+     * @param $versao
+     * @return Questao[] |null
+     */
+    public function getAllByVersaoQuestionario($versao)
+    {
+        
+        try {
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
+            $query->setParameter('versao', $versao);
+            $questionario = $query->getOneOrNullResult();
+            $id_questionario = $questionario->getId();
+        } catch (\Exception $e) {
+            $questionario = null;
+            $id_questionario = null;
+        }
+
+        try {
+            $query = $this->em->createQuery("SELECT q FROM App\Model\Questao as q WHERE q.questionario = :id_questionario");
+            $query->setParameter('id_questionario', $id_questionario);
+            $questoes = $query->getResult();
+        } catch (\Exception $e) {
+            $questoes = null;
+        }
+        return $questoes;
+    }
+
+    /**
      * @param $versao, $categoria
      * @return Integer|null
      */

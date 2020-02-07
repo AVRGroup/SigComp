@@ -60,4 +60,22 @@ class Questionario
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getVersao()
+    {
+        return $this->versao;
+    }
+
+    /**
+     * @param mixed $versao
+     * @return Questionario
+     */
+    public function setVersao($versao)
+    {
+        $this->versao = $versao;
+        return $this;
+    }
+
 }

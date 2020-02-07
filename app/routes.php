@@ -10,6 +10,8 @@ $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:
 
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
+$app->get('/questionarios', '\App\Controller\QuestionarioController:index')->setName('questionarios');
+
 $app->get('/teste','\App\Controller\UserController:indexBusca')->setName('buscaCEP');
 $app->post('/pageBuscaCEP','\App\Controller\UserController:buscaCEP')->setName('pageBuscaCEP');
 
@@ -29,6 +31,8 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/store-avaliacao-3', '\App\Controller\AvaliacaoController:storePage3')->setName('store-avaliacao-3');
 
     $this->post('Enviar', '\App\Controller\AvaliacaoController:Enviar')->setName('Enviar');
+
+    $this->get('/edicaoQuestionario', '\App\Controller\QuestionarioController:edicaoQuestionario')->setName('edicaoQuestionario');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
