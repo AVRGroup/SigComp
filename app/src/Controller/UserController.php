@@ -245,7 +245,7 @@ class UserController
             $redesComErro[] = 'Linkedin';
         }
 
-        if($lattes != null && strpos($lattes, "lattes.com") === false){
+        if($lattes != null && strpos($lattes, "cnpq") === false){
             $redesComErro[] = 'Lattes';
 
         }
