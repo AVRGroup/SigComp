@@ -410,7 +410,7 @@ class UsuarioDAO extends BaseDAO
     {
         $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
 
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login <> 1 AND usuario.tipo = 0" . $filtrarCurso;
+        $sql = "SELECT COUNT(*) FROM usuario WHERE (usuario.primeiro_login = 0 OR primeiro_login IS NULL) AND usuario.tipo = 0" . $filtrarCurso;
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
