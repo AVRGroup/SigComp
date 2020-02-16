@@ -33,6 +33,11 @@ class UserController
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
+        if ($usuario->isProfessor()) {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+            return $this->container->view->render($response, 'adminListUsers.tpl');
+        }
+
         $curso = null;
         $parametro = $request->getParam('curso');
 
@@ -54,7 +59,6 @@ class UserController
 
         return $this->container->view->render($response, 'adminListUsers.tpl');
     }
-
 
     public function visualizarAmigoAction(Request $request, Response $response, $args)
     {

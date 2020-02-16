@@ -6,21 +6,25 @@
         <h3 class="text-center mb-4">Gerenciar Usuários</h3>
     {/if}
 
-    <form class="form-row" method="post">
-        <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
-        <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-    </form>
+        <form class="form-row" method="post">
+            <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
+            <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        </form>
 
     <br>
-    <div class="form-row">
-        <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-            <option value="">Selecione o Curso</option>
-            <option value="{base_url}/admin/list-users?curso=35A">Ciência da Computação Noturno</option>
-            <option value="{base_url}/admin/list-users?curso=65C">Ciência da Computação Integral</option>
-            <option value="{base_url}/admin/list-users?curso=76A">Sistemas de Informação</option>
-            <option value="{base_url}/admin/list-users?curso=65B">Engenharia Computacional</option>
-        </select>
-    </div>
+
+    {if $loggedUser->isAdmin()}
+        <div class="form-row">
+            <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                <option value="">Selecione o Curso</option>
+                <option value="{base_url}/admin/list-users?curso=35A">Ciência da Computação Noturno</option>
+                <option value="{base_url}/admin/list-users?curso=65C">Ciência da Computação Integral</option>
+                <option value="{base_url}/admin/list-users?curso=76A">Sistemas de Informação</option>
+                <option value="{base_url}/admin/list-users?curso=65B">Engenharia Computacional</option>
+            </select>
+        </div>
+    {/if}
+
     <hr>
 
     <table style="margin-top: 4%" id="tabela" class="table table-hover">

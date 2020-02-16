@@ -587,7 +587,6 @@ class AdminController
             return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
         }
 
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
 
