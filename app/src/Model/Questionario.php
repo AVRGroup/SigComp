@@ -3,23 +3,16 @@
 namespace App\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\Questionario
  *
  * @ORM\Entity()
- * @ORM\Table(name="questionario")
+ * @ORM\Table(name="questionario", uniqueConstraints={@UniqueConstraint(name="unique_questionario", columns={"versao"})})
  */
 class Questionario
 {
-
-    //Tipos de questionário
-    const AVALIACAO_PESSOAL = 0;
-
-    const AVALIACAO_TURMA = 1;
-
-    const AVALIACAO_PROFESSOR = 2;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,17 +22,9 @@ class Questionario
 
     /**
      * @ORM\Column(type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $periodo;
-    
-    /**
-     * 0: Avaliacao_Pessoal
-     * 1: Avaliacao_Turma
-     * 2: Avaliacao_Professor
-     *
-     * @ORM\Column(type="smallint", nullable=false)
-     */
-    protected $tipo_questionario = 0;
+    protected $versao;
 
     /**
      * @ORM\OneToMany(targetEntity="Questao", mappedBy="questionario")
@@ -78,36 +63,18 @@ class Questionario
     /**
      * @return mixed
      */
-    public function getPeriodo()
+    public function getVersao()
     {
-        return $this->periodo;
+        return $this->versao;
     }
 
     /**
-     * @param mixed $periodo
-     * @return Questao
+     * @param mixed $versao
+     * @return Questionario
      */
-    public function setPeriodo($periodo)
+    public function setVersao($versao)
     {
-        $this->periodo = $periodo;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTipoQuestionario()
-    {
-        return $this->tipo_questionario;
-    }
-
-    /**
-     * @param mixed $tipo_questionario
-     * @return Questao
-     */
-    public function setTipoQuestionario($tipo_questionario)
-    {
-        $this->tipo_questionario = $tipo_questionario;
+        $this->versao = $versao;
         return $this;
     }
 

@@ -12,6 +12,7 @@ use App\Persistence\CategoriaDAO;
 use App\Persistence\TopicoDAO;
 use App\Persistence\RespostaDAO;
 use App\Persistence\QuestaoDAO;
+use App\Persistence\QuestionarioDAO;
 use App\Persistence\AvaliacaoDAO;
 use App\Persistence\RespostaAvaliacaoDAO;
 use \Doctrine\ORM\EntityManager;
@@ -30,6 +31,7 @@ use Slim\Views\Smarty;
  * @property RespostaDAO respostaDAO
  * @property OportunidadeDAO oportunidadeDAO
  * @property QuestaoDAO questaoDAO
+ * @property QuestionarioDAO questionarioDAO
  * @property AvaliacaoDAO avaliacaoDAO
  * @property RespostaAvaliacaoDAO respostaAvaliacaoDAO
  * @property Smarty view
@@ -143,6 +145,10 @@ class Container extends \Slim\Container
 
         $this['questaoDAO'] = function () {
             return new QuestaoDAO($this->db);
+        };
+
+        $this['questionarioDAO'] = function () {
+            return new QuestionarioDAO($this->db);
         };
 
     }

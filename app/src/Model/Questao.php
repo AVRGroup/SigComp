@@ -3,12 +3,13 @@
 namespace App\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
 /**
  * Model\Questao
  *
  * @ORM\Entity()
- * @ORM\Table(name="questao")
+ * @ORM\Table(name="questao", uniqueConstraints={@UniqueConstraint(name="unique_questao", columns={"numero", "categoria"})})
  */
 class Questao
 {
@@ -16,6 +17,13 @@ class Questao
     const FECHADA = 0;
 
     const ABERTA = 1;
+
+    //Categorias
+    const AVALIACAO_PESSOAL = 0;
+
+    const AVALIACAO_TURMA = 1;
+
+    const AVALIACAO_PROFESSOR = 2;
 
     /**
      * @ORM\Id
@@ -42,6 +50,15 @@ class Questao
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
     protected $tipo = 0;
+
+    /**
+     * 0: Avaliacao_Pessoal
+     * 1: Avaliacao_Turma
+     * 2: Avaliacao_Professor
+     *
+     * @ORM\Column(type="smallint", nullable=false)
+     */
+    protected $categoria = 0;
     
     /**
      * @ORM\ManyToOne(targetEntity="Questionario", inversedBy="questoes_questionario")
