@@ -114,6 +114,7 @@
                                     <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                                     <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                     <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
+                                    <a class="dropdown-item" href="{path_for name="editCoordenacao"}">Coordenadores</a>
                                     <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
                                     <div class="dropdown-submenu">
                                         <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"

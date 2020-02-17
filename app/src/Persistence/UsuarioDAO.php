@@ -1020,6 +1020,17 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function getProfessores()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.tipo = 4");
+            $professores = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $professores;
+    }
 
 
 }

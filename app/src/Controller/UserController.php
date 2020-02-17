@@ -413,5 +413,18 @@ class UserController
 
     }
 
+    public function editarCoordenadores(Request $request, Response $response, $args){
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $this->container->view['professores'] = $professores;
+
+        return $this->container->view->render($response, 'selectCoordenadores.tpl');
+    }
+
+    public function storeEditCoord(Request $request, Response $response, $args){
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $this->container->view['professores'] = $professores;
+
+        return $this->container->view->render($response, 'selectCoordenadores.tpl');
+    }
 }
 
