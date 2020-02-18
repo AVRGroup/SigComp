@@ -69,6 +69,7 @@ class Usuario implements ToIdArrayInterface
      * 1: Administrador
      * 2: Coordenador
      * 3: Bolsista
+     * 4: Professor
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
@@ -827,6 +828,14 @@ class Usuario implements ToIdArrayInterface
 
     public function isBolsista(){
         if($this->getTipo() == 3){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isProfessor(){
+        if($this->getTipo() == 4){
             return true;
         }
 

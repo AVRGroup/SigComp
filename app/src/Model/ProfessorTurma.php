@@ -72,7 +72,7 @@ class ProfessorTurma
      * @param mixed $turma
      * @return MedalhaUsuario
      */
-    public function setMedalha($turma)
+    public function setTurma($turma)
     {
         $this->turma = $turma;
         return $this;
@@ -90,7 +90,7 @@ class ProfessorTurma
      * @param mixed $professor
      * @return MedalhaUsuario
      */
-    public function setUsuario($professor)
+    public function setProfessor($professor)
     {
         $this->professor = $professor;
         return $this;

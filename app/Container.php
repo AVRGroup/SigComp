@@ -14,6 +14,8 @@ use App\Persistence\RespostaDAO;
 use App\Persistence\QuestaoDAO;
 use App\Persistence\QuestionarioDAO;
 use App\Persistence\AvaliacaoDAO;
+use App\Persistence\TurmaDAO;
+use App\Persistence\ProfessorTurmaDAO;
 use App\Persistence\RespostaAvaliacaoDAO;
 use \Doctrine\ORM\EntityManager;
 use Slim\Views\Smarty;
@@ -33,6 +35,8 @@ use Slim\Views\Smarty;
  * @property QuestaoDAO questaoDAO
  * @property QuestionarioDAO questionarioDAO
  * @property AvaliacaoDAO avaliacaoDAO
+ * @property TurmaDAO turmaDAO
+ * @property ProfessorTurmaDAO professorTurmaDAO
  * @property RespostaAvaliacaoDAO respostaAvaliacaoDAO
  * @property Smarty view
  * @property EntityManager db
@@ -149,6 +153,14 @@ class Container extends \Slim\Container
 
         $this['questionarioDAO'] = function () {
             return new QuestionarioDAO($this->db);
+        };
+
+        $this['turmaDAO'] = function () {
+            return new TurmaDAO($this->db);
+        };
+
+        $this['professorTurmaDAO'] = function () {
+            return new ProfessorTurmaDAO($this->db);
         };
 
     }

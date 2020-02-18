@@ -29,6 +29,7 @@
 
           <input type="hidden" name="codigo" value="{$codigo}">
           <input type="hidden" name="disciplina" value="{$disciplina}">
+          <input type="hidden" name="id_disciplina" value="{$id_disciplina}">
 
           {foreach $questoes as $questao}
 

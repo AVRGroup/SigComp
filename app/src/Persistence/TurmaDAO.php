@@ -3,6 +3,8 @@
 namespace App\Persistence;
 
 use Doctrine\ORM\EntityManager;
+use App\Model\Disciplina;
+use App\Model\Turma;
 
 class TurmaDAO extends BaseDAO
 {
@@ -45,15 +47,16 @@ class TurmaDAO extends BaseDAO
     }
 
     /**
-     * @param $disciplina
-     * @return Turma[] |null
+     * @param $disciplina, $codigo
+     * @return Turma |null
      */
-    public function getAllByDisciplina($disciplina)
+    public function getByDisciplinaCodigo($disciplina, $codigo)
     {
         try {
-            $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.disciplina = :disciplina");
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.disciplina = :disciplina AND t.codigo = :codigo");
             $query->setParameter('disciplina', $disciplina);
-            $turmas = $query->getResult();
+            $query->setParameter('codigo', $codigo);
+            $turmas = $query->getOneOrNullResult();
         } catch (\Exception $e) {
             $turmas = null;
         }

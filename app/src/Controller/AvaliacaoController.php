@@ -7,6 +7,7 @@ use Slim\Http\Response;
 use App\Model\Usuario;
 use App\Model\Questao;
 use App\Model\Avaliacao;
+use App\Model\Disciplina;
 use App\Model\RespostaAvaliacao;
 
 class AvaliacaoController
@@ -31,10 +32,12 @@ class AvaliacaoController
     public function page1(Request $request, Response $response, $args)
     {
         //$this->container->questaoDAO->inicializaQuestoes();
-        $disciplina = $request->getParam('disciplina');
-        $this->container->view['disciplina'] = $disciplina;
-        $codigo = $request->getParam('codigo');
+        $id_disciplina = $request->getParam('disciplina');
+        $disciplina = $this->container->disciplinaDAO->getById($id_disciplina);
+        $this->container->view['disciplina'] = $disciplina->getNome();
+        $codigo = $disciplina->getCodigo();
         $this->container->view['codigo'] = $codigo;
+        $this->container->view['id_disciplina'] = $id_disciplina;
         $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
         $this->container->view['versaoAtual'] = $versaoAtual;
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 0);
@@ -98,8 +101,19 @@ class AvaliacaoController
         $this->container->view['questoes'] = $questoes;
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
+        $id_disciplina = $request->getParsedBodyParam("id_disciplina");
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
+        $this->container->view['id_disciplina'] = $id_disciplina;
+        $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
+        /*
+        $pt = $this->container->professorTurmaDAO->getByTurma($turma->getId());
+        $p = $pt->getProfessor();
+        $professor = $this->container->usuarioDAO->getById($p);
+        echo "<script>console.log('Prof: " . $professor . "' );</script>";
+        $this->container->view['professor'] = $professor;
+        */
+        
 
         //Salvando as respostas no vetor
         $respostas1 = array();
@@ -143,11 +157,12 @@ class AvaliacaoController
         $this->container->view['questoes2'] = $questoes2;
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
+        $id_disciplina = $request->getParsedBodyParam("id_disciplina");
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
+        $this->container->view['id_disciplina'] = $id_disciplina;
         $respostas1 = $request->getParsedBodyParam("respostas1");
         $this->container->view['respostas1'] = $respostas1;
-        
               
        //Salvando as respostas no vetor
        $respostas2 = array();
@@ -192,8 +207,10 @@ class AvaliacaoController
         $this->container->view['questoes3'] = $questoes3;
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
+        $id_disciplina = $request->getParsedBodyParam("id_disciplina");
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
+        $this->container->view['id_disciplina'] = $id_disciplina;
         $respostas1_2 = $request->getParsedBodyParam("respostas1_2");
         $this->container->view['respostas1_2'] = $respostas1_2;
 
@@ -216,18 +233,27 @@ class AvaliacaoController
             //Enviar
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
+            $gravou = 0;
             if($idUsuario !== null){
-
-                $id_questionario = $this->container->questionarioDAO->getIdByVersao($versaoAtual, 0);
-                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
-                if($avaliacao !== null){
-                    $questoes = $this->container->questaoDAO->getAllByVersaoQuestionario($versaoAtual);
-                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $respostasFinais);
+                $id_questionario = $this->container->questionarioDAO->getIdByVersao($versaoAtual);
+                $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
+                if($turma !== null){
+                    $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, $turma->getID(), $id_questionario);
+                    if($avaliacao !== null){
+                        $questoes = $this->container->questaoDAO->getAllByVersaoQuestionario($versaoAtual);
+                        $professor_turma = $this->container->professorTurmaDAO->getByTurma($turma->getID());
+                        if($professor_turma !== null){
+                            $this->container->respostaAvaliacaoDAO->gravarResposta($professor_turma->getId(), $avaliacao->getID(), $questoes, $respostasFinais);
+                            $gravou = 1;
+                        }
+                    }
                 }
-                else{
-                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
-                    die();
-                }
+                
+            }
+            if($gravou == 0){
+                echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
+                die();
+            }
 
                 /*
                 //Avaliação Pessoal
@@ -293,7 +319,6 @@ class AvaliacaoController
                 $this->container->view['versaoAtual'] = $versaoAtual;
                 return $this->container->view->render($response, 'avaliacoes.tpl');
             
-            }
  
         }   else {
              

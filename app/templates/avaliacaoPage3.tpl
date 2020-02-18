@@ -28,6 +28,7 @@
       
           <input type="hidden" name="codigo" value="{$codigo}">
           <input type="hidden" name="disciplina" value="{$disciplina}">
+          <input type="hidden" name="id_disciplina" value="{$id_disciplina}">
           
           {foreach $respostas1_2 as $r}
             <input type="hidden" name="respostas1_2[]" value="{$r}">

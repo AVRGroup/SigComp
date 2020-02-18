@@ -22,7 +22,7 @@ class Turma
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=20, unique=true)
+     * @ORM\Column(type="string", length=20)
      */
     protected $codigo;
 

@@ -11,6 +11,9 @@
             {/if}
         </div>
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação do professor</p>
+        <!--{if $professor !== null}
+          <p style="margin-left: 10%; font-weight: 700; font-size: 23px"> {$professor->getNome()}</p>
+        {/if}!-->
         <p style="margin-left: 10%; font-weight: 700; margin-bottom: 4%; font-size: 17px">*Faça sua avaliação, sendo 1 [Discordo Totalmente] e 5 [Concordo Totalmente].</p>
 
         <div align="center" style="margin-bottom: 4%;">
@@ -35,6 +38,7 @@
 
           <input type="hidden" name="codigo" value="{$codigo}">
           <input type="hidden" name="disciplina" value="{$disciplina}">
+          <input type="hidden" name="id_disciplina" value="{$id_disciplina}">
 
           {foreach $questoes2 as $questao}
 
