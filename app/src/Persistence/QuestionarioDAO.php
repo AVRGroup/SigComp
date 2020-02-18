@@ -66,7 +66,6 @@ class QuestionarioDAO extends BaseDAO
      */
     public function getIdByVersao($versao)
     {
-        
         try {
             $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
             $query->setParameter('versao', $versao);
@@ -76,7 +75,7 @@ class QuestionarioDAO extends BaseDAO
             $questionario = null;
             $id_questionario = null;
         }
-return $id_questionario;
+        return $id_questionario;
     }
 
 

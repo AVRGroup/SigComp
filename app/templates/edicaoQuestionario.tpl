@@ -3,44 +3,61 @@
     <h2 class="text-center"> Edição do Questionário </h2>
     <!-- 01#!/79awQxVp -->
     <hr>
+
+    <div align="center" style="margin-bottom: 4%;">
+        {if isset($incompleto)}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {$incompleto}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {/if}
+    </div>
+
     <p align="center" class="font-italic" style="font-size: 24px;"> Selecione a versão do questionário </p>
 
-    <div class="row container ">
-        <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
-            <div class="row">
+    <form method="POST" action="{base_url}/edicao-questoes">    <!-- Começa o formulario -->
+        <div class="row container ">
+            <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
+                <div class="row">
 
-                <select id="filtrar-data" class="form-control col-md-10 col-sm-12 mx-sm-auto">
-                    <option disabled selected>Filtrar</option>
-                    
-                    {foreach $questionarios as $questionario}
-                        {if $questionario != null}
-                            <option value="versao_{$questionario->getVersao()}">{$questionario->getVersao()}</option>
-                        {/if}
-                    {/foreach}
-                    
-                </select>
+                    <select id="filtrar-data" name="filtro_versao" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+                        <option disabled selected>Filtrar</option>
+                        
+                        {foreach $questionarios as $questionario}
+                            {if $questionario != null}
+                                <option value="{$questionario->getVersao()}">{$questionario->getVersao()}</option>
+                            {/if}
+                        {/foreach}
+                        
+                    </select>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <br>
-    <p align="center" class="font-italic" style="font-size: 24px;"> Selecione a categoria das questões </p>
+        <br>
+        <p align="center" class="font-italic" style="font-size: 24px;"> Selecione a categoria das questões </p>
 
-    <div class="row container ">
-        <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
-            <div class="row">
+        <div class="row container ">
+            <div align="center" class="col-lg-12 col-sm-12 col-md-12" style=" font-size: 20px">
+                <div class="row">
 
-                <select id="filtrar-data" class="form-control col-md-10 col-sm-12 mx-sm-auto">
-                    <option disabled selected>Filtrar</option>
-                    <option value="av_todas">Todas</option>
-                    <option value="av_pessoal">Avaliação Pessoal</option>
-                    <option value="av_prof">Avaliação do Professor</option>
-                    <option value="av_turma">Avaliação da Turma</option>
-                </select>
+                    <select id="filtrar-data" name="filtro_categoria" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+                        <option disabled selected>Filtrar</option>
+                        <option value="3">Todas</option>
+                        <option value="0">Avaliação Pessoal</option>
+                        <option value="2">Avaliação do Professor</option>
+                        <option value="1">Avaliação da Turma</option>
+                    </select>
 
+                </div>
             </div>
         </div>
-    </div>
+    <nav aria-label="navigation" class="pagination justify-content-center">
+        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Editar</button>
+    </form>
+    </nav>
 
 {/block}
