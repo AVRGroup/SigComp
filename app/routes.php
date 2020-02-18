@@ -77,6 +77,10 @@ $app->group('', function () {
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
+        $this->map(['GET', 'POST'], '/editarCoordenadores', '\App\Controller\UserController:editarCoordenadores')->setName('editCoordenacao');
+
+        $this->map(['GET', 'POST'], '/storeEditCoord', '\App\Controller\UserController:storeEditCoord')->setName('editCoord');
+
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
