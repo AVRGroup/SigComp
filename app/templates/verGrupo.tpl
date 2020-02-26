@@ -28,6 +28,9 @@
             </thead>
             <tbody>
             {foreach $disciplinas as $index => $disciplina}
+                {if $disciplina->getCodigo() == ""}
+                    {continue}
+                {/if}
                 <tr>
                     <td>{$disciplina->getCodigo()}</td>
                     <td>{$disciplina->getNome()}</td>
