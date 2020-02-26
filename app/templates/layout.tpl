@@ -162,13 +162,13 @@
                 {/if}
 
 
-                {if !$loggedUser->isAluno()}
+                {if isset($loggedUser) && !$loggedUser->isAluno()}
                     <li class="nav-item">
                         <a class="nav-link" href="{path_for name="logout"}">Sair</a>
                     </li>
                 {/if}
 
-                {if  $loggedUser == null}
+                {if $loggedUser == null}
                     <li class="nav-item">
                         <a class="nav-link" href="{path_for name="about"}">Sobre</a>
                     </li>
