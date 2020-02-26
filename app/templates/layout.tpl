@@ -86,7 +86,6 @@
                     {if !$loggedUser->isBolsista()}
                         {if $loggedUser->isAluno()}
                             <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
                             <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                         {/if}
 
@@ -158,8 +157,9 @@
                             </li>
 
                         {/if}
-
                     {/if}
+
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
 
                     {if !$loggedUser->isAluno()}
                         <li class="nav-item">
