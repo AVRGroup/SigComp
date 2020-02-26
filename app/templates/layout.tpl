@@ -83,89 +83,89 @@
                     {/if}
 
 
-                    {if !$loggedUser->isBolsista()}
-                        {if $loggedUser->isAluno()}
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
-                        {/if}
-
-                        {if $loggedUser->isProfessor()}
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="adminListUsers"}">Ver Alunos</a></li>
-                        {/if}
-
-                        <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
-                        {*<li class="nav-item"><a class="nav-link" href="{path_for name="forum"}">Fórum</a></li>*}
-                        {if $estaImpersonando == true}
-                            <li class="nav-item" style="background-color: #e74c3c;"><a class="nav-link" style="color:black" href="{path_for name="sairImpersonar"}">SAIR DO USUARIO</a></li>
-                        {/if}
-
-                        {if $loggedUser->isAluno()}
-                            <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
-                        {/if}
-
-                        {if $loggedUser->isAdmin()}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Administrador
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
-                                    <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>
-                                    <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
-                                    <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
-                                    <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
-                                    <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
-                                    <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
-                                    <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
-
-                                    <div class="dropdown-submenu">
-                                        <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
-                                           id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Relatorios
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        {/if}
-
-                        {if $loggedUser->isCoordenador()}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Ferramentas
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
-                                    <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
-                                    <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
-                                    <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
-
-                                    <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
-                                    <div class="dropdown-submenu">
-                                        <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
-                                           id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Relatorios
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        {/if}
+                    {if $loggedUser->isAluno()}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="listaAmigos" data=["id" => $loggedUser->getId()]}">Lista de Amigos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="listCertificates"}">Certificados</a></li>
                     {/if}
 
+
+
+                    {if $loggedUser->isProfessor()}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="adminListUsers"}">Ver Alunos</a></li>
+                    {/if}
+
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                     <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
 
-                    {if !$loggedUser->isAluno()}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{path_for name="logout"}">Sair</a>
+                    {if $estaImpersonando == true}
+                        <li class="nav-item" style="background-color: #e74c3c;"><a class="nav-link" style="color:black" href="{path_for name="sairImpersonar"}">SAIR DO USUARIO</a></li>
+                    {/if}
+
+                    {if $loggedUser->isAluno()}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
+                    {/if}
+
+                    {if $loggedUser->isAdmin()}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Administrador
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
+                                <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>
+                                <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
+                                <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
+                                <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                                <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
+                                <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
+
+                                <div class="dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
+                                       id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Relatorios
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
+                                    </div>
+                                </div>
+
+                            </div>
                         </li>
                     {/if}
+
+                    {if $loggedUser->isCoordenador()}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ferramentas
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
+                                <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
+                                <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
+
+                                <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                                <div class="dropdown-submenu">
+                                    <a class="nav-link dropdown-toggle submenu" style="  color: black; padding: .25rem 1.5rem;" href="#"
+                                       id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Relatorios
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{path_for name="relatorioPeriodizado"}">Alunos Periodizados</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                    {/if}
+                {/if}
+
+
+                {if !$loggedUser->isAluno()}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{path_for name="logout"}">Sair</a>
+                    </li>
                 {/if}
 
                 {if  $loggedUser == null}
