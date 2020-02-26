@@ -118,6 +118,9 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
 
+        $this->get('/comparar-usuarios', '\App\Controller\AdminController:compareUsers')->setName('compare');
+        $this->post('/ver-comparacao', '\App\Controller\AdminController:seeComparison')->setName('seeComparison');
+
     })->add('\App\Middleware\ProfessorMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');

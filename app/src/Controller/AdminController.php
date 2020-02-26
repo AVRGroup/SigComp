@@ -747,4 +747,33 @@ class AdminController
         return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
 
     }
+
+    public function compareUsers(Request $request, Response $response, $args)
+    {
+        $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+        return $this->container->view->render($response, 'listUsersForComparison.tpl');
+    }   
+    
+    public function seeComparison(Request $request, Response $response, $args)
+    {
+        $users = $request->getParsedBodyParam('user');
+
+        if (count($users) != 2) {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+            $this->container->view['error'] = "Você deve selecionar <b>2</b> usuários. Número de usuários selecionados: <b>" . count($users) . "</b>";
+            return $this->container->view->render($response, 'listUsersForComparison.tpl');
+        }
+
+        $alunos[0] = $this->container->usuarioDAO->getById($users[0]);
+        $alunos[1] = $this->container->usuarioDAO->getById($users[1]);
+
+        $this->container->view['alunos'] = $alunos;
+
+        $grupoAlunos[0] = Helper::getGruposComPontuacao($this->container, $alunos[0], true);
+        $grupoAlunos[1] = Helper::getGruposComPontuacao($this->container, $alunos[1], true);
+
+        $this->container->view['grupoAlunos'] = $grupoAlunos;
+
+        return $this->container->view->render($response, 'seeComparison.tpl');
+    }
 }
