@@ -78,11 +78,11 @@
                             {/if}
                         {/foreach}
 
-                        <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
+                        <button type="button" id="btn-{$oportunidade->getId()}" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
                             data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
                             data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}"
                             data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{htmlspecialchars($oportunidade->getDescricao())}"
-                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}"
+                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}" data-vagas="{$oportunidade->getQuantidadeVagas()}"
                         >
                             Mais Informações
                         </button>
@@ -147,6 +147,7 @@
             var professor = button.data('professor')
             var validade = button.data('validade')
             var remuneracao = button.data('remuneracao')
+            var vagas = button.data('vagas')
             var descricao = button.data('descricao')
             var imagem = button.data('imagem')
 
@@ -170,8 +171,9 @@
                     htmlImagem +
                     "<div style='text-align: justify;' class='col-sm-12 descricao-oportunidade'>" + descricao + "</div>" +
                     "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
-                    "<div class='col-sm-6'> <b>Remuneração:</b> R$ "+ remuneracao +".00</div>" +
-                    "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
+                    "<div class='col-sm-6'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>" +
+                    "<div class='col-sm-6 mt-3'> <b>Prazo para inscrição: </b>"+ validade +"</div>" +
+                    "<div class='col-sm-6 mt-3'> <b>Vagas: </b>"+ vagas +"</div>" +
                 "</div>"
             )
 
@@ -205,6 +207,9 @@
                 modal.find('.modal-body a').css("display", "none")
             }
         })
+
+        var oportunidadeSelcionada = '{$oportunidadeSelecionada}'
+        $(`#btn-` + oportunidadeSelcionada).click()
 
         $("#maisInformacoes").on("hidden.bs.modal", function () {
             $(".disciplinas").empty()
@@ -345,6 +350,7 @@
                 window.location.href = urlDelecao
             }
         }
+
     </script>
 
 {/block}

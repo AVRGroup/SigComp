@@ -35,6 +35,8 @@ class OportunidadeController
         $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
         $this->container->view['periodo'] = $this->container->usuarioDAO->getUsersPeriodoAtual($idUsuario, $periodoCorrente);
 
+        $this->container->view['oportunidadeSelecionada'] = $request->getParam('oportunidade');
+
         return $this->container->view->render($response, 'verOportunidades.tpl');
     }
 

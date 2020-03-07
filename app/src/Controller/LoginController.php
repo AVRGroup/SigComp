@@ -24,7 +24,7 @@ class LoginController
         $oportunidade = $request->getParam('oportunidade');
 
         if(isset($oportunidade) && isset($_SESSION['id'])){
-            return $response->withRedirect("oportunidade/$oportunidade");
+            return $response->withRedirect("todas-oportunidades?oportunidade=$oportunidade");
         }
 
         if ($request->isPost()) {
@@ -76,7 +76,7 @@ class LoginController
                     
 
                     if(isset($oportunidade)){
-                        return $response->withRedirect("oportunidade/$oportunidade");
+                        return $response->withRedirect("todas-oportunidades?oportunidade=$oportunidade");
                     }
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
