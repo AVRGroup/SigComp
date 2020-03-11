@@ -152,6 +152,24 @@ class Questao
     /**
      * @return mixed
      */
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
+
+    /**
+     * @param mixed $tipo
+     * @return Questao
+     */
+    public function setCategoria($categoria)
+    {
+        $this->categoria = $categoria;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getQuestionario()
     {
         return $this->questionario;

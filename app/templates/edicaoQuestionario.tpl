@@ -18,6 +18,7 @@
     <p align="center" class="font-italic" style="font-size: 24px;"> Selecione a versão do questionário </p>
 
     <form method="POST" action="{base_url}/edicao-questoes">    <!-- Começa o formulario -->
+        <input type="hidden" name="base_url" value="{base_url}">
         <div class="row container ">
             <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
                 <div class="row">

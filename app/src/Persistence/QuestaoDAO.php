@@ -46,6 +46,42 @@ class QuestaoDAO extends BaseDAO
         return $questao;
     }
 
+    /**
+     * @param $id
+     */
+    public function dropById($id)
+    {
+        try {
+            $query = $this->em->createQuery("DELETE App\Model\Questao q WHERE q.id = :id");
+            $query->setParameter('id', $id);
+            $query->execute();
+        } catch (\Exception $e) {
+        }
+    }
+
+    /**
+     * @param $id, $enunciado
+     */
+    public function setEnunciado($id, $enunciado)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT q FROM App\Model\Questao AS q WHERE q.id = :id");
+            $query->setParameter('id', $id);
+            $questao = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $questao = null;
+        }
+        if($questao){
+            try {
+                $query = $this->em->createQuery("UPDATE App\Model\Questao q SET q.enunciado = :enunciado WHERE q.id = :id");
+                $query->setParameter('id', $id);
+                $query->setParameter('enunciado', $enunciado);
+                $query->execute();
+            } catch (\Exception $e) {
+            }
+        }
+    }
+
 
     /**
      * @param $versao, $categoria

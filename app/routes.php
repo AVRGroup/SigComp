@@ -34,8 +34,10 @@ $app->group('', function () {
 
     $this->get('/edicaoQuestionario', '\App\Controller\QuestionarioController:edicaoQuestionario')->setName('edicaoQuestionario');
     $this->get('/edicaoQuestoes', '\App\Controller\QuestionarioController:edicaoQuestoes')->setName('edicaoQuestoes');
+    $this->get('/excluiQuestao', '\App\Controller\QuestionarioController:excluiQuestao')->setName('excluiQuestao');
 
     $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
+    $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');

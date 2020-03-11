@@ -64,10 +64,10 @@ class Questionario extends \App\Model\Questionario implements \Doctrine\ORM\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'periodo', 'tipo_questionario', 'questoes_questionario', 'avaliacoes_questionario'];
+            return ['__isInitialized__', 'id', 'versao', 'questoes_questionario', 'avaliacoes_questionario'];
         }
 
-        return ['__isInitialized__', 'id', 'periodo', 'tipo_questionario', 'questoes_questionario', 'avaliacoes_questionario'];
+        return ['__isInitialized__', 'id', 'versao', 'questoes_questionario', 'avaliacoes_questionario'];
     }
 
     /**
@@ -202,45 +202,23 @@ class Questionario extends \App\Model\Questionario implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
-    public function getPeriodo()
+    public function getVersao()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPeriodo', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVersao', []);
 
-        return parent::getPeriodo();
+        return parent::getVersao();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setPeriodo($periodo)
+    public function setVersao($versao)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPeriodo', [$periodo]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVersao', [$versao]);
 
-        return parent::setPeriodo($periodo);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTipoQuestionario()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipoQuestionario', []);
-
-        return parent::getTipoQuestionario();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTipoQuestionario($tipo_questionario)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipoQuestionario', [$tipo_questionario]);
-
-        return parent::setTipoQuestionario($tipo_questionario);
+        return parent::setVersao($versao);
     }
 
 }
