@@ -45,7 +45,7 @@ class Questao
     /**
      * 0: Fechada
      * 1: Sim_Nao
-     * 1: Aberta
+     * 2: Aberta
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */

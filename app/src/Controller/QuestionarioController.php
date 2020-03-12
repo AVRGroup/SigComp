@@ -31,23 +31,11 @@ class QuestionarioController
         $base_url = $request->getParsedBodyParam("base_url");
         $filtro = 0; 
 
-        if(count($args) == 2){
-            if($args[0] !== null){
-                $versao = $args[0];
-                if($args[1] !== null){
-                    $categoria = $args[1];
-                    $filtro = 1;
-                }
-            }
-        }
-
-        if($filtro == 0){
-            if($request->getParsedBodyParam("filtro_versao") !== null){
-                $versao = $request->getParsedBodyParam("filtro_versao");
-                if($request->getParsedBodyParam("filtro_categoria") !== null){
-                    $categoria = $request->getParsedBodyParam("filtro_categoria");
-                    $filtro = 1;
-                }
+        if($request->getParsedBodyParam("filtro_versao") !== null){
+            $versao = $request->getParsedBodyParam("filtro_versao");
+            if($request->getParsedBodyParam("filtro_categoria") !== null){
+                $categoria = $request->getParsedBodyParam("filtro_categoria");
+                $filtro = 1;
             }
         }
         
@@ -59,6 +47,8 @@ class QuestionarioController
             else{
                 $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versao, $categoria);
             }
+            $questionario = $this->container->questionarioDAO->getById($id_questionario);
+            $this->container->view['questionario'] = $questionario;
             $this->container->view['questoes'] = $questoes;
             $this->container->view['versao'] = $versao;   
             $this->container->view['categoria'] = $categoria;
@@ -93,14 +83,15 @@ class QuestionarioController
         }
 
         #Loop que checa as edições
+        $editou = 0;
         foreach($questoes as $questao){
             $id_questao = $questao->getId();
             $novo_enunciado = $request->getParsedBodyParam("edita_$id_questao");
             #compara o enunciado entre a nova questão e a original. Se houver mudanças, persiste
             if($novo_enunciado !== $questao->getEnunciado()){
                 $this->container->questaoDAO->setEnunciado($id_questao, $novo_enunciado);
+                $editou ++;
             }
-
         }
 
         #Loop que checa as exclusões
@@ -113,25 +104,23 @@ class QuestionarioController
                 $excluiu ++;
             }
         }
+
+        if($editou || $excluiu){
+            //salvar o novo questionário
+        }
+
         if(!$excluiu){
             $this->listaQuestoes($request, $response, $args);
         }
     }
 
-    public function excluiQuestao(Request $request, Response $response, $args)
+    public function excluiQuestao(Request $request, Response $response, $args, $id_questao)
     {
-        //$base_url = $request->getParsedBodyParam("base_url");
-        $id_questao = $request->getParam('id');
         $questao = $this->container->questaoDAO->getById($id_questao);
-        $this->container->questaoDAO->dropById($id_questao);
+        if($questao !== null){
+            $this->container->questaoDAO->dropById($id_questao);
+        }
 
-        $versao = $request->getParam('versao');
-        $categoria = $request->getParam('categoria');
-        $a[0] = $versao;
-        $a[1] = $categoria;
-
-        $this->listaQuestoes($request, $response, $a);
-        #return 0;
-        #return $response->withRedirect($this->container->router->pathFor('edicao-questoes'));
+        $this->listaQuestoes($request, $response, $args);
     }
 }

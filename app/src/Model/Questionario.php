@@ -22,9 +22,13 @@ class Questionario
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $versao;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nome;
 
     /**
      * @ORM\OneToMany(targetEntity="Questao", mappedBy="questionario")
@@ -75,6 +79,24 @@ class Questionario
     public function setVersao($versao)
     {
         $this->versao = $versao;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * @param mixed $nome
+     * @return Questionario
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
         return $this;
     }
 

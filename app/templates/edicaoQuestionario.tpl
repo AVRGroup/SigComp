@@ -28,7 +28,7 @@
                         
                         {foreach $questionarios as $questionario}
                             {if $questionario != null}
-                                <option value="{$questionario->getVersao()}">{$questionario->getVersao()}</option>
+                                <option value="{$questionario->getVersao()}">{if !empty($questionario->getNome())}{$questionario->getNome()}{else}{$questionario->getVersao()}{/if}</option>
                             {/if}
                         {/foreach}
                         
