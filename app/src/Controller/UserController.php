@@ -33,11 +33,6 @@ class UserController
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
-        if ($usuario->isProfessor()) {
-            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
-            return $this->container->view->render($response, 'adminListUsers.tpl');
-        }
-
         $curso = null;
         $parametro = $request->getParam('curso');
 
@@ -48,6 +43,10 @@ class UserController
             $curso = $parametro;
         }
 
+        if ($usuario->isProfessor()) {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+        }
+
         if($request->isPost()){
             $pesquisa = $request->getParsedBodyParam('pesquisa');
             $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
@@ -55,6 +54,7 @@ class UserController
         else {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllByCursoARRAY($curso);
         }
+
 
 
         return $this->container->view->render($response, 'adminListUsers.tpl');
