@@ -21,6 +21,21 @@
         </div>
     {/if}
 
+    {if $usuario->getCurso() == '65C' || $usuario->getCurso() == '65B'}
+        {if $usuario->getCurso() == '65C'}
+            {$mensagem = '(tanto o 65C quanto o 65AC).'}
+        {/if}
+        {if $usuario->getCurso() == '65B'}
+            {$mensagem = '(tanto o 65B quanto o 65AB).'}
+        {/if}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <p>Lembrar de fazer o envio dos dois arquivos referentes aos alunos do curso {$mensagem}</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {/if}
+
     <div class="alert alert-warning alert-dismissible fade show" id="alerta" role="alert">
         <b>Atenção!</b> Essa operação demora alguns minutos
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

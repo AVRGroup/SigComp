@@ -77,7 +77,16 @@ class AdminController
                                 $affectedData['usuariosUpdated']++;
                             } else {
                                 $usuario = new Usuario();
-                                $usuario->setCurso($user['curso']);
+                                $curso = $user['curso'];
+
+                                if($curso == '65AC') {
+                                    $curso = '65C';
+                                }
+                                if($curso == '65AB') {
+                                    $curso = '65B';
+                                }
+
+                                $usuario->setCurso($curso);
                                 $usuario->setMatricula($user['matricula']);
                                 $usuario->setNome($user['nome']);
                                 $usuario->setGrade($user['grade']);
@@ -118,6 +127,8 @@ class AdminController
 
             return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
