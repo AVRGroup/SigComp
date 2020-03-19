@@ -1,6 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h4 class="text-center">Selecione 2 alunos para comparação</h4>
+    <h4 class="text-center">Selecione até 5 alunos para comparação</h4>
 
     {if isset($error)}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -18,7 +18,7 @@
             <tr style="font-size: 13px;">
                 <th scope="col">Matrícula ↑↓</th>
                 <th scope="col">Nome ↑↓</th>
-                <th scope="col">Selecione 2 alunos</th>
+                <th scope="col">Selecione até 5 alunos</th>
             </tr>
             </thead>
             <tbody>

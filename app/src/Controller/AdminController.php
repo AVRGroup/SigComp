@@ -767,22 +767,29 @@ class AdminController
     
     public function seeComparison(Request $request, Response $response, $args)
     {
-        $users = $request->getParsedBodyParam('user');
-
-        if (count($users) != 2) {
+        $alunos = $request->getParsedBodyParam('user');
+        $grupoAlunos = [];
+        if (count($alunos) > 5) {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
-            $this->container->view['error'] = "Você deve selecionar <b>2</b> usuários. Número de usuários selecionados: <b>" . count($users) . "</b>";
+            $this->container->view['error'] = "Você deve selecionar até <b>5</b> usuários. Número de usuários selecionados: <b>" . count($alunos) . "</b>";
             return $this->container->view->render($response, 'listUsersForComparison.tpl');
         }
 
-        $alunos[0] = $this->container->usuarioDAO->getById($users[0]);
-        $alunos[1] = $this->container->usuarioDAO->getById($users[1]);
+        foreach ($alunos as $index => $aluno) {
+            $alunos[$index] = $this->container->usuarioDAO->getById($aluno);
+            $grupoAlunos[$index] = Helper::getGruposComPontuacao($this->container, $alunos[$index], true);
+        }
+
+        $maiorIra = $alunos[0];
+
+        foreach ($alunos as $aluno) {
+            if ($aluno->getIra() > $maiorIra->getIra()) {
+                $maiorIra = $aluno;
+            }
+        }
 
         $this->container->view['alunos'] = $alunos;
-
-        $grupoAlunos[0] = Helper::getGruposComPontuacao($this->container, $alunos[0], true);
-        $grupoAlunos[1] = Helper::getGruposComPontuacao($this->container, $alunos[1], true);
-
+        $this->container->view['maiorIra'] = $maiorIra;
         $this->container->view['grupoAlunos'] = $grupoAlunos;
 
         return $this->container->view->render($response, 'seeComparison.tpl');

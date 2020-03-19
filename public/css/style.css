@@ -266,6 +266,13 @@ body {
     background-color: hsla(204, 69%, 61%, 0.15);
 }
 
+.cor-aluno-comparacao {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #0b2e13;
+}
+
 .card-oportunidade .descricao {
     text-align: justify;
     text-justify: inter-word;
@@ -400,3 +407,4 @@ body {
 .custom-tooltip:hover .custom-tooltiptext {
     visibility: visible;
 }
+

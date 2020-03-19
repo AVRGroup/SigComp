@@ -1,16 +1,20 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <div class="row">
-        {foreach $alunos as $index => $aluno}
-            <div class="col-xs-12 col-md-6">
-                <h5 class="text-center">{$aluno->getNome()}</h5>
-                <p class="text-center">IRA: {number_format($aluno->getIra(), 2)}
+    <canvas class="mt-4" id="radar"></canvas>
 
-                <canvas class="mt-4" id="radar-{$index}"></canvas>
+    <div class="row mt-4">
+        {foreach $alunos as $index => $aluno}
+            <div class="col-sm-2">
+                <span class="cor-aluno-comparacao" id="cor-{$index}"></span>
+                <p>{$aluno->getNome()}</p>
             </div>
         {/foreach}
     </div>
 
+    <div class="mt-4">
+        <b>Maior Ira:</b>
+        <p>{$maiorIra->getNome()}: {number_format($maiorIra->getIra(), 2)}</p>
+    </div>
 
 {/block}
 
@@ -19,83 +23,83 @@
         /***************************************
          * **************RADAR CHART**********
          ***************************************/
-        for(var i = 0; i<=1; i++) {
-            var grupos = []
-            var gruposTotal = []
-            var gruposLogado = []
-            var nomeGrupos = []
-            var valorGrupos = []
-            var valorGruposTodos = []
-            var valorGruposUsuarioLogado = []
 
-            var numeroRadar = 0
+        const todosGrupos = JSON.parse('{json_encode($grupoAlunos)}')
+        var nomeGrupos = []
 
-            if (i === 0) {
-                grupos = {json_encode($grupoAlunos[0])}
-            } else {
-                grupos = {json_encode($grupoAlunos[1])}
-            }
+        const backgroundColors = ["rgba(46, 204, 113,0.5)", "rgba(52, 152, 219,0.5)", 'rgba(155, 89, 182,0.5)', 'rgba(243, 156, 18,0.5)', 'rgba(231, 76, 60,0.5)']
+        const borderColors = ["rgba(46, 204, 113,0.8)", "rgba(52, 152, 219,0.8)", 'rgba(155, 89, 182,0.8)', 'rgba(243, 156, 18,0.8)', 'rgba(231, 76, 60,0.8)']
 
-            for (let grupo in grupos) {
-                nomeGrupos.push(grupo)
-                valorGrupos.push(grupos[grupo])
-                valorGruposTodos.push(gruposTotal[grupo])
-                valorGruposUsuarioLogado.push(gruposLogado[grupo])
-            }
-
-
-            var radar = document.getElementById('radar-' + i).getContext('2d');
-
-            var opcoes = {
-                legend: {
-                    onClick: function (e) {
-                        e.stopPropagation();
-                    },
-                    display: false,
-                    labels: {
-                        boxWidth: 0
-                    }
-                },
-                tooltips: {
-                    displayColors: false,
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
-                        }
-                    }
-                },
-                scale: {
-                    ticks: {
-                        beginAtZero: true,
-                        max: 100,
-                        min: 0,
-                        stepSize: 20,
-                        backdropColor: '#fafafa',
-                        callback: function (value, index, values) {
-                            if (index === 1) {
-                                return "<" + value
-                            }
-                            return value
-                        }
-                    },
-                }
-            }
-
-            var radarChart = new Chart(radar, {
-                type: 'radar',
-                data: {
-                    labels: nomeGrupos,
-                    datasets: [
-                        {
-                            backgroundColor: "rgba(41, 128, 185, 0.5)",
-                            borderColor: "rgba(41, 128, 185, 0.8)",
-                            lineTension: 0.02,
-                            data: valorGrupos,
-                        },
-                    ]
-                },
-                options: opcoes
-            })
+        for (var nome in todosGrupos[0]) {
+            nomeGrupos.push(nome)
         }
+
+        var datasets = []
+        var i = 0
+
+        for(var aluno of todosGrupos) {
+            var data = []
+            for (var grupo in aluno) {
+                data.push(aluno[grupo])
+            }
+
+            datasets.push({
+                backgroundColor: backgroundColors[i],
+                borderColor: borderColors[i],
+                lineTension: 0.02,
+                data: data
+            })
+
+            document.getElementById('cor-' + i).style.backgroundColor = borderColors[i]
+
+            i++
+        }
+
+        var radar = document.getElementById('radar').getContext('2d');
+
+        var opcoes = {
+            legend: {
+                onClick: function (e) {
+                    e.stopPropagation();
+                },
+                display: false,
+                labels: {
+                    boxWidth: 0
+                }
+            },
+            tooltips: {
+                displayColors: false,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
+                    }
+                }
+            },
+            scale: {
+                ticks: {
+                    beginAtZero: true,
+                    max: 100,
+                    min: 0,
+                    stepSize: 20,
+                    backdropColor: '#fafafa',
+                    callback: function (value, index, values) {
+                        if (index === 1) {
+                            return "<" + value
+                        }
+                        return value
+                    }
+                },
+            }
+        }
+
+        var radarChart = new Chart(radar, {
+            type: 'radar',
+            data: {
+                labels: nomeGrupos,
+                datasets: datasets
+            },
+            options: opcoes
+        })
+
     </script>
 {/block}
