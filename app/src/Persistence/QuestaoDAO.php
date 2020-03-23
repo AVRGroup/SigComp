@@ -175,8 +175,24 @@ class QuestaoDAO extends BaseDAO
         $stmt_insert->execute();
     }
 
-    public function addQuestao( $enunciado )
+     /**
+     * @param $numero, $enunciado, $tipo, $questionario, $categoria
+     */
+    public function addQuestao($numero, $enunciado, $tipo, $questionario, $categoria)
     {
-        
+        $sql_insert = "INSERT INTO db_gamificacao.questao (`numero`,`enunciado`,`tipo`,`questionario`, `categoria`) VALUES (1234, 'teste', 0, 1, 0);";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+
+        try {
+            $sql_update = $this->em->createQuery("UPDATE App\Model\Questao q SET q.numero = :numero, q.enunciado = :enunciado, q.tipo = :tipo, q.questionario = :questionario, q.categoria = :categoria WHERE q.numero = 1234 AND q.enunciado = 'teste'");
+            $sql_update->setParameter('numero', $numero);
+            $sql_update->setParameter('enunciado', $enunciado);
+            $sql_update->setParameter('tipo', $tipo);
+            $sql_update->setParameter('questionario', $questionario);
+            $sql_update->setParameter('categoria', $categoria);
+            $sql_update->execute();
+        } catch (\Exception $e) {
+        }    
     }
 }

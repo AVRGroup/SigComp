@@ -106,8 +106,44 @@ class QuestionarioController
             }
         }
 
-        var_dump($excluiu);
+        #Loop que checa adições
+        #Avaliação do Professor
+        $adicionou = 1;
+        while($request->getParsedBodyParam("add_prof_$adicionou")){
+            $enunciado = $request->getParsedBodyParam("add_prof_$adicionou");
+            $numero = $this->container->questaoDAO->getQtdByTipoQuestionario(1, 2);
+            $numero = (int)$numero[1];
+            $numero ++;
+            $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 1, 2);
+            //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
+            $adicionou ++;
+        }
 
+        #Loop que checa adições
+        #Avaliação Pessaol
+        $adicionou = 1;
+        while($request->getParsedBodyParam("add_pes_$adicionou")){
+            $enunciado = $request->getParsedBodyParam("add_pes_$adicionou");
+            $numero = $this->container->questaoDAO->getQtdByTipoQuestionario(1, 0);
+            $numero = (int)$numero[1];
+            $numero ++;
+            $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 1, 0);
+            //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
+            $adicionou ++;
+        }
+
+        #Loop que checa adições
+        #Avaliação Pessaol
+        $adicionou = 1;
+        while($request->getParsedBodyParam("add_tur_$adicionou")){
+            $enunciado = $request->getParsedBodyParam("add_tur_$adicionou");
+            $numero = $this->container->questaoDAO->getQtdByTipoQuestionario(1, 1);
+            $numero = (int)$numero[1];
+            $numero ++;
+            $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 1, 1);
+            //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
+            $adicionou ++;
+        }
         
         
         //Ao clicar no botão salvar, o comando abaixo retorna a pagina de edição do questionario

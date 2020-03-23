@@ -102,6 +102,7 @@
                 <button class="btn btn-primary " type="button" name="av_prof" id="adicionar1">Adicionar</button>
             </div>
 
+
         {/if}
 
         <br>
@@ -124,18 +125,22 @@
 
 {block name="javascript"}
     <script>
-        const adicionar1 = document.getElementById("adicionar1");
-        const adicionar2 = document.getElementById("adicionar2");
-        const adicionar3 = document.getElementById("adicionar3");
+        const adicionar1 = document.getElementById("adicionar1"); //Professor
+        const adicionar2 = document.getElementById("adicionar2"); //Turma
+        const adicionar3 = document.getElementById("adicionar3"); //Pessoal
 
         const av_prof = document.getElementById("av_prof");
         const av_pessoal = document.getElementById("av_pessoal");
         const av_turma = document.getElementById("av_turma");
 
+        var contador_1 = 0;
+        var contador_2 = 0;
+        var contador_3 = 0;
+
         adicionar1.addEventListener("click", function (event) {
         var input = document.createElement("input"); 
-        input.id = "adicionada";
-        input.name = "add_enunciado";
+        contador_1 ++;
+        input.name = "add_prof_" + contador_1;
         input.placeholder = " Digite o enunciado da questão";
         input.type = "text";
         input.class = "form-control";
@@ -148,8 +153,8 @@
 
         adicionar3.addEventListener("click", function (event) {
         var input = document.createElement("input"); 
-        input.id = "adicionada";
-        input.name = "add_enunciado";
+        contador_3 ++;
+        input.name = "add_pes_" + contador_3;
         input.placeholder = " Digite o enunciado da questão";
         input.type = "text";
         input.class = "form-control";
@@ -162,8 +167,8 @@
 
         adicionar2.addEventListener("click", function (event) {
         var input = document.createElement("input"); 
-        input.id = "adicionada";
-        input.name = "add_enunciado";
+        contador_2 ++;
+        input.name = "add_tur_" + contador_2;
         input.placeholder = " Digite o enunciado da questão";
         input.type = "text";
         input.class = "form-control";
