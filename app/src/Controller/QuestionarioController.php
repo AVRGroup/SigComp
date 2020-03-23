@@ -22,7 +22,7 @@ class QuestionarioController
         $this->container->view['usuario'] = $usuario;
         $questionarios = $this->container->questionarioDAO->getAll();
         $this->container->view['questionarios'] = $questionarios;
-
+        
         return $this->container->view->render($response, 'edicaoQuestionario.tpl');
     }
 
@@ -98,6 +98,7 @@ class QuestionarioController
         $excluiu = 0;
         foreach($questoes as $questao){
             $id_questao = $questao->getId();
+            
             if (isset($_POST["exclui_$id_questao"])) {
                 $this->excluiQuestao($request, $response, $args, $id_questao);
                 unset($_POST["exclui_$id_questao"]);
@@ -105,22 +106,22 @@ class QuestionarioController
             }
         }
 
-        if($editou || $excluiu){
-            //salvar o novo questionário
-        }
+        var_dump($excluiu);
 
-        if(!$excluiu){
-            $this->listaQuestoes($request, $response, $args);
+        
+        
+        //Ao clicar no botão salvar, o comando abaixo retorna a pagina de edição do questionario
+        if(!$excluiu ){
+            return  $this->index( $request,  $response, $args);
         }
     }
-
+    
     public function excluiQuestao(Request $request, Response $response, $args, $id_questao)
     {
         $questao = $this->container->questaoDAO->getById($id_questao);
         if($questao !== null){
             $this->container->questaoDAO->dropById($id_questao);
         }
-
         $this->listaQuestoes($request, $response, $args);
     }
 }

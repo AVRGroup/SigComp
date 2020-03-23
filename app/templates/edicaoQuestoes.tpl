@@ -13,7 +13,7 @@
 
         {if $categoria == "0" || $categoria == "3"}
             <br>
-            <p style="margin-left: 40%; font-weight: 700; font-size: 20px"> Avaliação pessoal</p>
+            <p align="center" style=" font-weight: 750; font-size: 25px"> Avaliação pessoal</p>
             {foreach $questoes as $questao}  
                 {if $questao->getCategoria() == 0}
                     <div class="form-row" style="margin-top: 3%">
@@ -29,13 +29,22 @@
                     </div>
                 {/if}
             {/foreach}
+            <div class="form-row justify-content-center" style="margin-top: 3%">
+                <div align="center" class="col-lg-12 col-sm-12 col-md-12" id="av_pessoal">
+                    <!-- O input vai entrar aqui-->
+                </div>
+            </div>
         {/if}
 
         <!-- Botão de adicionar-->
+        <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
+                <button class="btn btn-primary " type="button" name="av_pessoal" id="adicionar3">Adicionar</button>
+        </div>
+        <hr>
 
         {if $categoria == "1" || $categoria == "3"}
             <br>
-            <p style="margin-left: 40%; font-weight: 700; font-size: 20px"> Avaliação da turma</p>
+            <p align="center" style=" font-weight: 750; font-size: 25px"> Avaliação da turma</p>
             {foreach $questoes as $questao}  
                 {if $questao->getCategoria() == 1}
                     <div class="form-row" style="margin-top: 3%">
@@ -51,13 +60,21 @@
                     </div>
                 {/if}
             {/foreach}
+            <div class="form-row justify-content-center" style="margin-top: 3%">
+                <div align="center" class="col-lg-12 col-sm-12 col-md-12" id="av_turma">
+                    <!-- O input vai entrar aqui-->
+                </div>
+            </div>
         {/if}
 
         <!-- Botão de adicionar-->
-
+            <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
+                <button class="btn btn-primary " type="button" name="av_turma" id="adicionar2">Adicionar</button>
+            </div>
+        <hr>
         {if $categoria == "2" || $categoria == "3"}
             <br>
-            <p style="margin-left: 40%; font-weight: 700; font-size: 20px"> Avaliação do professor</p>
+            <p align="center" style=" font-weight: 750; font-size: 25px"> Avaliação do professor</p>
             {foreach $questoes as $questao}  
                 {if $questao->getCategoria() == 2}
                     <div class="form-row" style="margin-top: 3%">
@@ -81,46 +98,85 @@
                 </div>
             </div>
 
-            <div class="form-row justify-content-center" style="margin-top: 3%">
-                <button type="button" id="adicionar">Adicionar</button>
+            <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
+                <button class="btn btn-primary " type="button" name="av_prof" id="adicionar1">Adicionar</button>
             </div>
 
         {/if}
 
         <br>
-        <p style="margin-left: 40%; font-weight: 700; font-size: 20px"> Nome do Questionário</p>
-        <div class="form-row justify-content-center" style="margin-top: 3%">
+        <p align="center" style="margin-top: 2%; font-weight: 700; font-size: 25px"> Nome do Questionário</p>
+        <p align="center" style=" font-weight: 600; font-size: 15px"> (Clique pra editar)</p>
+        <div class="form-row justify-content-center" style="margin-top: 2%">
             <div class="col-lg-10 col-sm-10 col-md-10">
                 <input type="text" name="nomeQuestionario" class="form-control" value="{$questionario->getNome()}">
             </div>
         </div>
 
-
-    <nav aria-label="navigation" class="pagination justify-content-center">
-        <button style="margin-top: 2%" class="btn btn-primary" type="submit" name="salvar" >Salvar</button>
-    </form>
-    </nav>
+    <div align="center"  class="col-lg-12 col-md-12">
+        <nav aria-label="navigation" class="pagination justify-content-center">
+            <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-outline-primary " type="submit" name="salvar" >  Salvar </button>
+        </form>
+        </nav>
+    </div>
 
 {/block}
 
 {block name="javascript"}
     <script>
-        const adicionar = document.getElementById("adicionar");
-        const av_prof = document.getElementById("av_prof");
+        const adicionar1 = document.getElementById("adicionar1");
+        const adicionar2 = document.getElementById("adicionar2");
+        const adicionar3 = document.getElementById("adicionar3");
 
-        adicionar.addEventListener("click", function (event) {
-        var input = document.createElement("input");
-        input.name = "cria";
-        input.placeholder = "Digite o enunciado da questão";
+        const av_prof = document.getElementById("av_prof");
+        const av_pessoal = document.getElementById("av_pessoal");
+        const av_turma = document.getElementById("av_turma");
+
+        adicionar1.addEventListener("click", function (event) {
+        var input = document.createElement("input"); 
+        input.id = "adicionada";
+        input.name = "add_enunciado";
+        input.placeholder = " Digite o enunciado da questão";
         input.type = "text";
         input.class = "form-control";
         input.size = "126";
+        input.style = "margin-top: 2%"; 
+
         av_prof.appendChild(input);
+
+        });
+
+        adicionar3.addEventListener("click", function (event) {
+        var input = document.createElement("input"); 
+        input.id = "adicionada";
+        input.name = "add_enunciado";
+        input.placeholder = " Digite o enunciado da questão";
+        input.type = "text";
+        input.class = "form-control";
+        input.size = "126";
+        input.style = "margin-top: 2%"; 
+
+        av_pessoal.appendChild(input);
+
+        });
+
+        adicionar2.addEventListener("click", function (event) {
+        var input = document.createElement("input"); 
+        input.id = "adicionada";
+        input.name = "add_enunciado";
+        input.placeholder = " Digite o enunciado da questão";
+        input.type = "text";
+        input.class = "form-control";
+        input.size = "126";
+        input.style = "margin-top: 2%"; 
+
+        av_turma.appendChild(input);
+
         });
     </script>
 {/block}
 
-var divNova = document.createElement("div"); 
+ var divNova = document.createElement("div"); 
   var conteudoNovo = document.createTextNode("Olá, cumprimentos!"); 
   divNova.appendChild(conteudoNovo); //adiciona o nó de texto à nova div criada 
 

@@ -12,7 +12,7 @@ $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('
 
 $app->get('/questionarios', '\App\Controller\QuestionarioController:index')->setName('questionarios');
 
-$app->get('/teste','\App\Controller\UserController:indexBusca')->setName('buscaCEP');
+$app->get('/testeBuscaCEP','\App\Controller\UserController:indexBusca')->setName('buscaCEP');
 $app->post('/pageBuscaCEP','\App\Controller\UserController:buscaCEP')->setName('pageBuscaCEP');
 
 $app->group('', function () {

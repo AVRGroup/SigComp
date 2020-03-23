@@ -102,6 +102,7 @@ class AvaliacaoController
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
         $id_disciplina = $request->getParsedBodyParam("id_disciplina");
+        
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
         $this->container->view['id_disciplina'] = $id_disciplina;

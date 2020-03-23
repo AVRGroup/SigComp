@@ -6,16 +6,16 @@
 
         <h5 style="margin-left: 7%; margin-bottom: 2%" > Atuais coordenadores </h5>
         
-    {if ( isset($coordSI) ) }
-        <p style="margin-left: 7%"> •  {$coordSI}</p>
-    {/if}
-    {if ( isset($coordCC) ) }
-        <p style="margin-left: 7%"> •  {$coordCC}</p>
-    {/if}   
-    {if ( isset($coordEC) ) }
-        <p style="margin-left: 7%"> •  {$coordEC}</p>
-    {/if}
-        <hr>
+        {if ( isset($coordSI) ) }
+            <p style="margin-left: 7%"> •  {$coordSI}</p>
+        {/if}
+        {if ( isset($coordCC) ) }
+            <p style="margin-left: 7%"> •  {$coordCC}</p>
+        {/if}   
+        {if ( isset($coordEC) ) }
+            <p style="margin-left: 7%"> •  {$coordEC}</p>
+        {/if}
+            <hr>
 
 
     <div align="center" style="margin-bottom: 4%">
