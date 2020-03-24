@@ -47,8 +47,8 @@ class UserController
             $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
         }
 
-        if($request->isPost()){
-            $pesquisa = $request->getParsedBodyParam('pesquisa');
+        if($request->getParam('pesquisa')){
+            $pesquisa = $request->getParam('pesquisa');
             $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
         }
         else {

@@ -6,7 +6,7 @@
         <h3 class="text-center mb-4">Gerenciar Usuários</h3>
     {/if}
 
-        <form class="form-row" method="post">
+        <form class="form-row" method="get">
             <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
             <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
         </form>
