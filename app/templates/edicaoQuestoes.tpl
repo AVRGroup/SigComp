@@ -10,6 +10,7 @@
         <input type="hidden" name="categoria" value="{$categoria}">
         <input type="hidden" name="filtro_categoria" value="{$categoria}">
         <input type="hidden" name="filtro_versao" value="{$versao}">
+        <input type="hidden" name="nome_questionario" value="{$nome_questionario}">
 
         {if $categoria == "0" || $categoria == "3"}
             <br>
@@ -110,7 +111,7 @@
         <p align="center" style=" font-weight: 600; font-size: 15px"> (Clique pra editar)</p>
         <div class="form-row justify-content-center" style="margin-top: 2%">
             <div class="col-lg-10 col-sm-10 col-md-10">
-                <input type="text" name="nomeQuestionario" class="form-control" value="{$questionario->getNome()}">
+                <input type="text" name="novo_nome" class="form-control" value="{$questionario->getNome()}">
             </div>
         </div>
 

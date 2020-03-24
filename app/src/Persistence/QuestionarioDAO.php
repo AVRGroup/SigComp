@@ -4,6 +4,7 @@ namespace App\Persistence;
 
 use Doctrine\ORM\EntityManager;
 use App\Model\Questionario;
+use App\Model\Avaliacao;
 
 class QuestionarioDAO extends BaseDAO
 {
@@ -78,5 +79,32 @@ class QuestionarioDAO extends BaseDAO
         return $id_questionario;
     }
 
+    /**
+     * @param $id, $nome
+     */
+    public function setNome($id, $nome){
+        try {
+            $query = $this->em->createQuery("UPDATE App\Model\Questionario q SET q.nome = :nome WHERE q.id = :id");
+            $query->setParameter('id', $id);
+            $query->setParameter('nome', $nome);
+            $query->execute();
+        } catch (\Exception $e) {
+        }
+    }
 
+    /**
+     * @param $id
+     * @return int|null
+     */
+    public function possuiAvaliacao($id){
+        try {
+            $query = $this->em->createQuery("SELECT COUNT(q) FROM App\Model\Avaliacao as a WHERE a.questionario = :id");
+            $query->setParameter('id', $id);
+            $qtd_avaliacoes = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $qtd_avaliacoes = null;
+        }
+
+        return $qtd_avaliacoes;
+    }
 }

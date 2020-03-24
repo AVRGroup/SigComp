@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
  * Model\Questao
  *
  * @ORM\Entity()
- * @ORM\Table(name="questao", uniqueConstraints={@UniqueConstraint(name="unique_questao", columns={"numero", "categoria"})})
+ * @ORM\Table(name="questao", uniqueConstraints={@UniqueConstraint(name="unique_numero", columns={"numero", "categoria"})})
  */
 class Questao
 {

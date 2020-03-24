@@ -195,4 +195,18 @@ class QuestaoDAO extends BaseDAO
         } catch (\Exception $e) {
         }    
     }
+
+    /**
+     * @param $id, $numero
+     */
+    public function setNumero($id, $numero)
+    {
+        try {
+            $query = $this->em->createQuery("UPDATE App\Model\Questao q SET q.numero = :numero WHERE q.id = :id");
+            $query->setParameter('id', $id);
+            $query->setParameter('numero', $numero);
+            $query->execute();
+        } catch (\Exception $e) {
+        }
+    }
 }
