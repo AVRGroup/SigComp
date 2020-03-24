@@ -2,7 +2,12 @@
 {block name=content}
     <canvas class="mt-4" id="radar"></canvas>
 
-    <div class="row mt-4">
+    <div class="text-center">
+        <button class="btn btn-primary" onclick="setDisciplinasRelizadas()">Disciplinas já Realizadas</button>
+        <button class="btn btn-success" onclick="setTodasDisciplinas()">Todas as disciplinas</button>
+    </div>
+
+    <div class="row mt-5">
         {foreach $alunos as $index => $aluno}
             <div class="col-sm-2">
                 <span class="cor-aluno-comparacao" id="cor-{$index}"></span>
@@ -25,6 +30,7 @@
          ***************************************/
 
         const todosGrupos = JSON.parse('{json_encode($grupoAlunos)}')
+        const todosGruposTotal = JSON.parse('{json_encode($grupoAlunosTotal)}')
         var nomeGrupos = []
 
         const backgroundColors = ["rgba(46, 204, 113,0.5)", "rgba(52, 152, 219,0.5)", 'rgba(155, 89, 182,0.5)', 'rgba(243, 156, 18,0.5)', 'rgba(231, 76, 60,0.5)']
@@ -35,10 +41,12 @@
         }
 
         var datasets = []
+        var datasetsTotal = []
         var i = 0
 
         for(var aluno of todosGrupos) {
             var data = []
+
             for (var grupo in aluno) {
                 data.push(aluno[grupo])
             }
@@ -52,6 +60,23 @@
 
             document.getElementById('cor-' + i).style.backgroundColor = borderColors[i]
 
+            i++
+        }
+
+        i = 0
+        for (var aluno of todosGruposTotal) {
+            var dataTotal = []
+
+            for (var grupo in aluno) {
+                dataTotal.push(aluno[grupo])
+            }
+
+            datasetsTotal.push({
+                backgroundColor: backgroundColors[i],
+                borderColor: borderColors[i],
+                lineTension: 0.02,
+                data: dataTotal
+            })
             i++
         }
 
@@ -100,6 +125,16 @@
             },
             options: opcoes
         })
+
+        function setTodasDisciplinas() {
+            radarChart.data.datasets = datasetsTotal
+            radarChart.update()
+        }
+
+        function setDisciplinasRelizadas() {
+            radarChart.data.datasets = datasets
+            radarChart.update()
+        }
 
     </script>
 {/block}
