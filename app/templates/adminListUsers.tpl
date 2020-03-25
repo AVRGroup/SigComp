@@ -6,24 +6,28 @@
         <h3 class="text-center mb-4">Gerenciar Usuários</h3>
     {/if}
 
-        <form class="form-row" method="get">
-            <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
-            <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        <form method="get">
+            <div class="form-row">
+                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
+            </div>
+
+            {if $loggedUser->isAdmin()}
+                <div class="form-row mt-4">
+                    <select class="form-control col-6" name="curso">
+                        <option value="todos" {if $curso == 'todos'} selected {/if}>Todos</option>
+                        <option value="35A" {if $curso == '35A'} selected {/if}>Ciência da Computação Noturno</option>
+                        <option value="65C" {if $curso == '65C'} selected {/if}>Ciência da Computação Integral</option>
+                        <option value="76A" {if $curso == '76A'} selected {/if}>Sistemas de Informação</option>
+                        <option value="65B" {if $curso == '65B'} selected {/if}>Engenharia Computacional</option>
+                    </select>
+                </div>
+            {/if}
+
+            <button type="submit" class="btn btn-primary mt-4"><i class="fa fa-search"></i> Pesquisar</button>
         </form>
 
-    <br>
 
-    {if $loggedUser->isAdmin()}
-        <div class="form-row">
-            <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                <option value="">Selecione o Curso</option>
-                <option value="{base_url}/admin/list-users?curso=35A">Ciência da Computação Noturno</option>
-                <option value="{base_url}/admin/list-users?curso=65C">Ciência da Computação Integral</option>
-                <option value="{base_url}/admin/list-users?curso=76A">Sistemas de Informação</option>
-                <option value="{base_url}/admin/list-users?curso=65B">Engenharia Computacional</option>
-            </select>
-        </div>
-    {/if}
+    <br>
 
     <hr>
 
