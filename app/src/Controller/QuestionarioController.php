@@ -137,7 +137,7 @@ class QuestionarioController
         $versao_atual = $request->getParsedBodyParam("versao");
         $id_questionario = $this->container->questionarioDAO->getIdByVersao($versao_atual);
         
-        //1- alterou só o nome
+        // 1- alterou só o nome
         if($alterou == 0 && $novo_nome !== $nome_questionario){
             echo "<script>console.log('alterou só nome: " . $novo_nome . " != " . $nome_questionario . "' );</script>";
             if($id_questionario !== null){
@@ -145,21 +145,26 @@ class QuestionarioController
             }
         }
         
-        //2- alterou só questões
+        // 2- alterou só questões
         elseif ($alterou !== 0 && $novo_nome == $nome_questionario) {
-            echo "<script>console.log('ñ alterou nome: " . $novo_nome . " = " . $nome_questionario . " ' );</script>";
-            $num_avaliacoes = $this->container->questionarioDAO->possuiAvaliacao($id_questionario);
-            $num_avaliacoes = (int)$num_avaliacoes[1];
+            echo "<script>console.log('não alterou nome: " . $novo_nome . " = " . $nome_questionario . " ' );</script>";
+            $num_avaliacoes = $this->container->questionarioDAO->possuiAvaliacao( $id_questionario );
+            $num_avaliacoes = 1;
+            echo "<script>console.log('$num_avaliacoes');</script>";
+            
             if($num_avaliacoes == null || $num_avaliacoes == 0){
                 //aplica as modificações
+                
             }
             else{
                 //tem que alterar o nome
+                $this->container->view['incompleto'] = "Você precisa alterar o nome do questionário ao alterar as questões!";
+                return $this->listaQuestoes($request, $response, $args);
             }
         }
         
-        //3- alterou os dois
-        elseif($alterou !==0 && $novo_nome !== $nome_questionario){
+        // 3- alterou os dois
+        elseif($alterou !== 0 && $novo_nome !== $nome_questionario){
             echo "<script>console.log('alterou os dois: " . $novo_nome . " != " . $nome_questionario . "' );</script>";
             
             $num_avaliacoes = $this->container->questionarioDAO->possuiAvaliacao($id_questionario);
@@ -232,7 +237,7 @@ class QuestionarioController
                 //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
             }
         }
-
+        
         $this->listaQuestoes($request, $response, $args);
     }
     
@@ -254,6 +259,7 @@ class QuestionarioController
                 }
             }
         }
-        //$this->listaQuestoes($request, $response, $args);
+
+        
     }
 }

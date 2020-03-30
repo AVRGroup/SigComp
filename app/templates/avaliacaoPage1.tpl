@@ -33,7 +33,7 @@
 
           {foreach $questoes as $questao}
 
-            <p style=" font-size: 20px"> {$questao->getNumero()}- {$questao->getEnunciado()}</p>
+            <p style="font-size: 20px; margin-top: 4%"> {$questao->getNumero()}- {$questao->getEnunciado()}</p>
 
             {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
