@@ -55,9 +55,6 @@ class UserController
             $this->container->view['users'] = $this->container->usuarioDAO->getAllByCursoARRAY($curso);
         }
 
-        if ($curso == "todos") {
-            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
-        }
 
         $this->container->view['curso'] = $curso;
 

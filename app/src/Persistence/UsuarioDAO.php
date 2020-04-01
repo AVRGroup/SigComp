@@ -309,7 +309,7 @@ class UsuarioDAO extends BaseDAO
     {
         $queryCurso = "";
 
-        if ($curso) {
+        if ($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = \"$curso\"";
         }
 
@@ -384,7 +384,7 @@ class UsuarioDAO extends BaseDAO
     public function getAllByCursoARRAY($curso = null)
     {
         $queryCurso = "";
-        if($curso) {
+        if($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = '$curso'";
         }
 
