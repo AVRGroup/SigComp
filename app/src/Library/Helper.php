@@ -129,13 +129,13 @@ class Helper
             }
 
             $nomeGrupo = $grupo->getNomeInteiro();
+
             if(!isset($quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo])) {
                 $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] = 1;
             } else {
                 $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] ++;
             }
         }
-
 
         $gruposComPontuacao = [];
         $quantidadeDeDisciplinasRealizadasNoGrupo = [];
@@ -179,6 +179,12 @@ class Helper
         }
 
         $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
+
+        foreach ($quantidadeDeDisciplinasRealizadasNoGrupo as $nome => $quantidade) {
+            if ($quantidadeDeDisciplinasRealizadasNoCurso[$nome] < $quantidade) {
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nome] = $quantidade;
+            }
+        }
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
             if ($isTotal) {
