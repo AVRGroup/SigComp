@@ -784,18 +784,40 @@ class AdminController
         }
 
         $maiorIra = $alunos[0];
+        $grupos = array_keys($grupoAlunos[0]);
 
-        foreach ($alunos as $aluno) {
+        foreach ($alunos as $index => $aluno) {
             if ($aluno->getIra() > $maiorIra->getIra()) {
                 $maiorIra = $aluno;
             }
         }
 
+        $maiorAlunoPorGrupo = [];
+        foreach ($grupos as $grupo) {
+            $maiorAlunoPorGrupo[$grupo] = $this->getTopAlunoNoGrupo($grupoAlunos, $grupo);
+        }
+
+//        die(var_dump($maiorAlunoPorGrupo));
+
         $this->container->view['alunos'] = $alunos;
         $this->container->view['maiorIra'] = $maiorIra;
         $this->container->view['grupoAlunos'] = $grupoAlunos;
         $this->container->view['grupoAlunosTotal'] = $grupoAlunosTotal;
+        $this->container->view['maiorAlunoPorGrupo'] = $maiorAlunoPorGrupo;
 
         return $this->container->view->render($response, 'seeComparison.tpl');
+    }
+
+    public function getTopAlunoNoGrupo($grupoAlunos, $grupo)
+    {
+        $topAluno = 0;
+
+        foreach ($grupoAlunos as $idAluno => $grupos) {
+            if ($grupoAlunos[$idAluno][$grupo] > $grupoAlunos[$topAluno][$grupo]) {
+                $topAluno = $idAluno;
+            }
+        }
+
+        return $topAluno;
     }
 }

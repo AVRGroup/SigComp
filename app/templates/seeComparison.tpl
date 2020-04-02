@@ -21,6 +21,15 @@
         <p>{$maiorIra->getNome()}: {number_format($maiorIra->getIra(), 2)}</p>
     </div>
 
+    <b>Top alunos por Grupo (relativo às disciplinas já relizadas):</b>
+    <div class="row mt-4">
+        {foreach $maiorAlunoPorGrupo as $grupo => $aluno}
+            <div class="col-4">
+                <b>{$grupo}</b>
+                <p>{$alunos[$aluno]->getNome()}: {number_format($grupoAlunos[$aluno][$grupo], 2)}</p>
+            </div>
+        {/foreach}
+    </div>
 {/block}
 
 {block name=javascript}
