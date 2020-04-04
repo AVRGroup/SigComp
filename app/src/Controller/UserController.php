@@ -35,6 +35,7 @@ class UserController
 
         $curso = null;
         $parametro = $request->getParam('curso');
+        $pesquisa = null;
 
         if ($usuario->isCoordenador()) {
             $curso = $usuario->getCurso();
@@ -51,7 +52,6 @@ class UserController
             $pesquisa = $request->getParam('pesquisa');
             $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
 
-            $this->container->view['pesquisa'] = $pesquisa;
         }
 
         else {
@@ -59,6 +59,7 @@ class UserController
         }
 
 
+        $this->container->view['pesquisa'] = $pesquisa;
         $this->container->view['curso'] = $curso;
 
         return $this->container->view->render($response, 'adminListUsers.tpl');
