@@ -8,7 +8,8 @@
 
         <form method="get">
             <div class="form-row">
-                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula">
+                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula"
+                {if $pesquisa} value="{$pesquisa}" {/if} >
             </div>
 
             {if $loggedUser->isAdmin()}

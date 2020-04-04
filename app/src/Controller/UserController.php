@@ -50,7 +50,10 @@ class UserController
         if($request->getParam('pesquisa')){
             $pesquisa = $request->getParam('pesquisa');
             $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
+
+            $this->container->view['pesquisa'] = $pesquisa;
         }
+
         else {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllByCursoARRAY($curso);
         }
