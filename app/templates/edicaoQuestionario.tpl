@@ -51,9 +51,9 @@
                     <select id="filtrar-data" name="filtro_categoria" class="form-control col-md-10 col-sm-12 mx-sm-auto">
                         <option disabled selected>Filtrar</option>
                         <option value="3">Todas</option>
-                        <!--<option value="0">Avaliação Pessoal</option>
+                        <option value="0">Avaliação Pessoal</option>
                         <option value="2">Avaliação do Professor</option>
-                        <option value="1">Avaliação da Turma</option>-->
+                        <option value="1">Avaliação da Turma</option>
                     </select>
 
                 </div>

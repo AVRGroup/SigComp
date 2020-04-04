@@ -5,11 +5,12 @@ namespace App\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
 
+
 /**
  * Model\Questao
  *
  * @ORM\Entity()
- * @ORM\Table(name="questao", uniqueConstraints={@UniqueConstraint(name="unique_numero", columns={"numero", "categoria"})})
+ * @ORM\Table(name="questao")
  */
 class Questao
 {
@@ -33,11 +34,6 @@ class Questao
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
-    protected $numero;
-
-    /**
      * @ORM\Column(type="string", length=300, nullable=false)
      */
     protected $enunciado;
@@ -59,18 +55,18 @@ class Questao
      * @ORM\Column(type="smallint", nullable=false)
      */
     protected $categoria = 0;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Questionario", inversedBy="questoes_questionario")
-     * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
-     */
-    protected $questionario;
 
     /**
      * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")
      * @ORM\JoinColumn(name="avaliacao", referencedColumnName="id", nullable=false)
      */
     protected $resposta_avaliacao;
+
+    /**
+     * @ORM\OneToMany(targetEntity="QuestaoQuestionario", mappedBy="questao")
+     * @ORM\JoinColumn(name="questao", referencedColumnName="id", nullable=false)
+     */
+    protected $questionarios_questao;
 
     public function __construct()
     {
@@ -92,24 +88,6 @@ class Questao
     public function setId($id)
     {
         $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
-     * @param mixed $numero
-     * @return Questao
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
         return $this;
     }
 
@@ -164,24 +142,6 @@ class Questao
     public function setCategoria($categoria)
     {
         $this->categoria = $categoria;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getQuestionario()
-    {
-        return $this->questionario;
-    }
-
-    /**
-     * @param mixed $tipo_questionario
-     * @return Questao
-     */
-    public function setQuestionario($questionario)
-    {
-        $this->questionario = $questionario;
         return $this;
     }
 

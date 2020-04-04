@@ -33,40 +33,41 @@
 
           {foreach $questoes as $questao}
 
-            <p style="font-size: 20px; margin-top: 4%"> {$questao->getNumero()}- {$questao->getEnunciado()}</p>
+            {$numero = $questaoQuestionarioDAO->getNumeroQuestao($versaoAtual, $questao->getId())}
+            <p style="font-size: 20px; margin-top: 4%"> {$numero}- {$questao->getEnunciado()}</p>
 
             {if $questao->getTipo() == 0 }
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="1">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">1</label>
+                <input type="radio" id="radio1{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="1">
+                <label class="custom-control-label" for="radio1{$numero}">1</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="2">
-                <label class="custom-control-label" for="radio2{$questao->getNumero()}">2</label>
+                <input type="radio" id="radio2{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="2">
+                <label class="custom-control-label" for="radio2{$numero}">2</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio3{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="3">
-                <label class="custom-control-label" for="radio3{$questao->getNumero()}">3</label>
+                <input type="radio" id="radio3{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="3">
+                <label class="custom-control-label" for="radio3{$numero}">3</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio4{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="4">
-                <label class="custom-control-label" for="radio4{$questao->getNumero()}">4</label>
+                <input type="radio" id="radio4{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="4">
+                <label class="custom-control-label" for="radio4{$numero}">4</label>
               </div>
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio5{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input"  value="5">
-                <label class="custom-control-label" for="radio5{$questao->getNumero()}">5</label>
+                <input type="radio" id="radio5{$numero}" name="customRadio1_{$numero}" class="custom-control-input"  value="5">
+                <label class="custom-control-label" for="radio5{$numero}">5</label>
               </div>
 
             {/if}
 
             {if $questao->getTipo() == 1 }
               <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio1{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="1">
-                <label class="custom-control-label" for="radio1{$questao->getNumero()}">Sim</label>
+                <input type="radio" id="radio1{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="1">
+                <label class="custom-control-label" for="radio1{$numero}">Sim</label>
               </div>
                <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="radio2{$questao->getNumero()}" name="customRadio1_{$questao->getNumero()}" class="custom-control-input" value="0">
-                <label class="custom-control-label" for="radio2{$questao->getNumero()}">Não</label>
+                <input type="radio" id="radio2{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="0">
+                <label class="custom-control-label" for="radio2{$numero}">Não</label>
               </div>
 
             {else}

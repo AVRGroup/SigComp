@@ -22,6 +22,7 @@ class Questionario
 
     /**
      * @ORM\Column(type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $versao;
 
@@ -31,16 +32,16 @@ class Questionario
     protected $nome;
 
     /**
-     * @ORM\OneToMany(targetEntity="Questao", mappedBy="questionario")
-     * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
-     */
-    protected $questoes_questionario;
-
-    /**
      * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="questionario")
      * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
      */
     protected $avaliacoes_questionario;
+
+    /**
+     * @ORM\OneToMany(targetEntity="QuestaoQuestionario", mappedBy="questionario")
+     * @ORM\JoinColumn(name="questionario", referencedColumnName="id", nullable=false)
+     */
+    protected $questoes_questionario;
 
     public function __construct()
     {
