@@ -13,6 +13,7 @@ use App\Persistence\TopicoDAO;
 use App\Persistence\RespostaDAO;
 use App\Persistence\QuestaoDAO;
 use App\Persistence\QuestionarioDAO;
+use App\Persistence\QuestaoQuestionarioDAO;
 use App\Persistence\AvaliacaoDAO;
 use App\Persistence\TurmaDAO;
 use App\Persistence\ProfessorTurmaDAO;
@@ -34,6 +35,7 @@ use Slim\Views\Smarty;
  * @property OportunidadeDAO oportunidadeDAO
  * @property QuestaoDAO questaoDAO
  * @property QuestionarioDAO questionarioDAO
+ * @property QuestaoQuestionarioDAO questaoQuestionarioDAO
  * @property AvaliacaoDAO avaliacaoDAO
  * @property TurmaDAO turmaDAO
  * @property ProfessorTurmaDAO professorTurmaDAO
@@ -153,6 +155,10 @@ class Container extends \Slim\Container
 
         $this['questionarioDAO'] = function () {
             return new QuestionarioDAO($this->db);
+        };
+
+        $this['questaoQuestionarioDAO'] = function () {
+            return new QuestaoQuestionarioDAO($this->db);
         };
 
         $this['turmaDAO'] = function () {

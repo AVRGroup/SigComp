@@ -41,7 +41,7 @@
                 {if $questao->getCategoria() == 0}
                     <div class="form-row" style="margin-top: 3%">
                         <div class="col-lg-1 col-sm-1 col-md-1 d-flex justify-content-end">
-                            {$questao->getNumero()}-
+                            {$questaoQuestionarioDAO->getNumeroQuestao($versao, $questao->getId())}-
                         </div>
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
@@ -57,13 +57,13 @@
                     <!-- O input vai entrar aqui-->
                 </div>
             </div>
+            
+            <!-- Botão de adicionar-->
+            <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
+                    <button class="btn btn-primary " type="button" name="av_pessoal" id="adicionar3">Adicionar</button>
+            </div>
+            <hr>
         {/if}
-
-        <!-- Botão de adicionar-->
-        <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
-                <button class="btn btn-primary " type="button" name="av_pessoal" id="adicionar3">Adicionar</button>
-        </div>
-        <hr>
 
         {if $categoria == "1" || $categoria == "3"}
             <br>
@@ -72,7 +72,7 @@
                 {if $questao->getCategoria() == 1}
                     <div class="form-row" style="margin-top: 3%">
                         <div class="col-lg-1 col-sm-1 col-md-1 d-flex justify-content-end">
-                            {$questao->getNumero()}-
+                            {$questaoQuestionarioDAO->getNumeroQuestao($versao, $questao->getId())}-
                         </div>
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
@@ -88,13 +88,15 @@
                     <!-- O input vai entrar aqui-->
                 </div>
             </div>
-        {/if}
 
-        <!-- Botão de adicionar-->
+            <!-- Botão de adicionar-->
             <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
                 <button class="btn btn-primary " type="button" name="av_turma" id="adicionar2">Adicionar</button>
             </div>
-        <hr>
+            <hr>
+        {/if}
+
+        
         {if $categoria == "2" || $categoria == "3"}
             <br>
             <p align="center" style=" font-weight: 750; font-size: 25px"> Avaliação do professor</p>
@@ -102,7 +104,7 @@
                 {if $questao->getCategoria() == 2}
                     <div class="form-row" style="margin-top: 3%">
                         <div class="col-lg-1 col-sm-1 col-md-1 d-flex justify-content-end">
-                            {$questao->getNumero()}-
+                            {$questaoQuestionarioDAO->getNumeroQuestao($versao, $questao->getId())}-
                         </div>
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
@@ -124,10 +126,10 @@
             <div class="form-row justify-content-center" style="margin-top: 3%; margin-bottom: 3%">
                 <button class="btn btn-primary " type="button" name="av_prof" id="adicionar1">Adicionar</button>
             </div>
-
+            <hr>
 
         {/if}
-        <hr>
+        
         <br>
         <p align="center" style="margin-top: 2%; font-weight: 700; font-size: 25px"> Nome do Questionário</p>
         <p align="center" style=" font-weight: 600; font-size: 15px"> (Clique pra editar)</p>

@@ -52,7 +52,7 @@ class ProfessorTurma
 
     /**
      * @param mixed $id
-     * @return MedalhaUsuario
+     * @return ProfessorTurma
      */
     public function setId($id)
     {
@@ -70,7 +70,7 @@ class ProfessorTurma
 
     /**
      * @param mixed $turma
-     * @return MedalhaUsuario
+     * @return ProfessorTurma
      */
     public function setTurma($turma)
     {
@@ -88,7 +88,7 @@ class ProfessorTurma
 
     /**
      * @param mixed $professor
-     * @return MedalhaUsuario
+     * @return ProfessorTurma
      */
     public function setProfessor($professor)
     {
