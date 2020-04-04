@@ -80,6 +80,24 @@ class QuestionarioDAO extends BaseDAO
     }
 
     /**
+     * @param $id
+     * @return string|null
+     */
+    public function getNameById($id)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.id = :id");
+            $query->setParameter('id', $id);
+            $questionario = $query->getOneOrNullResult();
+            $name = $questionario->getNome();
+        } catch (\Exception $e) {
+            $questionario = null;
+            $name = null;
+        }
+        return $name;
+    }
+
+    /**
      * @param $id, $nome
      */
     public function setNome($id, $nome){

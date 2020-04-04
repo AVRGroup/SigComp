@@ -17,6 +17,8 @@
 
     <p align="center" class="font-italic" style="font-size: 24px;"> Selecione a versão do questionário </p>
 
+    <p style="font-size: 20px; margin-left: 8%;">Versão atual: {$ultima_versao} </p>
+
     <form method="POST" action="{base_url}/edicao-questoes">    <!-- Começa o formulario -->
         <input type="hidden" name="base_url" value="{base_url}">
         <div class="row container ">

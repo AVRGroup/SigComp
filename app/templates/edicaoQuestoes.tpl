@@ -15,6 +15,17 @@
         {/if}
     </div>
 
+    <div align="center" style="margin-bottom: 4%;">
+        {if isset($completo)}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {$completo}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {/if}
+    </div>
+
     <form method="POST" action="{base_url}/store-questoes">    <!-- Começa o formulario -->
 
         <input type="hidden" name="versao" value="{$versao}">

@@ -22,6 +22,10 @@ class QuestionarioController
         $this->container->view['usuario'] = $usuario;
         $questionarios = $this->container->questionarioDAO->getAll();
         $this->container->view['questionarios'] = $questionarios;
+
+        (int)$ultimaVersao = $this->container->questionarioDAO->getUltimaVersao();
+        $nome = $this->container->questionarioDAO->getNameById($ultimaVersao);
+        $this->container->view['ultima_versao'] = $nome;
         
         return $this->container->view->render($response, 'edicaoQuestionario.tpl');
     }
@@ -238,6 +242,7 @@ class QuestionarioController
             }
         }
         
+        $this->container->view['completo'] = "As alterações foram salvas com sucesso!";
         $this->listaQuestoes($request, $response, $args);
     }
     
