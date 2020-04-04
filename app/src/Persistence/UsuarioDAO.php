@@ -311,6 +311,14 @@ class UsuarioDAO extends BaseDAO
 
         if ($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = \"$curso\"";
+
+            if($curso == "65B") {
+                $queryCurso .= " OR curso = 65AB";
+            }
+
+            if($curso == "65C") {
+                $queryCurso .= " OR curso = 65AC";
+            }
         }
 
         $sql = "SELECT * FROM usuario $queryCurso";
@@ -386,6 +394,14 @@ class UsuarioDAO extends BaseDAO
         $queryCurso = "";
         if($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = '$curso'";
+
+            if($curso == "65B") {
+                $queryCurso .= " OR curso = 65AB";
+            }
+
+            if($curso == "65C") {
+                $queryCurso .= " OR curso = 65AC";
+            }
         }
 
         $sql = "SELECT * FROM usuario $queryCurso";
