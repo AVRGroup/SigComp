@@ -313,11 +313,11 @@ class UsuarioDAO extends BaseDAO
             $queryCurso = "WHERE curso = \"$curso\"";
 
             if($curso == "65B") {
-                $queryCurso .= " OR curso = 65AB";
+                $queryCurso .= ' OR curso = "65AB"';
             }
 
             if($curso == "65C") {
-                $queryCurso .= " OR curso = 65AC";
+                $queryCurso .= ' OR curso = "65AC"';
             }
         }
 
@@ -396,11 +396,11 @@ class UsuarioDAO extends BaseDAO
             $queryCurso = "WHERE curso = '$curso'";
 
             if($curso == "65B") {
-                $queryCurso .= " OR curso = 65AB";
+                $queryCurso .= ' OR curso = "65AB"';
             }
 
             if($curso == "65C") {
-                $queryCurso .= " OR curso = 65AC";
+                $queryCurso .= ' OR curso = "65AC"';
             }
         }
 
