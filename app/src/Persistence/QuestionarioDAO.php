@@ -133,32 +133,18 @@ class QuestionarioDAO extends BaseDAO
     public function newQuestionario($versao, $nome){
 
         try {
-            $sql_insert = "INSERT INTO db_gamificacao.questionario (`versao`, `nome`) VALUES ({$versao}, '{$nome}');";
-            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
-            $stmt_insert->execute();
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.nome = :nome");
+            $query->setParameter('nome', $nome);
+            $questionario = $query->getOneOrNullResult();
+            if($questionario !== null){
+                return null;
+            }
         } catch (\Exception $e) {
             return null;
-        }
-        
-        try {
-            $query = $this->em->createQuery("SELECT q FROM App\Model\Questionario as q WHERE q.versao = :versao");
-            $query->setParameter('versao', $versao);
-            $questionario = $query->getOneOrNullResult();
-        } catch (\Exception $e) {
-            $questionario = null;
-        }
-        
-        return $questionario;
-    }
-
-    /**
-     * @param $versao
-     * @return Questionario|null
-     */
-    public function newQuestionarioSemNome($versao){
+        }        
 
         try {
-            $sql_insert = "INSERT INTO db_gamificacao.questionario (`versao`, `nome`) VALUES ({$versao}, CURRENT_TIMESTAMP());";
+            $sql_insert = "INSERT INTO db_gamificacao.questionario (`versao`, `nome`) VALUES ({$versao}, '{$nome}');";
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
         } catch (\Exception $e) {

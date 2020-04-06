@@ -146,7 +146,7 @@ class QuestaoDAO extends BaseDAO
      */
     public function getAllByVersaoQuestionario($versao)
     {
-        $questoes_questionario;
+        //$questoes_questionario;
         try {
             $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
             $query->setParameter('versao', $versao);
@@ -277,6 +277,37 @@ class QuestaoDAO extends BaseDAO
         } catch (\Exception $e) {
             $questao = null;
             echo "<script>console.log('deu ruim');</script>";
+        }
+
+        //Se não existe uma questão de categoria e enunciado igual, adiciona
+        if($questao == null){
+
+            try{
+                $sql_insert = "INSERT INTO db_gamificacao.questao (`enunciado`,`tipo`, `categoria`) VALUES ('{$enunciado}',{$tipo}, {$categoria});";
+                $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                $stmt_insert->execute();
+            } catch (\Exception $e) {
+                throw $e;
+            }
+
+            $questao = null;
+            try{
+                $query = $this->em->createQuery("SELECT q FROM App\Model\Questao as q WHERE q.enunciado = :enunciado AND q.categoria = :categoria");
+                $query->setParameter('categoria', $categoria);
+                $query->setParameter('enunciado', $enunciado);
+                $questao = $query->getOneOrNullResult();
+            } catch (\Exception $e) {
+                $questao = null;
+                echo "<script>console.log('deu ruim');</script>";
+            }
+        }
+
+        try {
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
+            $query->setParameter('versao', $versao);
+            $questionario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw $e;
         }
  
         $retorno = array();
