@@ -25,7 +25,7 @@ class QuestionarioController
         $questionarios = $this->container->questionarioDAO->getAll();
         $this->container->view['questionarios'] = $questionarios;
 
-        (int)$ultimaVersao = $this->container->questionarioDAO->getUltimaVersao();
+        $ultimaVersao = (int) $this->container->questionarioDAO->getUltimaVersao();
         $nome = $this->container->questionarioDAO->getNameById($ultimaVersao);
         $this->container->view['ultima_versao'] = $nome;
         
@@ -38,15 +38,14 @@ class QuestionarioController
         $filtro = 0; 
 
         if(!empty($args)){
-            $versao = $args[0];
+            $versao = $args;
             $categoria = $request->getParsedBodyParam("filtro_categoria");
             $filtro = 1;
-            echo "<script>console.log('entrou no if da versao');</script>";
+            echo "<script>console.log('entrou no if da versao ". $versao ."');</script>";
+            //die(var_dump($versao));
         }
 
-        //die(var_dump($args));
-
-        if($request->getParsedBodyParam("filtro_versao") !== null){
+        elseif($request->getParsedBodyParam("filtro_versao") !== null){
             $versao = $request->getParsedBodyParam("filtro_versao");
             if($request->getParsedBodyParam("filtro_categoria") !== null){
                 $categoria = $request->getParsedBodyParam("filtro_categoria");
@@ -163,15 +162,23 @@ class QuestionarioController
 
             echo "<script>console.log('alterou só nome: " . $novo_nome . " != " . $nome_questionario . "' );</script>";
             
+            //Se não tem avaliações neste questionário, muda o nome
             if($num_avaliacoes == null || $num_avaliacoes == "0"){
                 $this->container->questionarioDAO->setNome($id_questionario, $novo_nome);
             }
+            //Se já tem avaliação, cria um novo
             else{
                 //criar novo questionário
                 $nova_versao = $this->criarQuestionario($request, $response, $args);
-                $versao = $nova_versao;
-                $this->container->view['versao'] = $versao;
-                echo "<script>console.log('ELSE 1');</script>";
+                if($nova_versao !== null){
+                    $versao = $nova_versao;
+                    $this->container->view['versao'] = $versao;
+                    echo "<script>console.log('ELSE 1');</script>";
+                }
+                else{
+                    $this->container->view['incompleto'] = "Esse nome já existe!";
+                    return $this->listaQuestoes($request, $response, $args);
+                }
             }
         }
         
@@ -181,12 +188,10 @@ class QuestionarioController
 
             echo "<script>console.log('num av. = " . $num_avaliacoes . " ');</script>";
             
+            //Se já tem avaliação, não deixar modificar sem criar um novo (ou seja, deve alterar o nome)
             if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
-                $novo_nome = "data";
-                $nova_versao = $this->criarQuestionario($request, $response, $novo_nome);
-                $versao = $nova_versao;
-                $this->container->view['versao'] = $versao; 
-                echo "<script>console.log('IF2');</script>";
+                $this->container->view['incompleto'] = "Você precisa alterar o nome do questionário ao alterar as questões!";
+                return $this->listaQuestoes($request, $response, $args);
             }
         }
         
@@ -196,9 +201,15 @@ class QuestionarioController
             if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
                 //Cria novo questionario
                  $nova_versao = $this->criarQuestionario($request, $response, $args);
-                 $versao = $nova_versao;
-                 $this->container->view['versao'] = $versao;
-                 echo "<script>console.log('IF3 ');</script>";
+                 if($nova_versao !== null){
+                    $versao = $nova_versao;
+                    $this->container->view['versao'] = $versao;
+                    echo "<script>console.log('ELSE 3');</script>";
+                }
+                else{
+                    $this->container->view['incompleto'] = "Esse nome já existe!";
+                    return $this->listaQuestoes($request, $response, $args);
+                }
             }
         }
 
@@ -345,7 +356,7 @@ class QuestionarioController
         }
         
         $this->container->view['completo'] = "As alterações foram salvas com sucesso!";
-        $this->listaQuestoes($request, $response, $args);
+        $this->listaQuestoes($request, $response, $versao);
     }
     
     public function excluiQuestao(Request $request, Response $response, $versao, $id_questao)
@@ -395,57 +406,33 @@ class QuestionarioController
         $nova_versao++;
         echo "<script>console.log('nova_versao: " . $nova_versao . " ');</script>";
 
-        //Cria novo questionário
+        //Cria um novo com o nome passado
+        $novo_nome = $request->getParsedBodyParam("novo_nome");
+        $questionario = $this->container->questionarioDAO->newQuestionario($nova_versao, $novo_nome);
 
-        //Se tem algum questionário ainda não respondido, edita este
-        $id_questionario = $this->container->questionarioDAO->getUltimoNaoAvaliado();
-        if(!empty($id_questionario)){
-            $id_questionario = $id_questionario[0];
-            $id_questionario = $id_questionario['id'];
-        }
-        else{
-            $id_questionario == null;
-        }
-        if($id_questionario !== null){
-            //limpa questionário para fazer a cópia
-            $questionario = $this->container->questionarioDAO->limpaQuestionario($id_questionario);
+        if($questionario !== null){
             $versao_antiga = $request->getParsedBodyParam("versao");
-            $novo_nome = $request->getParsedBodyParam("novo_nome");
-            $id_antigo = $this->container->questionarioDAO->getIdByVersao($versao_antiga);
-            $questionario_antigo = $this->container->questionarioDAO->getById($id_antigo);
-            if($novo_nome !== $questionario_antigo->getNome()){
-                $this->container->questionarioDAO->setNome($id_questionario, $novo_nome);
+            $questoes_antigas = $this->container->questaoDAO->getAllByVersaoQuestionario($versao_antiga);
+            foreach($questoes_antigas as $questao){
+                if($questao !== null){
+                    try {
+                        $q = new QuestaoQuestionario();
+                        $q->setQuestao($questao);
+                        $q->setQuestionario($questionario);
+                        $numero = $this->container->questaoQuestionarioDAO->getNumeroQuestao($versao_antiga, $questao->getId());
+                        $q->setNumero($numero);
+                        $this->container->questaoQuestionarioDAO->persist($q);
+                        $this->container->questaoQuestionarioDAO->flush();
+                    } catch (\Exception $e) {
+                        throw $e;
+                    } 
+                }
             }
+            return $questionario->getVersao();
         }
-
-        //Se precisa criar um novo e o usuário não mudou o nome, cria um com nome genérico contendo a data e hora de criação
-        elseif($args !== null){
-            $questionario = $this->container->questionarioDAO->newQuestionarioSemNome($nova_versao);
+        else {
+            return null;
         }
-
-        //Senão cria um novo com o nome passado
-        else{
-            $novo_nome = $request->getParsedBodyParam("novo_nome");
-            $questionario = $this->container->questionarioDAO->newQuestionario($nova_versao, $novo_nome);
-        }
-
-        $versao_antiga = $request->getParsedBodyParam("versao");
-        $questoes_antigas = $this->container->questaoDAO->getAllByVersaoQuestionario($versao_antiga);
-        foreach($questoes_antigas as $questao){
-            try {
-                $q = new QuestaoQuestionario();
-                $q->setQuestao($questao);
-                $q->setQuestionario($questionario);
-                $numero = $this->container->questaoQuestionarioDAO->getNumeroQuestao($versao_antiga, $questao->getId());
-                $q->setNumero($numero);
-                $this->container->questaoQuestionarioDAO->persist($q);
-                $this->container->questaoQuestionarioDAO->flush();
-            } catch (\Exception $e) {
-                throw $e;
-            }   
-        }
-
-        return $questionario->getVersao();
 
     }
 }
