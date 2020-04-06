@@ -57,7 +57,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
 
         try {
@@ -65,7 +65,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
     }
 
@@ -114,7 +114,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $questoes_questionario = $query->getResult();
         } catch (\Exception $e) {
-            $id_questoes = null;
+            $id_questionario = null;
         }
 
         $questoes = array(); 
@@ -162,7 +162,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $questoes_questionario = $query->getResult();
         } catch (\Exception $e) {
-            $id_questoes = null;
+            $questoes_questionario = null;
         }
 
         $questoes = array(); 
@@ -265,7 +265,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('versao', $versao);
             $questionario = $query->getOneOrNullResult();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
 
         $questao = null;

@@ -202,7 +202,7 @@ class QuestionarioDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
 
         try {
