@@ -308,7 +308,7 @@ class QuestionarioController
                 $enunciado = $request->getParsedBodyParam("add_pes_$adicionou");
                 $numero = $this->container->questaoDAO->getQtdByTipoQuestionario($versao, 0);
                 $numero = (int)$numero[1];
-                $numero ++; 
+                $numero ++;
 
                 $a = $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 0, $versao);
                 $questionario = $a[0];

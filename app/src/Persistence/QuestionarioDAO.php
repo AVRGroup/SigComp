@@ -161,45 +161,4 @@ class QuestionarioDAO extends BaseDAO
         
         return $questionario;
     }
-
-    /**
-     * @return Integer|null
-     */
-    public function getUltimoNaoAvaliado(){
-        $id_questionario = null;
-        try {
-            $sql = "SELECT q.id FROM db_gamificacao.questionario as q WHERE q.id NOT IN (SELECT a.questionario FROM db_gamificacao.avaliacao as a)";
-            $stmt = $this->em->getConnection()->prepare($sql);
-            $stmt->execute();
-            $id_questionario =  $stmt->fetchAll();
-        } catch (\Exception $e) {
-        }
-
-        return $id_questionario;
-    }
-
-    /**
-     * @param $id_questionario
-     * @return Questionario|null
-     */
-    public function limpaQuestionario($id_questionario){
-        try {
-            $query = $this->em->createQuery("DELETE App\Model\QuestaoQuestionario q WHERE q.questionario = :id_questionario");
-            $query->setParameter('id_questionario', $id_questionario);
-            $query->execute();
-        } catch (\Exception $e) {
-            throw $e;  
-        }
-
-        try {
-            $query = $this->em->createQuery("SELECT q FROM App\Model\Questionario AS q WHERE q.id = :id_questionario");
-            $query->setParameter('id_questionario', $id_questionario);
-            $questionario = $query->getOneOrNullResult();
-        } catch (\Exception $e) {
-            $questionario = null;
-        }
-
-        return $questionario;
-    }
-
 }
