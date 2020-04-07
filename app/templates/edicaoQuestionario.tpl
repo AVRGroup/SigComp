@@ -20,6 +20,8 @@
     <!--<p style="font-size: 20px; margin-left: 8%;">Versão atual: {$ultima_versao} </p> -->
 
     <form method="POST" action="{base_url}/edicao-questoes">    <!-- Começa o formulario -->
+    <input type="hidden" name="ultima_versao" value="{$ultima_versao}">
+       
         <input type="hidden" name="base_url" value="{base_url}">
         <div class="row container ">
             <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
@@ -61,9 +63,10 @@
                 </div>
             </div>
         </div>
+    
     <nav aria-label="navigation" class="pagination justify-content-center">
         <button style="margin-top: 2%" class="btn btn-primary" type="submit">Editar</button>
-    </form>
     </nav>
+    </form>
 
 {/block}

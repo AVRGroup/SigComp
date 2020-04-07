@@ -57,7 +57,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
 
         try {
@@ -65,7 +65,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
     }
 
@@ -114,7 +114,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $questoes_questionario = $query->getResult();
         } catch (\Exception $e) {
-            $id_questoes = null;
+            $id_questionario = null;
         }
 
         $questoes = array(); 
@@ -146,7 +146,7 @@ class QuestaoDAO extends BaseDAO
      */
     public function getAllByVersaoQuestionario($versao)
     {
-        $questoes_questionario;
+        //$questoes_questionario;
         try {
             $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
             $query->setParameter('versao', $versao);
@@ -162,7 +162,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $questoes_questionario = $query->getResult();
         } catch (\Exception $e) {
-            $id_questoes = null;
+            $questoes_questionario = null;
         }
 
         $questoes = array(); 
@@ -251,6 +251,22 @@ class QuestaoDAO extends BaseDAO
      */
     public function addQuestao($numero, $enunciado, $tipo, $categoria, $versao)
     {
+        try{
+            $sql_insert = "INSERT INTO db_gamificacao.questao (`enunciado`,`tipo`, `categoria`) VALUES ('{$enunciado}',{$tipo} , {$categoria});";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        echo "<script>console.log('Inseriu q de teste');</script>";    
+
+        try {
+            $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
+            $query->setParameter('versao', $versao);
+            $questionario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         $questao = null;
         try{
@@ -291,7 +307,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('versao', $versao);
             $questionario = $query->getOneOrNullResult();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
  
         $retorno = array();
