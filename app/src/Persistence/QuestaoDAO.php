@@ -251,7 +251,7 @@ class QuestaoDAO extends BaseDAO
      */
     public function addQuestao($numero, $enunciado, $tipo, $categoria, $versao)
     {
-
+        //primeiro checa se a questão existe, senão cria
         $questao = null;
         try{
             $query = $this->em->createQuery("SELECT q FROM App\Model\Questao as q WHERE q.enunciado = :enunciado AND q.categoria = :categoria");
@@ -293,7 +293,22 @@ class QuestaoDAO extends BaseDAO
         } catch (\Exception $e) {
             throw e;
         }
- 
+
+        $id_questionario = $questionario->getId();
+        $id_questao = $questao->getId();
+        try {
+            $query = $this->em->createQuery("SELECT qq FROM App\Model\QuestaoQuestionario as qq WHERE qq.questao = :id_questao AND qq.questionario = :id_questionario");
+            $query->setParameter('id_questao', $id_questao);
+            $query->setParameter('id_questionario', $id_questionario);
+            $qq = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw e;
+        }
+
+        if($qq !== null){
+            $questao = null;
+        }
+        
         $retorno = array();
         $retorno[] = $questionario;
         $retorno[] = $questao;

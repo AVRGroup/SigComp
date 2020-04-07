@@ -238,18 +238,20 @@ class QuestionarioController
                         $a = $this->container->questaoDAO->addQuestao($numero, $novo_enunciado, 0, $questao->getCategoria(), $versao);
                         $questionario = $a[0];
                         $questao_nova = $a[1];
-                        try {
-                            $q = new QuestaoQuestionario();
-                            $q->setQuestao($questao_nova);
-                            $q->setQuestionario($questionario);
-                            $q->setNumero($numero);
-                            $this->container->questaoQuestionarioDAO->persist($q);
-                            $this->container->questaoQuestionarioDAO->flush();
+                        if($questao_nova !== null){
+                            try {
+                                $q = new QuestaoQuestionario();
+                                $q->setQuestao($questao_nova);
+                                $q->setQuestionario($questionario);
+                                $q->setNumero($numero);
+                                $this->container->questaoQuestionarioDAO->persist($q);
+                                $this->container->questaoQuestionarioDAO->flush();
 
-                            $id_questionario = $this->container->questionarioDAO->getIdByVersao($versao);
-                            $this->container->questaoQuestionarioDAO->dropOne($questao->getId(), $id_questionario);
-                        } catch (\Exception $e) {
-                            throw $e;
+                                $id_questionario = $this->container->questionarioDAO->getIdByVersao($versao);
+                                $this->container->questaoQuestionarioDAO->dropOne($questao->getId(), $id_questionario);
+                            } catch (\Exception $e) {
+                                throw $e;
+                            }
                         }
                     }      
 
@@ -287,16 +289,18 @@ class QuestionarioController
                 $a = $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 2, $versao);
                 $questionario = $a[0];
                 $questao = $a[1];
-                try {
-                    $q = new QuestaoQuestionario();
-                    $q->setQuestao($questao);
-                    $q->setQuestionario($questionario);
-                    $q->setNumero($numero);
-                    $this->container->questaoQuestionarioDAO->persist($q);
-                    $this->container->questaoQuestionarioDAO->flush();
-                } catch (\Exception $e) {
-                    throw $e;
-                }   
+                if($questao !== null){
+                    try {
+                        $q = new QuestaoQuestionario();
+                        $q->setQuestao($questao);
+                        $q->setQuestionario($questionario);
+                        $q->setNumero($numero);
+                        $this->container->questaoQuestionarioDAO->persist($q);
+                        $this->container->questaoQuestionarioDAO->flush();
+                    } catch (\Exception $e) {
+                        throw $e;
+                    }   
+                }
 
                 $adicionou ++;
                 //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
@@ -313,16 +317,18 @@ class QuestionarioController
                 $a = $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 0, $versao);
                 $questionario = $a[0];
                 $questao = $a[1];
-                try {
-                    $q = new QuestaoQuestionario();
-                    $q->setQuestao($questao);
-                    $q->setQuestionario($questionario);
-                    $q->setNumero($numero);
-                    $this->container->questaoQuestionarioDAO->persist($q);
-                    $this->container->questaoQuestionarioDAO->flush();
-                } catch (\Exception $e) {
-                    throw $e;
-                }   
+                if($questao !== null){
+                    try {
+                        $q = new QuestaoQuestionario();
+                        $q->setQuestao($questao);
+                        $q->setQuestionario($questionario);
+                        $q->setNumero($numero);
+                        $this->container->questaoQuestionarioDAO->persist($q);
+                        $this->container->questaoQuestionarioDAO->flush();
+                    } catch (\Exception $e) {
+                        throw $e;
+                    }   
+                }
 
                 $adicionou ++;
                 //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
@@ -339,16 +345,18 @@ class QuestionarioController
                 $a = $this->container->questaoDAO->addQuestao($numero, $enunciado, 0, 1, $versao);
                 $questionario = $a[0];
                 $questao = $a[1];
-                try {
-                    $q = new QuestaoQuestionario();
-                    $q->setQuestao($questao);
-                    $q->setQuestionario($questionario);
-                    $q->setNumero($numero);
-                    $this->container->questaoQuestionarioDAO->persist($q);
-                    $this->container->questaoQuestionarioDAO->flush();
-                } catch (\Exception $e) {
-                    throw $e;
-                }   
+                if($questao !== null){
+                    try {
+                        $q = new QuestaoQuestionario();
+                        $q->setQuestao($questao);
+                        $q->setQuestionario($questionario);
+                        $q->setNumero($numero);
+                        $this->container->questaoQuestionarioDAO->persist($q);
+                        $this->container->questaoQuestionarioDAO->flush();
+                    } catch (\Exception $e) {
+                        throw $e;
+                    }   
+                }
                 
                 $adicionou ++;
                 //echo "<script>console.log('adicionou: " . $enunciado . "' );</script>";
