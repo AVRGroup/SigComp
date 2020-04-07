@@ -378,9 +378,9 @@ class QuestionarioController
 
             //se foi usada
             //retira relaçao
-            $num_respostas = $this->container->respostaAvaliacaoDAO->jaUsada($questao->getId());
-            $num_respostas = $num_respostas[1];
-            if($num_respostas !== "0" && $num_respostas !== null){
+            $qtd_uso = $this->container->questaoQuestionarioDAO->jaUsada($questao->getId());
+            $qtd_uso = $qtd_uso[1];
+            if($qtd_uso !== "1"){
                 $id_questionario = $this->container->questionarioDAO->getIdByVersao($versao);
                 
                 echo "<script>console.log('id_questionario: " . $id_questionario . " ');</script>";
