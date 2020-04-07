@@ -31,21 +31,5 @@ class RespostaAvaliacaoDAO extends BaseDAO
             $i = $i + 1;
         }
     }
-
-    /**
-     * @param $id_questao
-     * @return Integer|null
-     */
-    public function jaUsada($id_questao)
-    {
-        try {
-            $query = $this->em->createQuery("SELECT COUNT(a) FROM App\Model\RespostaAvaliacao AS a WHERE a.questao = :id_questao");
-            $query->setParameter('id_questao', $id_questao);
-            $cont = $query->getOneOrNullResult();
-        } catch (\Exception $e) {
-            $cont = null;
-        }
-
-        return $cont;
-    }
+    
 }

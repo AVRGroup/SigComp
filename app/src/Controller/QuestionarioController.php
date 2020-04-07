@@ -369,7 +369,7 @@ class QuestionarioController
             $categoria = $questao->getCategoria();
 
             //se foi usada
-            //retira relação
+            //retira relaçao
             $num_respostas = $this->container->respostaAvaliacaoDAO->jaUsada($questao->getId());
             $num_respostas = $num_respostas[1];
             if($num_respostas !== "0" && $num_respostas !== null){
