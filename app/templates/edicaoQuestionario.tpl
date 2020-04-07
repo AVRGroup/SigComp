@@ -30,14 +30,15 @@
                         
                         {foreach $questionarios as $questionario}
                             {if $questionario != null}
-                                <option value="{$questionario->getVersao()}">
-                                {if !empty($questionario->getNome())}{$questionario->getNome()}
-                                {else}{$questionario->getVersao()}{/if}
+                                <option value="{$questionario->getVersao()}" >
+                                    {if !empty($questionario->getNome())}{$questionario->getNome()}
+                                    {else}{$questionario->getVersao()}{/if}
                                 </option>
                             {/if}
                         {/foreach}
                         
                     </select>
+
 
                 </div>
             </div>

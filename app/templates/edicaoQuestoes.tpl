@@ -132,16 +132,23 @@
         
         <br>
         <p align="center" style="margin-top: 2%; font-weight: 700; font-size: 25px"> Nome do Questionário</p>
-        <p align="center" style=" font-weight: 600; font-size: 15px"> (Clique pra editar)</p>
         <div class="form-row justify-content-center" style="margin-top: 2%">
             <div class="col-lg-10 col-sm-10 col-md-10">
-                <input type="text" name="novo_nome" class="form-control" value="{$questionario->getNome()}">
+                <input type="text" name="novo_nome" class="form-control"  value="{$questionario->getNome()}">
             </div>
         </div>
 
     <div align="center"  class="col-lg-12 col-md-12">
         <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-outline-primary " type="submit" name="salvar" >  Salvar </button>
+            <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-success " type="submit" name="salvar" >  Salvar alterações </button>
+        </form>
+        </nav>
+    </div>
+
+    <hr>
+    <div align="center"  class="col-lg-12 col-md-12">
+        <nav aria-label="navigation" class="pagination justify-content-center">
+            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" >  Excluir questionario </button>
         </form>
         </nav>
     </div>
@@ -154,6 +161,8 @@
         const adicionar2 = document.getElementById("adicionar2"); //Turma
         const adicionar3 = document.getElementById("adicionar3"); //Pessoal
 
+        const excluirQuestionario = document.getElementById("excluirQuestionario");
+
         const av_prof = document.getElementById("av_prof");
         const av_pessoal = document.getElementById("av_pessoal");
         const av_turma = document.getElementById("av_turma");
@@ -161,6 +170,24 @@
         var contador_1 = 0;
         var contador_2 = 0;
         var contador_3 = 0;
+
+        excluirQuestionario.addEventListener("click", function( e ){
+            var r = confirm("Você deseja excluir o questionário?");
+
+            
+
+            if( r == true ){
+            //Executa a ação de excluir o questionário
+            excluirQuestionario.name = "excluir";
+            excluirQuestionario.submit();
+
+            } else {
+            //Não faz nada
+
+
+            }
+
+        })
 
         adicionar1.addEventListener("click", function (event) {
         var input = document.createElement("input"); 
@@ -206,10 +233,3 @@
     </script>
 {/block}
 
- var divNova = document.createElement("div"); 
-  var conteudoNovo = document.createTextNode("Olá, cumprimentos!"); 
-  divNova.appendChild(conteudoNovo); //adiciona o nó de texto à nova div criada 
-
-  // adiciona o novo elemento criado e seu conteúdo ao DOM 
-  var divAtual = document.getElementById("div1"); 
-  document.body.insertBefore(divNova, divAtual); 

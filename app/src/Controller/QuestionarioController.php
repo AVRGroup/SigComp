@@ -190,7 +190,8 @@ class QuestionarioController
             
             //Se já tem avaliação, não deixar modificar sem criar um novo (ou seja, deve alterar o nome)
             if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
-                $this->container->view['incompleto'] = "Você precisa alterar o nome do questionário ao alterar as questões!";
+                $this->container->view['incompleto'] = "Esse questionário ja possui avaliações. 
+                                                        Você precisa alterar o nome do questionário ao alterar as questões!";
                 return $this->listaQuestoes($request, $response, $args);
             }
         }
@@ -204,7 +205,7 @@ class QuestionarioController
                  if($nova_versao !== null){
                     $versao = $nova_versao;
                     $this->container->view['versao'] = $versao;
-                    echo "<script>console.log('ELSE 3');</script>";
+                    echo "<script>console.log('Criando novo questionario');</script>";
                 }
                 else{
                     $this->container->view['incompleto'] = "Esse nome já existe!";
@@ -376,10 +377,10 @@ class QuestionarioController
             $categoria = $questao->getCategoria();
 
             //se foi usada
-            //retira relção
-            $qtd_uso = $this->container->questaoQuestionarioDAO->jaUsada($questao->getId());
-            $qtd_uso = $qtd_uso[1];
-            if($qtd_uso !== "1"){
+            //retira relaçao
+            $num_respostas = $this->container->respostaAvaliacaoDAO->jaUsada($questao->getId());
+            $num_respostas = $num_respostas[1];
+            if($num_respostas !== "0" && $num_respostas !== null){
                 $id_questionario = $this->container->questionarioDAO->getIdByVersao($versao);
                 
                 echo "<script>console.log('id_questionario: " . $id_questionario . " ');</script>";
