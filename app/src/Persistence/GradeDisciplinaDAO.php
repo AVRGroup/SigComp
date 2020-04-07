@@ -29,4 +29,22 @@ class GradeDisciplinaDAO extends BaseDAO
 
         return $gradeDisciplinas;
     }
+
+    public function disciplinaExisteNaGrade($disciplina, $grade)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT gd FROM App\Model\GradeDisciplina as gd WHERE gd.grade = :grade AND gd.disciplina = :disciplina");
+            $query->setParameter('grade', $grade);
+            $query->setParameter('disciplina', $disciplina);
+            $existe = $query->getResult();
+        } catch (\Exception $e) {
+            $existe = false;
+        }
+
+        if ($existe) {
+            return true;
+        }
+
+        return false;
+    }
 }

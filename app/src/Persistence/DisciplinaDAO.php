@@ -62,12 +62,10 @@ class DisciplinaDAO extends BaseDAO
             $query->setParameter('grade', $grade);
             $disciplinas = $query->getResult();
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             $disciplinas = null;
         }
 
         return $disciplinas;
     }
-
 
 }

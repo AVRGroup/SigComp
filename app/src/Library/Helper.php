@@ -119,7 +119,8 @@ class Helper
     }
     public static function getGruposComPontuacao($container, Usuario $usuario, $isTotal = false)
     {
-        $disciplinas = $container->disciplinaDAO->getByGrade($usuario->getGradeId($container));
+        $gradeId = $usuario->getGradeId($container);
+        $disciplinas = $container->disciplinaDAO->getByGrade($gradeId);
         $quantidadeDeDisciplinasRealizadasNoCurso = [];
 
         foreach ($disciplinas as $disciplina) {
@@ -162,6 +163,10 @@ class Helper
 
             $grupo = $disciplina->getGrupo($container, $usuario->getCurso());
 
+            if(! $container->gradeDisciplinaDAO->disciplinaExisteNaGrade($disciplina->getId(), $gradeId)) {
+                $grupo = null;
+            }
+
             if(isset($grupo)) {
                 $nomeGrupo = $grupo->getNomeInteiro();
                 $gruposComPontuacao[$nomeGrupo] += $nota->getValor();
@@ -179,12 +184,6 @@ class Helper
         }
 
         $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
-
-        foreach ($quantidadeDeDisciplinasRealizadasNoGrupo as $nome => $quantidade) {
-            if ($quantidadeDeDisciplinasRealizadasNoCurso[$nome] < $quantidade) {
-                $quantidadeDeDisciplinasRealizadasNoCurso[$nome] = $quantidade;
-            }
-        }
 
         foreach ($gruposComPontuacao as $grupo => $valor) {
             if ($isTotal) {
