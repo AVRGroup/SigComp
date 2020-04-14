@@ -57,7 +57,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
 
         try {
@@ -65,7 +65,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
     }
 
@@ -146,7 +146,7 @@ class QuestaoDAO extends BaseDAO
      */
     public function getAllByVersaoQuestionario($versao)
     {
-        $questoes_questionario;
+        //$questoes_questionario;
         try {
             $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
             $query->setParameter('versao', $versao);
@@ -291,7 +291,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('versao', $versao);
             $questionario = $query->getOneOrNullResult();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
 
         $id_questionario = $questionario->getId();
@@ -302,7 +302,7 @@ class QuestaoDAO extends BaseDAO
             $query->setParameter('id_questionario', $id_questionario);
             $qq = $query->getOneOrNullResult();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
 
         if($qq !== null){

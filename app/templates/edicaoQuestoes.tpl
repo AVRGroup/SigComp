@@ -26,7 +26,7 @@
         {/if}
     </div>
 
-    <form method="POST" action="{base_url}/store-questoes">    <!-- Começa o formulario -->
+    <form name="formulario" method="POST" action="{base_url}/store-questoes">    <!-- Começa o formulario -->
 
         <input type="hidden" name="versao" value="{$versao}">
         <input type="hidden" name="categoria" value="{$categoria}">
@@ -148,7 +148,7 @@
     <hr>
     <div align="center"  class="col-lg-12 col-md-12">
         <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" >  Excluir questionario </button>
+            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" name={$questionario->getNome()} >  Excluir questionario </button>
         </form>
         </nav>
     </div>
@@ -174,16 +174,13 @@
         excluirQuestionario.addEventListener("click", function( e ){
             var r = confirm("Você deseja excluir o questionário?");
 
-            
-
             if( r == true ){
             //Executa a ação de excluir o questionário
-            excluirQuestionario.name = "excluir";
-            excluirQuestionario.submit();
+
+            document.forms['formulario'].submit();
 
             } else {
             //Não faz nada
-
 
             }
 
