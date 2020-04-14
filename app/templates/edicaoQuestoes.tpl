@@ -138,13 +138,13 @@
             </div>
         </div>
 
-    <div align="center"  class="col-lg-12 col-md-12">
-        <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-success " type="submit" name="salvar" >  Salvar alterações </button>
-        </form>
-        </nav>
-    </div>
+        <div align="center"  class="col-lg-12 col-md-12">
+            <nav aria-label="navigation" class="pagination justify-content-center">
+                <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-success " type="submit" name="salvar" >  Salvar alterações </button>
+            </nav>
+        </div>
 
+<<<<<<< HEAD
     <hr>
     <div align="center"  class="col-lg-12 col-md-12">
         <nav aria-label="navigation" class="pagination justify-content-center">
@@ -152,6 +152,15 @@
         </form>
         </nav>
     </div>
+=======
+        <hr>
+        <div align="center"  class="col-lg-12 col-md-12">
+            <nav aria-label="navigation" class="pagination justify-content-center">
+                <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" name="excluirQuestionario" id="excluirQuestionario" >  Excluir questionario </button>
+            </nav>
+        </div>
+    </form>
+>>>>>>> 32a41a7fe1172dcefcfcb08d024ee0102bec3b89
 
 {/block}
 
@@ -229,4 +238,3 @@
         });
     </script>
 {/block}
-

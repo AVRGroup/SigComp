@@ -5,6 +5,7 @@ namespace App\Persistence;
 use Doctrine\ORM\EntityManager;
 use App\Model\Questionario;
 use App\Model\Avaliacao;
+use App\Model\QuestaoQuestionario;
 
 class QuestionarioDAO extends BaseDAO
 {
@@ -44,6 +45,28 @@ class QuestionarioDAO extends BaseDAO
         }
 
         return $questionario;
+    }
+
+    /**
+     * @param $id
+     */
+    public function dropById($id)
+    {
+        try {
+            $query = $this->em->createQuery("DELETE App\Model\QuestaoQuestionario q WHERE q.questionario = :id");
+            $query->setParameter('id', $id);
+            $query->execute();
+        } catch (\Exception $e) {
+            throw e;  
+        }
+    
+        try {
+            $query = $this->em->createQuery("DELETE App\Model\Questionario q WHERE q.id = :id");
+            $query->setParameter('id', $id);
+            $query->execute();
+        } catch (\Exception $e) {
+            throw e;  
+        }
     }
 
     /**

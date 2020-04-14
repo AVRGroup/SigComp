@@ -92,6 +92,18 @@ class QuestionarioController
         $versao = $request->getParsedBodyParam("versao");
         $categoria = $request->getParsedBodyParam("categoria");
 
+        //Checa se é para excluir o questionário
+        if (isset($_POST["excluirQuestionario"])){
+            unset($_POST["excluirQuestionario"]);
+            if($this->excluiQuestionario($request, $response, $args) !== 0){
+                return $this->index($request, $response, $args);
+            }
+            else{
+                $this->container->view['incompleto'] = "Não é possível excluir o questionário em questão, pois ele possui avaliações.";
+                return $this->listaQuestoes($request, $response, $args);
+            }
+        }
+
         if($categoria == "3"){
             $questoes = $this->container->questaoDAO->getAllByVersaoQuestionario($versao);
         }
@@ -190,7 +202,7 @@ class QuestionarioController
             
             //Se já tem avaliação, não deixar modificar sem criar um novo (ou seja, deve alterar o nome)
             if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
-                $this->container->view['incompleto'] = "Esse questionário ja possui avaliações. 
+                $this->container->view['incompleto'] = "Esse questionário já possui avaliações. 
                                                         Você precisa alterar o nome do questionário ao alterar as questões!";
                 return $this->listaQuestoes($request, $response, $args);
             }
@@ -199,18 +211,16 @@ class QuestionarioController
         // 3- alterou os dois
         elseif($alterou !== 0 && $novo_nome !== $nome_questionario){
             //echo "<script>console.log('alterou os dois: " . $novo_nome . " != " . $nome_questionario . "' );</script>";
-            if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
-                //Cria novo questionario
-                 $nova_versao = $this->criarQuestionario($request, $response, $args);
-                 if($nova_versao !== null){
-                    $versao = $nova_versao;
-                    $this->container->view['versao'] = $versao;
-                    echo "<script>console.log('Criando novo questionario');</script>";
-                }
-                else{
-                    $this->container->view['incompleto'] = "Esse nome já existe!";
-                    return $this->listaQuestoes($request, $response, $args);
-                }
+            //Cria novo questionario
+            $nova_versao = $this->criarQuestionario($request, $response, $args);
+            if($nova_versao !== null){
+                $versao = $nova_versao;
+                $this->container->view['versao'] = $versao;
+                echo "<script>console.log('Criando novo questionario');</script>";
+            }
+            else{
+                $this->container->view['incompleto'] = "Esse nome já existe!";
+                return $this->listaQuestoes($request, $response, $args);
             }
         }
 
@@ -229,10 +239,10 @@ class QuestionarioController
                 $id_questao = $questao->getId();
                 $novo_enunciado = $request->getParsedBodyParam("edita_$id_questao");
                 #compara o enunciado entre a nova questão e a original. Se houver mudanças, persiste
-                $num_respostas = $this->container->respostaAvaliacaoDAO->jaUsada($questao->getId());
-                $num_respostas = $num_respostas[1];
+                $qtd = $this->container->questaoQuestionarioDAO->jaUsada($questao->getId());
+                $qtd = $qtd[1];
                 if($novo_enunciado !== $questao->getEnunciado()){
-                    if($num_respostas !== "0" && $num_respostas !== null){
+                    if($qtd !== "0" && $qtd !== null){
                         //cria nova
                         $versao_antiga = $request->getParsedBodyParam("versao");
                         $numero = $numero = $this->container->questaoQuestionarioDAO->getNumeroQuestao($versao_antiga, $questao->getId());
@@ -365,7 +375,7 @@ class QuestionarioController
         }
         
         $this->container->view['completo'] = "As alterações foram salvas com sucesso!";
-        $this->listaQuestoes($request, $response, $versao);
+        return $this->listaQuestoes($request, $response, $versao);
     }
     
     public function excluiQuestao(Request $request, Response $response, $versao, $id_questao)
@@ -443,5 +453,20 @@ class QuestionarioController
             return null;
         }
 
+    }
+
+    public function excluiQuestionario(Request $request, Response $response, $args)
+    {
+        $versao = $request->getParsedBodyParam("versao");
+        $id = $this->container->questionarioDAO->getIdByVersao($versao);
+        $num_avaliacoes = $this->container->questionarioDAO->possuiAvaliacao($id);
+        $num_avaliacoes = $num_avaliacoes[1];
+        if($num_avaliacoes == null || $num_avaliacoes == "0"){
+            $this->container->questionarioDAO->dropById($id);
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 }
