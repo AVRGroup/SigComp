@@ -211,18 +211,16 @@ class QuestionarioController
         // 3- alterou os dois
         elseif($alterou !== 0 && $novo_nome !== $nome_questionario){
             //echo "<script>console.log('alterou os dois: " . $novo_nome . " != " . $nome_questionario . "' );</script>";
-            if($num_avaliacoes !== null && $num_avaliacoes !== "0"){
-                //Cria novo questionario
-                 $nova_versao = $this->criarQuestionario($request, $response, $args);
-                 if($nova_versao !== null){
-                    $versao = $nova_versao;
-                    $this->container->view['versao'] = $versao;
-                    echo "<script>console.log('Criando novo questionario');</script>";
-                }
-                else{
-                    $this->container->view['incompleto'] = "Esse nome já existe!";
-                    return $this->listaQuestoes($request, $response, $args);
-                }
+            //Cria novo questionario
+            $nova_versao = $this->criarQuestionario($request, $response, $args);
+            if($nova_versao !== null){
+                $versao = $nova_versao;
+                $this->container->view['versao'] = $versao;
+                echo "<script>console.log('Criando novo questionario');</script>";
+            }
+            else{
+                $this->container->view['incompleto'] = "Esse nome já existe!";
+                return $this->listaQuestoes($request, $response, $args);
             }
         }
 
