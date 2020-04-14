@@ -138,20 +138,19 @@
             </div>
         </div>
 
-    <div align="center"  class="col-lg-12 col-md-12">
-        <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-success " type="submit" name="salvar" >  Salvar alterações </button>
-        </form>
-        </nav>
-    </div>
+        <div align="center"  class="col-lg-12 col-md-12">
+            <nav aria-label="navigation" class="pagination justify-content-center">
+                <button style="margin-top: 3%; margin-bottom: 2%; " class="btn btn-success " type="submit" name="salvar" >  Salvar alterações </button>
+            </nav>
+        </div>
 
-    <hr>
-    <div align="center"  class="col-lg-12 col-md-12">
-        <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" >  Excluir questionario </button>
-        </form>
-        </nav>
-    </div>
+        <hr>
+        <div align="center"  class="col-lg-12 col-md-12">
+            <nav aria-label="navigation" class="pagination justify-content-center">
+                <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" name="excluirQuestionario" id="excluirQuestionario" >  Excluir questionario </button>
+            </nav>
+        </div>
+    </form>
 
 {/block}
 
@@ -178,7 +177,7 @@
 
             if( r == true ){
             //Executa a ação de excluir o questionário
-            excluirQuestionario.name = "excluir";
+            excluirQuestionario.name = "excluirQuestionario";
             excluirQuestionario.submit();
 
             } else {
@@ -232,4 +231,3 @@
         });
     </script>
 {/block}
-
