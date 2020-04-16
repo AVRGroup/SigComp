@@ -113,8 +113,9 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
-                                <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>
+{*                                <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>*}
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="compare"}">Comparar Alunos</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
                                 <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
