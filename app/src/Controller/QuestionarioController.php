@@ -100,6 +100,7 @@ class QuestionarioController
         if (isset($_POST["excluirQuestionario"])){
             unset($_POST["excluirQuestionario"]);
             if($this->excluiQuestionario($request, $response, $args) !== 0){
+                $this->container->view['completo'] = "Você excluiu o questionário com sucesso!";
                 return $this->index($request, $response, $args);
             }
             else{
