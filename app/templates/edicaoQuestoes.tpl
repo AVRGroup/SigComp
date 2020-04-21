@@ -34,6 +34,12 @@
         <input type="hidden" name="filtro_versao" value="{$versao}">
         <input type="hidden" name="nome_questionario" value="{$nome_questionario}">
 
+        <div align="center">
+            <p align="center" style="font-weight: 500; font-size: 20px; border:solid thick blue; border-radius: 0.5em; 
+              border-width:3px; padding-left:9px; padding-top:6px; 
+              padding-bottom:6px; margin:2px; margin-bottom:5px; width:500px;">Você está editando o questionário: {$nome_questionario }</p>
+        </div>
+
         {if $categoria == "0" || $categoria == "3"}
             <br>
             <p align="center" style=" font-weight: 750; font-size: 25px"> Avaliação pessoal</p>
@@ -46,8 +52,8 @@
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
                         </div>
-                        <div class="col-lg-1 col-sm-1 col-md-1">
-                            <button style="margin-top: 2%" type="submit" name="exclui_{$questao->getId()}" ><a style="color: darkred; margin-left: 2%"><small><i class="fa fa-trash"></i></small></a></button>                         
+                        <div style="margin-top: 2px" class="col-lg-1 col-sm-1 col-md-1">
+                            <button style="margin-top: 2%" type="submit" name="exclui_{$questao->getId()}" ><a style=" color: darkred; margin-left: 2%"><small><i class="fa fa-trash"></i></small></a></button>                         
                         </div>
                     </div>
                 {/if}
@@ -77,7 +83,7 @@
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
                         </div>
-                        <div class="col-lg-1 col-sm-1 col-md-1">
+                        <div style="margin-top: 2px" class="col-lg-1 col-sm-1 col-md-1">
                             <button style="margin-top: 2%" type="submit" name="exclui_{$questao->getId()}" ><a style="color: darkred; margin-left: 2%"><small><i class="fa fa-trash"></i></small></a></button>
                         </div>
                     </div>
@@ -109,7 +115,7 @@
                         <div class="col-lg-10 col-sm-10 col-md-10">
                             <input type="text" name="edita_{$questao->getId()}" class="form-control" value="{$questao->getEnunciado()}">
                         </div>
-                        <div class="col-lg-1 col-sm-1 col-md-1">
+                        <div style="margin-top: 2px" class="col-lg-1 col-sm-1 col-md-1">
                             <button style="margin-top: 2%" type="submit" name="exclui_{$questao->getId()}" ><a style="color: darkred; margin-left: 2%"><small><i class="fa fa-trash"></i></small></a></button>
                         </div>
                     </div>
@@ -144,23 +150,13 @@
             </nav>
         </div>
 
-<<<<<<< HEAD
     <hr>
     <div align="center"  class="col-lg-12 col-md-12">
         <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" name={$questionario->getNome()} >  Excluir questionario </button>
+            <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" id="excluirQuestionario" name="excluirQuestionario"> Excluir questionario </button>
         </form>
         </nav>
     </div>
-=======
-        <hr>
-        <div align="center"  class="col-lg-12 col-md-12">
-            <nav aria-label="navigation" class="pagination justify-content-center">
-                <button style="margin-top: 3%; margin-bottom: 2%;" class="btn btn-danger" type="submit" name="excluirQuestionario" id="excluirQuestionario" >  Excluir questionario </button>
-            </nav>
-        </div>
-    </form>
->>>>>>> 32a41a7fe1172dcefcfcb08d024ee0102bec3b89
 
 {/block}
 
@@ -185,8 +181,7 @@
 
             if( r == true ){
             //Executa a ação de excluir o questionário
-
-            document.forms['formulario'].submit();
+            document.formulario.submit();
 
             } else {
             //Não faz nada

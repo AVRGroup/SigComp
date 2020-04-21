@@ -57,7 +57,7 @@ class QuestionarioDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
     
         try {
@@ -65,7 +65,7 @@ class QuestionarioDAO extends BaseDAO
             $query->setParameter('id', $id);
             $query->execute();
         } catch (\Exception $e) {
-            throw e;  
+            throw $e;  
         }
     }
 

@@ -74,7 +74,9 @@ class QuestionarioController
             return $this->container->view->render($response, 'edicaoQuestoes.tpl'); 
             #header("Location: $base_url/edicaoQuestoes.tpl");
 
-        }else{
+        }
+        /*
+        else{
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $this->container->view['usuario'] = $usuario;
             $questionarios = $this->container->questionarioDAO->getAll();
@@ -83,7 +85,7 @@ class QuestionarioController
             $this->container->view->render($response, 'edicaoQuestionario.tpl');
             #header("Location: $base_url/edicaoQuestionario.tpl");
         }
-
+        */
     }
     
     public function storeQuestoes(Request $request, Response $response, $args)
