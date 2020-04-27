@@ -416,15 +416,54 @@ class UserController
     public function editarCoordenadores(Request $request, Response $response, $args){
         $professores = $this->container->usuarioDAO->getProfessores();
         $this->container->view['professores'] = $professores;
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
+        $this->container->view['coordenadores'] = $coordenadores;
 
         return $this->container->view->render($response, 'selectCoordenadores.tpl');
     }
 
     public function storeEditCoord(Request $request, Response $response, $args){
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
         $professores = $this->container->usuarioDAO->getProfessores();
         $this->container->view['professores'] = $professores;
 
-        return $this->container->view->render($response, 'selectCoordenadores.tpl');
+        #Checa as exclusoes de coordenadores
+        foreach( $coordenadores as $coordenador ){
+            if( isset($_POST["exclui_" . $coordenador->getId()] )){
+                echo "<script>console.log('CHAMA ESCLUSAO');</script>";
+                $coordenador->setTipo(4);
+                $this->container->usuarioDAO->setProfessor($coordenador->getId());
+            }
+        }
+
+        #Seleciona os coordenadores
+        foreach ( $professores as $professor ){
+            if(isset($_POST["coord_" . $professor->getId()])){
+                if( $this->checaCoord($request, $response, $args )) {
+                    $professor->setTipo(2);
+                    $this->container->usuarioDAO->setCoordenador($professor->getId());
+                } else {
+                    $this->container->view['incompleto'] = "Não podem haver mais de 4 coordenadores!";
+                    return $this->editarCoordenadores($request, $response, $args, 'selectCoordenadores.tpl');
+                }
+            }
+        }
+        $this->container->view['completo'] = "Alterações salvas com sucesso!";
+        return $this->editarCoordenadores($request, $response, $args, 'selectCoordenadores.tpl');
+    }
+
+    public function checaCoord(Request $request, Response $response, $args){
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
+        $cont = 0;
+
+        foreach( $coordenadores as $coordenador ){
+            $cont += 1;
+        }
+        if ( $cont < 4 ){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

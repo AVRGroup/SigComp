@@ -47,6 +47,11 @@ class QuestionarioController
             //die(var_dump($versao));
         }
 
+        elseif($request->getParsedBodyParam("filtro_versao") == null){
+            $this->container->view['incompleto'] = "Selecione um filtro!";
+            return $this->index($request, $response, $args);
+        }
+
         elseif($request->getParsedBodyParam("filtro_versao") !== null){
             $versao = $request->getParsedBodyParam("filtro_versao");
             if($request->getParsedBodyParam("filtro_categoria") !== null){

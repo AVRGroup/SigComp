@@ -1032,5 +1032,29 @@ class UsuarioDAO extends BaseDAO
         return $professores;
     }
 
+    public function setProfessor($userId)
+    {
+        $sql = "UPDATE usuario SET tipo = 4 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
 
+    public function setCoordenador($userId)
+    {
+        $sql = "UPDATE usuario SET tipo = 2 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getCoordenador()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.tipo = 2");
+            $coordenador = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $coordenador;
+    }
 }
