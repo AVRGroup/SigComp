@@ -55,14 +55,6 @@
                 <input type="checkbox" class="custom-control-input" name="coord_{$professor->getId()}" id="{$professor->getId()}">
                 <label  class="custom-control-label" for="{$professor->getId()}">• {$professor->getNome()}</label>
             </div>
-                <!-- <div style="margin-bottom: 2%">
-                    <select name="curso_{$professor->getId()}" class="form-control col-md-6 col-sm-6 ">
-                    <option disabled selected>Selecione o curso</option>
-                    <option value="Sistema de informação">Sistema de informação</option>
-                    <option value="Ciência da computação">Ciência da computação</option>
-                    <option value="Engenharia computacional">Engenharia computacional</option>
-                    </select>
-                </div> -->
 
         {/foreach}
     </div>

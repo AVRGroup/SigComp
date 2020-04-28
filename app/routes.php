@@ -36,8 +36,6 @@ $app->group('', function () {
     $this->get('/edicaoQuestoes', '\App\Controller\QuestionarioController:edicaoQuestoes')->setName('edicaoQuestoes');
     $this->get('/excluiQuestao', '\App\Controller\QuestionarioController:excluiQuestao')->setName('excluiQuestao');
 
-    $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
-    $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
@@ -83,10 +81,12 @@ $app->group('', function () {
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
         $this->map(['GET', 'POST'], '/editarCoordenadores', '\App\Controller\UserController:editarCoordenadores')->setName('editCoordenacao');
-
         $this->map(['GET', 'POST'], '/storeEditCoord', '\App\Controller\UserController:storeEditCoord')->setName('editCoord');
 
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
+
+        $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
+        $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
