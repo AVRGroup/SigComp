@@ -137,6 +137,21 @@
         {/if}
         
         <br>
+        {if $cursos}
+            <p align="center" style="margin-top: 2%; font-weight: 700; font-size: 25px"> Habilitar Cursos</p>
+            <div class="row container">
+                {foreach $cursos as $curso}
+                    {if $curso["curso"] !== null}
+                        <div class="col-md-2 col-xs-2 mx-sm-auto">
+                            <input type="checkbox" id="checkbox_{$curso["curso"]}" name="checkbox_{$curso["curso"]}" value="1">
+                            <label for="vehicle1"> {$curso["curso"]}</label>
+                        </div>
+                    {/if}
+                {/foreach}
+            </div>
+            <br>
+        {/if}
+
         <p align="center" style="margin-top: 2%; font-weight: 700; font-size: 25px"> Nome do Questionário</p>
         <div class="form-row justify-content-center" style="margin-top: 2%">
             <div class="col-lg-10 col-sm-10 col-md-10">

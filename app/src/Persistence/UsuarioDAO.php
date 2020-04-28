@@ -1057,4 +1057,16 @@ class UsuarioDAO extends BaseDAO
 
         return $coordenador;
     }
+
+    public function getCursos()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Usuario AS u");
+            $cursos = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $cursos;
+    }
 }

@@ -78,6 +78,8 @@ class QuestionarioController
             $nome_questionario = $questionario->getNome();
             $this->container->view['nome_questionario'] = $nome_questionario;
             $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
+            $cursos = $this->container->usuarioDAO->getCursos();
+            $this->container->view['cursos'] = $cursos; 
             return $this->container->view->render($response, 'edicaoQuestoes.tpl'); 
             #header("Location: $base_url/edicaoQuestoes.tpl");
 
