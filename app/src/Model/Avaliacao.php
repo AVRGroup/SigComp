@@ -92,4 +92,58 @@ class Avaliacao
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAluno()
+    {
+        return $this->aluno;
+    }
+
+    /**
+     * @param mixed $aluno
+     * @return Avaliacao
+     */
+    public function setAluno($aluno)
+    {
+        $this->aluno = $aluno;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTurma()
+    {
+        return $this->turma;
+    }
+
+    /**
+     * @param mixed $turma
+     * @return Avaliacao
+     */
+    public function setTurma($turma)
+    {
+        $this->turma = $turma;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuestionario()
+    {
+        return $this->questionario;
+    }
+
+    /**
+     * @param mixed $questionario
+     * @return Avaliacao
+     */
+    public function setQuestionario($questionario)
+    {
+        $this->questionario = $questionario;
+        return $this;
+    }    
+
 }
