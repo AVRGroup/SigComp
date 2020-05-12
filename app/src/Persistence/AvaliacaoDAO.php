@@ -3,6 +3,8 @@
 namespace App\Persistence;
 
 use Doctrine\ORM\EntityManager;
+use App\Model\Avaliacao;
+use App\Model\Turma;
 
 class AvaliacaoDAO extends BaseDAO
 {
@@ -66,6 +68,47 @@ class AvaliacaoDAO extends BaseDAO
 
         return $avaliacao;
 
+    }
+
+    /**
+     * @param $aluno_id
+     * @return Integer[]|null
+     */
+    public function getAvaliacoesByAluno($aluno_id)
+    {
+        $turmas = array();
+        try {
+            $query = $this->em->createQuery("SELECT a FROM App\Model\Avaliacao AS a WHERE a.aluno = :aluno_id");
+            $query->setParameter('aluno_id', $aluno_id);
+            $avaliacoes = $query->getResult();
+        } catch (\Exception $e) {
+            $avaliacoes = null;
+        }
+        if($avaliacoes != null){
+            foreach($avaliacoes as $a){
+                $turmas[] = $a->getTurma();
+            }
+        }
+        
+        $disciplinas = array();
+
+        if($turmas !== null){
+            foreach($turmas as $t){
+                $turma_id = $t->getId();
+                try {
+                    $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.id = :turma_id");
+                    $query->setParameter('turma_id', $turma_id);
+                    $turma = $query->getOneOrNullResult();
+                } catch (\Exception $e) {
+                    $turma = null;
+                }
+                if($turma != null){
+                    $disciplinas[] = $turma->getDisciplina()->getId();
+                }
+            }
+        }
+
+        return $disciplinas;
     }
 
 }

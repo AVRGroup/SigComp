@@ -64,10 +64,10 @@ class Questionario extends \App\Model\Questionario implements \Doctrine\ORM\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'versao', 'questoes_questionario', 'avaliacoes_questionario'];
+            return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario'];
         }
 
-        return ['__isInitialized__', 'id', 'versao', 'questoes_questionario', 'avaliacoes_questionario'];
+        return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario'];
     }
 
     /**
@@ -219,6 +219,28 @@ class Questionario extends \App\Model\Questionario implements \Doctrine\ORM\Prox
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVersao', [$versao]);
 
         return parent::setVersao($versao);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNome()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNome', []);
+
+        return parent::getNome();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNome($nome)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNome', [$nome]);
+
+        return parent::setNome($nome);
     }
 
 }

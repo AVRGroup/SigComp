@@ -24,6 +24,9 @@ class AvaliacaoController
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
+        $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
+
+        $this->container->view['disciplinas_avaliadas'] = $disciplinas_avaliadas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
@@ -348,7 +351,8 @@ class AvaliacaoController
                 $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
                 $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
                 $this->container->view['versaoAtual'] = $versaoAtual;
-                return $this->container->view->render($response, 'avaliacoes.tpl');
+                #return $this->container->view->render($response, 'avaliacoes.tpl');
+                return $this->index($request, $response, $args);
             
  
         }   else {
