@@ -242,7 +242,7 @@ class QuestaoDAO extends BaseDAO
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
 
         try {
@@ -250,7 +250,7 @@ class QuestaoDAO extends BaseDAO
             $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
             $stmt_insert->execute();
         } catch (\Exception $e) {
-            throw e;
+            throw $e;
         }
 
     }

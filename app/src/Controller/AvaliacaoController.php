@@ -210,6 +210,20 @@ class AvaliacaoController
         }
     }
 
+    #Store da page que vai apresentar a medalha do usuario que fez as avaliaçoes
+    public function storePageMedalhas(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
+        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+        $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
+        $this->container->view['versaoAtual'] = $versaoAtual;
+
+        return $this->container->view->render($response, 'avaliacoes.tpl');
+    }
+
+    
     public function storePage3(Request $request, Response $response, $args)
     {
         $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();

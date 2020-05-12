@@ -30,6 +30,8 @@ $app->group('', function () {
     $this->map(['GET', 'POST'], '/store-avaliacao-2', '\App\Controller\AvaliacaoController:storePage2')->setName('store-avaliacao-2');
     $this->map(['GET', 'POST'], '/store-avaliacao-3', '\App\Controller\AvaliacaoController:storePage3')->setName('store-avaliacao-3');
 
+    $this->map(['GET', 'POST'], '/store-avaliacaoMedalhas', '\App\Controller\AvaliacaoController:storePageMedalhas')->setName('avaliacaoPageMedalhas');
+
     $this->post('Enviar', '\App\Controller\AvaliacaoController:Enviar')->setName('Enviar');
 
     $this->get('/edicaoQuestionario', '\App\Controller\QuestionarioController:edicaoQuestionario')->setName('edicaoQuestionario');
