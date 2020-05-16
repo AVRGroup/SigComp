@@ -5,7 +5,7 @@
     
     <div align="center">
         <p style="font-weight: 500; font-size: 20px; border:solid thick black; border-radius: 0.5em; border-width:3px; padding-left:9px; padding-top:6px; padding-bottom:6px; margin:2px; margin-bottom:10px; width:500px;"> 
-            Selecione abaixo, quais professores são coordenadores. 
+            Selecione abaixo, quais docentes são coordenadores. 
         </p>
     </div>
 
@@ -35,7 +35,8 @@
         <input type="hidden" name="professores" value="{$professores}">
         <input type="hidden" name="coordenadores" value="{$coordenadores}">
 
-        <h5 style="margin-left: 7%; margin-top: 5%; margin-bottom: 2%" > Atuais coordenadores: </h5>
+        <h5 align="center" style=" margin-top: 3%; margin-bottom: 3%" > Atuais coordenadores: </h5>
+        <div style="margin-left: 30%">
         {foreach $coordenadores as $coordenador}
             <div class="form-row" style="margin-top: 1%">
                 <p style="margin-left: 10%"> •  {$coordenador->getNome()}</p>
@@ -45,24 +46,23 @@
                 </div>
             </div>
         {/foreach}
-        
+        </div>
         <hr>
-
         <div class="ml-4">
-        {foreach $professores as $professor}
+        <h4 style="margin-left: 9%; margin-bottom: 3%" > Docentes </h4>
+            {foreach $professores as $professor}
 
-            <div class="custom-control custom-checkbox" style="margin-left: 5%; margin-bottom: 1%; font-size: 17px" >
-                <input type="checkbox" class="custom-control-input" name="coord_{$professor->getId()}" id="{$professor->getId()}">
-                <label  class="custom-control-label" for="{$professor->getId()}">• {$professor->getNome()}</label>
-            </div>
+                <div class="custom-control custom-checkbox" style="margin-left: 10%; margin-bottom: 1%; font-size: 17px" >
+                    <input type="checkbox" class="custom-control-input" name="coord_{$professor->getId()}" id="{$professor->getId()}">
+                    <label  class="custom-control-label" for="{$professor->getId()}">• {$professor->getNome()}</label>
+                </div>
 
-        {/foreach}
-    </div>
-
-    <div align="center" >
-        <button  style="margin-top: 2%" class="btn btn-primary btn-lg" type="submit">Confirmar</button>  
+            {/foreach}
+        </div>
+        <div align="center" >
+            <button  style="margin-top: 4%; width: 300px; height: 45px" class="btn btn-primary btn-lg" type="submit">Confirmar</button>  
+        </div>
     </form>
-    </div>
 
 {/block}
 

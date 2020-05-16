@@ -10,6 +10,7 @@ use App\Model\Questionario;
 use App\Model\QuestaoQuestionario;
 use App\Model\Avaliacao;
 use App\Model\Disciplina;
+use App\Model\MedalhaUsuario;
 use App\Model\RespostaAvaliacao;
 
 class AvaliacaoController
@@ -23,14 +24,29 @@ class AvaliacaoController
     public function index(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-
+        $periodoPassado = $this->getPeriodoPassado();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
+        $notas_usuario = $usuario->getNotas();
+
+        #Verificação de atribuição de medalhas 
+        $cont = 0;
+        foreach ($notas_usuario as $nota){
+            if ($nota->getPeriodo() == $periodoPassado){
+                $cont = $cont + 1;
+            }
+        } 
+        if ($cont == sizeof($disciplinas_avaliadas)){
+            $this->container->view['concluiu'] = "OK";
+        }
 
         $this->container->view['disciplinas_avaliadas'] = $disciplinas_avaliadas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+        
+        #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
+        #------------------------------------------------------------
         return $this->container->view->render($response, 'avaliacoes.tpl');
     }
     
@@ -352,6 +368,7 @@ class AvaliacaoController
                 $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
                 $this->container->view['versaoAtual'] = $versaoAtual;
                 #return $this->container->view->render($response, 'avaliacoes.tpl');
+                $this->container->view['completo'] = "Parabéns! Você concluiu uma avaliação!";
                 return $this->index($request, $response, $args);
             
  

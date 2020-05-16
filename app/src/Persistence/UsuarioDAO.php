@@ -1069,4 +1069,12 @@ class UsuarioDAO extends BaseDAO
 
         return $cursos;
     }
+
+    public function addAvaliacaoInUser($userId)
+    {
+        $sql = "UPDATE usuario SET avaliacoes = avaliacoes + 1 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
 }
