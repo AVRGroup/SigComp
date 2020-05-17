@@ -95,7 +95,6 @@
                         <li class="nav-item"><a class="nav-link" href="{path_for name="compare"}">Comparar Alunos</a></li>
                     {/if}
 
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                     <li class="nav-item"><a class="nav-link" href="{path_for name="verOportunidades"}">Ver Oportunidades</a></li>
 
                     {if $estaImpersonando == true}
@@ -103,6 +102,7 @@
                     {/if}
 
                     {if $loggedUser->isAluno()}
+                        <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
                         <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
                     {/if}
 
