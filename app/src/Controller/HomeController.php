@@ -34,6 +34,10 @@ class HomeController
             return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
         }
 
+        if($user->isCoordenador() || $user->isAdmin()){
+            return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
+        }
+
         if($user->getPrimeiroLogin() == 1) {
             $user->setPrimeiroLogin(0);
             $user->setNomeReal(true);
