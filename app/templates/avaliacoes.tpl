@@ -9,6 +9,7 @@
         <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
             <div class="container">
                 {$notas_usuario = $usuario->getNotas()}
+                <!-- Calcular a diferença entre o número de notas e o número de disciplinas avaliadas -->
                 {foreach $notas_usuario as $nota}
                     {if $nota->getPeriodo() == $periodoPassado}
                     <div class="container">    
