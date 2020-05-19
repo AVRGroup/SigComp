@@ -203,6 +203,11 @@ class Usuario implements ToIdArrayInterface
     protected $password;
 
     /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $avaliacoes;
+
+    /**
      * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="aluno")
      * @ORM\JoinColumn(name="aluno", referencedColumnName="id", nullable=true)
      */

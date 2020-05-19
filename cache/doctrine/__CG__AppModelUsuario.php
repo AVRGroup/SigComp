@@ -64,10 +64,10 @@ class Usuario extends \App\Model\Usuario implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password', 'avaliacoes_aluno', 'turmas_professor'];
+            return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password', 'avaliacoes', 'avaliacoes_aluno', 'turmas_professor'];
         }
 
-        return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password', 'avaliacoes_aluno', 'turmas_professor'];
+        return ['__isInitialized__', 'id', 'nome', 'nome_abreviado', 'curso', 'matricula', 'grade', 'email', 'foto', 'tipo', 'situacao', 'ira', 'ira_periodo_passado', 'nivel', 'experiencia', 'inteligencia', 'sabedoria', 'destreza', 'forca', 'carisma', 'cultura', 'certificados', 'notas', 'medalhas_usuario', 'nome_real', 'facebook', 'instagram', 'linkedin', 'lattes', 'sobre_mim', 'primeiro_login', 'quantidade_acessos', 'atualizado_ultima_carga', 'password', 'avaliacoes', 'avaliacoes_aluno', 'turmas_professor'];
     }
 
     /**
