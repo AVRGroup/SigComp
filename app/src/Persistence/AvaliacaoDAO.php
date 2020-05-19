@@ -67,7 +67,6 @@ class AvaliacaoDAO extends BaseDAO
         }
 
         return $avaliacao;
-
     }
 
     /**

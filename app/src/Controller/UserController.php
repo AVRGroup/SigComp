@@ -393,26 +393,6 @@ class UserController
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 
-    public function buscaCEP(Request $request, Response $response, $args){
-
-        $id = $_POST['nameCEP'];
-       
-        $client = new Client();
-        $res = $client->request('GET', 'viacep.com.br/ws/' . $id . '/json/');
-
-        if($res->getStatusCode() !== 200){
-            echo 'Caminho inexistente';
-        };
-    
-        echo $res->getBody();
-    }
-
-    public function indexBusca(Request $request, Response $response, $args){
-
-        return $this->container->view->render($response, 'buscaCEP.tpl');
-
-    }
-
     public function editarCoordenadores(Request $request, Response $response, $args){
         $professores = $this->container->usuarioDAO->getProfessores();
         $this->container->view['professores'] = $professores;

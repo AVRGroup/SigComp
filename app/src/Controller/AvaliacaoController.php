@@ -24,18 +24,25 @@ class AvaliacaoController
     public function index(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $periodoPassado = $this->getPeriodoPassado();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
+        $periodoPassado = $this->getPeriodoPassado();
         $notas_usuario = $usuario->getNotas();
 
-        #Verificação de atribuição de medalhas 
         $cont = 0;
-        foreach ($notas_usuario as $nota){
-            if ($nota->getPeriodo() == $periodoPassado){
+        $cont2 = 0;
+        foreach ( $notas_usuario as $nota){
+            if ( $nota->getPeriodo() == $periodoPassado){  
+                #Cont que verifica quantas disciplinas o usuario teve no periodo passado
                 $cont = $cont + 1;
+                foreach ($disciplinas_avaliadas as $disci) {
+                    if ($disci == $nota->getDisciplina()->getId()) {
+                        #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
+                        $cont2 = $cont2 + 1;
+                    }
+                }
             }
-        } 
-        if ($cont == sizeof($disciplinas_avaliadas)){
+        }
+        if( $cont == $cont2 ){
             $this->container->view['concluiu'] = "OK";
         }
 
@@ -46,7 +53,6 @@ class AvaliacaoController
         
         #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
-        #------------------------------------------------------------
         return $this->container->view->render($response, 'avaliacoes.tpl');
     }
     
@@ -140,7 +146,7 @@ class AvaliacaoController
         echo "<script>console.log('Prof: " . $professor . "' );</script>";
         $this->container->view['professor'] = $professor;
         */
-        
+
 
         //Salvando as respostas no vetor
         $respostas1 = array();
@@ -221,6 +227,7 @@ class AvaliacaoController
             $this->container->view['respostas1_2'] = $respostas1_2;
             $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 1);
             $this->container->view['questoes3'] = $questoes3;
+            $this->container->view['verificacao'] = true;
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
 
         }   else {
@@ -232,16 +239,95 @@ class AvaliacaoController
     #Store da page que vai apresentar a medalha do usuario que fez as avaliaçoes
     public function storePageMedalhas(Request $request, Response $response, $args)
     {
+        $verificacao = $request->getParsedBodyParam("verificacao");
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $periodoPassado = $this->getPeriodoPassado();
+        $notas_usuario = $usuario->getNotas();
+        $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
+        $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
+        
+        #Verificação e atribuição de medalhas 
+        $cont = 0;
+        $cont2 = 0;
+        foreach ($notas_usuario as $nota){
+            if ($nota->getPeriodo() == $periodoPassado){  
+                #Cont que verifica quantas disciplinas o usuario teve no periodo passado
+                $cont = $cont + 1;
+                foreach ($disciplinas_avaliadas as $disci) {
+                    if ($disci == $nota->getDisciplina()->getId()) {
+                        #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
+                        $cont2 = $cont2 + 1;
+                    }
+                }
+            }
+        }
+        #Caso o usuário tenha concluido todas as avaliaçoes, a page com a medalha dele sera exibida
+        #Essa $verificacao serve pra saber se o espertinho ta tentando acessa a page de medalha editando a URL!
+        if( $cont == $cont2 && $verificacao == true){
+            $this->container->usuarioDAO->addAvaliacaoInUser($usuario->getId());
+            $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
+        
+           if( $avaliacoes > 0  && $avaliacoes <= 2 ){
+               $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 40);
+               if( $medalhasUser == true ){
+                    $this->container->view['nomeMedalha'] = "AVALIADOR JÚNIOR";
+                    $this->container->view['numImgMedalha'] = 1;
+                } else {
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 40);
+                    $this->container->view['nomeMedalha'] = "AVALIADOR JÚNIOR";
+                    $this->container->view['numImgMedalha'] = 1;
+                }
+           } 
+           elseif ( $avaliacoes > 2 && $avaliacoes <= 4){
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 41);
+                if( $medalhasUser == true ){
+                    $this->container->view['nomeMedalha'] = "AVALIADOR PLENO";
+                    $this->container->view['numImgMedalha'] = 2;
+                } else {
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 41);
+                    $this->container->view['nomeMedalha'] = "AVALIADOR PLENO";
+                    $this->container->view['numImgMedalha'] = 2;
+                }
+           }  
+           elseif ( $avaliacoes > 4 && $avaliacoes <= 6){
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 42);
+                if( $medalhasUser == true ){
+                    $this->container->view['nomeMedalha'] = "AVALIADOR SENIOR";
+                    $this->container->view['numImgMedalha'] = 3;
+                } else {
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 42);
+                    $this->container->view['nomeMedalha'] = "AVALIADOR SENIOR";
+                    $this->container->view['numImgMedalha'] = 3;
+                }
+           } 
+           elseif ( $avaliacoes > 6 ){
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 43);
+                if( $medalhasUser == true ){
+                    $this->container->view['nomeMedalha'] = "AVALIADOR MASTER";
+                    $this->container->view['numImgMedalha'] = 4;
+                } else {
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 43);
+                    $this->container->view['nomeMedalha'] = "AVALIADOR MASTER";
+                    $this->container->view['numImgMedalha'] = 4;
+                }
+           } 
+        } else {
+            $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
+            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            $this->container->view['usuario'] = $usuario;
+            $this->container->view['versaoAtual'] = $versaoAtual;
+            $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+            $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+            $this->container->view['completo'] = "Parabéns, você concluiu uma avaliação.";
+            return $this->index($request, $response, $args);
+        }
+
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
-        $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
         $this->container->view['versaoAtual'] = $versaoAtual;
-
-        return $this->container->view->render($response, 'avaliacoes.tpl');
+        return $this->container->view->render($response, 'avaliacaoPageMedalhas.tpl');
     }
-
     
     public function storePage3(Request $request, Response $response, $args)
     {
@@ -367,13 +453,9 @@ class AvaliacaoController
                 $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
                 $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
                 $this->container->view['versaoAtual'] = $versaoAtual;
-                #return $this->container->view->render($response, 'avaliacoes.tpl');
-                $this->container->view['completo'] = "Parabéns! Você concluiu uma avaliação!";
-                return $this->index($request, $response, $args);
-            
- 
-        }   else {
-             
+
+                return $this->storePageMedalhas($request, $response, $args);
+        }else {
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
         }

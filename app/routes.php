@@ -12,9 +12,6 @@ $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('
 
 $app->get('/questionarios', '\App\Controller\QuestionarioController:index')->setName('questionarios');
 
-$app->get('/testeBuscaCEP','\App\Controller\UserController:indexBusca')->setName('buscaCEP');
-$app->post('/pageBuscaCEP','\App\Controller\UserController:buscaCEP')->setName('pageBuscaCEP');
-
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
     

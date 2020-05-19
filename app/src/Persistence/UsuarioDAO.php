@@ -1077,4 +1077,42 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function getNumAvaliacoes($userId){
+        $sql = "SELECT avaliacoes FROM usuario WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $resultado =  $stmt->fetchAll();
+
+        return intval($resultado[0]['avaliacoes']);
+    }
+    
+    public function addMedalhaById($userId, $medalha){
+        $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+
+        try {
+            $query = $this->em->createQuery("SELECT a FROM App\Model\MedalhaUsuario AS a WHERE a.usuario = :usuario AND a.medalha = :medalha ");
+            $query->setParameter('usuario', $userId);
+            $query->setParameter('medalha', $medalha);
+            $addMedalha = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $avaliacao = null;
+        }
+    }
+
+    public function possuiMedalhaById($userId, $medalhaId){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\MedalhaUsuario AS u WHERE u.medalha = $medalhaId AND u.usuario = $userId");
+            $usuarioMedalha = $query->getResult();
+        } catch (\Exception $e) {
+            var_dump( $e->getMessage());
+        }
+
+        if( $usuarioMedalha == null){
+            return false;
+        } elseif ( $usuarioMedalha !== null){
+            return true;
+        }
+    }
 }

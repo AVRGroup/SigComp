@@ -3,18 +3,25 @@
     <h2 class="text-center"> Avaliação </h2>
     <!-- 01#!/79awQxVp -->
     <hr>
-    <p align="center" class="font-italic" style="font-size: 24px;"> Selecione uma disciplina </p>
-
-    <div align="center" style="margin-bottom: 1%;">
-          {if isset($completo)}
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                  {$completo}
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-            </div>
-          {/if}
-    </div>
+    {if isset($concluiu)}
+        <div align="center" >
+            <h3> Nada por aqui! </h3>
+            <h5 class="font-italic"> Você já concluiu todas as avaliações </h5 style="font-italic">
+        </div>
+    {else}
+        <p align="center" class="font-italic" style="font-size: 24px;"> Selecione uma disciplina para avaliar </p>
+    {/if}
+    
+    {if isset($completo)}
+      <div align="center" style="margin-bottom: 3%;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {$completo}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+      </div>
+    {/if}
 
     <div class="container ">
         <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
@@ -41,24 +48,10 @@
             </div>
         </div>
     </div>
-    {if isset($concluiu)}
-        <p align="center" style="font-weight: 500; font-size: 25px">Você concluiu as avaliações!</p>
-        <p align="center" style="font-weight: 400; font-size: 20px">Continue assim para conquistar novas medalhas!</p>
-        
-        <div align="center">
-            <div style="max-width: 120px; margin-top: 4%">
-                <img src="{base_url}/img/b_avaliacao_4.png" class="img-thumbnail" alt="not found" width="120" height="120">       
-                <div class="caption">
-                    <p style="font-size: 20px; " class="text-center"><small class="legenda-imagem">TESTE NOME</small></p>
-                </div>
-            </div>
-        </div>
-        <form method="POST" action="{path_for name="home"}">  
-        <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Confirmar</button>  
-          </form>
-        </nav>
+
+    <form method="POST" action="{path_for name="home"}">  
+            <nav aria-label="navigation" class="pagination justify-content-center">
+                <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Confirmar</button>  
+            </nav>
     </form>
-        
-    {/if}
 {/block}
