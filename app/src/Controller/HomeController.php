@@ -88,7 +88,6 @@ class HomeController
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
         $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
         $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
@@ -102,6 +101,7 @@ class HomeController
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
         $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $user);;
@@ -141,6 +141,24 @@ class HomeController
 
         return -1;
     }
+
+    public function getPeriodoPassado()
+    {
+        $periodoAtual = $this->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+        else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
+    }
+
 
     public function getPeriodoAtual()
     {

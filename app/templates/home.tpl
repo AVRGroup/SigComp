@@ -257,7 +257,7 @@
             <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
                     <div class=" col-sm-10 col-md-10 col-xs-10">
-                        <h4 class="text-center">Melhor IRA No Período</h4>
+                        <h4 class="text-center">Melhor IRA em {substr_replace($periodoPassado, '.', 4, 0)}</h4>
                     </div>
                     <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
