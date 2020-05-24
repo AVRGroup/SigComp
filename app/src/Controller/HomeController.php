@@ -89,8 +89,8 @@ class HomeController
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
 
-        $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
-        $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $top10Ira = $this->container->usuarioDAO->getTop10IraTotalPorCurso($usuario->getCurso());
+        $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($usuario->getCurso());
 
         $notificacoes = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
 
