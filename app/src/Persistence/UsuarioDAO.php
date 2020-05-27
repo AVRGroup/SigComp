@@ -1036,6 +1036,25 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function getUsuariosComMesmoNome()
+    {
+        $query = "SELECT a.* FROM usuario AS a JOIN (SELECT nome, COUNT(*) FROM usuario GROUP BY nome HAVING count(*) > 1 ) b ON a.nome = b.nome";
+
+        $stmt = $this->em->getConnection()->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function deleteById($id)
+    {
+        $query = "DELETE FROM usuario WHERE id = $id";
+
+        $stmt = $this->em->getConnection()->prepare($query);
+
+        $stmt->execute();
+    }
 
 
 }

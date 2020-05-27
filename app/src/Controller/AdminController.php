@@ -114,6 +114,8 @@ class AdminController
                 }
             }
 
+            $this->deletaUsuariosDuplicados();
+
             $this->calculaIra();
             $this->calculaIraPeriodoPassado();
             $this->abreviaTodosNomes(false, $curso);
@@ -132,12 +134,28 @@ class AdminController
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
-    public function testeCalulaIra(Request $request, Response $response, $args)
+    public function deletaUsuariosDuplicados()
     {
-        $this->calculaIraPeriodoPassado();
-        $this->calculaIra();
+        $usuarioDuplicados = $this->container->usuarioDAO->getUsuariosComMesmoNome();
+        $idsParaDeletar = [];
 
-        return "top d+</br></br>";
+        if ($usuarioDuplicados === null || !is_array($usuarioDuplicados)) {
+            return;
+        }
+
+        foreach($usuarioDuplicados as $usuario) {
+            $final = substr($usuario['matricula'], -2);
+
+            if ($final === "AC") {
+                $idsParaDeletar[] = $usuario['id'];
+            }
+        }
+
+        foreach($idsParaDeletar as $id) {
+            $this->container->usuarioDAO->deleteById($id);
+        }
+
+        return;
     }
 
     public function calculaIra()
