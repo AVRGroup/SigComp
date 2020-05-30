@@ -34,7 +34,7 @@
                                 {foreach $disciplinas_avaliadas as $disci}
                                     {if $disci == $nota->getDisciplina()->getId()}
                                         <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</button>
-                                        {$show = false}
+                                         {$show = false}
                                         {break}
                                     {/if}
                                 {/foreach}
@@ -50,8 +50,8 @@
     </div>
 
     <form method="POST" action="{path_for name="home"}">  
-            <nav aria-label="navigation" class="pagination justify-content-center">
-                <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Confirmar</button>  
-            </nav>
+        <nav aria-label="navigation" class="pagination justify-content-center">
+            <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Confirmar</button>  
+        </nav>
     </form>
 {/block}
