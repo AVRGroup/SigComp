@@ -5,7 +5,7 @@
     <hr>
 
     <div class="row container">
-        <h5 class="col-md-6 col-xs-12">Nome: <span class="font-weight-normal">{$usuario->getNome()}</span></h5>
+        <h5 class="col-md-6 col-xs-12 ">Nome: <span class="font-weight-normal">{$usuario->getNome()}</span></h5>
         <h5 class="col-md-6 col-xs-12 float-right">Matrícula: <span class="font-weight-normal">{$usuario->getMatricula()}</></h5>
         <h5 class="col-md-6 col-xs-12">Curso: <span class="font-weight-normal">{$usuario->getCurso()}</></h5>
         <h5 class="col-md-6 col-xs-12">E-mail: <span class="font-weight-normal">{$usuario->getEmail()}</></h5>
@@ -24,7 +24,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <p>{$success}</p>
+            <p align="center" style="font-size: 20px">Informações atualizadas com sucesso!</p>
         </div>
     {/if}
 

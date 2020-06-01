@@ -445,5 +445,55 @@ class UserController
             return false;
         }
     }
+
+    public function testeServico(Request $request, Response $response, $args){	
+
+        #Abaixa é feita a requisição do token pro serviço funcionar 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '2104Ycpb','username' => '18066483775'),
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Basic dGVzdGU6dGVzdGU="
+          ),
+        ));
+        $resultado = json_decode(curl_exec($curl), true);
+        
+        $token = $resultado['access_token'];
+        curl_close($curl);
+        
+
+        #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
+        $curl2 = curl_init();
+
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/201932007/2019/3/turmas",
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+              ),
+            ));
+        
+        $servico = json_decode(curl_exec($curl2), true);
+
+        var_dump(($servico));
+    }	
+
+    public function indexTesteServico(Request $request, Response $response, $args){	
+
+        return $this->container->view->render($response, 'testeServico.tpl');	
+
+    }
 }
 

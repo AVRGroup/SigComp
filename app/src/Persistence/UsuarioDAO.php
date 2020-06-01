@@ -1090,15 +1090,6 @@ class UsuarioDAO extends BaseDAO
         $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
-
-        try {
-            $query = $this->em->createQuery("SELECT a FROM App\Model\MedalhaUsuario AS a WHERE a.usuario = :usuario AND a.medalha = :medalha ");
-            $query->setParameter('usuario', $userId);
-            $query->setParameter('medalha', $medalha);
-            $addMedalha = $query->getOneOrNullResult();
-        } catch (\Exception $e) {
-            $avaliacao = null;
-        }
     }
 
     public function possuiMedalhaById($userId, $medalhaId){
