@@ -27,6 +27,11 @@ class Turma
     protected $codigo;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $periodo;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Disciplina", inversedBy="turmas_disciplina")
      * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
      */
@@ -75,6 +80,24 @@ class Turma
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriodo()
+    {
+        return $this->periodo;
+    }
+
+    /**
+     * @param mixed $periodo
+     * @return Turma
+     */
+    public function setPeriodo($periodo)
+    {
+        $this->periodo = $periodo;
         return $this;
     }
 

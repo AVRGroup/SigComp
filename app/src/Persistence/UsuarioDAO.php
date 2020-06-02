@@ -281,6 +281,22 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
+    /**
+     * @param $nome
+     * @return Usuario[] |null
+     */
+    public function getByNome($nome){
+        try {
+            $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE u.nome LIKE :nome ");
+            $query->setParameter('nome', $nome);
+            $usuarios = $query->getResult();
+        } catch (\Exception $e) {
+            $usuarios = [];
+        }
+
+        return $usuarios;
+    }
+
 
     public function getByMatriculaNomeARRAY($pesquisa){
         $sql = "SELECT * FROM usuario WHERE (usuario.matricula LIKE '%$pesquisa%' OR usuario.nome LIKE '%$pesquisa%')";

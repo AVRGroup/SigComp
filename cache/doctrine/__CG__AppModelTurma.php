@@ -64,10 +64,10 @@ class Turma extends \App\Model\Turma implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'codigo', 'disciplina', 'avaliacoes_turma'];
+            return ['__isInitialized__', 'id', 'codigo', 'periodo', 'disciplina', 'avaliacoes_turma'];
         }
 
-        return ['__isInitialized__', 'id', 'codigo', 'disciplina', 'avaliacoes_turma'];
+        return ['__isInitialized__', 'id', 'codigo', 'periodo', 'disciplina', 'avaliacoes_turma'];
     }
 
     /**
@@ -219,6 +219,28 @@ class Turma extends \App\Model\Turma implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCodigo', [$codigo]);
 
         return parent::setCodigo($codigo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPeriodo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPeriodo', []);
+
+        return parent::getPeriodo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPeriodo($periodo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPeriodo', [$periodo]);
+
+        return parent::setPeriodo($periodo);
     }
 
     /**

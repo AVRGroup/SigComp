@@ -69,5 +69,34 @@ class ProfessorTurmaDAO extends BaseDAO
         return $professor;
     }
 
+    /**
+     * @param $id_professor, $id_turma
+     * @return boolean
+     */
+    public function addProfessorTurma($id_professor, $id_turma)
+    {
+        try {
+            $sql_insert = "INSERT INTO db_gamificacao.professor_turma (professor, turma) VALUES ({$id_professor}, {$id_turma})";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $query = $this->em->createQuery("SELECT pt FROM App\Model\ProfessorTurma AS pt WHERE pt.professor = :id_professor AND pt.turma = :id_turma");
+            $query->setParameter('id_professor', $id_professor);
+            $query->setParameter('id_turma', $id_turma);
+            $prof_turma = $query->getOneOrNullResult();
+            if($prof_turma !== null){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
 }
 

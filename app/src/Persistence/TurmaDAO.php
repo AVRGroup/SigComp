@@ -62,4 +62,29 @@ class TurmaDAO extends BaseDAO
         }
         return $turmas;
     }
+
+    /**
+     * @param $codigo_disciplina, $codigo_turma, $periodo
+     * @return Turma|null
+     */
+    public function addTurma($id_disciplina, $codigo_turma, $periodo)
+    {
+        try {
+            $sql_insert = "INSERT INTO db_gamificacao.turma (disciplina, codigo, periodo) VALUES ({$id_disciplina}, '{$codigo_turma}', '{$periodo}')";
+            $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+            $stmt_insert->execute();
+        } catch (\Exception $e) {
+        }
+
+        try {
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.disciplina = :id_disciplina AND t.codigo = :codigo_turma AND t.periodo = :periodo");
+            $query->setParameter('id_disciplina', $id_disciplina);
+            $query->setParameter('codigo_turma', $codigo_turma);
+            $query->setParameter('periodo', $periodo);
+            $turma = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $turma = null;
+        }
+        return $turma;
+    }
 }
