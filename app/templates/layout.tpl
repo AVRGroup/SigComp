@@ -143,6 +143,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="compare"}">Comparar Alunos</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
                                 <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
