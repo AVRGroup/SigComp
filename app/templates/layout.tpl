@@ -366,7 +366,9 @@
     //Fim do grafico de acessos
 
     $(function() {
-        $("#tabela").tablesorter();
+        $("#tabela").tablesorter({
+            sortList: [[0, 0]]
+        });
     });
 </script>
 
