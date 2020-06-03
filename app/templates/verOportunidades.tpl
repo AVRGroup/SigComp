@@ -35,10 +35,14 @@
                         </p>
 
                         <div class="descricao">
-                            <p> {$oportunidade->getDescricao()}</p>
+                            {if strlen($oportunidade->descricaoSemTags) < 180}
+                                {$oportunidade->descricaoSemTags}
+                            {else}
+                                {substr($oportunidade->descricaoSemTags, 0, 180)}...
+                            {/if}
                         </div>
 
-                        <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
+                        <p class="mt-4"><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 
                         <p>
                             <span class="weight-600">Vagas:</span>

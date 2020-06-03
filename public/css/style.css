@@ -275,11 +275,10 @@ body {
 
 .card-oportunidade .descricao {
     text-align: justify;
-    text-justify: inter-word;
-    max-height: 100px;
-    white-space: nowrap;
+    height: 70px;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 .card-oportunidade .titulo {

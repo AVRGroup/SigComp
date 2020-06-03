@@ -28,6 +28,10 @@ class OportunidadeController
 
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
+        
+        foreach($oportunidades as $oportunidade) {
+            $oportunidade->descricaoSemTags = strip_tags($oportunidade->getDescricao());
+        }
 
         $this->container->view['oportunidades'] = $oportunidades;
         $this->container->view['disciplinasAprovadas'] = $disciplinasAprovadas;
