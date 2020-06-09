@@ -84,6 +84,8 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'], '/relatorio/periodizado', '\App\Controller\AdminController:listPeriodizadosAction')->setName('relatorioPeriodizado');
 
+        $this->map(['GET', 'POST'], '/manual-coordenador', '\App\Controller\AdminController:manualCoordenador')->setName('manualCoordenador');
+
         $this->get('/ver-grupo', '\App\Controller\GrupoController:index')->setName('verGrupo');
         $this->get('/create-grupo', '\App\Controller\GrupoController:create')->setName('createGrupo');
         $this->post('/store-grupo', '\App\Controller\GrupoController:store')->setName('storeGrupo');

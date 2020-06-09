@@ -147,6 +147,7 @@
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
                                 <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
+                                <a class="dropdown-item" href="{path_for name="manualCoordenador"}">Manual do Coordenador</a>
 
                                 <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
                                 <div class="dropdown-submenu">

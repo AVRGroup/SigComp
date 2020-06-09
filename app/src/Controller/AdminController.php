@@ -839,4 +839,10 @@ class AdminController
 
         return $topAluno;
     }
+
+
+    public function manualCoordenador(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'manualCoordenador.tpl');
+    }
 }
