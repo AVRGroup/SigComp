@@ -37,6 +37,7 @@
         /***************************************
          * **************RADAR CHART**********
          ***************************************/
+        const nomeAlunos = JSON.parse('{json_encode($nomesAlunos)}')
 
         const todosGrupos = JSON.parse('{json_encode($grupoAlunos)}')
         const todosGruposTotal = JSON.parse('{json_encode($grupoAlunosTotal)}')
@@ -105,7 +106,10 @@
                 displayColors: false,
                 callbacks: {
                     label: function (tooltipItem, data) {
-                        return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
+                        const indiceAluno =  tooltipItem.datasetIndex
+                        const indiceGrupo =  tooltipItem.index
+
+                        return nomeAlunos[indiceAluno] + ": " + data.datasets[indiceAluno].data[indiceGrupo].toFixed(2);
                     }
                 }
             },

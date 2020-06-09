@@ -789,6 +789,7 @@ class AdminController
         $alunos = $request->getParsedBodyParam('user');
         $grupoAlunos = [];
         $grupoAlunosTotal = [];
+        $nomesAlunos = [];
 
         if (count($alunos) > 5) {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
@@ -796,10 +797,13 @@ class AdminController
             return $this->container->view->render($response, 'listUsersForComparison.tpl');
         }
 
+
         foreach ($alunos as $index => $aluno) {
             $alunos[$index] = $this->container->usuarioDAO->getById($aluno);
             $grupoAlunos[$index] = Helper::getGruposComPontuacao($this->container, $alunos[$index]);
             $grupoAlunosTotal[$index] = Helper::getGruposComPontuacao($this->container, $alunos[$index], true);
+
+            $nomesAlunos[] = $alunos[$index]->getNome();
         }
 
         $maiorIra = $alunos[0];
@@ -821,6 +825,7 @@ class AdminController
         $this->container->view['alunos'] = $alunos;
         $this->container->view['maiorIra'] = $maiorIra;
         $this->container->view['grupoAlunos'] = $grupoAlunos;
+        $this->container->view['nomesAlunos'] = $nomesAlunos;
         $this->container->view['grupoAlunosTotal'] = $grupoAlunosTotal;
         $this->container->view['maiorAlunoPorGrupo'] = $maiorAlunoPorGrupo;
 
