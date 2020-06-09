@@ -1,5 +1,12 @@
 {extends 'layout.tpl'}
 {block name=content}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Os valores mostrados no gráfico representam a média das notas daquele aluno entre as disciplinas de cada grupo.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <canvas class="mt-4" id="radar"></canvas>
 
     <div class="text-center">
