@@ -780,7 +780,36 @@ class AdminController
 
     public function compareUsers(Request $request, Response $response, $args)
     {
-        $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+        $users = [];
+
+        $pesquisaCurso = $request->getQueryParam('curso');
+        $pesquisaNome = $request->getQueryParam('nome');
+
+        $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
+
+
+        if($pesquisaCurso === 'todos') {
+            $pesquisaCurso = 'todos';
+        } else {
+            $pesquisaCurso = $usuarioLogado->getCurso();
+        }
+
+        if($pesquisaCurso && $pesquisaNome) {
+            $users = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisaNome, $pesquisaCurso);
+        } elseif($pesquisaCurso) {
+            $users = $this->container->usuarioDAO->getAllByCursoARRAY($pesquisaCurso);
+        } elseif($pesquisaNome) {
+            $users = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisaNome);
+        } else {
+            $users = $this->container->usuarioDAO->getAllARRAY();
+        }
+
+        $this->container->view['haPesquisaPorCursoEspecifico'] = $pesquisaCurso !== 'todos';
+
+        $this->container->view['users'] = $users;
+        $this->container->view['usuarioLogado'] = $usuarioLogado;
+
+
         return $this->container->view->render($response, 'listUsersForComparison.tpl');
     }   
     
@@ -819,8 +848,6 @@ class AdminController
         foreach ($grupos as $grupo) {
             $maiorAlunoPorGrupo[$grupo] = $this->getTopAlunoNoGrupo($grupoAlunos, $grupo);
         }
-
-//        die(var_dump($maiorAlunoPorGrupo));
 
         $this->container->view['alunos'] = $alunos;
         $this->container->view['maiorIra'] = $maiorIra;
