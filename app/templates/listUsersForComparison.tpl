@@ -1,8 +1,17 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h4 class="text-center">Selecione até 5 alunos para comparação</h4>
+    <h4 class="text-center mb-4">Selecione até 5 alunos para comparação</h4>
 
-    <form method="get" class="mb-5 mt-5">
+    {if ! $haPesquisaPorCursoEspecifico}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Alunos de cursos diferentes possuem grades distintas. A comparação neste caso é menos precisa.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {/if}
+
+    <form method="get" class="mb-5">
         <div class="form-row col-12">
             <input type="text" class="form-control col-4" name="nome" placeholder="Digite o nome ou a matrícula do aluno">
 
