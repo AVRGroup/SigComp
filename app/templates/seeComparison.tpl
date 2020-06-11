@@ -116,7 +116,12 @@
                         const indiceAluno =  tooltipItem.datasetIndex
                         const indiceGrupo =  tooltipItem.index
 
-                        return nomeAlunos[indiceAluno] + ": " + data.datasets[indiceAluno].data[indiceGrupo].toFixed(2);
+                        return nomeGrupos[indiceGrupo] + ": " + data.datasets[indiceAluno].data[indiceGrupo].toFixed(2);
+                    },
+                    title: function (tooltipItem, data) {
+                        const indiceAluno =  tooltipItem[0].datasetIndex
+
+                        return nomeAlunos[indiceAluno]
                     }
                 }
             },

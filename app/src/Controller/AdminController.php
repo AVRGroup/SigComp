@@ -788,7 +788,7 @@ class AdminController
         $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
 
 
-        if($pesquisaCurso === 'todos') {
+        if($pesquisaCurso === 'todos' || $usuarioLogado->isProfessor()) {
             $pesquisaCurso = 'todos';
         } else {
             $pesquisaCurso = $usuarioLogado->getCurso();
