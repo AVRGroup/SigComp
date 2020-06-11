@@ -4,7 +4,7 @@
 
     <p align="center"> Aperte confirmar pra testar o serviço  </p>
 
-    <form method="POST" action="{base_url}/admin/store-teste-servico">  
+    <form method="POST" action="{base_url}/store-teste-servico">  
         <nav aria-label="navigation" class="pagination justify-content-center">
             <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-dark" type="submit">Confirmar</button>  
         </nav>

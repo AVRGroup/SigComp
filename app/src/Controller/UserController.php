@@ -15,6 +15,8 @@ use App\Model\Usuario;
 use App\Model\GradeDisciplina;
 use App\Model\Grade;
 use App\Persistence\UsuarioDAO;
+use App\Persistence\TurmaDAO;
+use App\Persistence\ProfessorTurmaDAO;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -463,37 +465,59 @@ class UserController
           CURLOPT_CUSTOMREQUEST => "POST",
           CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
           CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic dGVzdGU6dGVzdGU="
+            "Authorization: Basic dGVzdGU6dGVzdGU=",
+            "Cookie: JSESSIONID=FDjLeCx5oR0-LQszN2TzLy0x5bonO80B6TYefeya"
           ),
         ));
         $resultado = json_decode(curl_exec($curl), true);
-        
-        $token = $resultado['access_token'];
         curl_close($curl);
-        
+
+        $token = $resultado['access_token'];
 
         #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
         $curl2 = curl_init();
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
 
         curl_setopt_array($curl2, array(
-            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/201932007/2019/3/turmas",
+            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $matricula[0] . $matricula[1] . $matricula[2] . $matricula[3] . "/" . $matricula[4] . "/turmas",
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-                "Authorization: Bearer $token"
-              ),
-            ));
+                "Authorization: Bearer $token",
+                "Cookie: JSESSIONID=FDjLeCx5oR0-LQszN2TzLy0x5bonO80B6TYefeya; JSESSIONID=DcL6ohtKa8nLKbKIQec3heEE0dEuy6UODJyp0tQ4"
+            ),
+        ));
         
         $servico = json_decode(curl_exec($curl2), true);
+        var_dump( $servico);
+        die();
 
-        var_dump(($servico));
-    }	
+        #Checa se a disciplina esxite e adiciona a turma 
+        $periodoAtual = $this->getPeriodoAtual();
+        foreach($servico as $service ){
+            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+            if( $disc != null ){
+                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
+            }
+
+            #Checa se o professor existe, caso nao, cria
+            foreach($service['professores'] as $professor){
+                $prof = $this->container->usuarioDAO->getByMatriculaNome($professor['nome']);
+                if( $prof == null ){
+                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['matricula']);
+                } 
+                $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+            }
+        }
+
+        #echo $matricula;
+    }
 
     public function indexTesteServico(Request $request, Response $response, $args){	
 
         return $this->container->view->render($response, 'testeServico.tpl');	
-
     }
 }
 

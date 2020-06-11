@@ -1074,6 +1074,26 @@ class UsuarioDAO extends BaseDAO
         return $coordenador;
     }
 
+    /**
+     * @param $nome, $matricula
+     * @return Usuario|null
+     */
+    public function addProfessor($nome, $matricula){
+        $sql_insert = "INSERT INTO db_gamificacao.usuario (`nome`, `matricula`, `tipo`, `situacao`) VALUES ({$nome}, {$matricula}, 4, 0)";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+
+        try {
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Usuario AS t WHERE t.nome = :nome AND t.matricula = :matricula AND t.tipo = 4 AND t.situacao = 0");
+            $query->setParameter('nome', $nome);
+            $query->setParameter('matricula', $matricula);
+            $professor = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $professor = null;
+        }
+        return $professor;
+    }
+
     public function getCursos()
     {
         try {

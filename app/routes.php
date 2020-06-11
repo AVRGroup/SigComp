@@ -62,6 +62,9 @@ $app->group('', function () {
     $this->get('/oportunidade/{id: [0-9]+}', '\App\Controller\OportunidadeController:mostrarOportunidade');
     $this->get('/sair-impersonar', '\App\Controller\AdminController:sairImpersonar')->setName('sairImpersonar');
 
+    $this->map(['GET', 'POST'], '/testeServico', '\App\Controller\UserController:indexTesteServico')->setName('testeServico');
+    $this->map(['GET', 'POST'], '/store-teste-servico', '\App\Controller\UserController:testeServico')->setName('store-teste-servico');
+
     $this->group('/admin', function () {
 
         $this->map(['GET', 'POST'],'/admin-dashboard', '\App\Controller\AdminController:adminDashboardAction')->setName('adminDashboard');
@@ -72,8 +75,7 @@ $app->group('', function () {
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
         $this->get('/teste-calcula-ira', '\App\Controller\AdminController:testeCalulaIra');
 
-        $this->map(['GET', 'POST'], '/testeServico', '\App\Controller\UserController:indexTesteServico')->setName('testeServico');
-        $this->map(['GET', 'POST'], '/store-teste-servico', '\App\Controller\UserController:testeServico')->setName('store-teste-servico');
+        
 
         $this->get('/impersonar-usuario/{id:[0-9]+}', '\App\Controller\AdminController:impersonarUsuario');
 
