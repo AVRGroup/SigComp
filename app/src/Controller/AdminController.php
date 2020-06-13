@@ -808,6 +808,7 @@ class AdminController
 
         $this->container->view['users'] = $users;
         $this->container->view['usuarioLogado'] = $usuarioLogado;
+        $this->container->view['pesquisaNome'] = $pesquisaNome;
 
 
         return $this->container->view->render($response, 'listUsersForComparison.tpl');

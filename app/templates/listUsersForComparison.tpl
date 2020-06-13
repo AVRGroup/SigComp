@@ -11,21 +11,28 @@
         </div>
     {/if}
 
-    <form method="get" class="mb-5">
-        <div class="form-row col-12">
-            <input type="text" class="form-control col-4" name="nome" placeholder="Digite o nome ou a matrícula do aluno">
+    {if $usuarioLogado->isCoordenador()}
+        <select class="form-control col-3" name="curso" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value)">
+            <option value="{base_url}/admin/comparar-usuarios?curso=curso{if $pesquisaNome}&nome={$pesquisaNome}  {/if}"
+                    {if $haPesquisaPorCursoEspecifico} selected {/if}>
+                Alunos do curso (padrão)
+            </option>
 
-            {if $usuarioLogado->isCoordenador()}
-                <select class="form-control col-3 ml-2" name="curso">
-                    <option value="curso" {if $haPesquisaPorCursoEspecifico} selected {/if}>Alunos do curso (padrão)</option>
-                    <option value="todos" {if ! $haPesquisaPorCursoEspecifico} selected {/if}>Todos os alunos</option>
-                </select>
-            {/if}
+            <option value="{base_url}/admin/comparar-usuarios?curso=todos{if $pesquisaNome}&nome={$pesquisaNome}  {/if}"
+                    {if ! $haPesquisaPorCursoEspecifico} selected {/if}>
+                Todos os alunos
+            </option>
+        </select>
+    {/if}
 
-        </div>
+    <div class="row mt-3" style="margin-left: 0">
+        <input  type="text" class="form-control col-4" name="nome" id="pesquisa-nome"
+                placeholder="Digite o nome ou a matrícula do aluno" {if $pesquisaNome} value="{$pesquisaNome}" {/if}
+                onkeyup="updateUrl(this, event)"
+        >
 
-        <button class="btn btn-primary mt-2" style="margin-left: 10px">Pesquisar</button>
-    </form>
+        <button class="btn btn-primary col-1" style="margin-left: 10px" onclick="window.location.href = window.location.href">Pesquisar</button>
+    </div>
 
     {if isset($error)}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -37,7 +44,7 @@
     {/if}
 
     <form action="{base_url}/admin/ver-comparacao" method="post">
-        <button class="btn btn-success">Comparar</button>
+        <button class="btn btn-success mt-4">Comparar</button>
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">
             <tr style="font-size: 13px;">
@@ -67,6 +74,37 @@
         <button class="btn btn-success">Comparar</button>
 
     </form>
+{/block}
 
+{block name=javascript}
+    <script type="application/javascript">
+        function updateUrl(input, event) {
+            const nome = document.getElementById(input.id).value
+            const urlAtual = window.location.href
 
+            const queryParameters = urlAtual.split('?')[1]
+            let newUrl = ""
+
+            if (queryParameters) {
+                if (queryParameters.includes('curso') && queryParameters.includes('nome')) {
+                    newUrl = '?' + queryParameters.split('&')[0] //pega a parte do 'curso=...'
+                    newUrl += '&nome=' + nome
+
+                } else if (queryParameters.includes('curso')) {
+                    newUrl += '?' + queryParameters + '&nome=' + nome
+
+                } else if (queryParameters.includes('nome')) {
+                    newUrl = '?nome=' + nome
+                }
+            } else {
+                newUrl = '?nome=' + nome
+            }
+
+            window.history.replaceState('', '', 'comparar-usuarios' + newUrl)
+            
+            if (event.key === 'Enter') {
+                window.location.href = window.location.href
+            }
+        }
+    </script>
 {/block}
