@@ -28,7 +28,7 @@
     <div class="row mt-3" style="margin-left: 0">
         <input  type="text" class="form-control col-4" name="nome" id="pesquisa-nome"
                 placeholder="Digite o nome ou a matrícula do aluno" {if $pesquisaNome} value="{$pesquisaNome}" {/if}
-                onkeyup="updateUrl(this, event)"
+                onkeyup="atualizaUrlComNome(this, event)"
         >
 
         <button class="btn btn-primary col-1" style="margin-left: 10px" onclick="window.location.href = window.location.href">Pesquisar</button>
@@ -44,7 +44,7 @@
     {/if}
 
     <form action="{base_url}/admin/ver-comparacao" method="post">
-        <button class="btn btn-success mt-4">Comparar</button>
+        <button class="btn btn-success mt-4" onclick="removeAlunosSelecionadosDoLocalStorage()">Comparar</button>
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">
             <tr style="font-size: 13px;">
@@ -59,7 +59,7 @@
                     <tr>
                         <td>{$user['matricula']}</td>
                         <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}">{$user['nome']}</a></td>
-                        <td><input type="checkbox" name="user[]" value="{$user['id']}"></td>
+                        <td><input type="checkbox" class="checkbox-aluno" name="user[]" value="{$user['id']}" onchange="salvarAlunoSelecionado(this)"></td>
                     </tr>
                 {/if}
 
@@ -71,14 +71,34 @@
             </tbody>
         </table>
 
-        <button class="btn btn-success">Comparar</button>
+        <button class="btn btn-success" onclick="removeAlunosSelecionadosDoLocalStorage()">Comparar</button>
 
     </form>
 {/block}
 
 {block name=javascript}
     <script type="application/javascript">
-        function updateUrl(input, event) {
+        window.onload = function () {
+            let alunosSelecionados = localStorage.getItem('alunosSelecionados')
+
+            if (! alunosSelecionados) {
+                return
+            }
+
+            alunosSelecionados = alunosSelecionados.split(',')
+
+            let checkboxes = document.getElementsByClassName('checkbox-aluno')
+
+            for(let checkbox of checkboxes) {
+                if (alunosSelecionados.includes(checkbox.value)) {
+                    checkbox.checked = true
+                }
+            }
+        }
+
+
+
+        function atualizaUrlComNome(input, event) {
             const nome = document.getElementById(input.id).value
             const urlAtual = window.location.href
 
@@ -105,6 +125,30 @@
             if (event.key === 'Enter') {
                 window.location.href = window.location.href
             }
+        }
+
+        let alunosSelecionados = []
+
+        function salvarAlunoSelecionado(input) {
+            if (input.checked) {
+                alunosSelecionados.push(input.value);
+            } else {
+                removeAlunoDoArray(input.value);
+            }
+            localStorage.setItem('alunosSelecionados', alunosSelecionados.toString())
+        }
+
+
+        function removeAlunoDoArray(idAluno) {
+            for (let index in alunosSelecionados) {
+                if (alunosSelecionados[index] === idAluno) {
+                    alunosSelecionados.splice(index, 1)
+                }
+            }
+        }
+
+        function removeAlunosSelecionadosDoLocalStorage() {
+            localStorage.removeItem('alunosSelecionados')
         }
     </script>
 {/block}
