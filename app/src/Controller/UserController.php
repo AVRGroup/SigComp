@@ -99,6 +99,23 @@ class UserController
         return $periodo;
     }
 
+    public function getPeriodoPassado()
+    {
+        $periodoAtual = $this->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+        else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
+    }
+
     public function adminTestAction(Request $request, Response $response, $args)
     {
         $allUsers = $this->container->usuarioDAO->getAllFetched();
@@ -448,10 +465,33 @@ class UserController
         }
     }
 
-    public function testeServico(Request $request, Response $response, $args){	
+    public function testeServico(Request $request, Response $response, $args){
 
-        #Abaixa é feita a requisição do token pro serviço funcionar 
         $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $response =  curl_exec($curl);
+        curl_close($curl);
+
+        echo $response;
+
+        #Abaixo é feita a requisição do token pro serviço funcionar 
+        /* $curl = curl_init();
+
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
@@ -465,8 +505,7 @@ class UserController
           CURLOPT_CUSTOMREQUEST => "POST",
           CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
           CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic dGVzdGU6dGVzdGU=",
-            "Cookie: JSESSIONID=FDjLeCx5oR0-LQszN2TzLy0x5bonO80B6TYefeya"
+            "Authorization: Basic dGVzdGU6dGVzdGU="
           ),
         ));
         $resultado = json_decode(curl_exec($curl), true);
@@ -482,16 +521,19 @@ class UserController
         curl_setopt_array($curl2, array(
             CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $matricula[0] . $matricula[1] . $matricula[2] . $matricula[3] . "/" . $matricula[4] . "/turmas",
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_HTTPHEADER => array(
-                "Authorization: Bearer $token",
-                "Cookie: JSESSIONID=FDjLeCx5oR0-LQszN2TzLy0x5bonO80B6TYefeya; JSESSIONID=DcL6ohtKa8nLKbKIQec3heEE0dEuy6UODJyp0tQ4"
+                "Authorization: Bearer $token"
             ),
         ));
         
         $servico = json_decode(curl_exec($curl2), true);
-        var_dump( $servico);
+        $prof = $this->container->usuarioDAO->getUserByMatricula('201876015');
+        var_dump( $prof->getNome());
         die();
 
         #Checa se a disciplina esxite e adiciona a turma 
@@ -504,19 +546,18 @@ class UserController
 
             #Checa se o professor existe, caso nao, cria
             foreach($service['professores'] as $professor){
-                $prof = $this->container->usuarioDAO->getByMatriculaNome($professor['nome']);
+                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
                 if( $prof == null ){
-                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['matricula']);
+                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
                 } 
                 $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
             }
-        }
+        }*/
 
-        #echo $matricula;
     }
 
     public function indexTesteServico(Request $request, Response $response, $args){	
-
+        
         return $this->container->view->render($response, 'testeServico.tpl');	
     }
 }

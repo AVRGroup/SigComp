@@ -343,9 +343,72 @@ class AvaliacaoController
         $this->container->view['id_disciplina'] = $id_disciplina;
         $respostas1_2 = $request->getParsedBodyParam("respostas1_2");
         $this->container->view['respostas1_2'] = $respostas1_2;
+        $codigoTurma = null;
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
+        #Abaixo é feita a requisição do token pro serviço funcionar 
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Basic dGVzdGU6dGVzdGU="
+          ),
+        ));
+        $resultado = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+
+        $token = $resultado['access_token'];
+
+        #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
+        $curl2 = curl_init();
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
+        $perPassado = str_split($this->getPeriodoPassado(), 1);
+
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $perPassado[0] . $perPassado[1] . $perPassado[2] . $perPassado[3] . "/" . $perPassado[4] . "/turmas",
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+            ),
+        ));
+        
+        $servico = json_decode(curl_exec($curl2), true);
+
+        #Checa se a disciplina existe e adiciona a turma 
+        $periodoAtual = $this->getPeriodoAtual();
+        foreach($servico as $service ){
+            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+            if( $disc != null ){
+                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
+            }
+
+            #Checa se o professor existe, caso nao, cria
+            foreach($service['professores'] as $professor){
+                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
+                if( $prof == null ){
+                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
+                } 
+                $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+            }
+        }
+
+        #Abaixo começa o processo de gravar as respostas
         $respostas3 = array();
         $i = 1;
         foreach ($questoes3 as $questao)
@@ -356,30 +419,37 @@ class AvaliacaoController
             }
             $i = $i + 1;
         }
-
         $respostasFinais = array_merge($respostas1_2, $respostas3);
-        //die(var_dump($respostasFinais));
  
         if(count($respostas3) == count($questoes3)){
  
-            //Enviar
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
             $gravou = 0;
+
+            #Loop pra pegar o codigo da turma do aluno
+            foreach( $servico as $service){
+                $disc->$this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+                if( $disc->getId() == $id_disciplina ){
+                    $codigoTurma = $service['turma'];
+                    break;
+                }
+            }
             
+            #Enviar as respostas
             if($idUsuario !== null){
                 $id_questionario = $this->container->questionarioDAO->getIdByVersao($versaoAtual);
-                $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
+                $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, $codigoTurma);                   
                
                 if($turma !== null){
-                    $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, $turma->getID(), $id_questionario);
+                    $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, $turma->getId(), $id_questionario);
                    
                     if($avaliacao !== null){
                         $questoes = $this->container->questaoDAO->getAllByVersaoQuestionario($versaoAtual);
-                        $professor_turma = $this->container->professorTurmaDAO->getByTurma($turma->getID());
+                        $professor_turma = $this->container->professorTurmaDAO->getByTurma($turma->getId());
                         
                         if($professor_turma !== null){
-                            $this->container->respostaAvaliacaoDAO->gravarResposta($professor_turma->getId(), $avaliacao->getID(), $questoes, $respostasFinais);
+                            $this->container->respostaAvaliacaoDAO->gravarResposta($professor_turma->getId(), $avaliacao->getId(), $questoes, $respostasFinais);
                             $gravou = 1;
                         }
                     }
@@ -447,6 +517,7 @@ class AvaliacaoController
                     die();
                 }
                 */
+                
 
                 $usuario = $this->container->usuarioDAO->getUsuarioLogado();
                 $this->container->view['usuario'] = $usuario;

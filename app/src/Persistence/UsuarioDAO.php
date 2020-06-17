@@ -268,17 +268,35 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
-
+    /**
+     * @param $pesquisa
+     * @return Usuario |null
+     */
     public function getByMatriculaNome($pesquisa){
         try {
             $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE (u.matricula LIKE '%':pesquisa'%' OR u.nome LIKE '%':pesquisa'%') ");
             $query->setParameter('pesquisa', $pesquisa);
-            $usuarios = $query->getResult();
+            $usuario = $query->getResult();
         } catch (\Exception $e) {
-            $usuarios = [];
+            $usuario = null;
+        }
+        return $usuario;
+    }
+
+    /**
+     * @param $matricula
+     * @return Usuario|null
+     */
+    public function getUserByMatricula($matricula){
+        try {
+            $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE u.matricula LIKE :matricula ");
+            $query->setParameter('matricula', $matricula);
+            $usuario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $usuario = null;
         }
 
-        return $usuarios;
+        return $usuario;
     }
 
     /**
