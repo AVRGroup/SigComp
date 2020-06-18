@@ -38,7 +38,7 @@
                             {if strlen($oportunidade->descricaoSemTags) < 180}
                                 {$oportunidade->descricaoSemTags}
                             {else}
-                                {$oportunidade->descricaoCortada} (...)
+                                {substr($oportunidade->descricaoSemTags, 0, 180)}(...)
                             {/if}
                         </div>
 
