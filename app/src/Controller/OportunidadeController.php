@@ -31,6 +31,9 @@ class OportunidadeController
         
         foreach($oportunidades as $oportunidade) {
             $oportunidade->descricaoSemTags = strip_tags($oportunidade->getDescricao());
+
+            $oportunidade->descricaoSemTags = preg_replace('/\s+/', ' ', $oportunidade->descricaoSemTags);
+
             $oportunidade->descricaoCortada = $this->tokenTruncate($oportunidade->descricaoSemTags, 180);
         }
 
