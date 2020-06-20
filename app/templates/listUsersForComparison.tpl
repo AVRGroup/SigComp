@@ -44,7 +44,14 @@
     {/if}
 
     <form action="{base_url}/admin/ver-comparacao" method="post">
+
+        <h5 class="mt-4">Alunos Selecionados:</h5>
+        <div class="usuarios-selecionados-wrapper">
+
+        </div>
+
         <button class="btn btn-success mt-4" onclick="removeAlunosSelecionadosDoLocalStorage()">Comparar</button>
+
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">
             <tr style="font-size: 13px;">
@@ -59,7 +66,7 @@
                     <tr>
                         <td>{$user['matricula']}</td>
                         <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}">{$user['nome']}</a></td>
-                        <td><input type="checkbox" class="checkbox-aluno" name="user[]" value="{$user['id']}" onchange="salvarAlunoSelecionado(this)"></td>
+                        <td><input type="checkbox" class="checkbox-aluno" id="checkbox-aluno-{$user['id']}" value="{$user['id']}" data-nome="{$user['nome']}" onchange="salvarAlunoSelecionado(this)"></td>
                     </tr>
                 {/if}
 
@@ -81,19 +88,27 @@
         window.onload = function () {
             let alunosSelecionados = localStorage.getItem('alunosSelecionados')
 
+            const todosUsuarios = JSON.parse('{json_encode($todosUsuarios)}')
+
             if (! alunosSelecionados) {
                 return
             }
 
             alunosSelecionados = alunosSelecionados.split(',')
 
-            let checkboxes = document.getElementsByClassName('checkbox-aluno')
-
-            for(let checkbox of checkboxes) {
-                if (alunosSelecionados.includes(checkbox.value)) {
-                    checkbox.checked = true
+            for(let idAluno of alunosSelecionados) {
+                const checkboxAluno = $('#checkbox-aluno-' + idAluno)
+                if (checkboxAluno) {
+                    checkboxAluno.prop("checked", true)
                 }
+
+                let aluno = todosUsuarios.find(aluno => aluno.id === idAluno)
+
+                const htmlListaAluno = getHtmlListaAluno(aluno.nome, idAluno)
+
+                $('.usuarios-selecionados-wrapper').append(htmlListaAluno)
             }
+
         }
 
 
@@ -127,28 +142,66 @@
             }
         }
 
-        let alunosSelecionados = []
+        //////////////////
+        //////////////////
+        //////////////////
+
+        let alunosSelecionados = localStorage.getItem('alunosSelecionados')
+
+        if (alunosSelecionados) {
+            alunosSelecionados = alunosSelecionados.split(',')
+        }
 
         function salvarAlunoSelecionado(input) {
             if (input.checked) {
-                alunosSelecionados.push(input.value);
+                adicionaAlunoDoArray(input.value, input.dataset.nome)
             } else {
                 removeAlunoDoArray(input.value);
             }
+        }
+
+
+        function adicionaAlunoDoArray(idAluno, nomeAluno) {
+            alunosSelecionados.push(idAluno);
+
+            const htmlListaAluno = getHtmlListaAluno(nomeAluno, idAluno)
+            $('.usuarios-selecionados-wrapper').append(htmlListaAluno)
+
             localStorage.setItem('alunosSelecionados', alunosSelecionados.toString())
         }
 
 
-        function removeAlunoDoArray(idAluno) {
+        function removeAlunoDoArray(idAluno, isCliqueBotao = false) {
+            $('#lista-alunos-selecionados-aluno-' + idAluno).remove()
+
+            //se o clique ocorreu no "×" do nome do aluno em vez da checkbox
+            if (isCliqueBotao) {
+                const checkboxAluno = $('#checkbox-aluno-' + idAluno)
+                checkboxAluno.prop("checked", false)
+            }
+
+
+            idAluno = idAluno.toString()
+
             for (let index in alunosSelecionados) {
                 if (alunosSelecionados[index] === idAluno) {
                     alunosSelecionados.splice(index, 1)
                 }
             }
+
+            localStorage.setItem('alunosSelecionados', alunosSelecionados.toString())
         }
 
         function removeAlunosSelecionadosDoLocalStorage() {
             localStorage.removeItem('alunosSelecionados')
+        }
+
+        function getHtmlListaAluno(nome, id) {
+            return "<div id='lista-alunos-selecionados-aluno-"+ id+"'>" +
+                "<span>" + nome + "</span>" +
+                "<span style='color: red; cursor:pointer; font-size: 22px' onclick='removeAlunoDoArray("+ id +", true)'> &times; </span>" +
+                "<input type='hidden' name='user[]' value='" + id + "'>" +
+            "</div>"
         }
     </script>
 {/block}

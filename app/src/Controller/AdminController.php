@@ -787,6 +787,7 @@ class AdminController
 
         $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
 
+        $todosUsuarios = $this->container->usuarioDAO->getAllARRAY();
 
         if($pesquisaCurso === 'todos' || $usuarioLogado->isProfessor()) {
             $pesquisaCurso = 'todos';
@@ -801,12 +802,13 @@ class AdminController
         } elseif($pesquisaNome) {
             $users = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisaNome);
         } else {
-            $users = $this->container->usuarioDAO->getAllARRAY();
+            $users = $todosUsuarios;
         }
 
         $this->container->view['haPesquisaPorCursoEspecifico'] = $pesquisaCurso !== 'todos';
 
         $this->container->view['users'] = $users;
+        $this->container->view['todosUsuarios'] = $todosUsuarios;
         $this->container->view['usuarioLogado'] = $usuarioLogado;
         $this->container->view['pesquisaNome'] = $pesquisaNome;
 
