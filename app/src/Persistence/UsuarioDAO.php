@@ -6,6 +6,7 @@ use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Medalha;
 use App\Model\Usuario;
+use App\Model\Nota;
 use Doctrine\ORM\EntityManager;
 
 class UsuarioDAO extends BaseDAO
@@ -1048,8 +1049,26 @@ class UsuarioDAO extends BaseDAO
 
     public function deleteAbsentUsers($curso)
     {
-        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
+        $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.curso = :curso AND u.situacao != 0 AND u.tipo = 0");
+        $query->setParameter('curso', $curso);
+        $result = $query->getResult();
 
+        if($result !== null){
+            foreach($result as $user){
+                $user_id = $user->getId();
+                echo "<script>console.log('ID: " .$user_id. "');</script>";
+
+                $sql = "DELETE FROM db_gamificacao.nota WHERE usuario = $user_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
+                $sql = "DELETE FROM db_gamificacao.medalha_usuario WHERE usuario = $user_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+            }
+        }
+
+        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }
