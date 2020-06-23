@@ -2,6 +2,13 @@
 {block name=content}
 
     <h3 class="text-center">Página do Administrador</h3>
+
+    {if $loggedUser->isCoordenador()}
+        <div class="text-center mt-3">
+            <a href="{path_for name="manualCoordenador"}" class="btn btn-success">Manual do Coordenador</a>
+        </div>
+    {/if}
+
     {if $loggedUser->isAdmin()}
         <br>
         <div class="form-row">
