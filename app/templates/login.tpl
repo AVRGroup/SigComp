@@ -1,7 +1,12 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h3 class="text-center">Login</h3>
-    <form class="login-form" method="post">
+
+    <div class="text-center">
+        <small style="color: #666">Utilize o mesmo login/senha do SIGA</small>
+    </div>
+
+    <form class="login-form"  method="post">
         {if isset($error)}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {$error}
