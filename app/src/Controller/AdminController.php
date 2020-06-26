@@ -83,12 +83,12 @@ class AdminController
                 $this->container->disciplinaDAO->flush(); //Commit the transaction
                 $this->container->usuarioDAO->flush();
 
+                $this->container->notaDAO->flush();
                 // Inserindo/atualizando usuários e adicionando suas notas
                 $usuarios = array();
                 echo "<script>console.log('Adicionando usuários');</script>";
                 foreach ($data as $user) {
                     $this->container->usuarioDAO->flush();
-                    $this->container->notaDAO->flush();
                     $curso = $user['Curso'];
 
                     //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
@@ -144,6 +144,7 @@ class AdminController
                 echo "<script>console.log('Importção OK');</script>";
 
                 $this->container->usuarioDAO->flush(); //Commit the transaction
+                $this->container->notaDAO->flush();
                 $this->container->view['affectedData'] = $affectedData;
 
                 $this->container->view['success'] = true;
