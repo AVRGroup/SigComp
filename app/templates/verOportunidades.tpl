@@ -123,7 +123,7 @@
 
                     <div class="periodos"></div>
 
-                    <a class="download-aquivo" href="">Ver Arquivo</a>
+                    <a class="download-aquivo" id="download-arquivo" href="">Ver Arquivo</a>
                 </div>
             </div>
         </div>
@@ -184,7 +184,6 @@
                 htmlVagas = "<div class='col-sm-6 mt-3'> <b>Vagas: </b> Não informado</div>"
             }
 
-
             $(".informacoes").append(
                 "<div class='row'>" +
                     htmlImagem +
@@ -220,10 +219,10 @@
 
             var modal = $(this)
             if(temArquivo) {
-                modal.find('.modal-body a').attr("href", arquivo)
-                modal.find('.modal-body a').css("display", "block")
+                modal.find('.modal-body #download-arquivo').attr("href", arquivo)
+                modal.find('.modal-body #download-arquivo').css("display", "block")
             } else {
-                modal.find('.modal-body a').css("display", "none")
+                modal.find('.modal-body #download-arquivo').css("display", "none")
             }
         })
 
