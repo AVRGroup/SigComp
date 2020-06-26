@@ -29,11 +29,10 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
-        echo "<script>console.log('FOi');</script>";
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/76A",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -55,12 +54,20 @@ class AdminController
             try {
                 set_time_limit(60 * 60); //Should not Exit
                 $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
-                //$disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                
+                //Inserindo novas disciplinas 
+                $disciplinas = array();
                 foreach ($data as $disc) {
                     //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
 
-                    if ($this->container->disciplinaDAO->getByCodigo($disc['Disciplina']) !== null) {
+                    if(array_key_exists($disc['Disciplina'], $disciplinas)){
+                        continue;
+                    }
+
+                    $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
+                    if ($disciplina_aux !== null) {
                         //echo "<script>console.log('Já existe');</script>";
+                        $disciplinas[] = $disc['Disciplina'];
                         continue;
                     }
 
@@ -69,12 +76,15 @@ class AdminController
                     $disciplina->setCodigo($disc['Disciplina']);
                     $disciplina->setCarga($disc['Carga Horária']);
                     $this->container->disciplinaDAO->persist($disciplina);
+
+                    $disciplinas[] = $disc['Disciplina'];
                     $affectedData['disciplinasAdded']++;
                 }
                 $this->container->disciplinaDAO->flush(); //Commit the transaction
-                //$usuarios = Helper::convertToIdArray($this->container->usuarioDAO->getAllFetched());
                 $this->container->usuarioDAO->flush();
 
+                // Inserindo/atualizando usuários e adicionando suas notas
+                $usuarios = array();
                 echo "<script>console.log('Adicionando usuários');</script>";
                 foreach ($data as $user) {
                     $this->container->usuarioDAO->flush();
@@ -83,29 +93,41 @@ class AdminController
 
                     //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
 
-                    if ($this->container->usuarioDAO->getUserByMatricula($user['Matrícula']) !== null) {
-                        //echo "<script>console.log('usuário já existe');</script>";
-                        $usuario = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
-                        foreach ($usuario->getNotas() as $userNota) {
-                            //echo "<script>console.log('Removendo nota');</script>";
-                            $usuario->removeNota($userNota);
-                            //echo "<script>console.log('notaDAO');</script>";
-                            $this->container->notaDAO->remove($userNota);
-                        }
-                        $usuario->setNome($user['Aluno']);
-                        $usuario->setGrade($user['Grade']);
-
-                        $affectedData['usuariosUpdated']++;
-                    } else {
-                        $usuario = new Usuario();
-                        $usuario->setCurso($user['Curso']);
-                        $usuario->setMatricula($user['Matrícula']);
-                        $usuario->setNome($user['Aluno']);
-                        $usuario->setGrade($user['Grade']);
-
-                        $this->container->usuarioDAO->persist($usuario);
-                        $affectedData['usuariosAdded']++;
+                    if(array_key_exists($user['Matrícula'], $usuarios)) {
+                        $usuario = $usuarios[$user['Matrícula']];
                     }
+
+                    else {
+                        $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
+                        if ($usuario_aux !== null) {
+                            //echo "<script>console.log('usuário já existe');</script>";
+                            $usuario = $usuario_aux;
+                            //Se não está no map, insere neste e atualiza
+                            foreach ($usuario->getNotas() as $userNota) {
+                                //echo "<script>console.log('Removendo nota');</script>";
+                                $usuario->removeNota($userNota);
+                                //echo "<script>console.log('notaDAO');</script>";
+                                $this->container->notaDAO->remove($userNota);
+                            }
+                            $usuario->setNome($user['Aluno']);
+                            $usuario->setGrade($user['Grade']);
+    
+                            $affectedData['usuariosUpdated']++;
+                            
+                        } else {
+                            $usuario = new Usuario();
+                            $usuario->setNome($user['Aluno']);
+                            $usuario->setGrade($user['Grade']);
+                            $usuario->setCurso($user['Curso']);
+                            $usuario->setMatricula($user['Matrícula']);
+    
+                            $this->container->usuarioDAO->persist($usuario);
+                            $affectedData['usuariosAdded']++;
+                        }
+
+                        $usuarios[$user['Matrícula']] = $usuario;
+                    }
+
 
                     if($user['Situação'] !== null && $user['Semestre cursado'] !== null && $user['Nota'] !== null){
                         $nota = new Nota();
@@ -252,15 +274,15 @@ class AdminController
         /** @var Nota $nota */
 
         if($nota->getValor() === 'A')
-            return 100 * (int)$nota->getDisciplina()->getCarga();
+            return 100 * (float)$nota->getDisciplina()->getCarga();
 
         if($nota->getValor() === 'B')
-            return 90 * (int)$nota->getDisciplina()->getCarga();
+            return 90 * (float)$nota->getDisciplina()->getCarga();
 
         if($nota->getValor() === 'C')
-            return 80 * (int)$nota->getDisciplina()->getCarga();
+            return 80 * (float)$nota->getDisciplina()->getCarga();
 
-        return $nota->getValor() * (int)$nota->getDisciplina()->getCarga();
+        return (float)$nota->getValor() * (float)$nota->getDisciplina()->getCarga();
     }
 
 
