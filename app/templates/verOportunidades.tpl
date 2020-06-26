@@ -46,7 +46,7 @@
 
                         <p>
                             <span class="weight-600">Vagas:</span>
-                            {if $oportunidade->getQuantidadeVagas() == -1}
+                            {if $oportunidade->getQuantidadeVagas() == '-1'}
                                 Não Informado
                             {else}
                                 {$oportunidade->getQuantidadeVagas()}
@@ -170,14 +170,29 @@
                 htmlImagem = "<img style='width:80%; margin: auto' class='text-center mt-3 mb-3' alt='imagem oportunidade' src=' " + imagem + " '>"
             }
 
+            var htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>"
+
+            if (remuneracao == -1) {
+                htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> Não informado </div>"
+            }
+            if (remuneracao == 0) {
+                htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> Voluntário </div>"
+            }
+
+            var htmlVagas = "<div class='col-sm-6 mt-3'> <b>Vagas: </b>"+ vagas +"</div>"
+            if (vagas == -1) {
+                htmlVagas = "<div class='col-sm-6 mt-3'> <b>Vagas: </b> Não informado</div>"
+            }
+
+
             $(".informacoes").append(
                 "<div class='row'>" +
                     htmlImagem +
                     "<div style='text-align: justify;' class='col-sm-12 descricao-oportunidade'>" + descricao + "</div>" +
                     "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
-                    "<div class='col-sm-6'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>" +
+                    htmlRemuneracao +
                     "<div class='col-sm-6 mt-3'> <b>Prazo para inscrição: </b>"+ validade +"</div>" +
-                    "<div class='col-sm-6 mt-3'> <b>Vagas: </b>"+ vagas +"</div>" +
+                    htmlVagas +
                 "</div>"
             )
 
