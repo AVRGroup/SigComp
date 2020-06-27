@@ -151,6 +151,9 @@
         if (alunosSelecionados) {
             alunosSelecionados = alunosSelecionados.split(',')
         }
+        else {
+            alunosSelecionados = []
+        }
 
         function salvarAlunoSelecionado(input) {
             if (input.checked) {
