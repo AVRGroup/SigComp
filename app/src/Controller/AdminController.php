@@ -58,20 +58,20 @@ class AdminController
                 //Inserindo novas disciplinas 
                 $disciplinas = array();
                 foreach ($data as $disc) {
-                    //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
-
-                    if(array_key_exists($disc['Disciplina'], $disciplinas)){
+                    echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
+                    
+                    if(in_array($disc['Disciplina'], $disciplinas)){
                         continue;
                     }
 
                     $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
                     if ($disciplina_aux !== null) {
-                        //echo "<script>console.log('Já existe');</script>";
+                        echo "<script>console.log('Já existe');</script>";
                         $disciplinas[] = $disc['Disciplina'];
                         continue;
                     }
 
-                    //echo "<script>console.log('Criando disciplina');</script>";
+                    echo "<script>console.log('Criando disciplina');</script>";
                     $disciplina = new Disciplina();
                     $disciplina->setCodigo($disc['Disciplina']);
                     $disciplina->setCarga($disc['Carga Horária']);
@@ -80,10 +80,11 @@ class AdminController
                     $disciplinas[] = $disc['Disciplina'];
                     $affectedData['disciplinasAdded']++;
                 }
+
                 $this->container->disciplinaDAO->flush(); //Commit the transaction
                 $this->container->usuarioDAO->flush();
-
                 $this->container->notaDAO->flush();
+
                 // Inserindo/atualizando usuários e adicionando suas notas
                 $usuarios = array();
                 echo "<script>console.log('Adicionando usuários');</script>";
