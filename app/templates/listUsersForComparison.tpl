@@ -14,12 +14,12 @@
     {if $usuarioLogado->isCoordenador()}
         <select class="form-control col-3" name="curso" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value)">
             <option value="{base_url}/admin/comparar-usuarios?curso=curso{if $pesquisaNome}&nome={$pesquisaNome}  {/if}"
-                    {if $haPesquisaPorCursoEspecifico} selected {/if}>
+                    {if isset($haPesquisaPorCursoEspecifico) && $haPesquisaPorCursoEspecifico} selected {/if}>
                 Alunos do curso (padrão)
             </option>
 
             <option value="{base_url}/admin/comparar-usuarios?curso=todos{if $pesquisaNome}&nome={$pesquisaNome}  {/if}"
-                    {if ! $haPesquisaPorCursoEspecifico} selected {/if}>
+                    {if !isset($haPesquisaPorCursoEspecifico) || !$haPesquisaPorCursoEspecifico } selected {/if}>
                 Todos os alunos
             </option>
         </select>
@@ -47,7 +47,9 @@
 
         <h5 class="mt-4">Alunos Selecionados:</h5>
         <div class="usuarios-selecionados-wrapper">
-
+            <div class="alert alert-warning" role="alert" id="aviso-limite-atingido" style="display: none; width: 30%">
+                Limite de 5 usuários atingido
+            </div>
         </div>
 
         <button class="btn btn-success mt-4" onclick="removeAlunosSelecionadosDoLocalStorage()">Comparar</button>
@@ -106,7 +108,7 @@
 
                 const htmlListaAluno = getHtmlListaAluno(aluno.nome, idAluno)
 
-                $('.usuarios-selecionados-wrapper').append(htmlListaAluno)
+                $('.usuarios-selecionados-wrapper').prepend(htmlListaAluno)
             }
 
         }
@@ -155,6 +157,8 @@
             alunosSelecionados = []
         }
 
+        checaSeLimiteFoiAtingido(5)
+
         function salvarAlunoSelecionado(input) {
             if (input.checked) {
                 adicionaAlunoDoArray(input.value, input.dataset.nome)
@@ -168,9 +172,10 @@
             alunosSelecionados.push(idAluno);
 
             const htmlListaAluno = getHtmlListaAluno(nomeAluno, idAluno)
-            $('.usuarios-selecionados-wrapper').append(htmlListaAluno)
+            $('.usuarios-selecionados-wrapper').prepend(htmlListaAluno)
 
             localStorage.setItem('alunosSelecionados', alunosSelecionados.toString())
+            checaSeLimiteFoiAtingido(5)
         }
 
 
@@ -193,6 +198,7 @@
             }
 
             localStorage.setItem('alunosSelecionados', alunosSelecionados.toString())
+            checaSeLimiteFoiAtingido(5)
         }
 
         function removeAlunosSelecionadosDoLocalStorage() {
@@ -205,6 +211,20 @@
                 "<span style='color: red; cursor:pointer; font-size: 22px' onclick='removeAlunoDoArray("+ id +", true)'> &times; </span>" +
                 "<input type='hidden' name='user[]' value='" + id + "'>" +
             "</div>"
+        }
+
+        function checaSeLimiteFoiAtingido(limite) {
+            if (alunosSelecionados.length >= limite) {
+                document.getElementById('aviso-limite-atingido').style.display = 'block'
+            } else {
+                document.getElementById('aviso-limite-atingido').style.display = 'none'
+            }
+
+            let checkboxes = document.getElementsByClassName('checkbox-aluno')
+
+            for(let checkbox of checkboxes) {
+                checkbox.disabled = alunosSelecionados.length >= 5
+            }
         }
     </script>
 {/block}

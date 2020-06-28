@@ -825,6 +825,9 @@ class AdminController
 
         if (count($alunos) > 5) {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+            $this->container->view['usuarioLogado'] = $this->container->usuarioDAO->getUsuarioLogado();
+            $this->container->view['haPesquisaPorCursoEspecifico'] = false;
+            $this->container->view['pesquisaNome'] = false;
             $this->container->view['error'] = "Você deve selecionar até <b>5</b> usuários. Número de usuários selecionados: <b>" . count($alunos) . "</b>";
             return $this->container->view->render($response, 'listUsersForComparison.tpl');
         }
