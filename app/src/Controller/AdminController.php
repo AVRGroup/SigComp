@@ -17,6 +17,8 @@ use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 use Dompdf\Dompdf;
 use App\Library\MailSender;
+use Doctrine\ORM\Query\AST\Functions\LengthFunction;
+
 class AdminController
 {
 
@@ -32,7 +34,7 @@ class AdminController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/76A",
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -48,7 +50,7 @@ class AdminController
         $data = json_decode(curl_exec($curl), true);
         curl_close($curl);
         echo "<script>console.log('Serviço OK');</script>";
-
+        
         if ($data !== null) {
             /*$disciplinas = array();
 
