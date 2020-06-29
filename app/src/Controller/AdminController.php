@@ -50,6 +50,21 @@ class AdminController
         echo "<script>console.log('Serviço OK');</script>";
 
         if ($data !== null) {
+            /*$disciplinas = array();
+
+            $disciplina = new Disciplina();
+            $disciplina->setCodigo("DCC-TESTE1");
+            $disciplina->setCarga(49);
+            $disciplinas[] = $disciplina;
+
+            $disciplina = new Disciplina();
+            $disciplina->setCodigo("DCC-TESTE2");
+            $disciplina->setCarga(51);
+            $disciplinas[] = $disciplina;
+
+            $this->container->disciplinaDAO->persist($disciplinas);
+            die();*/
+
             $curso = "";
             try {
                 set_time_limit(60 * 60); //Should not Exit
@@ -58,38 +73,38 @@ class AdminController
                 //Inserindo novas disciplinas 
                 $disciplinas = array();
                 foreach ($data as $disc) {
-                    echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
+                    //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
                     
-                    if(in_array($disc['Disciplina'], $disciplinas)){
+                    if(array_key_exists($disc['Disciplina'], $disciplinas)){
                         continue;
                     }
 
                     $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
                     if ($disciplina_aux !== null) {
-                        echo "<script>console.log('Já existe');</script>";
-                        $disciplinas[] = $disc['Disciplina'];
+                        //echo "<script>console.log('Já existe');</script>";
+                        $disciplinas[$disc['Disciplina']] = $disciplina_aux;
                         continue;
                     }
 
-                    echo "<script>console.log('Criando disciplina');</script>";
+                    //echo "<script>console.log('Criando disciplina');</script>";
                     $disciplina = new Disciplina();
                     $disciplina->setCodigo($disc['Disciplina']);
                     $disciplina->setCarga($disc['Carga Horária']);
                     $this->container->disciplinaDAO->persist($disciplina);
 
-                    $disciplinas[] = $disc['Disciplina'];
+                    $disciplinas[$disc['Disciplina']] = $disciplina;
                     $affectedData['disciplinasAdded']++;
                 }
 
                 $this->container->disciplinaDAO->flush(); //Commit the transaction
-                $this->container->usuarioDAO->flush();
-                $this->container->notaDAO->flush();
+                //$this->container->usuarioDAO->flush();
+                //$this->container->notaDAO->flush();
 
                 // Inserindo/atualizando usuários e adicionando suas notas
                 $usuarios = array();
+                //$notas = array();
                 echo "<script>console.log('Adicionando usuários');</script>";
                 foreach ($data as $user) {
-                    $this->container->usuarioDAO->flush();
                     $curso = $user['Curso'];
 
                     //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
@@ -137,10 +152,12 @@ class AdminController
                         $nota->setPeriodo($user['Semestre cursado']);
                         $nota->setDisciplina($this->container->disciplinaDAO->getByCodigo($user['Disciplina']));
                         $usuario->addNota($nota);
+                        //$notas[] = $nota;
                         $this->container->notaDAO->persist($nota);
                     }
                     
                 }
+                //$this->container->notaDAO->salvarNotas($notas);
 
                 echo "<script>console.log('Importção OK');</script>";
 
