@@ -51,7 +51,7 @@
 
     <form method="POST" action="{path_for name="home"}">  
         <nav aria-label="navigation" class="pagination justify-content-center">
-            <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-primary" type="submit">Confirmar</button>  
+            <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-primary" type="submit">Página inicial</button>  
         </nav>
     </form>
 {/block}

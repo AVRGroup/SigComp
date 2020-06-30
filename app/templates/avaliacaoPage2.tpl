@@ -2,10 +2,12 @@
 {block name=content}
 <h2 class="text-center"> Avaliação </h2>
     <hr>
-        <div style="border: 0.5px solid; width: 100%; margin-left: 0%; margin-bottom: 2%; margin-top: 2%">
-            {if (isset($codigo) || isset($disciplina))}
-              <p align="center" class="font-italic" style="font-size: 24px;">{$codigo} - {$disciplina}</p>  
-            {/if}
+        <div align="center">
+          <div class="col-md-8 col-sm-12" style="border: 0.5px solid;  width: 100%; height: 70px; margin-bottom: 2%; margin-top: 2%; display: flex;  justify-content: center; align-items: center;">
+              {if (isset($codigo) || isset($disciplina))}
+                <p align="center" class="font-italic col-sm-12" style="font-size: 20px; font-weight: 500;">{$codigo} - {$disciplina}</p>
+              {/if}
+          </div>
         </div>
         <p style="margin-left: 10%; font-weight: 700; font-size: 29px"> Avaliação do professor</p>
         <!--{if $professor !== null}
