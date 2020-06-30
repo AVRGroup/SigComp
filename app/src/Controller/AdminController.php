@@ -31,8 +31,10 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
-        $curl = curl_init();
+        #Array com os cursos do DCC para consultar nos serviços
+        $arrayCursos = array("76A", "35A", "65B", "65C");
 
+        $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
             CURLOPT_RETURNTRANSFER => true,
@@ -50,7 +52,11 @@ class AdminController
         $data = json_decode(curl_exec($curl), true);
         curl_close($curl);
         echo "<script>console.log('Serviço OK');</script>";
+
         
+        //$this->container->view['progresso'] = count($data)*2;
+        die();
+
         if ($data !== null) {
             $curso = "";
             try {

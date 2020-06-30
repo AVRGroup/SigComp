@@ -1,9 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
 <h2 class="text-center"> Avaliação </h2>
-
-  
-
     <hr>
         <div style="border: 0.5px solid; width: 100%; margin-left: 0%; margin-bottom: 2%; margin-top: 2%">
             {if (isset($codigo) || isset($disciplina))}
@@ -27,7 +24,7 @@
           {/if}
         </div>
 
-  <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
+  <div style="margin-left:10%; margin-bottom: 5% ">           <!-- DIV PRINCIPAL -->
     <div style="margin-bottom: 3%">
       <div style=" font-size: 20px">
         <form method="POST" action="{base_url}/store-avaliacao-2">    <!-- Começa o formulario -->
@@ -90,7 +87,7 @@
 </div> 
   <hr>
       <nav aria-label="navigation" class="pagination justify-content-center">
-        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Próximo</button>
+        <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Próximo</button>
         </form>
       </nav>
 

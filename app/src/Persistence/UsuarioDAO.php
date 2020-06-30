@@ -1056,7 +1056,6 @@ class UsuarioDAO extends BaseDAO
         if($result !== null){
             foreach($result as $user){
                 $user_id = $user->getId();
-                echo "<script>console.log('ID: " .$user_id. "');</script>";
 
                 $sql = "DELETE FROM db_gamificacao.nota WHERE usuario = $user_id";
                 $stmt = $this->em->getConnection()->prepare($sql);

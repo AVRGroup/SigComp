@@ -87,7 +87,7 @@
         <h5 align="center" class="mt-sm-4 mt-md-3">Sobre mim</h5>
 
         <div class="form-group">
-            <div class="col-xs-12 mx-auto text-sm-center">
+            <div class="col-xs-12 col-md-8 mx-auto text-sm-center">
                 <textarea class="form-control" name="sobre_mim"  id="sobre-mim" rows="7" placeholder="Máximo 50 caracteres" >{$usuario->getSobreMim()}</textarea>
             </div>
         </div>
@@ -96,8 +96,8 @@
         </div>
         <hr>
 
-        <div class="text-sm-center" >
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Atualizar</button>
+        <div align="center" >
+            <a class="btn btn-primary btn-lg btn-block" style="width: 350px" type="submit" ><span style="color: white">Atualizar<span></a>
         </div>
     </form>
 

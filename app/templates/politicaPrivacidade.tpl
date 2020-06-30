@@ -3,7 +3,7 @@
     <h3 align="center">Política de Privacidade</h3>
     <hr>
     <p>
-        Bem vindo ao Sistema de Gamificação do curso de Ciência da Computação Noturno. Por favor,
+        Bem vindo ao Sistema de Gamificação do DCC. Por favor,
         leia com atenção nossa política de privacidade. Caso não esteja de acordo, pedimos que não utilize o sistema.
     </p>
 
@@ -40,5 +40,7 @@
 
     <p>Caso esteja de acordo, clique em "Aceitar" e você será redirecionado para a página de cadastro.</p>
 
-    <a href="{path_for name="informacoesPessoais"}" class="btn btn-success">Aceitar</a>
+    <div align="center">
+        <a href="{path_for name="informacoesPessoais"}" style="margin-top: 2%; width: 250px; height: 45px" class="btn btn-success"><span style="font-size: 20px"> Aceitar <span></a>
+    </div>
 {/block}

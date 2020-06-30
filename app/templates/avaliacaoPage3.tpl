@@ -21,7 +21,7 @@
           {/if}
         </div>
 
-  <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
+  <div style="margin-left:10%; margin-bottom: 5% ">           <!-- DIV PRINCIPAL -->
     <div style="margin-bottom: 3%">
       <div style=" font-size: 20px">
         <form method="POST" action="{base_url}/store-avaliacao-3">    <!-- Começa o formulario -->
@@ -82,9 +82,10 @@
           {/foreach}
       </div>
     </div>    
-</div>  
+</div>
+    <hr/>  
     <nav aria-label="navigation" class="pagination justify-content-center">
-        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Enviar</button>  
+        <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-success" type="submit">Enviar</button>  
       </form>
     </nav>
     

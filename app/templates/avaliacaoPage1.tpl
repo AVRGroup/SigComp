@@ -21,7 +21,7 @@
           {/if}
         </div>
 
-  <div style="margin-left:10%; margin-bottom: 10% ">           <!-- DIV PRINCIPAL -->
+  <div style="margin-left:10%; margin-bottom: 5% ">           <!-- DIV PRINCIPAL -->
     <div style="margin-bottom: 3%">
 
       <div style=" font-size: 20px">
@@ -69,19 +69,15 @@
                 <input type="radio" id="radio2{$numero}" name="customRadio1_{$numero}" class="custom-control-input" value="0">
                 <label class="custom-control-label" for="radio2{$numero}">Não</label>
               </div>
-
-            {else}
-
             {/if}
           {/foreach}
-
         </div>
       </div>
   </div>
 
       <hr>
         <nav aria-label="navigation" class="pagination justify-content-center">
-              <button style="margin-top: 2%" class="btn btn-primary" type="submit">Próximo</button>
+              <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-primary" type="submit">Próximo</button>
           </form>
         </nav>
 

@@ -347,67 +347,6 @@ class AvaliacaoController
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
-        #Abaixo é feita a requisição do token pro serviço funcionar 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
-          CURLOPT_SSL_VERIFYPEER => false,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
-          CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic dGVzdGU6dGVzdGU="
-          ),
-        ));
-        $resultado = json_decode(curl_exec($curl), true);
-        curl_close($curl);
-
-        $token = $resultado['access_token'];
-
-        #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
-        $curl2 = curl_init();
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
-        $perPassado = str_split($this->getPeriodoPassado(), 1);
-
-        curl_setopt_array($curl2, array(
-            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $perPassado[0] . $perPassado[1] . $perPassado[2] . $perPassado[3] . "/" . $perPassado[4] . "/turmas",
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: Bearer $token"
-            ),
-        ));
-        
-        $servico = json_decode(curl_exec($curl2), true);
-
-        #Checa se a disciplina existe e adiciona a turma 
-        $periodoAtual = $this->getPeriodoAtual();
-        foreach($servico as $service ){
-            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
-            if( $disc != null ){
-                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
-            }
-
-            #Checa se o professor existe, caso nao, cria
-            foreach($service['professores'] as $professor){
-                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
-                if( $prof == null ){
-                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
-                } 
-                $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
-            }
-        }
-
         #Abaixo começa o processo de gravar as respostas
         $respostas3 = array();
         $i = 1;
@@ -420,8 +359,70 @@ class AvaliacaoController
             $i = $i + 1;
         }
         $respostasFinais = array_merge($respostas1_2, $respostas3);
- 
+  
         if(count($respostas3) == count($questoes3)){
+
+            #Abaixo é feita a requisição do token pro serviço funcionar 
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '2104Ycpb@','username' => '18066483775'),
+              CURLOPT_HTTPHEADER => array(
+                "Authorization: Basic dGVzdGU6dGVzdGU="
+              ),
+            ));
+            $resultado = json_decode(curl_exec($curl), true);
+            curl_close($curl);
+
+            $token = $resultado['access_token'];
+
+            #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
+            $curl2 = curl_init();
+            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
+            $perPassado = str_split($this->getPeriodoPassado(), 1);
+
+            curl_setopt_array($curl2, array(
+                CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $perPassado[0] . $perPassado[1] . $perPassado[2] . $perPassado[3] . "/" . $perPassado[4] . "/turmas",
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer $token"
+                ),
+            ));
+
+            $servico = json_decode(curl_exec($curl2), true);
+
+            #Checa se a disciplina existe e adiciona a turma 
+            $periodoAtual = $this->getPeriodoAtual();
+            foreach($servico as $service ){
+                $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+                if( $disc != null ){
+                    $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
+                }
+
+                #Checa se o professor existe, caso nao, cria
+                foreach($service['professores'] as $professor){
+                    $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
+                    if( $prof == null ){
+                        $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
+                    } 
+                    $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+                }
+            }
+
  
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
@@ -460,64 +461,6 @@ class AvaliacaoController
                 echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
                 die();
             }
-
-                /*
-                //Avaliação Pessoal
-                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($versaoAtual, 0);
-                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
-                if($avaliacao !== null){
-                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 0);
-                    $r0 = array();
-                    $qtd = 0;
-                    foreach ($questoes as $q)
-                    {
-                        $r0[] = $respostasFinais[$qtd];
-                        $qtd++;
-                    }
-                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r0);
-                }
-                else{
-                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
-                    die();
-                }
-                
-                //Avaliação do Professor
-                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($versaoAtual, 2);
-                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
-                if($avaliacao !== null){
-                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 2);
-                    $r2 = array();
-                    foreach ($questoes as $q)
-                    {
-                        $r2[] = $respostasFinais[$qtd];
-                        $qtd++;
-                    }
-                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r2);
-                }
-                else{
-                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
-                    die();
-                }
-
-                //Avaliação da Turma
-                $id_questionario = $this->container->questionarioDAO->getIdByTipoQuestionario($versaoAtual, 1);
-                $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, 1, $id_questionario);
-                if($avaliacao !== null){
-                    $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 1);
-                    $r1 = array();
-                    foreach ($questoes as $q)
-                    {
-                        $r1[] = $respostasFinais[$qtd];
-                        $qtd++;
-                    }
-                    $this->container->respostaAvaliacaoDAO->gravarResposta(1, $avaliacao->getID(), $questoes, $r1);
-                }
-                else{
-                    echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
-                    die();
-                }
-                */
-                
 
                 $usuario = $this->container->usuarioDAO->getUsuarioLogado();
                 $this->container->view['usuario'] = $usuario;
