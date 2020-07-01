@@ -36,7 +36,7 @@ class AdminController
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/76A",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -55,24 +55,8 @@ class AdminController
 
         
         //$this->container->view['progresso'] = count($data)*2;
-        die();
 
         if ($data !== null) {
-            /*$disciplinas = array();
-
-            $disciplina = new Disciplina();
-            $disciplina->setCodigo("DCC-TESTE1");
-            $disciplina->setCarga(49);
-            $disciplinas[] = $disciplina;
-
-            $disciplina = new Disciplina();
-            $disciplina->setCodigo("DCC-TESTE2");
-            $disciplina->setCarga(51);
-            $disciplinas[] = $disciplina;
-
-            $this->container->disciplinaDAO->persist($disciplinas);
-            die();*/
-
             $curso = "";
             try {
                 set_time_limit(60 * 60); //Should not Exit
@@ -90,6 +74,7 @@ class AdminController
                     $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
                     if ($disciplina_aux !== null) {
                         //echo "<script>console.log('Já existe');</script>";
+                        $disciplina_aux->setNome($disc['Nome Disciplina']);
                         $disciplinas[$disc['Disciplina']] = $disciplina_aux;
                         continue;
                     }
@@ -98,6 +83,7 @@ class AdminController
                     $disciplina = new Disciplina();
                     $disciplina->setCodigo($disc['Disciplina']);
                     $disciplina->setCarga($disc['Carga Horária']);
+                    $disciplina->setNome($disc['Nome Disciplina']);
                     $this->container->disciplinaDAO->persist($disciplina);
 
                     $disciplinas[$disc['Disciplina']] = $disciplina;
