@@ -1115,7 +1115,7 @@ class UsuarioDAO extends BaseDAO
      * @return Usuario|null
      */
     public function addProfessor($nome, $matricula){
-        $sql_insert = "INSERT INTO db_gamificacao.usuario (`nome`, `matricula`, `tipo`, `situacao`) VALUES ({$nome}, {$matricula}, 4, 0)";
+        $sql_insert = "INSERT INTO db_gamificacao.usuario (nome, matricula, tipo, situacao) VALUES ('$nome', '$matricula', 4, 0)";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
 
