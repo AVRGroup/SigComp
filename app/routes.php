@@ -94,7 +94,7 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
         $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
 
-        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+        //$this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');

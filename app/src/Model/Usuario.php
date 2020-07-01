@@ -848,14 +848,6 @@ class Usuario implements ToIdArrayInterface
         return $this->getTipo() == 4;
     }
 
-    public function isProfessor(){
-        if($this->getTipo() == 4){
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * @return mixed
      */
