@@ -1,51 +1,57 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h2 class="text-center"> Avaliação </h2>
+    <!-- 01#!/79awQxVp -->
+    <hr>
+    {if isset($concluiu)}
+        <div align="center" >
+            <h3> Nada por aqui! </h3>
+            <h5 class="font-italic"> Você já concluiu todas as avaliações </h5 style="font-italic">
+        </div>
+    {else}
+        <p align="center" class="font-italic" style="font-size: 24px;"> Selecione uma disciplina para avaliar </p>
+    {/if}
+    
+    {if isset($completo)}
+      <div align="center" style="margin-bottom: 3%;">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {$completo}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+      </div>
+    {/if}
 
-<hr>
-<br>
-    <div class="dropdown" align="center">
-    <p align="center" class="font-italic" style="font-size: 18px;"> (Opção dropdown) </p>
-      <button class="btn btn-primary dropdown-toggle font-italic" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
-      data-boundary="viewport"  aria-haspopup="true" aria-expanded="false"> Selecione uma disciplina
-      </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item col-md-6 col-xs-12" href="#">DCC013 - Estrutura de dados</a>
-            <a class="dropdown-item col-md-6 col-xs-12" href="#">DCC160 - Lógica e fundamentos da computação</a>
-            <a class="dropdown-item col-md-6 col-xs-12" href="#">MAT154 - Cálculo I</a>
-            <a class="dropdown-item col-md-6 col-xs-12" href="#">DCC120 - Laboratório de programação</a>
-            <a class="dropdown-item col-md-6 col-xs-12" href="#">CAD076 - Princípios de administração</a>
+    <div class="container ">
+        <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
+            <div class="container">
+                {$notas_usuario = $usuario->getNotas()}
+                    {foreach $notas_usuario as $nota}
+                    {$show = true}
+                        {if $nota->getPeriodo() == $periodoPassado}
+                            <div class="container">    
+                                {foreach $disciplinas_avaliadas as $disci}
+                                    {if $disci == $nota->getDisciplina()->getId()}
+                                        <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</button>
+                                         {$show = false}
+                                        {break}
+                                    {/if}
+                                {/foreach}
+                            {if $show}
+                                <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</a>
+                            {/if}
+                            </div>
+                        {/if}
+                    {/foreach}
+                <hr>
+            </div>
         </div>
     </div>
-    <br>
 
-    <hr>
-            <p align="center" class="font-italic" style="font-size: 18px;"> (Opção com botões) </p>
-            <p align="center" class="font-italic" style="font-size: 24px;"> Selecione uma disciplina </p>
-
-            <div align="center" class="row container-fluid ml-lg-0" style="font-size: 17px;" >
-                <form action="form-action.php" method="post" class="form-group col-lg-12 ml-lg-0" align="left">
-                    <br>
-                    <p >
-                        <input class="offset-md-4" type="radio" name="disciplina" value="dcc013">   DCC013 - Estrutura de dados
-                    </p>
-                    <p>
-                        <input class="offset-md-4" type="radio" name="disciplina" value="dcc160"/>  DCC160 - Lógica e fundamentos da computação
-                    </p>
-                    <p>
-                        <input class="offset-md-4" type="radio" name="disciplina" value="mat154"/>  MAT154 - Cálculo I
-                    </p>
-                    <p>
-                        <input class="offset-md-4" type="radio" name="disciplina" value="DCC120"/>  DCC120 - Laboratório de programação
-                    </p>
-                    <p>
-                        <input class="offset-md-4" type="radio" name="disciplina" value="CAD076"/>  CAD076 - Princípios de administração
-                    </p>
-                </form>
-            </div>
-                    <p align="center">
-                    <br>
-                        <button  type="submit" class="btn btn-primary btn-lg"> Selecionar </button>
-                    </p>
-
+    <form method="POST" action="{path_for name="home"}">  
+        <nav aria-label="navigation" class="pagination justify-content-center">
+            <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-primary" type="submit">Página inicial</button>  
+        </nav>
+    </form>
 {/block}

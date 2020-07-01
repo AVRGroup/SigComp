@@ -103,6 +103,7 @@
 
                     {if $loggedUser->isAluno()}
                         <li class="nav-item"><a class="nav-link" href="{path_for name="informacoesPessoais"}">Informações Pessoais</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="{path_for name="avaliacoes"}"> Avaliação </a></li>-->
                         <li class="nav-item"><a class="nav-link" href="{path_for name="privacidade"}">Política de Privacidade</a></li>
                     {/if}
 

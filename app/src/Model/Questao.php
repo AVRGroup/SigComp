@@ -3,6 +3,8 @@
 namespace App\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
+
 
 /**
  * Model\Questao
@@ -12,18 +14,18 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Questao
 {
+    //Tipos de questões
+    const FECHADA = 0;
 
-    //Tipos de questionário
+    const ABERTA = 1;
+
+    //Categorias
+
     const AVALIACAO_PESSOAL = 0;
 
     const AVALIACAO_TURMA = 1;
 
     const AVALIACAO_PROFESSOR = 2;
-
-    //Tipos de questões
-    const FECHADA = 0;
-
-    const ABERTA = 1;
 
     /**
      * @ORM\Id
@@ -33,11 +35,6 @@ class Questao
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $numero;
-
-    /**
      * @ORM\Column(type="string", length=300, nullable=false)
      */
     protected $enunciado;
@@ -45,12 +42,12 @@ class Questao
     /**
      * 0: Fechada
      * 1: Sim_Nao
-     * 1: Aberta
+     * 2: Aberta
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
     protected $tipo = 0;
-    
+  
     /**
      * 0: Avaliacao_Pessoal
      * 1: Avaliacao_Turma
@@ -58,7 +55,19 @@ class Questao
      *
      * @ORM\Column(type="smallint", nullable=false)
      */
-    protected $tipo_questionario = 0;
+    protected $categoria = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RespostaAvaliacao", mappedBy="avaliacao")
+     * @ORM\JoinColumn(name="avaliacao", referencedColumnName="id", nullable=false)
+     */
+    protected $resposta_avaliacao;
+
+    /**
+     * @ORM\OneToMany(targetEntity="QuestaoQuestionario", mappedBy="questao")
+     * @ORM\JoinColumn(name="questao", referencedColumnName="id", nullable=false)
+     */
+    protected $questionarios_questao;
 
     public function __construct()
     {
@@ -85,24 +94,7 @@ class Questao
     /**
      * @return mixed
      */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
-     * @param mixed $numero
-     * @return Questao
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
+  
     public function getEnunciado()
     {
         return $this->enunciado;
@@ -139,18 +131,19 @@ class Questao
     /**
      * @return mixed
      */
-    public function getTipoQuestionario()
+
+    public function getCategoria()
     {
-        return $this->tipo_questionario;
+        return $this->categoria;
     }
 
     /**
-     * @param mixed $tipo_questionario
+     * @param mixed $tipo
      * @return Questao
      */
-    public function setTipoQuestionario($tipo_questionario)
+    public function setCategoria($categoria)
     {
-        $this->tipo_questionario = $tipo_questionario;
+        $this->categoria = $categoria;
         return $this;
     }
 

@@ -14,6 +14,12 @@ use App\Persistence\CategoriaDAO;
 use App\Persistence\TopicoDAO;
 use App\Persistence\RespostaDAO;
 use App\Persistence\QuestaoDAO;
+use App\Persistence\QuestionarioDAO;
+use App\Persistence\QuestaoQuestionarioDAO;
+use App\Persistence\AvaliacaoDAO;
+use App\Persistence\TurmaDAO;
+use App\Persistence\ProfessorTurmaDAO;
+use App\Persistence\RespostaAvaliacaoDAO;
 use \Doctrine\ORM\EntityManager;
 use Slim\Views\Smarty;
 
@@ -30,6 +36,12 @@ use Slim\Views\Smarty;
  * @property RespostaDAO respostaDAO
  * @property OportunidadeDAO oportunidadeDAO
  * @property QuestaoDAO questaoDAO
+ * @property QuestionarioDAO questionarioDAO
+ * @property QuestaoQuestionarioDAO questaoQuestionarioDAO
+ * @property AvaliacaoDAO avaliacaoDAO
+ * @property TurmaDAO turmaDAO
+ * @property ProfessorTurmaDAO professorTurmaDAO
+ * @property RespostaAvaliacaoDAO respostaAvaliacaoDAO
  * @property GrupoDAO grupoDAO
  * @property GrupoDisciplinaCursoDAO grupoDisciplinaCursoDAO
  * @property Smarty view
@@ -97,6 +109,14 @@ class Container extends \Slim\Container
             return new UsuarioDAO($this->db);
         };
 
+        $this['respostaAvaliacaoDAO'] = function () {
+            return new RespostaAvaliacaoDAO($this->db);
+        };
+
+        $this['avaliacaoDAO'] = function () {
+            return new AvaliacaoDAO($this->db);
+        };
+
         $this['notaDAO'] = function () {
             return new NotaDAO($this->db);
         };
@@ -135,6 +155,22 @@ class Container extends \Slim\Container
 
         $this['questaoDAO'] = function () {
             return new QuestaoDAO($this->db);
+        };
+
+        $this['questionarioDAO'] = function () {
+            return new QuestionarioDAO($this->db);
+        };
+
+        $this['questaoQuestionarioDAO'] = function () {
+            return new QuestaoQuestionarioDAO($this->db);
+        };
+
+        $this['turmaDAO'] = function () {
+            return new TurmaDAO($this->db);
+        };
+
+        $this['professorTurmaDAO'] = function () {
+            return new ProfessorTurmaDAO($this->db);
         };
 
         $this['grupoDAO'] = function () {

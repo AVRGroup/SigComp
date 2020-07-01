@@ -10,6 +10,7 @@ $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:
 
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
+$app->get('/questionarios', '\App\Controller\QuestionarioController:index')->setName('questionarios');
 $app->get('/questoes', '\App\Controller\QuestaoController:index')->setName('questoes');
 
 $app->group('', function () {
@@ -19,6 +20,22 @@ $app->group('', function () {
     $this->get('/list-profiles', '\App\Controller\LoginController:listProfilesAction')->setName('listProfiles');
     $this->get('/logout', '\App\Controller\LoginController:logoutAction')->setName('logout');
     
+    $this->get('/avaliacaoPage01', '\App\Controller\AvaliacaoController:page1')->setName('avaliacaoPage01');
+    $this->get('/avaliacaoPage02', '\App\Controller\AvaliacaoController:page2')->setName('avaliacaoPage02');
+    $this->get('/avaliacaoPage03', '\App\Controller\AvaliacaoController:page3')->setName('avaliacaoPage03');
+
+    $this->map(['GET', 'POST'], '/store-avaliacao-1', '\App\Controller\AvaliacaoController:storePage1')->setName('store-avaliacao-1');
+    $this->map(['GET', 'POST'], '/store-avaliacao-2', '\App\Controller\AvaliacaoController:storePage2')->setName('store-avaliacao-2');
+    $this->map(['GET', 'POST'], '/store-avaliacao-3', '\App\Controller\AvaliacaoController:storePage3')->setName('store-avaliacao-3');
+
+    $this->map(['GET', 'POST'], '/store-avaliacaoMedalhas', '\App\Controller\AvaliacaoController:storePageMedalhas')->setName('avaliacaoPageMedalhas');
+
+    $this->post('Enviar', '\App\Controller\AvaliacaoController:Enviar')->setName('Enviar');
+
+    $this->get('/edicaoQuestionario', '\App\Controller\QuestionarioController:edicaoQuestionario')->setName('edicaoQuestionario');
+    $this->get('/edicaoQuestoes', '\App\Controller\QuestionarioController:edicaoQuestoes')->setName('edicaoQuestoes');
+    $this->get('/excluiQuestao', '\App\Controller\QuestionarioController:excluiQuestao')->setName('excluiQuestao');
+
     $this->map(['GET', 'POST'], '/storeQuestao', '\App\Controller\QuestaoController:storeQuestao')->setName('storeQuestao');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
@@ -47,6 +64,8 @@ $app->group('', function () {
     $this->get('/oportunidade/{id: [0-9]+}', '\App\Controller\OportunidadeController:mostrarOportunidade');
     $this->get('/sair-impersonar', '\App\Controller\AdminController:sairImpersonar')->setName('sairImpersonar');
 
+    $this->map(['GET', 'POST'], '/testeServico', '\App\Controller\UserController:indexTesteServico')->setName('testeServico');
+    $this->map(['GET', 'POST'], '/store-teste-servico', '\App\Controller\UserController:testeServico')->setName('store-teste-servico');
     $this->get('/info-radar-chart', '\App\Controller\UserController:infoRadarChart');
 
     $this->group('/admin', function () {
@@ -59,6 +78,7 @@ $app->group('', function () {
         $this->get('/admin-email', '\App\Controller\AdminController:adminSendMail');
         $this->get('/teste-calcula-ira', '\App\Controller\AdminController:testeCalulaIra');
 
+        
 
         $this->get('/impersonar-usuario/{id:[0-9]+}', '\App\Controller\AdminController:impersonarUsuario');
 
@@ -66,8 +86,15 @@ $app->group('', function () {
 
         $this->get('/medals', '\App\Controller\UserController:assignMedalsAction')->setName('assignMedals');
 
+        $this->map(['GET', 'POST'], '/editarCoordenadores', '\App\Controller\UserController:editarCoordenadores')->setName('editCoordenacao');
+        $this->map(['GET', 'POST'], '/storeEditCoord', '\App\Controller\UserController:storeEditCoord')->setName('editCoord');
+
         $this->get('/test', '\App\Controller\UserController:adminTestAction')->setName('adminTest');
 
+        $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
+        $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
+
+        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');

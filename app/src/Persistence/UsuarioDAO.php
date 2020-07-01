@@ -6,6 +6,7 @@ use App\Library\Helper;
 use App\Model\Disciplina;
 use App\Model\Medalha;
 use App\Model\Usuario;
+use App\Model\Nota;
 use Doctrine\ORM\EntityManager;
 
 class UsuarioDAO extends BaseDAO
@@ -93,7 +94,7 @@ class UsuarioDAO extends BaseDAO
 
 
     /**
-\     * @return Usuario[]|null
+     * @return Usuario[]|null
      */
     public function getAllFetched()
     {
@@ -268,11 +269,45 @@ class UsuarioDAO extends BaseDAO
         return $usuarios;
     }
 
-
+    /**
+     * @param $pesquisa
+     * @return Usuario |null
+     */
     public function getByMatriculaNome($pesquisa){
         try {
             $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE (u.matricula LIKE '%':pesquisa'%' OR u.nome LIKE '%':pesquisa'%') ");
             $query->setParameter('pesquisa', $pesquisa);
+            $usuario = $query->getResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+        return $usuario;
+    }
+
+    /**
+     * @param $matricula
+     * @return Usuario|null
+     */
+    public function getUserByMatricula($matricula){
+        try {
+            $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE u.matricula LIKE :matricula ");
+            $query->setParameter('matricula', $matricula);
+            $usuario = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $usuario = null;
+        }
+
+        return $usuario;
+    }
+
+    /**
+     * @param $nome
+     * @return Usuario[] |null
+     */
+    public function getByNome($nome){
+        try {
+            $query = $this->em->createQuery(" SELECT u FROM App\Model\Usuario AS u WHERE u.nome LIKE :nome ");
+            $query->setParameter('nome', $nome);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             $usuarios = [];
@@ -1030,11 +1065,120 @@ class UsuarioDAO extends BaseDAO
 
     public function deleteAbsentUsers($curso)
     {
-        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
+        $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.curso = :curso AND u.situacao != 0 AND u.tipo = 0");
+        $query->setParameter('curso', $curso);
+        $result = $query->getResult();
 
+        if($result !== null){
+            foreach($result as $user){
+                $user_id = $user->getId();
+
+                $sql = "DELETE FROM db_gamificacao.nota WHERE usuario = $user_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
+                $sql = "DELETE FROM db_gamificacao.medalha_usuario WHERE usuario = $user_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+            }
+        }
+
+        $sql = "DELETE FROM usuario WHERE curso = '$curso' AND situacao != 0 AND tipo = 0";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
     }
+
+    public function getProfessores()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.tipo = 4");
+            $professores = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $professores;
+    }
+
+    public function setProfessor($userId)
+    {
+        $sql = "UPDATE usuario SET tipo = 4 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+
+    public function setCoordenador($userId)
+    {
+        $sql = "UPDATE usuario SET tipo = 2 WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getCoordenador()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.tipo = 2");
+            $coordenador = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $coordenador;
+    }
+
+    /**
+     * @param $nome, $matricula
+     * @return Usuario|null
+     */
+    public function addProfessor($nome, $matricula){
+        $sql_insert = "INSERT INTO db_gamificacao.usuario (nome, matricula, tipo, situacao) VALUES ('$nome', '$matricula', 4, 0)";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
+
+        try {
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Usuario AS t WHERE t.nome = :nome AND t.matricula = :matricula AND t.tipo = 4 AND t.situacao = 0");
+            $query->setParameter('nome', $nome);
+            $query->setParameter('matricula', $matricula);
+            $professor = $query->getOneOrNullResult();
+        } catch (\Exception $e) {
+            $professor = null;
+        }
+        return $professor;
+    }
+
+    public function getCursos()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Usuario AS u");
+            $cursos = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        return $cursos;
+    }
+
+    public function addAvaliacaoInUser($userId)
+    {
+        $sql = "UPDATE usuario SET avaliacoes = avaliacoes + 1 WHERE id = {$userId}";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function getNumAvaliacoes($userId){
+        $sql = "SELECT avaliacoes FROM usuario WHERE id = $userId";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $resultado =  $stmt->fetchAll();
+
+        return intval($resultado[0]['avaliacoes']);
+    }
+    
+    public function addMedalhaById($userId, $medalha){
+        $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
+        $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+        $stmt_insert->execute();
 
     public function getUsuariosComMesmoNome()
     {
@@ -1056,5 +1200,18 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function possuiMedalhaById($userId, $medalhaId){
+        try {
+            $query = $this->em->createQuery("SELECT u FROM App\Model\MedalhaUsuario AS u WHERE u.medalha = $medalhaId AND u.usuario = $userId");
+            $usuarioMedalha = $query->getResult();
+        } catch (\Exception $e) {
+            var_dump( $e->getMessage());
+        }
 
+        if( $usuarioMedalha == null){
+            return false;
+        } elseif ( $usuarioMedalha !== null){
+            return true;
+        }
+    }
 }

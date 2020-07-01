@@ -78,6 +78,11 @@ class Disciplina implements ToIdArrayInterface
      */
     protected $disciplinas_grade;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Turma", mappedBy="disciplina")
+     * @ORM\JoinColumn(name="disciplina", referencedColumnName="id", nullable=false)
+     */
+    protected $turmas_disciplina;
 
     /**
      * @ORM\ManyToMany(targetEntity="Oportunidade", mappedBy="disciplina")

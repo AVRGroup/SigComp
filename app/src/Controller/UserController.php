@@ -16,9 +16,12 @@ use App\Model\Usuario;
 use App\Model\GradeDisciplina;
 use App\Model\Grade;
 use App\Persistence\UsuarioDAO;
+use App\Persistence\TurmaDAO;
+use App\Persistence\ProfessorTurmaDAO;
 use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use GuzzleHttp\Client;
 
 class UserController
 {
@@ -108,6 +111,23 @@ class UserController
         }
 
         return $periodo;
+    }
+
+    public function getPeriodoPassado()
+    {
+        $periodoAtual = $this->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+        else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
     }
 
     public function adminTestAction(Request $request, Response $response, $args)
@@ -406,6 +426,49 @@ class UserController
         //return $this->container->view->render($response, 'checkPeriodos.tpl');
     }
 
+    public function editarCoordenadores(Request $request, Response $response, $args){
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $this->container->view['professores'] = $professores;
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
+        $this->container->view['coordenadores'] = $coordenadores;
+
+        return $this->container->view->render($response, 'selectCoordenadores.tpl');
+    }
+
+    public function storeEditCoord(Request $request, Response $response, $args){
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $this->container->view['professores'] = $professores;
+
+        #Checa as exclusoes de coordenadores
+        foreach( $coordenadores as $coordenador ){
+            if( isset($_POST["exclui_" . $coordenador->getId()] )){
+                echo "<script>console.log('CHAMA ESCLUSAO');</script>";
+                $coordenador->setTipo(4);
+                $this->container->usuarioDAO->setProfessor($coordenador->getId());
+            }
+        }
+
+        #Seleciona os coordenadores
+        foreach ( $professores as $professor ){
+            if(isset($_POST["coord_" . $professor->getId()])){
+                if( $this->checaCoord($request, $response, $args )) {
+                    $professor->setTipo(2);
+                    $this->container->usuarioDAO->setCoordenador($professor->getId());
+                } else {
+                    $this->container->view['incompleto'] = "Não podem haver mais de 4 coordenadores!";
+                    return $this->editarCoordenadores($request, $response, $args, 'selectCoordenadores.tpl');
+                }
+            }
+        }
+        $this->container->view['completo'] = "Alterações salvas com sucesso!";
+        return $this->editarCoordenadores($request, $response, $args, 'selectCoordenadores.tpl');
+    }
+
+    public function checaCoord(Request $request, Response $response, $args){
+        $coordenadores = $this->container->usuarioDAO->getCoordenador();
+        $cont = 0;
+
     public function infoRadarChart(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
@@ -419,5 +482,110 @@ class UserController
         return $this->container->view->render($response, 'infoRadarChart.tpl');
     }
 
+        foreach( $coordenadores as $coordenador ){
+            $cont += 1;
+        }
+        if ( $cont < 4 ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function testeServico(Request $request, Response $response, $args){
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $response =  curl_exec($curl);
+        curl_close($curl);
+
+        echo $response;
+
+        #Abaixo é feita a requisição do token pro serviço funcionar 
+        /* $curl = curl_init();
+
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
+          CURLOPT_HTTPHEADER => array(
+            "Authorization: Basic dGVzdGU6dGVzdGU="
+          ),
+        ));
+        $resultado = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+
+        $token = $resultado['access_token'];
+
+        #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
+        $curl2 = curl_init();
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
+
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $matricula[0] . $matricula[1] . $matricula[2] . $matricula[3] . "/" . $matricula[4] . "/turmas",
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+            ),
+        ));
+        
+        $servico = json_decode(curl_exec($curl2), true);
+        $prof = $this->container->usuarioDAO->getUserByMatricula('201876015');
+        var_dump( $prof->getNome());
+        die();
+
+        #Checa se a disciplina esxite e adiciona a turma 
+        $periodoAtual = $this->getPeriodoAtual();
+        foreach($servico as $service ){
+            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+            if( $disc != null ){
+                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
+            }
+
+            #Checa se o professor existe, caso nao, cria
+            foreach($service['professores'] as $professor){
+                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
+                if( $prof == null ){
+                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
+                } 
+                $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+            }
+        }*/
+
+    }
+
+    public function indexTesteServico(Request $request, Response $response, $args){	
+        
+        return $this->container->view->render($response, 'testeServico.tpl');	
+    }
 }
 

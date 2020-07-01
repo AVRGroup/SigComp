@@ -69,6 +69,7 @@ class Usuario implements ToIdArrayInterface
      * 1: Administrador
      * 2: Coordenador
      * 3: Bolsista
+     * 4: Professor
      *
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
@@ -201,10 +202,29 @@ class Usuario implements ToIdArrayInterface
      */
     protected $password;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    protected $avaliacoes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Avaliacao", mappedBy="aluno")
+     * @ORM\JoinColumn(name="aluno", referencedColumnName="id", nullable=true)
+     */
+    protected $avaliacoes_aluno;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ProfessorTurma", mappedBy="professor")
+     * @ORM\JoinColumn(name="professor", referencedColumnName="id", nullable=false)
+     */
+    protected $turmas_professor;
+
     public function __construct()
     {
         $this->certificados = new ArrayCollection();
         $this->notas = new ArrayCollection();
+        $this->avaliacoes_aluno = new ArrayCollection();
+        $this->turmas_professor = new ArrayCollection();
     }
 
     public function setAtualizadoUltimaCarga($foiAtualizado)
@@ -826,6 +846,14 @@ class Usuario implements ToIdArrayInterface
     public function isProfessor()
     {
         return $this->getTipo() == 4;
+    }
+
+    public function isProfessor(){
+        if($this->getTipo() == 4){
+            return true;
+        }
+
+        return false;
     }
 
     /**
