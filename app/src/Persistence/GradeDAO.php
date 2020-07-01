@@ -59,4 +59,42 @@ class GradeDAO extends BaseDAO
         }
         return $grades;
     }
+
+    public function getByCodigo($codigo)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.codigo = :codigo");
+            $query->setParameter('codigo', $codigo);
+            $grade = $query->getResult();
+        } catch (\Exception $e) {
+            $grade = null;
+        }
+        return $grade;
+    }
+
+    public function getByCodigoCurso($codigo, $curso)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.codigo = :codigo AND g.curso = :curso");
+            $query->setParameter('codigo', $codigo);
+            $query->setParameter('curso', $curso);
+            $grade = $query->getResult();
+        } catch (\Exception $e) {
+            $grade = null;
+        }
+        return $grade[0];
+    }
+
+    public function getFirstByCurso($curso)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.curso = :curso");
+            $query->setParameter('curso', $curso);
+            $grades = $query->getResult();
+        } catch (\Exception $e) {
+            $grades = null;
+        }
+        return $grades[0];
+    }
+
 }

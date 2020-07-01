@@ -344,8 +344,16 @@ class UsuarioDAO extends BaseDAO
     {
         $queryCurso = "";
 
-        if ($curso) {
+        if ($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = \"$curso\"";
+
+            if($curso == "65B") {
+                $queryCurso .= ' OR curso = "65AB"';
+            }
+
+            if($curso == "65C") {
+                $queryCurso .= ' OR curso = "65AC"';
+            }
         }
 
         $sql = "SELECT * FROM usuario $queryCurso";
@@ -419,8 +427,16 @@ class UsuarioDAO extends BaseDAO
     public function getAllByCursoARRAY($curso = null)
     {
         $queryCurso = "";
-        if($curso) {
+        if($curso && $curso != 'todos') {
             $queryCurso = "WHERE curso = '$curso'";
+
+            if($curso == "65B") {
+                $queryCurso .= ' OR curso = "65AB"';
+            }
+
+            if($curso == "65C") {
+                $queryCurso .= ' OR curso = "65AC"';
+            }
         }
 
         $sql = "SELECT * FROM usuario $queryCurso";
@@ -445,7 +461,7 @@ class UsuarioDAO extends BaseDAO
     {
         $filtrarCurso = isset($curso) ? " AND curso = \"$curso\"" : "";
 
-        $sql = "SELECT COUNT(*) FROM usuario WHERE usuario.primeiro_login = 0 AND usuario.tipo = 0" . $filtrarCurso;
+        $sql = "SELECT COUNT(*) FROM usuario WHERE (usuario.primeiro_login = 0 OR primeiro_login IS NULL) AND usuario.tipo = 0" . $filtrarCurso;
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -1091,6 +1107,7 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+
     public function setCoordenador($userId)
     {
         $sql = "UPDATE usuario SET tipo = 2 WHERE id = $userId";
@@ -1162,6 +1179,25 @@ class UsuarioDAO extends BaseDAO
         $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
+
+    public function getUsuariosComMesmoNome()
+    {
+        $query = "SELECT a.* FROM usuario AS a JOIN (SELECT nome, COUNT(*) FROM usuario GROUP BY nome HAVING count(*) > 1 ) b ON a.nome = b.nome";
+
+        $stmt = $this->em->getConnection()->prepare($query);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function deleteById($id)
+    {
+        $query = "DELETE FROM usuario WHERE id = $id";
+
+        $stmt = $this->em->getConnection()->prepare($query);
+
+        $stmt->execute();
     }
 
     public function possuiMedalhaById($userId, $medalhaId){

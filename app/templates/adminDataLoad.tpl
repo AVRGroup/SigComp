@@ -32,3 +32,14 @@
     </form>
 
 {/block}
+{block name=javascript}
+    <script type="text/javascript">
+        $('#alerta').hide()
+
+        $('#enviar').click(function () {
+            console.log('teste');
+            $('#alerta').show()
+        })
+    </script>
+
+{/block}

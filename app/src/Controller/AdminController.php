@@ -164,6 +164,8 @@ class AdminController
                 $this->container->view['error'] = $e->getMessage();
             }
 
+            $this->deletaUsuariosDuplicados();
+
             $this->calculaIra();
             $this->calculaIraPeriodoPassado();
             $this->abreviaTodosNomes(false, $curso);
@@ -177,15 +179,33 @@ class AdminController
 
             //return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
         return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
-    public function testeCalulaIra(Request $request, Response $response, $args)
+    public function deletaUsuariosDuplicados()
     {
-        $this->calculaIraPeriodoPassado();
-        $this->calculaIra();
+        $usuarioDuplicados = $this->container->usuarioDAO->getUsuariosComMesmoNome();
+        $idsParaDeletar = [];
 
-        return "top d+</br></br>";
+        if ($usuarioDuplicados === null || !is_array($usuarioDuplicados)) {
+            return;
+        }
+
+        foreach($usuarioDuplicados as $usuario) {
+            $final = substr($usuario['matricula'], -2);
+
+            if ($final === "AC") {
+                $idsParaDeletar[] = $usuario['id'];
+            }
+        }
+
+        foreach($idsParaDeletar as $id) {
+            $this->container->usuarioDAO->deleteById($id);
+        }
+
+        return;
     }
 
     public function calculaIra()
@@ -646,7 +666,6 @@ class AdminController
             return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
         }
 
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
 
@@ -655,16 +674,18 @@ class AdminController
         $this->container->view['usuario'] = $usuario;
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();
 
-        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
-        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotalPorCurso($usuario->getCurso());
+        $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($usuario->getCurso());
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
 
+        $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $usuario);
+        $this->container->view['gruposCursoInteiro'] = Helper::getGruposComPontuacao($this->container, $usuario, true);
 
         return $this->container->view->render($response, 'home.tpl');
     }
-
 
     public function getPeriodoPassado()
     {
@@ -805,5 +826,111 @@ class AdminController
 
         return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
 
+    }
+
+    public function compareUsers(Request $request, Response $response, $args)
+    {
+        $users = [];
+
+        $pesquisaCurso = $request->getQueryParam('curso');
+        $pesquisaNome = $request->getQueryParam('nome');
+
+        $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $todosUsuarios = $this->container->usuarioDAO->getAllARRAY();
+
+        if($pesquisaCurso === 'todos' || $usuarioLogado->isProfessor()) {
+            $pesquisaCurso = 'todos';
+        } else {
+            $pesquisaCurso = $usuarioLogado->getCurso();
+        }
+
+        if($pesquisaCurso && $pesquisaNome) {
+            $users = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisaNome, $pesquisaCurso);
+        } elseif($pesquisaCurso) {
+            $users = $this->container->usuarioDAO->getAllByCursoARRAY($pesquisaCurso);
+        } elseif($pesquisaNome) {
+            $users = $this->container->usuarioDAO->getByMatriculaNomeARRAY($pesquisaNome);
+        } else {
+            $users = $todosUsuarios;
+        }
+
+        $this->container->view['haPesquisaPorCursoEspecifico'] = $pesquisaCurso !== 'todos';
+
+        $this->container->view['users'] = $users;
+        $this->container->view['todosUsuarios'] = $todosUsuarios;
+        $this->container->view['usuarioLogado'] = $usuarioLogado;
+        $this->container->view['pesquisaNome'] = $pesquisaNome;
+
+
+        return $this->container->view->render($response, 'listUsersForComparison.tpl');
+    }   
+    
+    public function seeComparison(Request $request, Response $response, $args)
+    {
+        $alunos = $request->getParsedBodyParam('user');
+        $grupoAlunos = [];
+        $grupoAlunosTotal = [];
+        $nomesAlunos = [];
+
+        if (count($alunos) > 5) {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
+            $this->container->view['usuarioLogado'] = $this->container->usuarioDAO->getUsuarioLogado();
+            $this->container->view['haPesquisaPorCursoEspecifico'] = false;
+            $this->container->view['pesquisaNome'] = false;
+            $this->container->view['error'] = "Você deve selecionar até <b>5</b> usuários. Número de usuários selecionados: <b>" . count($alunos) . "</b>";
+            return $this->container->view->render($response, 'listUsersForComparison.tpl');
+        }
+
+
+        foreach ($alunos as $index => $aluno) {
+            $alunos[$index] = $this->container->usuarioDAO->getById($aluno);
+            $grupoAlunos[$index] = Helper::getGruposComPontuacao($this->container, $alunos[$index]);
+            $grupoAlunosTotal[$index] = Helper::getGruposComPontuacao($this->container, $alunos[$index], true);
+
+            $nomesAlunos[] = $alunos[$index]->getNome();
+        }
+
+        $maiorIra = $alunos[0];
+        $grupos = array_keys($grupoAlunos[0]);
+
+        foreach ($alunos as $index => $aluno) {
+            if ($aluno->getIra() > $maiorIra->getIra()) {
+                $maiorIra = $aluno;
+            }
+        }
+
+        $maiorAlunoPorGrupo = [];
+        foreach ($grupos as $grupo) {
+            $maiorAlunoPorGrupo[$grupo] = $this->getTopAlunoNoGrupo($grupoAlunos, $grupo);
+        }
+
+        $this->container->view['alunos'] = $alunos;
+        $this->container->view['maiorIra'] = $maiorIra;
+        $this->container->view['grupoAlunos'] = $grupoAlunos;
+        $this->container->view['nomesAlunos'] = $nomesAlunos;
+        $this->container->view['grupoAlunosTotal'] = $grupoAlunosTotal;
+        $this->container->view['maiorAlunoPorGrupo'] = $maiorAlunoPorGrupo;
+
+        return $this->container->view->render($response, 'seeComparison.tpl');
+    }
+
+    public function getTopAlunoNoGrupo($grupoAlunos, $grupo)
+    {
+        $topAluno = 0;
+
+        foreach ($grupoAlunos as $idAluno => $grupos) {
+            if ($grupoAlunos[$idAluno][$grupo] > $grupoAlunos[$topAluno][$grupo]) {
+                $topAluno = $idAluno;
+            }
+        }
+
+        return $topAluno;
+    }
+
+
+    public function manualCoordenador(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'manualCoordenador.tpl');
     }
 }

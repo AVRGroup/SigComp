@@ -34,21 +34,19 @@
                             <span class="borda-titulo-{$oportunidade->abreviacao()}">{$oportunidade->getNomeTipo()}</span>
                         </p>
 
-                        {if strlen($oportunidade->getDescricao()) > 120}
-                            <div class="descricao">
-                                <p>{substr($oportunidade->getDescricao(), 0, 120)} ...</p>
-                            </div>
-                        {else}
-                            <div class="descricao">
-                                <p>{$oportunidade->getDescricao()}</p>
-                            </div>
-                        {/if}
+                        <div class="descricao">
+                            {if strlen($oportunidade->descricaoSemTags) < 180}
+                                {$oportunidade->descricaoSemTags}
+                            {else}
+                                {$oportunidade->descricaoCortada} (...)
+                            {/if}
+                        </div>
 
-                        <p><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
+                        <p class="mt-4"><span class="weight-600">Quem oferece:</span> {$oportunidade->getProfessor()}</p>
 
                         <p>
                             <span class="weight-600">Vagas:</span>
-                            {if $oportunidade->getQuantidadeVagas() == -1}
+                            {if $oportunidade->getQuantidadeVagas() == '-1'}
                                 Não Informado
                             {else}
                                 {$oportunidade->getQuantidadeVagas()}
@@ -57,7 +55,7 @@
 
                         <p><span class="weight-600">Data limite para Inscrição:</span> {$oportunidade->getValidade()->format('d/m/Y')}</p>
                         <input type="hidden" class="validade-{$oportunidade->getId()}" value="{$oportunidade->getValidade()->format('d/m/Y')}" >
-                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{$oportunidade->getDescricao()}" >
+                        <input type="hidden" class="descricao-{$oportunidade->getId()}" value="{htmlspecialchars($oportunidade->getDescricao())}" >
                         <input type="hidden" class="vagas-{$oportunidade->getId()}" value="{$oportunidade->getQuantidadeVagas()}" >
                         <input type="hidden" class="professor-{$oportunidade->getId()}" value="{$oportunidade->getProfessor()}" >
                         <input type="hidden" class="remuneracao-{$oportunidade->getId()}" value="{$oportunidade->getRemuneracao()}" >
@@ -69,7 +67,7 @@
                             {elseif $oportunidade->getRemuneracao() == -1}
                                 Não Informada
                             {else}
-                                R${number_format($oportunidade->getRemuneracao(), 2, '.', '')}
+                                R$ {number_format($oportunidade->getRemuneracao(), 2, '.', '')}
                             {/if}
                         </p>
 
@@ -84,18 +82,18 @@
                             {/if}
                         {/foreach}
 
-                        <button type="button" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
+                        <button type="button" id="btn-{$oportunidade->getId()}" class="btn btn-{$oportunidade->abreviacao()}" data-toggle="modal" data-target="#maisInformacoes"
                             data-arquivo="{base_url}/upload/{$oportunidade->getArquivo()}" data-tem_arquivo="{isset($oportunidade->getArquivo())}" data-oportunidade="{$oportunidade->getId()}"
                             data-periodo_minimo="{$oportunidade->getPeriodoMinimoParaEscrita()}" data-periodo_maximo="{$oportunidade->getPeriodoMaximoParaEscrita()}"
-                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{$oportunidade->getDescricao()}"
-                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}"
+                            data-professor="{$oportunidade->getProfessor()}" data-validade="{$oportunidade->getValidade()->format('d/m/Y')}" data-descricao="{htmlspecialchars($oportunidade->getDescricao())}"
+                            data-remuneracao="{$oportunidade->getRemuneracao()}" data-imagem="{base_url}/upload/{$oportunidade->getArquivoImagem()}" data-vagas="{$oportunidade->getQuantidadeVagas()}"
                         >
                             Mais Informações
                         </button>
 
                         {if !$usuario->isAluno()}
                             <a style="margin-left: 3%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/form-edit"><small><i class="fa fa-edit"></i></small></a>
-                            <a style="color: darkred; margin-left: 2%" href="{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete"><small><i class="fa fa-trash"></i></small></a>
+                            <button style="color: darkred; margin-left: 2%" class="btn btn-link" onclick="aletarDelecao('{base_url}/admin/oportunidade/{$oportunidade->getId()}/delete')"><small><i class="fa fa-trash"></i></small></button>
                             <a target="_blank" href="{base_url}/oportunidade/{$oportunidade->getId()}" style="float: right;"><small>Link Externo</small></a>
                         {/if}
 
@@ -106,7 +104,7 @@
     </div>
 
     <div class="modal fade" id="maisInformacoes" tabindex="-1" role="dialog" aria-labelledby="maisInformacoesLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="maisInformacoesLabel">Mais Informações</h5>
@@ -125,7 +123,7 @@
 
                     <div class="periodos"></div>
 
-                    <a class="download-aquivo" href="">Ver Arquivo</a>
+                    <a class="download-aquivo" id="download-arquivo" href="">Ver Arquivo</a>
                 </div>
             </div>
         </div>
@@ -153,6 +151,7 @@
             var professor = button.data('professor')
             var validade = button.data('validade')
             var remuneracao = button.data('remuneracao')
+            var vagas = button.data('vagas')
             var descricao = button.data('descricao')
             var imagem = button.data('imagem')
 
@@ -165,19 +164,38 @@
 
             var htmlImagem = ""
 
-            if(imagem) {
+            var temImagem = imagem.split("/").pop().length > 0
+
+            if(temImagem) {
                 htmlImagem = "<img style='width:80%; margin: auto' class='text-center mt-3 mb-3' alt='imagem oportunidade' src=' " + imagem + " '>"
+            }
+
+            var htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>"
+
+            if (remuneracao == -1) {
+                htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> Não informado </div>"
+            }
+            if (remuneracao == 0) {
+                htmlRemuneracao = "<div class=\'col-sm-6\'> <b>Remuneração:</b> Voluntário </div>"
+            }
+
+            var htmlVagas = "<div class='col-sm-6 mt-3'> <b>Vagas: </b>"+ vagas +"</div>"
+            if (vagas == -1) {
+                htmlVagas = "<div class='col-sm-6 mt-3'> <b>Vagas: </b> Não informado</div>"
             }
 
             $(".informacoes").append(
                 "<div class='row'>" +
                     htmlImagem +
-                    "<div style='text-align: justify;' class='col-sm-12'>" + descricao + "</div>" +
+                    "<div style='text-align: justify;' class='col-sm-12 descricao-oportunidade'>" + descricao + "</div>" +
                     "<div class='col-sm-6'> <b>Quem oferece: </b>"+ professor +"</div>" +
-                    "<div class='col-sm-6'> <b>Remuneração:</b> R$"+ remuneracao +".00</div>" +
-                    "<div class='mt-4 col-sm-12 text-center'> <b>Validade: </b>"+ validade +"</div>" +
+                    htmlRemuneracao +
+                    "<div class='col-sm-6 mt-3'> <b>Prazo para inscrição: </b>"+ validade +"</div>" +
+                    htmlVagas +
                 "</div>"
             )
+
+            $("img").css("width", "100%")
 
             $(".disciplinas-" + idOportunidade).each(function(i, disciplina) {
                 var nome = disciplina.value.substr(0, disciplina.value.indexOf('-'))
@@ -201,12 +219,15 @@
 
             var modal = $(this)
             if(temArquivo) {
-                modal.find('.modal-body a').attr("href", arquivo)
-                modal.find('.modal-body a').css("display", "block")
+                modal.find('.modal-body #download-arquivo').attr("href", arquivo)
+                modal.find('.modal-body #download-arquivo').css("display", "block")
             } else {
-                modal.find('.modal-body a').css("display", "none")
+                modal.find('.modal-body #download-arquivo').css("display", "none")
             }
         })
+
+        var oportunidadeSelcionada = '{$oportunidadeSelecionada}'
+        $(`#btn-` + oportunidadeSelcionada).click()
 
         $("#maisInformacoes").on("hidden.bs.modal", function () {
             $(".disciplinas").empty()
@@ -340,6 +361,12 @@
         function criarObjetoDate(string) {
             var data = string.split('/')
             return new Date(data[2], data[1] - 1, data[0] );
+        }
+
+        function aletarDelecao(urlDelecao) {
+            if(window.confirm("Tem certeza que deseja excluir essa oportunidade?")) {
+                window.location.href = urlDelecao
+            }
         }
 
     </script>

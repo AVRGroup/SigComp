@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Library\CalculateAttributes;
 use App\Library\Helper;
+use App\Library\Integra\isValidProfile;
 use App\Model\Disciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
@@ -25,8 +26,16 @@ class HomeController
         /** @var Usuario $user */
         $user = $request->getAttribute('user');
 
-        if(!$user->isAluno()) {
+        if($user->isProfessor()) {
+            return $response->withRedirect($this->container->router->pathFor('adminListUsers'));
+        }
+
+        if($user->isBolsista()) {
             return $response->withRedirect($this->container->router->pathFor('adminListReviewCertificates'));
+        }
+
+        if($user->isCoordenador() || $user->isAdmin()){
+            return $response->withRedirect($this->container->router->pathFor('adminDashboard'));
         }
 
         if($user->getPrimeiroLogin() == 1) {
@@ -79,10 +88,9 @@ class HomeController
         $usuario = $this->container->usuarioDAO->getByIdFetched($user->getId());
         $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($user->getId());
         $todasMedalhas = $this->container->usuarioDAO->getTodasMedalhas();
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
 
-        $top10Ira = $this->container->usuarioDAO->getTop10IraTotal();
-        $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodo();
+        $top10Ira = $this->container->usuarioDAO->getTop10IraTotalPorCurso($usuario->getCurso());
+        $top10IraPeriodoPassado = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($usuario->getCurso());
 
         $notificacoes = $this->container->usuarioDAO->getConvitesPendentes($usuario->getId());
 
@@ -93,28 +101,13 @@ class HomeController
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
+        $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $user);;
+        $this->container->view['gruposCursoInteiro'] = Helper::getGruposComPontuacao($this->container, $user, true);
 
         return $this->container->view->render($response, 'home.tpl');
-    }
-
-    public function abreviaNome($nome, $tamanhoMax){
-        $deveAbreviar = true;
-
-        while($deveAbreviar){
-
-            $indicePrimeiraLetra = $this->indicePrimeiraLetraSobrenome($nome, 1);
-            $indiceUltimaLetra =  $this->indiceUltimaLetraSobrenome($nome, 1);
-            $tamanhoNome = $indiceUltimaLetra - $indicePrimeiraLetra;
-
-            $nome[$indicePrimeiraLetra + 1] = '.';
-            $nome = substr_replace($nome, '', $indicePrimeiraLetra + 2, $tamanhoNome - 1);
-
-            $deveAbreviar = false;
-        }
-
-        return $nome;
     }
 
     //offset para indicar qual sobrenome deve ser abreviado. Por exemplo, contando de traz pra frente,
@@ -148,6 +141,24 @@ class HomeController
 
         return -1;
     }
+
+    public function getPeriodoPassado()
+    {
+        $periodoAtual = $this->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+        else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
+    }
+
 
     public function getPeriodoAtual()
     {

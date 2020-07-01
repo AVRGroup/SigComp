@@ -2,20 +2,13 @@
 
 namespace App\Controller;
 
-use App\Library\FlarumHelper;
 use App\Library\Integra\getUserInformation;
-use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
 use App\Library\Integra\logout;
 use App\Library\Integra\WSLogin;
-use App\Library\Integra\wsUserInfoResponse;
 use App\Model\Usuario;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Http\Cookies;
-use App\Controller\Forum;
-use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
 
 class LoginController
 {
@@ -31,7 +24,7 @@ class LoginController
         $oportunidade = $request->getParam('oportunidade');
 
         if(isset($oportunidade) && isset($_SESSION['id'])){
-            return $response->withRedirect("oportunidade/$oportunidade");
+            return $response->withRedirect("todas-oportunidades?oportunidade=$oportunidade");
         }
 
         if ($request->isPost()) {
@@ -80,9 +73,10 @@ class LoginController
                         $this->container->usuarioDAO->flush(); //Commit the transaction
                     }
                     $this->container->usuarioDAO->flush();
+                    
 
                     if(isset($oportunidade)){
-                        return $response->withRedirect("oportunidade/$oportunidade");
+                        return $response->withRedirect("todas-oportunidades?oportunidade=$oportunidade");
                     }
 
                     return $response->withRedirect($this->container->router->pathFor('home'));
@@ -132,6 +126,7 @@ class LoginController
 
     public function loginAreaExclusiva(Request $request, Response $response, $args)
     {
+
         $login = $request->getParsedBodyParam('cpf');
         $senha = $request->getParsedBodyParam('password');
         $senha = crypt($senha, $this->container->settings['password_salt']);
@@ -144,6 +139,11 @@ class LoginController
 
         $_SESSION['id'] = $usuario->getId();
 
+        $oportunidade = $request->getParam('oportunidade');
+
+        if(isset($oportunidade)){
+            return $response->withRedirect("oportunidade/$oportunidade");
+        }
         return $this->getRedirecionamentoPorUsuario($usuario, $response);
     }
 

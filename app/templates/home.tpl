@@ -2,6 +2,8 @@
 {extends 'layout.tpl'}
 {block name=content}
     <div class="container">
+        <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
+
         <div class="row">
             <div class="col-sm-4 col-md-4 col-lg-3 col-xs-12">
                 <div class="text-center">
@@ -47,74 +49,46 @@
 
                 </div>
             </div>
-            <div class="col-sm-8 col-md-8 col-lg-9 col-xs-12">
-                <h4 class="text-center">{if $usuario->getNomeReal()}{$usuario->getNome()}{else}Usuario {$usuario->getId()}{/if}</h4>
 
-                <p class="mb-0 mt-3 nome-atributos"><b>Experiência:</b> {$usuario->getExperiencia()}xp</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="XP"
-                        data-content="Indica a sua experiência no curso! Cada aprovação em matérias obrigatórias concede +100xp e, somente ao completar todas as disciplinas você chegará no nível máximo">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getExperiencia())/($xpTotal) }%;">{floor(((100 * $usuario->getExperiencia())/($xpTotal)))|string_format:"%.2f"}%</div>
-                </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Força:</b> {$usuario->getForca()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="FOR"
-                        data-content="Aplicação das teorias matemáticas. Suas notas em matérias como
-                                        Equações Diferenciais, GA e os Cálculos aumentam sua força">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getForca())/110}%;">{((100 * $usuario->getForca())/110)|string_format:"%.2f"}%</div>
-                </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Destreza:</b> {$usuario->getDestreza()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="DEX"
-                        data-content="Mão na massa: programar! Suas notas em matérias como os Labs de Programação e Grafos aumentam sua destreza">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getDestreza())/140}%;">{((100 * $usuario->getDestreza())/140)|string_format:"%.2f"}%</div>
-                </div>
-
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Inteligência:</b> {$usuario->getInteligencia()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="INT"
-                        data-content="Aprender novas linguagens e suas lógicas. Suas notas em matérias como Algoritmos, Estrutura de dados e Circuitos digitais
-                                        aumentam sua inteligência">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {((100*$usuario->getInteligencia())/170)}%;">{((100 * $usuario->getInteligencia())/170)|string_format:"%.2f"}%</div>
-                </div>
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Sabedoria:</b> {$usuario->getSabedoria()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="SAB"
-                        data-content="Aplicação da computação em problemas. Suas notas em matérias como Banco de Dados, Modelagem de Sistemas e Pesquisa Operacional aumentam sua sabedoria">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getSabedoria())/160}%;">{((100 * $usuario->getSabedoria())/160)|string_format:"%.2f"}%</div>
-                </div>
-
-
-
-
-                <p class="mb-0 mt-3 nome-atributos"><b>Cultura:</b> {$usuario->getCultura()}</p>
-                <button type="button" class="btn btn-danger btn-circle info-atributos" data-toggle="popover"  data-placement="right"  data-trigger="focus" title="CULT"
-                        data-content="Participação em eventos. Cada certificado seu que foi aprovado condece +10 de cultura">
-                    ?
-                </button>
-                <div class="progress" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" style="width: {(100 * $usuario->getCultura())/($usuario->getCultura() +50 ) }%;">{((100 * $usuario->getCultura())/($usuario->getCultura() + 50 ))|string_format:"%.2f"}%</div>
+            <div class="col-lg-9 col-xs-12 text-center">
+                <div class="col-sm-2 col-md-2 col-xs-2 float-right">
+                    <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
+                            title="Informações"
+                            data-content="Esse gráfico representa seu desempenho nas áreas de conhecimento dentro do seu curso. Para saber quais disciplinas
+                            afetam quais áreas, clique <a href='{base_url}/info-radar-chart'>aqui</a>">
+                        ?
+                    </button>
                 </div>
 
                 <canvas id="radar"></canvas>
+
+                <div class="mt-3">
+                    {if isset($visaoAmigo) && $visaoAmigo}
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarSobrepostoAmigo()" class="btn btn-success">Comparar com suas notas</button>
+                            <span class="custom-tooltiptext">Compare as suas notas (em verde) com as do seu amigo</span>
+                        </div>
+                    {else}
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
+                            <span class="custom-tooltiptext">Esse grafico leva em conta apenas as disciplinas que você já realizou</span>
+                        </div>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarTodas()" class="btn btn-success ml-4">Todas as disciplinas</>
+                            <span class="custom-tooltiptext">
+                                Esse gráfico mostra como estão suas notas
+                                <br>
+                                levando em conta todas as disciplinas da grade.
+                                <br>  As que ainda não foram realizadas têm nota zero
+                            </span>
+                        </div>
+                        <div class="custom-tooltip">
+                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
+                            <span class="custom-tooltiptext">Sobreponha os dois gráficos para conseguir uma melhor comparação</span>
+                        </div>
+                        </div>
+                    {/if}
+                </div>
 
             </div>
         </div>
@@ -283,7 +257,7 @@
             <div class="col-sm-6 col-md-6 col-xs-6" style="margin-top: 1.8%">
                 <div class="row">
                     <div class=" col-sm-10 col-md-10 col-xs-10">
-                        <h4 class="text-center">Melhor IRA No Período</h4>
+                        <h4 class="text-center">Melhor IRA em {substr_replace($periodoPassado, '.', 4, 0)}</h4>
                     </div>
                     <div class="col-sm-2 col-md-2 col-xs-2">
                         <button type="button" class="btn btn-danger btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
@@ -374,73 +348,225 @@
     <script src="{base_url}/js/croppie.js"></script>
     <script src="{base_url}/js/exif.js"></script>
 
+
     <script>
-        var ctx = document.getElementById('percentilIra').getContext('2d');
-        ctx.height = 200;
+        var element = document.getElementById('percentilIra');
+        if(element) {
+            var ctx = element.getContext('2d')
 
-        var posicao = document.getElementById('posicao').value;
+            ctx.height = 200;
 
-        var chart = new Chart(ctx, {
-            type: 'horizontalBar',
+            var posicao = document.getElementById('posicao').value;
 
-            data: {
-                labels: ['Sua Posição'],
-                datasets: [{
-                    label: 'Seu IRA é maior que ' + posicao +'% dos alunos do seu curso',
-                    data: [posicao, 100, 0],
-                    backgroundColor: [
-                        'rgba(41, 128, 185, 0.4)'
-                    ],
-                    borderColor: [
-                        'rgba(41, 128, 185, 1.0)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                    enabled: false
-                },
-                legend: {
-                    onClick: function (e) {
-                        e.stopPropagation();
-                    },
-                    labels: {
-                        boxWidth: 0
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            stepSize: 25,
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
+            var chart = new Chart(ctx, {
+                type: 'horizontalBar',
+
+                data: {
+                    labels: ['Sua Posição'],
+                    datasets: [{
+                        label: 'Seu IRA é maior que ' + posicao + '% dos alunos do seu curso',
+                        data: [posicao, 100, 0],
+                        backgroundColor: [
+                            'rgba(41, 128, 185, 0.4)'
+                        ],
+                        borderColor: [
+                            'rgba(41, 128, 185, 1.0)'
+                        ],
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        enabled: false
+                    },
+                    legend: {
+                        onClick: function (e) {
+                            e.stopPropagation();
+                        },
+                        labels: {
+                            boxWidth: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                stepSize: 25,
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            }
+                        }]
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
+        /***************************************
+         * **************RADAR CHART**********
+         ***************************************/
+        var gruposJaRealizados = {json_encode($grupos)}
+        var gruposTodasDisciplinas = {json_encode($gruposCursoInteiro)}
+        var gruposSobreposto = {json_encode($grupos)}
+        var gruposUsuarioLogado
+        {if isset($gruposUsuarioLogado)}
+            gruposUsuarioLogado = {json_encode($gruposUsuarioLogado)}
+        {else}
+            gruposUsuarioLogado = []
+        {/if}
+
+        var grupos = []
+        var gruposTotal = []
+        var gruposLogado = []
+        var nomeGrupos = []
+        var valorGrupos = []
+        var valorGruposTodos = []
+        var valorGruposUsuarioLogado = []
+
+        var numeroRadar = 0
+
+        grupos = gruposJaRealizados
+        gruposTotal = gruposTodasDisciplinas
+        gruposLogado = gruposUsuarioLogado
+        for(let grupo in grupos) {
+            nomeGrupos.push(grupo)
+            valorGrupos.push(grupos[grupo])
+            valorGruposTodos.push(gruposTotal[grupo])
+            valorGruposUsuarioLogado.push(gruposLogado[grupo])
+        }
+
 
         var radar = document.getElementById('radar').getContext('2d');
-        var radarChart = new Chart(radar, {
-            type: 'radar',
-            data: {
-                labels: ['Teste1', 'Teste2','Teste3','Teste4','Teste5'],
-                datasets: [{
-                    label: 'Teste',
-                    backgroundColor: "rgba(200,0,0,0.2)",
-                    data: [20, 50, 30, 10, 50]
-                }]
+
+        var opcoes = {
+            legend: {
+                onClick: function (e) {
+                    e.stopPropagation();
+                },
+                display: false,
+                    labels: {
+                    boxWidth: 0
+                }
+            },
+            title: {
+                display: true,
+                    text: "Seu desempenho nas diversas competências do seu curso"
+            },
+            tooltips: {
+                displayColors: false,
+                    callbacks: {
+                    label: function (tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toFixed(2);
+                    }
+                }
             },
             scale: {
                 ticks: {
-                    beginAtZero: true
-                }
+                    beginAtZero: true,
+                        max: 100,
+                        min: 0,
+                        stepSize: 20,
+                        backdropColor: '#fafafa',
+                        callback: function (value, index, values) {
+                        if (index === 1) {
+                            return "<" + value
+                        }
+                        return value
+                    }
+                },
             }
+        }
 
+        var radarChart = new Chart(radar, {
+            type: 'radar',
+            data: {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos,
+                    },
+                ]
+            },
+            options: opcoes
         })
-    </script>
 
+
+
+        function setRadarRealizadas() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos
+                    }
+                ]
+            }
+            radarChart.update()
+        }
+
+        function setRadarTodas() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
+                        lineTension: 0.02,
+                        data: valorGruposTodos
+                    }
+                ]
+            }
+            radarChart.update()
+        }
+
+        function setRadarSobreposto() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos
+                    },
+                    {
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
+                        lineTension: 0.02,
+                        data: valorGruposTodos
+                    }
+                ]
+            }
+            radarChart.update()
+        }
+
+        function setRadarSobrepostoAmigo() {
+            radarChart.config.data = {
+                labels: nomeGrupos,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(41, 128, 185, 0.5)",
+                        borderColor: "rgba(41, 128, 185, 0.8)",
+                        lineTension: 0.02,
+                        data: valorGrupos
+                    },
+                    {
+                        backgroundColor: "rgba(28,250,61,0.5)",
+                        borderColor: "rgba(23,191,54,0.8)",
+                        lineTension: 0.02,
+                        data: valorGruposUsuarioLogado
+                    }
+                ]
+            }
+            radarChart.update()
+
+        }
+    </script>
 {/block}

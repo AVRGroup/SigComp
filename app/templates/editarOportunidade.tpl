@@ -40,6 +40,7 @@
                         <option value="0" {if $oportunidade->getTipo() == 0} selected {/if}>Iniciação Científica</option>
                         <option value="1" {if $oportunidade->getTipo() == 1} selected {/if}>Treinamento Profissional</option>
                         <option value="2" {if $oportunidade->getTipo() == 2} selected {/if}>Estágio</option>
+                        <option value="3" {if $oportunidade->getTipo() == 3} selected {/if}>CLT</option>
                     </select>
                 </div>
 
@@ -143,19 +144,19 @@
                 </select>
             </div>
 
-            <div class="form-row">
-                <div class="custom-file">
-                    <label class="custom-file-label" for="imagem-oportunidade">Imagem da Oportunidade:</label>
-                    <input  type="file" class="custom-file-input" id="imagem-oportunidade" name="imagem_oportunidade" value="{$oportunidade->getArquivoImagem()}">
-                </div>
-            </div>
+{*            <div class="form-row">*}
+{*                <div class="custom-file">*}
+{*                    <label class="custom-file-label" for="imagem-oportunidade">Imagem da Oportunidade:</label>*}
+{*                    <input  type="file" class="custom-file-input" id="imagem-oportunidade" name="imagem_oportunidade" value="{$oportunidade->getArquivoImagem()}">*}
+{*                </div>*}
+{*            </div>*}
 
             <div class="form-row">
                 <label for="descricao">Descrição da Oportunidade</label>
             </div>
             <div id="editor"></div>
 
-            <input type="hidden" id="descricao-oportunidade" name="descricao" value="{$oportunidade->getDescricao()}">
+            <input type="hidden" id="descricao-oportunidade" name="descricao" value="{htmlspecialchars($oportunidade->getDescricao())}">
 
 
             <button type="submit" class="btn btn-primary" onclick="addContentToInput()" style="margin-top: 5%;">Editar Oportunidade</button>
@@ -174,6 +175,7 @@
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link','image']
                 ]
             }
         });

@@ -2,6 +2,7 @@
 
 namespace App\Library;
 
+use App\Model\Usuario;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Helper
@@ -115,6 +116,103 @@ class Helper
     {
         return strtr(utf8_decode($str), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'),
             'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+    }
+    public static function getGruposComPontuacao($container, Usuario $usuario, $isTotal = false)
+    {
+        $gradeId = $usuario->getGradeId($container);
+        $disciplinas = $container->disciplinaDAO->getByGrade($gradeId);
+        $quantidadeDeDisciplinasRealizadasNoCurso = [];
+
+        foreach ($disciplinas as $disciplina) {
+            $grupo = $disciplina->getGrupo($container, $usuario->getCurso());
+            if(!isset($grupo)) {
+                continue;
+            }
+
+            $nomeGrupo = $grupo->getNomeInteiro();
+
+            if(!isset($quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo])) {
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] = 1;
+            } else {
+                $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo] ++;
+            }
+        }
+
+        $gruposComPontuacao = [];
+        $quantidadeDeDisciplinasRealizadasNoGrupo = [];
+
+        $grupos = $container->grupoDAO->getAllByCurso($usuario->getCurso());
+        foreach ($grupos as $grupo) {
+            $nomeGrupo = $grupo->getNomeInteiro();
+            $gruposComPontuacao[$nomeGrupo] = 0;
+            $quantidadeDeDisciplinasRealizadasNoGrupo[$nomeGrupo] = 0;
+        }
+
+        $gruposComPontuacao["3-Multidisciplinaridade"] = 0;
+        $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] = 0;
+
+        $notas = $usuario->getNotas();
+
+        foreach ($notas as $nota) {
+            $disciplina = $nota->getDisciplina();
+            $estado = $nota->getEstado();
+
+            if($estado == "Matriculado" || $estado == "Trancado" || $estado == "Sem Conceito") {
+                continue;
+            }
+
+            $grupo = $disciplina->getGrupo($container, $usuario->getCurso());
+
+            if(! $container->gradeDisciplinaDAO->disciplinaExisteNaGrade($disciplina->getId(), $gradeId)) {
+                $grupo = null;
+            }
+
+            if(isset($grupo)) {
+                $nomeGrupo = $grupo->getNomeInteiro();
+                $gruposComPontuacao[$nomeGrupo] += $nota->getValor();
+                $quantidadeDeDisciplinasRealizadasNoGrupo[$nomeGrupo] += 1;
+
+                if($estado == "Rep Nota" || $estado == "Rep Freq" || $estado == "Reprovado") {
+                    $quantidadeDeDisciplinasRealizadasNoCurso[$nomeGrupo]++;
+                }
+
+            } else {
+                $gruposComPontuacao["3-Multidisciplinaridade"] += $nota->getValor();
+                $quantidadeDeDisciplinasRealizadasNoGrupo["3-Multidisciplinaridade"] += 1;
+            }
+
+        }
+
+        $quantidadeDeDisciplinasRealizadasNoCurso['3-Multidisciplinaridade'] = $quantidadeDeDisciplinasRealizadasNoGrupo['3-Multidisciplinaridade'];
+
+        foreach ($gruposComPontuacao as $grupo => $valor) {
+            if ($isTotal) {
+                if($quantidadeDeDisciplinasRealizadasNoCurso[$grupo] == 0) {
+                    $gruposComPontuacao[$grupo] = 0;
+                }
+                else {
+                    $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoCurso[$grupo];
+                }
+
+            } else {
+                if ($quantidadeDeDisciplinasRealizadasNoGrupo[$grupo] == 0) {
+                    $gruposComPontuacao[$grupo] = 0;
+                } else {
+                    $gruposComPontuacao[$grupo] = $valor / $quantidadeDeDisciplinasRealizadasNoGrupo[$grupo];
+                }
+            }
+
+        }
+
+        ksort($gruposComPontuacao);
+        foreach ($gruposComPontuacao as $nomeGrupo => $valor) {
+            $nomeSemHifen = explode("-", $nomeGrupo)[1];
+
+            $gruposComPontuacao[$nomeSemHifen] = $valor;
+
+            unset($gruposComPontuacao[$nomeGrupo]);
+        }
+        return $gruposComPontuacao;
     }
 
 }

@@ -54,7 +54,7 @@ class WSLogin extends SoapClient
             'features' => 1,
         ), $options);
         if (!$wsdl) {
-            $wsdl = 'http://login.integra.nrc.ice.ufjf.br:8080/integra/services/soap/login/wslogin?wsdl';
+            $wsdl = 'http://login.integra.nrc.ice.ufjf.br/integra/services/soap/login/wslogin?wsdl';
         }
         parent::__construct($wsdl, $options);
     }

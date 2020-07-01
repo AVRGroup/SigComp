@@ -79,7 +79,7 @@
 
             <div class="col-md-6 col-sm-11 mt-sm-3 mt-md-0 mx-sm-auto" style="margin-top: 10px;">
                 <h6> <label for="lattes">Lattes</label> </h6>
-                <input type="text" name="lattes" placeholder="https://lattes.com/seu.perfil" class="form-control" value="{$usuario->getLattes()}">
+                <input type="text" name="lattes" placeholder="http://lattes.cnpq.br/seu.perfil" class="form-control" value="{$usuario->getLattes()}">
             </div>
         </div>
 

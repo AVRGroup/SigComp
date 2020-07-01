@@ -340,4 +340,20 @@ class QuestaoDAO extends BaseDAO
         } catch (\Exception $e) {
         }
     }
+
+     * @param $tipo_questionario
+     * @return Questao[] |null
+     */
+    public function getAllByTipoQuestionario($tipo_questionario)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT q FROM App\Model\Questao AS q WHERE q.tipo_questionario = :tipo_questionario");
+            $query->setParameter('tipo_questionario', $tipo_questionario);
+            $questoes = $query->getResult();
+        } catch (\Exception $e) {
+            $questoes = null;
+        }
+        return $questoes;
+    }
+
 }

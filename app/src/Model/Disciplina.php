@@ -289,7 +289,6 @@ class Disciplina implements ToIdArrayInterface
         return $this;
     }
 
-
     /**
      * @param mixed $notas
      * @return Disciplina
@@ -303,5 +302,16 @@ class Disciplina implements ToIdArrayInterface
     public function getIdentifier()
     {
         return $this->getCodigo();
+    }
+    
+    public function getGrupo(\Container $container, $curso)
+    {
+        $grupo = $container->grupoDisciplinaCursoDAO->getGrupoByDisciplinaCurso($this->id, $curso);
+
+        if($grupo) {
+            return $grupo[0];
+        }
+
+        return null;
     }
 }

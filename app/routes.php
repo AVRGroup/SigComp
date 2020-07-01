@@ -11,6 +11,7 @@ $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
 $app->get('/questionarios', '\App\Controller\QuestionarioController:index')->setName('questionarios');
+$app->get('/questoes', '\App\Controller\QuestaoController:index')->setName('questoes');
 
 $app->group('', function () {
     $this->map(['GET', 'POST'],'/[#friends]', '\App\Controller\HomeController:indexAction')->setName('home');
@@ -35,6 +36,7 @@ $app->group('', function () {
     $this->get('/edicaoQuestoes', '\App\Controller\QuestionarioController:edicaoQuestoes')->setName('edicaoQuestoes');
     $this->get('/excluiQuestao', '\App\Controller\QuestionarioController:excluiQuestao')->setName('excluiQuestao');
 
+    $this->map(['GET', 'POST'], '/storeQuestao', '\App\Controller\QuestaoController:storeQuestao')->setName('storeQuestao');
 
     $this->map(['GET', 'POST'], '/list-certificates', '\App\Controller\CertificateController:listAction')->setName('listCertificates');
     $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:deleteAction')->setName('deleteCertificate');
@@ -64,6 +66,7 @@ $app->group('', function () {
 
     $this->map(['GET', 'POST'], '/testeServico', '\App\Controller\UserController:indexTesteServico')->setName('testeServico');
     $this->map(['GET', 'POST'], '/store-teste-servico', '\App\Controller\UserController:testeServico')->setName('store-teste-servico');
+    $this->get('/info-radar-chart', '\App\Controller\UserController:infoRadarChart');
 
     $this->group('/admin', function () {
 
@@ -93,7 +96,6 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');
-        $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
 
         $this->get('/certificate/{id:[0-9]+}/delete', '\App\Controller\CertificateController:adminDeleteAction')->setName('adminDeleteCertificate');
 
@@ -108,6 +110,24 @@ $app->group('', function () {
         $this->map(['GET', 'POST'], '/forum/novaCategoria', '\App\Controller\ForumController:novaCategoriaAction')->setName('novaCategoria');
 
         $this->map(['GET', 'POST'], '/relatorio/periodizado', '\App\Controller\AdminController:listPeriodizadosAction')->setName('relatorioPeriodizado');
+
+        $this->map(['GET', 'POST'], '/manual-coordenador', '\App\Controller\AdminController:manualCoordenador')->setName('manualCoordenador');
+
+        $this->get('/ver-grupo', '\App\Controller\GrupoController:index')->setName('verGrupo');
+        $this->get('/create-grupo', '\App\Controller\GrupoController:create')->setName('createGrupo');
+        $this->post('/store-grupo', '\App\Controller\GrupoController:store')->setName('storeGrupo');
+        $this->post('/store-disciplina-grupo', '\App\Controller\GrupoController:storeDisciplinaGrupo')->setName('storeDisciplinaGrupo');
+        $this->get('/editar-grupos', '\App\Controller\GrupoController:edit')->setName('editGrupo');
+        $this->post('/update-grupos', '\App\Controller\GrupoController:update')->setName('updateGrupo');
+        $this->get('/change-name/{grupo: [0-9]+}', '\App\Controller\GrupoController:changeNameForm')->setName('changeNameForm');
+        $this->post('/change-name-action/{grupo: [0-9]+}', '\App\Controller\GrupoController:changeNameAction')->setName('changeNameAction');
+        $this->get('/destroy/{grupo: [0-9]+}', '\App\Controller\GrupoController:destroy')->setName('destroyGrupo');
+
+
+        $this->get('/ver-grade', '\App\Controller\GradeController:index')->setName('verGrade');
+        $this->get('/editar-grade/{disciplina: [0-9]+}', '\App\Controller\GradeController:edit')->setName('editGrade');
+        $this->post('/update-disciplina/{disciplina: [0-9]+}', '\App\Controller\GradeController:update')->setName('updateGrade');
+
     })->add('\App\Middleware\AdminMiddleware');
 
     $this->group('/admin', function () {
@@ -117,11 +137,21 @@ $app->group('', function () {
         $this->get('/oportunidade/{id:[0-9]+}/delete', '\App\Controller\OportunidadeController:deleteOportunidade')->setName('deleteOportunidade');
         $this->get('/oportunidade/{id:[0-9]+}/form-edit', '\App\Controller\OportunidadeController:formEditOportunidade')->setName('formEditOportunidade');
         $this->post('/oportunidade/{id:[0-9]+}/edit', '\App\Controller\OportunidadeController:editOportunidade')->setName('editOportunidade');
+        $this->get('/teste-deleta-duplicados', '\App\Controller\AdminController:deletaUsuariosDuplicados')->setName('editOportunidade');
 
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/accept', '\App\Controller\CertificateController:adminAcceptAction')->setName('adminAcceptCertificate');
         $this->map(['GET', 'POST'],'/certificate/{id:[0-9]+}/refuse', '\App\Controller\CertificateController:adminRefuseAction')->setName('adminRefuseCertificate');
         $this->map(['GET', 'POST'],'/certificates', '\App\Controller\CertificateController:adminListReviewAction')->setName('adminListReviewCertificates');
     })->add('\App\Middleware\BolsistaMiddleware');
+
+    $this->group('/admin', function () {
+        $this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
+        $this->get('/user/{id:[0-9]+}', '\App\Controller\AdminController:adminUserAction')->setName('adminUser');
+
+        $this->get('/comparar-usuarios', '\App\Controller\AdminController:compareUsers')->setName('compare');
+        $this->post('/ver-comparacao', '\App\Controller\AdminController:seeComparison')->setName('seeComparison');
+
+    })->add('\App\Middleware\ProfessorMiddleware');
 
 })->add('\App\Middleware\AuthMiddleware');
 

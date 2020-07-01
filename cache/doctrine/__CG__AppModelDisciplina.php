@@ -441,4 +441,15 @@ class Disciplina extends \App\Model\Disciplina implements \Doctrine\ORM\Proxy\Pr
         return parent::getIdentifier();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getGrupo(\Container $container, $curso)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGrupo', [$container, $curso]);
+
+        return parent::getGrupo($container, $curso);
+    }
+
 }

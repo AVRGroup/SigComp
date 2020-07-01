@@ -305,6 +305,10 @@ class Usuario implements ToIdArrayInterface
      */
     public function getCurso()
     {
+        if(!isset($this->curso)) {
+            return "35A";
+        }
+
         return $this->curso;
     }
 
@@ -341,9 +345,23 @@ class Usuario implements ToIdArrayInterface
      */
     public function getGrade()
     {
+        if(!isset($this->grade)) {
+            return 1;
+        }
+
         return $this->grade;
     }
 
+    public function getGradeId($container)
+    {
+        $grade = $container->gradeDAO->getByCodigoCurso($this->grade, $this->curso);
+
+        if($grade) {
+            return $grade->getId();
+        }
+
+        return 1;
+    }
     /**
      * @param mixed $grade
      * @return Usuario
@@ -808,35 +826,26 @@ class Usuario implements ToIdArrayInterface
     }
 
     public function isAluno(){
-        if($this->getTipo() == 0){
-            return true;
-        }
-
-        return false;
+        return $this->getTipo() == 0;
     }
 
     public function isAdmin(){
-        if($this->getTipo() == 1){
-            return true;
-        }
-
-        return false;
+        return $this->getTipo() == 1;
     }
 
-    public function isCoordenador(){
-        if($this->getTipo() == 2){
-            return true;
-        }
-
-        return false;
+    public function isCoordenador()
+    {
+        return $this->getTipo() == 2;
     }
 
-    public function isBolsista(){
-        if($this->getTipo() == 3){
-            return true;
-        }
+    public function isBolsista()
+    {
+        return $this->getTipo() == 3;
+    }
 
-        return false;
+    public function isProfessor()
+    {
+        return $this->getTipo() == 4;
     }
 
     public function isProfessor(){

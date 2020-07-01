@@ -24,7 +24,7 @@ body {
 .login-form {
     width: 100%;
     max-width: 330px;
-    padding: 15px;
+    padding: 2px 15px 15px;
     margin: 0 auto;
 }
 
@@ -262,13 +262,24 @@ body {
     background-color: #FFFFD1;
 }
 
-.card-oportunidade .descricao {
-    text-align: justify;
-    text-justify: inter-word;
-    max-height: 100px;
-    overflow: hidden;
+.card-oportunidade-clt {
+    background-color: hsla(204, 69%, 61%, 0.15);
 }
 
+.cor-aluno-comparacao {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #0b2e13;
+}
+
+.card-oportunidade .descricao {
+    text-align: justify;
+    height: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
 
 .card-oportunidade .titulo {
     font-size: 1.4em;
@@ -305,6 +316,15 @@ body {
 
 .card-oportunidade .btn-estagio {
     background-color: #fae243;
+}
+
+.card-oportunidade .btn-clt {
+    background-color: hsla(204, 69%, 61%, 0.80);
+}
+
+.btn-radar-sobreposto {
+    background-color: #0db2e0 !important;
+    color: white;
 }
 
 .download-aquivo {
@@ -344,4 +364,45 @@ body {
     display: block;
     max-width: 600px;
     margin: auto;
+}
+
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.custom-tooltip .custom-tooltiptext {
+    visibility: hidden;
+    width: 500px;
+    background-color: #333;
+    color: white;
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -250px;
+    margin-bottom: 5px;
+
+    /* Position the custom-tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.custom-tooltip .custom-tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Show the custom-tooltip text when you mouse over the custom-tooltip container */
+.custom-tooltip:hover .custom-tooltiptext {
+    visibility: visible;
 }

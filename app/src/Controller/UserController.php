@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Library\CalculateAttributes;
+use App\Library\Helper;
 use App\Library\Integra\getUserInformation;
 use App\Library\Integra\getUserInformationResponse;
 use App\Library\Integra\login;
@@ -37,6 +38,7 @@ class UserController
 
         $curso = null;
         $parametro = $request->getParam('curso');
+        $pesquisa = null;
 
         if ($usuario->isCoordenador()) {
             $curso = $usuario->getCurso();
@@ -45,40 +47,52 @@ class UserController
             $curso = $parametro;
         }
 
-        if($request->isPost()){
-            $pesquisa = $request->getParsedBodyParam('pesquisa');
-            $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
+        if ($usuario->isProfessor()) {
+            $this->container->view['users'] = $this->container->usuarioDAO->getAllARRAY();
         }
+
+        if($request->getParam('pesquisa')){
+            $pesquisa = $request->getParam('pesquisa');
+            $this->container->view['users'] = $this->container->usuarioDAO->getByMatriculaNomeCursoSemAcentoARRAY($pesquisa, $curso);
+
+        }
+
         else {
             $this->container->view['users'] = $this->container->usuarioDAO->getAllByCursoARRAY($curso);
         }
 
 
+        $this->container->view['pesquisa'] = $pesquisa;
+        $this->container->view['curso'] = $curso;
+
         return $this->container->view->render($response, 'adminListUsers.tpl');
     }
 
-
     public function visualizarAmigoAction(Request $request, Response $response, $args)
     {
-        $usuario = $this->container->usuarioDAO->getByIdFetched($args['id']);
+        $amigo = $this->container->usuarioDAO->getByIdFetched($args['id']);
+        $usuarioLogado = $this->container->usuarioDAO->getUsuarioLogado();
 
-        if(!$usuario) {
+        if(!$amigo) {
             return $response->withRedirect($this->container->router->pathFor('home'));
         }
 
-        CalculateAttributes::calculateUsuarioStatistics($usuario, $this->container);
+        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($amigo->getId());
 
-        $medalhasUsuario = $this->container->usuarioDAO->getMedalsByIdFetched($usuario->getId());
-
-        $this->container->view['usuario'] = $usuario;
+        $this->container->view['visaoAmigo'] = true;
+        $this->container->view['usuario'] = $amigo;
         $this->container->view['medalhas'] = $medalhasUsuario;
-        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
+        $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($amigo->getId());
         $this->container->view['todasMedalhas'] =  $this->container->usuarioDAO->getTodasMedalhas();;
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
+        $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($amigo->getGrade(), $amigo->getCurso()) * 100;
+
+        $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $amigo);;
+        $this->container->view['gruposCursoInteiro'] = Helper::getGruposComPontuacao($this->container, $amigo, true);
+        $this->container->view['gruposUsuarioLogado'] = Helper::getGruposComPontuacao($this->container, $usuarioLogado);
 
         return $this->container->view->render($response, 'home.tpl');
     }
@@ -260,7 +274,7 @@ class UserController
             $redesComErro[] = 'Linkedin';
         }
 
-        if($lattes != null && strpos($lattes, "lattes.com") === false){
+        if($lattes != null && strpos($lattes, "cnpq") === false){
             $redesComErro[] = 'Lattes';
 
         }
@@ -454,6 +468,19 @@ class UserController
     public function checaCoord(Request $request, Response $response, $args){
         $coordenadores = $this->container->usuarioDAO->getCoordenador();
         $cont = 0;
+
+    public function infoRadarChart(Request $request, Response $response, $args)
+    {
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+
+        $disciplinas = $this->container->disciplinaDAO->getByGrade($usuario->getGradeId($this->container));
+
+        $this->container->view['disciplinas'] = $disciplinas;
+        $this->container->view['curso'] = $usuario->getCurso();
+        $this->container->view['container'] = $this->container;
+
+        return $this->container->view->render($response, 'infoRadarChart.tpl');
+    }
 
         foreach( $coordenadores as $coordenador ){
             $cont += 1;

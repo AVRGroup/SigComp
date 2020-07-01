@@ -28,6 +28,14 @@ class OportunidadeController
 
         $disciplinasAprovadas = $this->container->usuarioDAO->getDisciplinasAprovadasById($usuario->getId());
         $oportunidades = $this->container->oportunidadeDAO->getAll();
+        
+        foreach($oportunidades as $oportunidade) {
+            $oportunidade->descricaoSemTags = strip_tags($oportunidade->getDescricao());
+
+            $oportunidade->descricaoSemTags = preg_replace('/\s+/', ' ', $oportunidade->descricaoSemTags);
+
+            $oportunidade->descricaoCortada = $this->tokenTruncate($oportunidade->descricaoSemTags, 180);
+        }
 
         $this->container->view['oportunidades'] = $oportunidades;
         $this->container->view['disciplinasAprovadas'] = $disciplinasAprovadas;
@@ -35,7 +43,23 @@ class OportunidadeController
         $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
         $this->container->view['periodo'] = $this->container->usuarioDAO->getUsersPeriodoAtual($idUsuario, $periodoCorrente);
 
+        $this->container->view['oportunidadeSelecionada'] = $request->getParam('oportunidade');
+
         return $this->container->view->render($response, 'verOportunidades.tpl');
+    }
+
+    function tokenTruncate($string, $your_desired_width) {
+        $parts = preg_split('/([\s\n\r]+)/u', $string, null, PREG_SPLIT_DELIM_CAPTURE);
+        $parts_count = count($parts);
+
+        $length = 0;
+        $last_part = 0;
+        for (; $last_part < $parts_count; ++$last_part) {
+            $length += strlen($parts[$last_part]);
+            if ($length > $your_desired_width) { break; }
+        }
+
+        return implode(array_slice($parts, 0, $last_part));
     }
 
     public function mostrarOportunidade(Request $request, Response $response, $args)
@@ -102,6 +126,7 @@ class OportunidadeController
         $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
         $imagem = $request->getUploadedFiles()['imagem_oportunidade'];
 
+
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         if($temRemuneracao == "nao_informado") {
             $valorRemuneracao = -1;
@@ -129,7 +154,7 @@ class OportunidadeController
             $this->setArquivo($oportunidade, $pdf);
         }
 
-        if($imagem->getSize() > 0) {
+        if(isset($imagem) && $imagem->getSize() > 0) {
             $this->setArquivoImagem($oportunidade, $imagem);
         }
 

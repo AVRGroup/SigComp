@@ -20,6 +20,7 @@ class Questao
     const ABERTA = 1;
 
     //Categorias
+
     const AVALIACAO_PESSOAL = 0;
 
     const AVALIACAO_TURMA = 1;
@@ -46,7 +47,7 @@ class Questao
      * @ORM\Column(type="smallint", options={"default" : 0})
      */
     protected $tipo = 0;
-
+  
     /**
      * 0: Avaliacao_Pessoal
      * 1: Avaliacao_Turma
@@ -72,7 +73,6 @@ class Questao
     {
     }
 
-
     /**
      * @return mixed
      */
@@ -94,6 +94,7 @@ class Questao
     /**
      * @return mixed
      */
+  
     public function getEnunciado()
     {
         return $this->enunciado;
@@ -130,6 +131,7 @@ class Questao
     /**
      * @return mixed
      */
+
     public function getCategoria()
     {
         return $this->categoria;

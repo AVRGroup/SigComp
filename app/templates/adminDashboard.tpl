@@ -2,6 +2,13 @@
 {block name=content}
 
     <h3 class="text-center">Página do Administrador</h3>
+
+    {if $loggedUser->isCoordenador()}
+        <div class="text-center mt-3">
+            <a href="{path_for name="manualCoordenador"}" class="btn btn-success">Manual do Coordenador</a>
+        </div>
+    {/if}
+
     {if $loggedUser->isAdmin()}
         <br>
         <div class="form-row">
@@ -52,7 +59,7 @@
         <div class="col-6" style="margin-top: 1.8%">
             <div class="row">
                 <div class="col-10">
-                    <h4 class="text-center">Melhor IRA No Período</h4>
+                    <h4 class="text-center">Melhor IRA em {substr_replace($periodoPassado, '.', 4, 0)}</h4>
                 </div>
             </div>
             <table class="table table-sm">
