@@ -12,6 +12,7 @@ use App\Model\Avaliacao;
 use App\Model\Disciplina;
 use App\Model\MedalhaUsuario;
 use App\Model\RespostaAvaliacao;
+use App\Model\ProfessorTurma;
 
 class AvaliacaoController
 {
@@ -73,21 +74,6 @@ class AvaliacaoController
 
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
     }
-
-    /*
-    public function page2(Request $request, Response $response, $args)
-    {
-        $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario(2);
-        $this->container->view['questoes2'] = $questoes2;
-    }
-
-    public function page3(Request $request, Response $response, $args)
-    {
-        $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario(1);
-        $this->container->view['questoes3'] = $questoes3;
-    }
-    */
-
     
     public function getPeriodoAtual()
     {
@@ -374,7 +360,7 @@ class AvaliacaoController
               CURLOPT_FOLLOWLOCATION => true,
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '2104Ycpb@','username' => '18066483775'),
+              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
               CURLOPT_HTTPHEADER => array(
                 "Authorization: Basic dGVzdGU6dGVzdGU="
               ),
@@ -419,10 +405,12 @@ class AvaliacaoController
                     if( $prof == null ){
                         $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
                     } 
-                    $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+                    $teste = $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
                 }
             }
 
+            echo "OK";
+            die();
  
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
