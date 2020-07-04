@@ -360,7 +360,7 @@ class AvaliacaoController
               CURLOPT_FOLLOWLOCATION => true,
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '2104@Ycpb','username' => '18066483775'),
+              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
               CURLOPT_HTTPHEADER => array(
                 "Authorization: Basic dGVzdGU6dGVzdGU="
               ),
