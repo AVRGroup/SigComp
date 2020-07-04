@@ -7,14 +7,15 @@
     {/if}
 
         <form method="get">
-            <div class="form-row">
-                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-8" placeholder="Digite o nome ou a matrícula"
+            <div class="form-row mx-auto">
+                <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-6 mb-4 mx-auto" placeholder="Digite o nome ou a matrícula"
                 {if $pesquisa} value="{$pesquisa}" {/if} >
             </div>
 
+            <p align="center" style="font-size: 25px">Filtrar</p>
             {if $loggedUser->isAdmin()}
-                <div class="form-row mt-4">
-                    <select class="form-control col-6" name="curso">
+                <div class="form-row ">
+                    <select class="form-control col-6 mx-auto" name="curso">
                         <option value="todos" {if $curso == 'todos'} selected {/if}>Todos</option>
                         <option value="35A" {if $curso == '35A'} selected {/if}>Ciência da Computação Noturno</option>
                         <option value="65C" {if $curso == '65C'} selected {/if}>Ciência da Computação Integral</option>
@@ -24,12 +25,12 @@
                 </div>
             {/if}
 
-            <button type="submit" class="btn btn-primary mt-4"><i class="fa fa-search"></i> Pesquisar</button>
+            <div align="center" >
+                <button type="submit"  class="btn btn-primary mt-4 col-md-4" ><i class="fa fa-search"></i> Pesquisar</button>
+            </div>
         </form>
 
-
     <br>
-
     <hr>
 
     <table style="margin-top: 4%" id="tabela" class="table table-hover">

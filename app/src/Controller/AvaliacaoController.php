@@ -360,7 +360,7 @@ class AvaliacaoController
               CURLOPT_FOLLOWLOCATION => true,
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
+              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '2104@Ycpb','username' => '18066483775'),
               CURLOPT_HTTPHEADER => array(
                 "Authorization: Basic dGVzdGU6dGVzdGU="
               ),
@@ -405,12 +405,9 @@ class AvaliacaoController
                     if( $prof == null ){
                         $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
                     } 
-                    $teste = $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+                    $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
                 }
             }
-
-            echo "OK";
-            die();
  
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
@@ -418,7 +415,7 @@ class AvaliacaoController
 
             #Loop pra pegar o codigo da turma do aluno
             foreach( $servico as $service){
-                $disc->$this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+                $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
                 if( $disc->getId() == $id_disciplina ){
                     $codigoTurma = $service['turma'];
                     break;
