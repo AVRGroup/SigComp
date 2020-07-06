@@ -108,18 +108,22 @@
                     {/if}
 
                     {if $loggedUser->isAdmin()}
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{path_for name="adminData"}">Carga de Dados</a></li>
+
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Administrador
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="{path_for name="adminDashboard"}">Dashboard</a>
-{*                                <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>*}
+                                <a class="dropdown-item" href="{path_for name="editCoordenacao"}">Editar Coordenadores</a>
+{*                              <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>*}
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                                 <a class="dropdown-item" href="{path_for name="compare"}">Comparar Alunos</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="assignMedals"}">Atribuir Medalhas</a>
-                                <a class="dropdown-item" href="{path_for name="adminData"}">Carga de Dados</a>
+                                <a class="dropdown-item" href="{path_for name="questionarios"}">Editar Questionarios</a>
                                 <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>
                                 <a class="dropdown-item" href="{path_for name="verGrade"}">Editar Grade</a>
 

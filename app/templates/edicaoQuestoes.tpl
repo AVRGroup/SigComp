@@ -36,7 +36,7 @@
 
         <div align="center">
             <p align="center" style="font-weight: 500; font-size: 20px; border:solid thick blue; border-radius: 0.5em; 
-              border-width:3px; padding-left:9px; padding-top:6px; 
+              border-width:1px; padding-left:9px; padding-top:6px; 
               padding-bottom:6px; margin:2px; margin-bottom:5px; width:500px;">Você está editando o questionário: {$nome_questionario }</p>
         </div>
 

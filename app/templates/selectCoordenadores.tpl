@@ -1,11 +1,11 @@
 {extends 'layout.tpl'}
 {block name=content}
-    <h3 align="center" style="margin-top: 2%; margin-bottom: 3%" > Coordenadores </h3>
+    <h3 align="center" style="margin-top: 1%; margin-bottom: 1%" > Coordenadores </h3>
     <hr>
     
     <div align="center">
-        <p style="font-weight: 500; font-size: 20px; border:solid thick black; border-radius: 0.5em; border-width:3px; padding-left:9px; padding-top:6px; padding-bottom:6px; margin:2px; margin-bottom:10px; width:500px;"> 
-            Selecione abaixo, quais docentes são coordenadores. 
+        <p style="font-style: italic; font-size: 20px"> 
+            Selecione abaixo, quais docentes são coordenadores.
         </p>
     </div>
 
@@ -35,21 +35,22 @@
         <input type="hidden" name="professores" value="{$professores}">
         <input type="hidden" name="coordenadores" value="{$coordenadores}">
 
-        <h5 align="center" style=" margin-top: 3%; margin-bottom: 3%" > Atuais coordenadores: </h5>
-        <div style="margin-left: 30%">
-        {foreach $coordenadores as $coordenador}
-            <div class="form-row" style="margin-top: 1%">
-                <p style="margin-left: 10%"> •  {$coordenador->getNome()}</p>
-
-                 <div style="margin-left: 5px; margin-bottom: 10px" class="col-lg-1 col-sm-1 col-md-1">
-                    <button type="submit" name="exclui_{$coordenador->getId()}" ><a style=" color: darkred; margin-left: 2%;"><small><i class="fa fa-trash"></i></small></a></button>                         
+        <h5 align="center" style=" margin-bottom: 3%"> Atuais coordenadores: </h5>
+        <div style="margin-left: 35%">
+            {foreach $coordenadores as $coordenador}
+                <div class="form-row" style="margin-top: 1%">
+                    
+                    <div style="margin-left: 0px; margin-bottom: 10px" class="col-lg-1 col-sm-1 col-md-1">
+                        <button type="submit" name="exclui_{$coordenador->getId()}" ><a style=" color: darkred; margin-left: 0%;"><small><i class="fa fa-trash"></i></small></a></button>                         
+                    </div>
+                    <p style="margin-left: -2%"> •  {$coordenador->getNome()}</p>
                 </div>
-            </div>
-        {/foreach}
+            {/foreach}
         </div>
         <hr>
         <div class="ml-4">
-        <h4 style="margin-left: 9%; margin-bottom: 3%" > Docentes </h4>
+        <h4 style="font-size: 30px; margin-left: 9%" > Docentes </h4>
+            <p  style=" font-size: 20px; font-style: italic; margin-left: 9%; margin-bottom: 3%">(Selecione até 4 professores para serem coordenadores)</p> 
             {foreach $professores as $professor}
 
                 <div class="custom-control custom-checkbox" style="margin-left: 10%; margin-bottom: 1%; font-size: 17px" >

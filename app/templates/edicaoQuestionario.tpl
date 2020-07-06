@@ -56,7 +56,7 @@
         </div>
 
     <nav aria-label="navigation" class="pagination justify-content-center">
-        <button style="margin-top: 2%" class="btn btn-primary" type="submit">Editar</button>
+        <button style="margin-top: 2%; width: 200px" class="btn btn-primary" type="submit">Editar</button>
     </form>
     </nav>
 
