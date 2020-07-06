@@ -203,7 +203,7 @@ class Usuario implements ToIdArrayInterface
     protected $password;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
      */
     protected $avaliacoes;
 

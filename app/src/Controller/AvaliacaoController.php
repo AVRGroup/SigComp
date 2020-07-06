@@ -250,9 +250,14 @@ class AvaliacaoController
         #Caso o usuário tenha concluido todas as avaliaçoes, a page com a medalha dele sera exibida
         #Essa $verificacao serve pra saber se o espertinho ta tentando acessar a page de medalha editando a URL!
         if( $cont == $cont2 && $verificacao == true){
+            $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
+            if($avaliacoes == null) { 
+                $this->container->usuarioDAO->setDefaultAvaliacoesUser($usuario->getId());
+                $avaliacoes = 0;
+            }
             $this->container->usuarioDAO->addAvaliacaoInUser($usuario->getId());
             $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
-        
+
            if( $avaliacoes > 0  && $avaliacoes <= 2 ){
                $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 40);
                if( $medalhasUser == true ){

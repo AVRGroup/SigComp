@@ -1166,6 +1166,13 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function setDefaultAvaliacoesUser($userId)
+    {
+        $sql = "UPDATE usuario SET avaliacoes = 0 WHERE id = {$userId}";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
     public function getNumAvaliacoes($userId){
         $sql = "SELECT avaliacoes FROM usuario WHERE id = $userId";
         $stmt = $this->em->getConnection()->prepare($sql);
