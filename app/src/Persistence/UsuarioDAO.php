@@ -1194,10 +1194,16 @@ class UsuarioDAO extends BaseDAO
 
     public function deleteById($id)
     {
-        $query = "DELETE FROM usuario WHERE id = $id";
-
+        $query = "DELETE FROM medalha_usuario WHERE usuario = $id";
         $stmt = $this->em->getConnection()->prepare($query);
-
+        $stmt->execute();
+        
+        $query = "DELETE FROM nota WHERE usuario = $id";
+        $stmt = $this->em->getConnection()->prepare($query);
+        $stmt->execute();
+        
+        $query = "DELETE FROM usuario WHERE id = $id";
+        $stmt = $this->em->getConnection()->prepare($query);
         $stmt->execute();
     }
 
