@@ -32,14 +32,16 @@ class AdminController
     public function dataLoadAction(Request $request, Response $response, $args)
     {
         #Array com os cursos do DCC para consultar nos serviços
-        $arrayCursos = array("76A", "35A", "65B", "65C");
+        $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
 
-        foreach($arrayCursos as $codCurso){
-            //echo "<script>console.log('Codigo: ".$codCurso."');</script>";
+        $consumo = 0;
+        $curso = "";
+        $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
+        foreach($arrayCursos as $c){
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/". $codCurso,
+                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$c",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -54,17 +56,20 @@ class AdminController
 
             $data = json_decode(curl_exec($curl), true);
             curl_close($curl);
+            echo "<script>console.log('Serviço OK');</script>";
+            
+            //$this->container->view['progresso'] = count($data)*2;
 
             if ($data !== null) {
-                $curso = "";
+                $consumo++;
                 try {
                     set_time_limit(60 * 60); //Should not Exit
-                    $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
-
+                    
                     //Inserindo novas disciplinas 
                     $disciplinas = array();
                     foreach ($data as $disc) {
-
+                        //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
+                        
                         if(array_key_exists($disc['Disciplina'], $disciplinas)){
                             continue;
                         }
@@ -77,6 +82,7 @@ class AdminController
                             continue;
                         }
 
+                        //echo "<script>console.log('Criando disciplina');</script>";
                         $disciplina = new Disciplina();
                         $disciplina->setCodigo($disc['Disciplina']);
                         $disciplina->setCarga($disc['Carga Horária']);
@@ -98,6 +104,8 @@ class AdminController
                     foreach ($data as $user) {
                         $curso = $user['Curso'];
 
+                        //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
+
                         if(array_key_exists($user['Matrícula'], $usuarios)) {
                             $usuario = $usuarios[$user['Matrícula']];
                         }
@@ -105,24 +113,27 @@ class AdminController
                         else {
                             $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
                             if ($usuario_aux !== null) {
+                                //echo "<script>console.log('usuário já existe');</script>";
                                 $usuario = $usuario_aux;
                                 //Se não está no map, insere neste e atualiza
                                 foreach ($usuario->getNotas() as $userNota) {
+                                    //echo "<script>console.log('Removendo nota');</script>";
                                     $usuario->removeNota($userNota);
+                                    //echo "<script>console.log('notaDAO');</script>";
                                     $this->container->notaDAO->remove($userNota);
                                 }
                                 $usuario->setNome($user['Aluno']);
                                 $usuario->setGrade($user['Grade']);
-                            
+        
                                 $affectedData['usuariosUpdated']++;
-
+                                
                             } else {
                                 $usuario = new Usuario();
                                 $usuario->setNome($user['Aluno']);
                                 $usuario->setGrade($user['Grade']);
                                 $usuario->setCurso($user['Curso']);
                                 $usuario->setMatricula($user['Matrícula']);
-                            
+        
                                 $this->container->usuarioDAO->persist($usuario);
                                 $affectedData['usuariosAdded']++;
                             }
@@ -141,7 +152,7 @@ class AdminController
                             //$notas[] = $nota;
                             $this->container->notaDAO->persist($nota);
                         }
-
+                        
                     }
                     //$this->container->notaDAO->salvarNotas($notas);
 
@@ -149,28 +160,38 @@ class AdminController
 
                     $this->container->usuarioDAO->flush(); //Commit the transaction
                     $this->container->notaDAO->flush();
-                    $this->container->view['affectedData'] = $affectedData;
 
-                    $this->container->view['success'] = true;
                 } catch (\Exception $e) {
                     $this->container->view['error'] = $e->getMessage();
                 }
-
-                $this->deletaUsuariosDuplicados();
-
-                $this->calculaIra();
-                $this->calculaIraPeriodoPassado();
-                $this->abreviaTodosNomes(false, $curso);
-                $this->abreviaTodosNomes(true, $curso);
-
-                $this->container->usuarioDAO->setPeriodoCorrente();
-                $periodo = $this->getPeriodoAtual();
-
-                $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
-                $this->container->usuarioDAO->deleteAbsentUsers($curso);
-                //return $response->withRedirect($this->container->router->pathFor('assignMedals'));
             }
         }
+
+        if($consumo !== 0){
+            $this->container->view['affectedData'] = $affectedData;
+            $this->container->view['success'] = true;
+            //echo "<script>console.log('consumo !== 0');</script>";
+
+            $this->deletaUsuariosDuplicados();
+
+            $this->calculaIra();
+            $this->calculaIraPeriodoPassado();
+            foreach($arrayCursos as $curso){
+                $this->abreviaTodosNomes(false, $curso);
+                $this->abreviaTodosNomes(true, $curso);
+            }
+
+            $this->container->usuarioDAO->setPeriodoCorrente();
+            $periodo = $this->getPeriodoAtual();
+
+            $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
+            foreach($arrayCursos as $c){
+                $this->container->usuarioDAO->deleteAbsentUsers($curso);
+            }
+
+            //return $response->withRedirect($this->container->router->pathFor('assignMedals'));
+        }
+
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $this->container->view['usuario'] = $usuario;
         return $this->container->view->render($response, 'adminDataLoad.tpl');

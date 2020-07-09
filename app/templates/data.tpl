@@ -5,7 +5,7 @@
 
     <div align="center">
         <div class="alert alert-warning alert-dismissible fade show col-md-8" role="alert">
-            <b>Atenção!</b> Efetue um backup do banco de dados antes de atualizar os dados!
+            <b>Atenção!</b> Efetue um backup do banco de dados antes de atualizar!
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
