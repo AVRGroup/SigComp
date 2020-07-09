@@ -42,7 +42,7 @@
             {foreach $grades as $grade}
                     <li style="margin-bottom: 10px"><b>{$grade->getCodigo()}</b> - {$grade->getCurso()}</li>
             {foreachelse}
-                    <li>Nenhuma grande encontrada para esse curso</li>
+                    <li>Nenhuma grade encontrada para esse curso</li>
             {/foreach}
         </ul>
     </div>
