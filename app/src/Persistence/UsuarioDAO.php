@@ -1179,7 +1179,8 @@ class UsuarioDAO extends BaseDAO
         $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
-
+    }
+    
     public function getUsuariosComMesmoNome()
     {
         $query = "SELECT a.* FROM usuario AS a JOIN (SELECT nome, COUNT(*) FROM usuario GROUP BY nome HAVING count(*) > 1 ) b ON a.nome = b.nome";

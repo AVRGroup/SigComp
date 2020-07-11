@@ -845,10 +845,6 @@ class Usuario implements ToIdArrayInterface
 
     public function isProfessor()
     {
-        return $this->getTipo() == 4;
-    }
-
-    public function isProfessor(){
         if($this->getTipo() == 4){
             return true;
         }

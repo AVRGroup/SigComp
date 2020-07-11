@@ -469,6 +469,16 @@ class UserController
         $coordenadores = $this->container->usuarioDAO->getCoordenador();
         $cont = 0;
 
+        foreach( $coordenadores as $coordenador ){
+            $cont += 1;
+        }
+        if ( $cont < 4 ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function infoRadarChart(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
@@ -480,16 +490,6 @@ class UserController
         $this->container->view['container'] = $this->container;
 
         return $this->container->view->render($response, 'infoRadarChart.tpl');
-    }
-
-        foreach( $coordenadores as $coordenador ){
-            $cont += 1;
-        }
-        if ( $cont < 4 ){
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function testeServico(Request $request, Response $response, $args){
