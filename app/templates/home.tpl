@@ -62,29 +62,35 @@
 
                 <canvas id="radar"></canvas>
 
-                <div class="mt-3">
+                <div class="mt-3 d-flex justify-content-around flex-wrap">
                     {if isset($visaoAmigo) && $visaoAmigo}
                         <div class="custom-tooltip">
                             <button onclick="setRadarSobrepostoAmigo()" class="btn btn-success">Comparar com suas notas</button>
                             <span class="custom-tooltiptext">Compare as suas notas (em verde) com as do seu amigo</span>
                         </div>
                     {else}
+                        <button onclick="setRadarRealizadas()" class="btn btn-primary"
+                                data-toggle="popover" data-placement="top"  data-trigger="hover"
+                                data-content="Esse grafico leva em conta apenas as disciplinas que você já realizou"
+                        >
+                            Disciplinas já realizadas
+                        </button>
+
                         <div class="custom-tooltip">
-                            <button onclick="setRadarRealizadas()" class="btn btn-primary">Disciplinas já realizadas</>
-                            <span class="custom-tooltiptext">Esse grafico leva em conta apenas as disciplinas que você já realizou</span>
+                            <button onclick="setRadarTodas()" class="btn btn-success ml-4"
+                                    data-toggle="popover" data-placement="top"  data-trigger="hover"
+                                    data-content="Esse gráfico mostra como estão suas notas levando em conta todas as disciplinas da grade. As que ainda não foram realizadas têm nota zero"
+                            >
+                                Todas as disciplinas
+                            </button>
                         </div>
                         <div class="custom-tooltip">
-                            <button onclick="setRadarTodas()" class="btn btn-success ml-4">Todas as disciplinas</>
-                            <span class="custom-tooltiptext">
-                                Esse gráfico mostra como estão suas notas
-                                <br>
-                                levando em conta todas as disciplinas da grade.
-                                <br>  As que ainda não foram realizadas têm nota zero
-                            </span>
-                        </div>
-                        <div class="custom-tooltip">
-                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4">Sobreposto</>
-                            <span class="custom-tooltiptext">Sobreponha os dois gráficos para conseguir uma melhor comparação</span>
+                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4"
+                                    data-toggle="popover" data-placement="top"  data-trigger="hover"
+                                    data-content="Sobreponha os dois gráficos para conseguir uma melhor comparação"
+                            >
+                                    Sobreposto
+                            </button>
                         </div>
                         </div>
                     {/if}
@@ -93,19 +99,17 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-lg-12 col-md-12 col-sm-12 col-sx-9">
                 <p></p>
                 <div class="row">
                     <h4 class="text-center col-11">Quadro de medalhas</h4>
-                    <div class="col-1">
                         <button type="button" class="btn btn-success btn-circle" data-toggle="popover"  data-placement="top"  data-trigger="focus"
                                 title="Informações"
                                 data-content="As medalhas são uma forma de você guardar suas realizações durante o curso! Algumas são atribuídas ao final
                                 de cada semestre (como as de IRA) e outras ao registrar seus certificados no sistema (como as de Monitoria, GET...)">
                             ?
                         </button>
-                    </div>
                 </div>
                 <ul class="nav nav-tabs" id="badgesTab" role="tablist">
                     {if $usuario->getTipo() !=1 }
