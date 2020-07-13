@@ -32,7 +32,7 @@ class AdminController
     public function dataLoadAction(Request $request, Response $response, $args)
     {
         #Array com os cursos do DCC para consultar nos serviços
-        $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
+        $arrayCursos = array("76A", "35A", "65B", "65C", "65AB");
 
         $consumo = 0;
         $curso = "";
@@ -413,80 +413,104 @@ class AdminController
 
     public function gradeLoadAction(Request $request, Response $response, $args)
     {
-        if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $request->getUploadedFiles()['data'];
+        
+        #Array com os cursos do DCC para consultar nos serviços
+        $arrayCursos = array("76A", "35A", "65B", "65C", "65AB");
+        
+        $affectedData = array();
+        $grades = array(); 
 
-            if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
-                $this->container->view['error'] = 'Erro no upload do arquivo, tente novamente!';
-            } else {
-                $extension = mb_strtolower(pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION));
-                if (!in_array($extension, $this->container->settings['upload']['allowedDataLoadExtensions'])) {
-                    $this->container->view['error'] = 'Formato ou Tamanho do certificado inválido!';
-                } else {
-                    try {
-                        $nomeArquivo = $uploadedFile->getClientFilename();
+        foreach( $arrayCursos as $c ){
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/grade/get/$c",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "token:  d6189421e0278587f113ca4b9e258c4a9f8de468"
+                ),
+            ));
+            $data = json_decode(curl_exec($curl), true);
+            curl_close($curl);
+            echo "<script>console.log('Serviço OK OK OK OK');</script>";
+            
+            if( $data !== null){
+                try { 
 
-                        preg_match("/.+(?=-)/" , $nomeArquivo, $cursoGrade);
-                        preg_match("/(?<=\-).+(?=\.)/", $nomeArquivo, $codigoGrade);
-
-                        $data = Helper::processGradeCSV($uploadedFile->file);
-                        $affectedData = ['disciplinasAdded' => 0];
-                        $grade = new Grade();
-                        $grade->setCodigo($codigoGrade[0]);
-                        $grade->setCurso($cursoGrade[0]);
-                        $this->container->gradeDAO->persist($grade);
-                        $this->container->gradeDAO->flush();
-
-                        $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
-                        $this->container->view['vetor'] = $data;
-                        $this->container->view['disciplinas'] = $disciplinas;
-
-                        foreach ($data['disciplinas'] as $disc) {
-
-                            if($disc['codigo'] == "Disciplinas Eletivas") {
-                                break;
-                            }
-
-                            if(!isset($disc['codigo']) || !isset($disc['nome'])) {
-                                continue;
-                            }
-
-                            $disciplinasGrade = new GradeDisciplina();
-                            if (isset($disciplinas[$disc['codigo']])) {
-                                $bool = 1;
-                                $this->container->view['boolean'] = $bool;
-                                $disciplinasGrade->setGrade($grade);
-                                $disciplinasGrade->setDisciplina($disciplinas[$disc['codigo']]);
-                                $disciplinasGrade->setPeriodo($disc['periodo']);
-                                $disciplinasGrade->setTipo(0);
-                                $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
-                            }else{
-                                $disciplina = new Disciplina();
-                                $disciplina->setCodigo($disc['codigo']);
-                                $disciplina->setCarga($disc['carga']);
-                                $disciplina->setNome($disc['nome']);
-                                $this->container->disciplinaDAO->persist($disciplina);
-                                $disciplinas[$disciplina->getCodigo()] = $disciplina; //Added to existing Disciplinas
-                                $disciplinasGrade->setGrade($grade);
-                                $disciplinasGrade->setDisciplina($disciplina);
-                                $disciplinasGrade->setPeriodo($disc['codigo']);
-                                $disciplinasGrade->setTipo(0);
-                                $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
-                            }
-                            $affectedData['disciplinasAdded']++;
+                    foreach($data as $currentData){
+                        if(!isset($currentData['Grade'])){
+                            continue;
                         }
-                        $this->container->view['affectedData'] = $affectedData;
-                        $this->container->view['success'] = true;
-                        $this->container->disciplinaDAO->flush(); //Commit the transaction
-                        $this->container->gradeDisciplinaDAO->flush();
-                    } catch (\Exception $e) {
-                        $this->container->view['error'] = $e->getMessage();
+                        //Criando as grades
+                        if(!array_key_exists($currentData['Grade'], $grades)){
+                            $grade = new Grade();
+                            $grade->setCodigo($currentData['Grade']);
+                            $grade->setCurso($c);
+                            $this->container->gradeDAO->persist($grade);
+                            $this->container->gradeDAO->flush();
+                            $grades[$currentData['Grade']] = $grade;
+                            $affectedData[$currentData['Grade']] = 0;
+                        }
+                        $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                    
+                        //Adicionando as disciplinas    
+                        if($currentData['Tipo'] == "Eletiva") {
+                            continue;
+                        }
+                        if(!isset($currentData['Código']) || !isset($currentData['Nome'])) {
+                            continue;
+                        }
+                        $disciplinasGrade = new GradeDisciplina();
+                        if (isset($disciplinas[$currentData['Código']])) {
+                            $disciplinasGrade->setGrade($grade);
+                            $disciplinasGrade->setDisciplina($disciplinas[$currentData['Código']]);
+                            $disciplinasGrade->setPeriodo($currentData['Período']);
+                            $disciplinasGrade->setTipo(0);
+                            $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                        }else{
+                            $disciplina = new Disciplina();
+                            $disciplina->setCodigo($currentData['Código']);
+                            $disciplina->setCarga($currentData['Carga Horária']);
+                            $disciplina->setNome($currentData['Nome']);
+                            $this->container->disciplinaDAO->persist($disciplina);
+                            $disciplinas[$disciplina->getCodigo()] = $disciplina; //Added to existing Disciplinas
+                            $disciplinasGrade->setGrade($grade);
+                            $disciplinasGrade->setDisciplina($disciplina);
+                            $disciplinasGrade->setPeriodo($currentData['Código']);
+                            $disciplinasGrade->setTipo(0);
+                            $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                        }
+                        $affectedData[$currentData['Grade']] += 1;
+                
                     }
+
+                    $this->container->disciplinaDAO->flush(); //Commit the transaction
+                    $this->container->gradeDisciplinaDAO->flush();
+
+                } catch (\Exception $e) {
+                    $this->container->view['error'] = $e->getMessage();
                 }
             }
         }
 
+        $this->container->view['affectedData'] = $affectedData;
+
+        var_dump($affectedData);
+        $keys = array();
+        while ($a = current($affectedData)) {
+            $keys[] = key($affectedData);
+            next($affectedData);
+        }
+        var_dump($keys);
+        die();
+
+        $this->container->view['success'] = true;
+        
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
         if($usuario->isAdmin()) {

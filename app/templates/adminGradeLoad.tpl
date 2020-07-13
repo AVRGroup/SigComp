@@ -12,29 +12,14 @@
     {if isset($success)}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             Carga efetuada com sucesso!<br/>
-            {$affectedData['disciplinasAdded']} Disciplina(s) adicionada(s) <br/>
+            {foreach($keys as $key)}
+                {$key} - Disciplina(s) adicionada(s): {$affectedData[$key]}<br/>
+            {/foreach}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     {/if}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <b>Atenção!</b> Mantenha o mesmo nome do arquivo gerado pelo sistema de gestão. Exemplo: "65C-12014.xlsx
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <form method="post" enctype="multipart/form-data">
-        <div class="input-group mb-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="data" name="data">
-                <label class="custom-file-label" for="data">Selecionar .CSV ou .XLSX</label>
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Enviar</button>
-            </div>
-        </div>
-    </form>
 
     <div style="padding: 10px 20px;">
         Grades já cadastradas para o seu curso:
