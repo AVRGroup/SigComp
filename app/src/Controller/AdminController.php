@@ -413,6 +413,94 @@ class AdminController
 
     public function gradeLoadAction(Request $request, Response $response, $args)
     {
+        /*
+        #Array com os cursos do DCC para consultar nos serviços
+        $arrayCursos = array("76A");
+        $affectedData = ['disciplinasAdded' => 0];
+
+        foreach( $arrayCursos as $c ){
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/grade/get/$c",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "token:  d6189421e0278587f113ca4b9e258c4a9f8de468"
+                ),
+            ));
+
+            $data = json_decode(curl_exec($curl), true);
+            curl_close($curl);
+
+            echo "<script>console.log('Serviço OK OK OK OK');</script>";
+
+            die();
+
+            if( $data !== null){
+                try {                
+                    foreach( $data as $currentData){
+
+                    $grade = new Grade();
+                    $grade->setCodigo($currentData['Grade']);
+                    $grade->setCurso($c);
+                    $this->container->gradeDAO->persist($grade);
+                    $this->container->gradeDAO->flush();
+
+                    $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                    $this->container->view['vetor'] = $data;
+                    $this->container->view['disciplinas'] = $disciplinas;
+
+                    foreach ($data as $disc) {
+
+                        if($disc['Tipo'] == "Eletiva") {
+                            break;
+                        }
+
+                        if(!isset($disc['codigo']) || !isset($disc['nome'])) {
+                            continue;
+                        }
+
+                        $disciplinasGrade = new GradeDisciplina();
+                        if (isset($disciplinas[$disc['codigo']])) {
+                            $bool = 1;
+                            $this->container->view['boolean'] = $bool;
+                            $disciplinasGrade->setGrade($grade);
+                            $disciplinasGrade->setDisciplina($disciplinas[$disc['codigo']]);
+                            $disciplinasGrade->setPeriodo($disc['periodo']);
+                            $disciplinasGrade->setTipo(0);
+                            $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                        }else{
+                            $disciplina = new Disciplina();
+                            $disciplina->setCodigo($disc['codigo']);
+                            $disciplina->setCarga($disc['carga']);
+                            $disciplina->setNome($disc['nome']);
+                            $this->container->disciplinaDAO->persist($disciplina);
+                            $disciplinas[$disciplina->getCodigo()] = $disciplina; //Added to existing Disciplinas
+                            $disciplinasGrade->setGrade($grade);
+                            $disciplinasGrade->setDisciplina($disciplina);
+                            $disciplinasGrade->setPeriodo($disc['codigo']);
+                            $disciplinasGrade->setTipo(0);
+                            $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                        }
+                        $affectedData['disciplinasAdded']++;
+                    }
+                    $this->container->view['affectedData'] = $affectedData;
+                    $this->container->view['success'] = true;
+                    $this->container->disciplinaDAO->flush(); //Commit the transaction
+                    $this->container->gradeDisciplinaDAO->flush();
+                } catch (\Exception $e) {
+                    $this->container->view['error'] = $e->getMessage();
+                }
+            }
+        }*/
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         if ($request->isPost() && isset($request->getUploadedFiles()['data'])) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->getUploadedFiles()['data'];

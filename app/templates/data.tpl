@@ -12,8 +12,13 @@
         </div>
     </div>
     
-    <div align="center" >
-        <a href="{path_for name="adminDataLoad"}" style="margin-top: 3%; width: 300px; height: 45px; " class="btn btn-outline-dark" type="submit"><span style="font-size: 20px">Atualizar dados</span></a>  
+    <div class="row text-center">
+        <div class="col-md-6" >
+            <a href="{path_for name="adminDataLoad"}" style="margin-top: 3%; width: 300px; height: 45px; " class="btn btn-outline-primary" type="submit"><span style="font-size: 20px">Atualizar dados</span></a>  
+        </div>
+        <div class="col-md-6" >
+            <a href="{path_for name="gradeLoadAction"}" style="margin-top: 3%; width: 300px; height: 45px; " class="btn btn-outline-dark" type="submit"><span style="font-size: 20px">Atualizar Grade</span></a>  
+        </div>
     </div>
 
 {/block}
