@@ -419,7 +419,6 @@ class AdminController
         
         $affectedData = array();
         $grades = array(); 
-        $newGrade = false;
 
         foreach( $arrayCursos as $c ){
             $curl = curl_init();
@@ -447,8 +446,8 @@ class AdminController
                         if(!isset($currentData['Grade'])){
                             continue;
                         }
-                        //Criando as grades se n existir no banco
-                        if(!array_key_exists($currentData['Grade'], $grades) && $this->container->gradeDAO->getByCodigo($currentData['Grade']) == null ){
+                        //Criando as grades 
+                        if(!array_key_exists($currentData['Grade'], $grades) ){
                             $grade = new Grade();
                             $grade->setCodigo($currentData['Grade']);
                             $grade->setCurso($c);
@@ -456,7 +455,6 @@ class AdminController
                             $this->container->gradeDAO->flush();
                             $grades[$currentData['Grade']] = $grade;
                             $affectedData[$currentData['Grade']] = 0;
-                            $newGrade = true;
                             echo "<script>console.log('Criando Grade');</script>";
                         }
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
@@ -466,13 +464,6 @@ class AdminController
                         }
                         if(!isset($currentData['Código']) || !isset($currentData['Nome'])) {
                             continue;
-                        }
-
-                        #Verifica se a grade foi criada acima, caso não, pega grade existente do banco
-                        if( $newGrade == false ){
-                            $grade = $this->container->gradeDAO->getByCodigo($currentData['Grade']);
-                            $grades[$currentData['Grade']] = $grade;
-                            $affectedData[$currentData['Grade']] = 0;
                         }
                         
                         #Adicionando as disciplinas    
@@ -498,7 +489,6 @@ class AdminController
                             echo "<script>console.log('Criando Disciplina');</script>";
                         }
                         $affectedData[$currentData['Grade']] += 1;
-                        $newGrade = false;
                     }
 
                     $this->container->disciplinaDAO->flush(); //Commit the transaction
