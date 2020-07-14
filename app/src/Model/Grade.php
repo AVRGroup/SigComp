@@ -104,9 +104,6 @@ class Grade implements ToIdArrayInterface
         $this->curso = $curso;
     }
 
-
-
-
     /**
      * @param mixed $disciplinas_grade
      * @return Grade
