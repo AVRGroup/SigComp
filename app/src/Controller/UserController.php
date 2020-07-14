@@ -494,73 +494,53 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
-        $curl = curl_init();
+        /*
+         #Abaixo é feita a requisição do token pro serviço funcionar 
+         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/35A",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
-            ),
-        ));
+         curl_setopt_array($curl, array(
+             CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+             CURLOPT_RETURNTRANSFER => true,
+             CURLOPT_ENCODING => "",
+             CURLOPT_MAXREDIRS => 10,
+             CURLOPT_TIMEOUT => 0,
+             CURLOPT_FOLLOWLOCATION => true,
+             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+             CURLOPT_CUSTOMREQUEST => "POST",
+             CURLOPT_POSTFIELDS => array('grant_type' => 'client_credentials'),
+             CURLOPT_HTTPHEADER => array(
+                 "Authorization: Basic aGVkZXI6R2hnQCNkc2ZzZGYzNDM0M0RBU0QxMjNTQQ=="
+             ),
+         ));
+         $resultado = json_decode(curl_exec($curl), true);
+         curl_close($curl);
 
-        $response =  curl_exec($curl);
-        curl_close($curl);
+         $token = $resultado['access_token'];
 
-        echo $response;
+         #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
+         $curl2 = curl_init();
+         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+         $matricula = 201876015;
+         $perPassado = str_split($this->getPeriodoPassado(), 1);
 
-        #Abaixo é feita a requisição do token pro serviço funcionar 
-        /* $curl = curl_init();
-
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
-          CURLOPT_SSL_VERIFYPEER => false,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => "",
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => "POST",
-          CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
-          CURLOPT_HTTPHEADER => array(
-            "Authorization: Basic dGVzdGU6dGVzdGU="
-          ),
-        ));
-        $resultado = json_decode(curl_exec($curl), true);
-        curl_close($curl);
-
-        $token = $resultado['access_token'];
-
-        #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
-        $curl2 = curl_init();
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
-
-        curl_setopt_array($curl2, array(
-            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $matricula[0] . $matricula[1] . $matricula[2] . $matricula[3] . "/" . $matricula[4] . "/turmas",
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_HTTPHEADER => array(
-                "Authorization: Bearer $token"
-            ),
-        ));
+         curl_setopt_array($curl2, array(
+             CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/201876015/2019/3/turmas",
+             CURLOPT_RETURNTRANSFER => true,
+             CURLOPT_ENCODING => "",
+             CURLOPT_MAXREDIRS => 10,
+             CURLOPT_TIMEOUT => 0,
+             CURLOPT_FOLLOWLOCATION => true,
+             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+             CURLOPT_CUSTOMREQUEST => "GET",
+             CURLOPT_HTTPHEADER => array(
+                 "Authorization: Bearer $token"
+             ),
+         ));
         
-        $servico = json_decode(curl_exec($curl2), true);
-        $prof = $this->container->usuarioDAO->getUserByMatricula('201876015');
-        var_dump( $prof->getNome());
+        $response = curl_exec($curl2);
+        curl_close($curl2);
+
+        var_dump(($response));
         die();
 
         #Checa se a disciplina esxite e adiciona a turma 

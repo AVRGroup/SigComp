@@ -355,20 +355,20 @@ class AvaliacaoController
 
             #Abaixo é feita a requisição do token pro serviço funcionar 
             $curl = curl_init();
+
             curl_setopt_array($curl, array(
-              CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
-              CURLOPT_SSL_VERIFYPEER => false,
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 0,
-              CURLOPT_FOLLOWLOCATION => true,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => array('grant_type' => 'password','password' => '','username' => ''),
-              CURLOPT_HTTPHEADER => array(
-                "Authorization: Basic dGVzdGU6dGVzdGU="
-              ),
+                CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => array('grant_type' => 'client_credentials'),
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Basic aGVkZXI6R2hnQCNkc2ZzZGYzNDM0M0RBU0QxMjNTQQ=="
+                ),
             ));
             $resultado = json_decode(curl_exec($curl), true);
             curl_close($curl);
@@ -383,18 +383,20 @@ class AvaliacaoController
 
             curl_setopt_array($curl2, array(
                 CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $perPassado[0] . $perPassado[1] . $perPassado[2] . $perPassado[3] . "/" . $perPassado[4] . "/turmas",
-                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
                 CURLOPT_TIMEOUT => 0,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
                 CURLOPT_HTTPHEADER => array(
                     "Authorization: Bearer $token"
                 ),
             ));
 
             $servico = json_decode(curl_exec($curl2), true);
+            curl_close($curl2);
 
             #Checa se a disciplina existe e adiciona a turma 
             $periodoAtual = $this->getPeriodoAtual();
