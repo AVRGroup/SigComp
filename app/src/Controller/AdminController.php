@@ -416,8 +416,7 @@ class AdminController
         #Array com os cursos do DCC para consultar nos serviços
         $arrayCursos = array("76A", "35A", "65B", "65C", "65AB");
         
-        $newData = array();
-        $refreshData = array();
+        $affectedData = array();
         $grades = array(); 
 
         foreach( $arrayCursos as $c ){
@@ -452,10 +451,8 @@ class AdminController
                             if( !array_key_exists($currentData['Grade'], $grades) ){
                                 $grades[$currentData['Grade']] = $grade;
                             }
-                            if( !array_key_exists($currentData['Grade'], $newData) ){
-                                $newData[$currentData['Grade']] = 0;
-                            }elseif ( !array_key_exists($currentData['Grade'], $refreshData) ){
-                                $refreshData[$currentData['Grade']] = 0;
+                            if( !array_key_exists($currentData['Grade'], $affectedData) ){
+                                $affectedData[$currentData['Grade']] = 0;
                             }
                         }
                         elseif( !array_key_exists($currentData['Grade'], $grades) ){
@@ -465,8 +462,7 @@ class AdminController
                             $this->container->gradeDAO->persist($grade);
                             $this->container->gradeDAO->flush();
                             $grades[$currentData['Grade']] = $grade;
-                            $newData[$currentData['Grade']] = 0;
-                            $refreshData[$currentData['Grade']] = 0;
+                            $affectedData[$currentData['Grade']] = 0;
                             echo "<script>console.log('Criando Grade');</script>";
                         }
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
@@ -486,7 +482,6 @@ class AdminController
                             $disciplinasGrade->setPeriodo($currentData['Período']);
                             $disciplinasGrade->setTipo(0);
                             $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
-                            $refreshData[$currentData['Grade']] += 1;
                         }else{
                             $disciplina = new Disciplina();
                             $disciplina->setCodigo($currentData['Código']);
@@ -500,8 +495,8 @@ class AdminController
                             $disciplinasGrade->setTipo(0);
                             $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
                             echo "<script>console.log('Criando Disciplina');</script>";
-                            $newData[$currentData['Grade']] += 1;
                         }
+                        $affectedData[$currentData['Grade']] += 1;
                     }
 
                     $this->container->disciplinaDAO->flush(); //Commit the transaction
@@ -513,13 +508,8 @@ class AdminController
             }
         }
 
-        #Disciplinas atualizadas
-        $this->container->view['keys1'] = array_keys($refreshData);
-        $this->container->view['values1'] = array_values($refreshData);
-        #Novas disciplinas 
-        $this->container->view['keys2'] = array_keys($newData);
-        $this->container->view['values2'] = array_values($newData);
-        
+        $this->container->view['keys'] = array_keys($affectedData);
+        $this->container->view['values'] = array_values($affectedData);
         $this->container->view['success'] = true;
         
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
