@@ -60,12 +60,16 @@ class GradeDAO extends BaseDAO
         return $grades;
     }
 
+     /**
+     * @param $codigo
+     * @return Grade|null
+     */
     public function getByCodigo($codigo)
     {
         try {
             $query = $this->em->createQuery("SELECT g FROM App\Model\Grade AS g WHERE g.codigo = :codigo");
             $query->setParameter('codigo', $codigo);
-            $grade = $query->getResult();
+            $grade = $query->getOneOrNullResult();
         } catch (\Exception $e) {
             $grade = null;
         }

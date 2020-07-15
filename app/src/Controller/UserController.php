@@ -496,12 +496,13 @@ class UserController
 
         $testeArray = array();
 
-        $testeArray['Key 1'] = " 1 Value";
-        $testeArray['Key 2'] = " 2 Value";
-        $testeArray['Key 3'] = " 3 Value";
+        $testeArray['12011']['new Disc'] = 1;
+        $testeArray['12011']['Atualizada'] = 1;
 
         $this->container->view['keys'] = array_keys($testeArray);
+        $this->container->view['keys2'] = array_keys($testeArray['12011']);
         $this->container->view['values'] = array_values($testeArray);
+        $this->container->view['values2'] = array_values($testeArray);
 
         return $this->container->view->render($response, 'testeServico.tpl');	
     }

@@ -13,10 +13,15 @@
         <div align="center">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Carga efetuada com sucesso!<br/>
-                {$index = 0}
-                {foreach $keys as $key}
-                    Grade: <b>{$key}</b> - Disciplina(s) adicionada(s): <b>{$values[$index]}</b><br/>
+                {$index1 = 0}
+                {foreach $keys1 as $key}
+                    Grade: <b>{$key}</b> - Disciplina(s) adicionada(s): <b>{$values1[$index]}</b><br/>
                     {$index = $index + 1}
+                {/foreach}
+                {$index2 = 0}
+                {foreach $keys2 as $key}
+                    Grade: <b>{$key}</b> - Nova(s) disciplinas(s): <b>{$values2[$index]}</b><br/>
+                    {$index2 = $index2 + 1}
                 {/foreach}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

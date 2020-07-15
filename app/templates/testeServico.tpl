@@ -4,8 +4,10 @@
 
     {$index = 0}
     {foreach $keys as $key}
-        <p align="center"> Aperte confirmar pra testar o serviço = {$key} - > {$values[$index]} </p>
-        {$index = $index + 1} 
+        {foreach $keys2 as $k}
+            <p align="center"> Aperte confirmar pra testar o serviço = {$key} {$k}- > {$k[$index]} </p>
+            {$index = $index + 1} 
+        {{/foreach}}
     {/foreach}
     <form method="POST" action="{base_url}/store-teste-servico">  
         <nav aria-label="navigation" class="pagination justify-content-center">

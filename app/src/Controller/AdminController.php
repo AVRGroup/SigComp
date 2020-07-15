@@ -413,11 +413,11 @@ class AdminController
 
     public function gradeLoadAction(Request $request, Response $response, $args)
     {
-        
         #Array com os cursos do DCC para consultar nos serviços
         $arrayCursos = array("76A", "35A", "65B", "65C", "65AB");
         
-        $affectedData = array();
+        $newData = array();
+        $refreshData = array();
         $grades = array(); 
 
         foreach( $arrayCursos as $c ){
@@ -440,21 +440,33 @@ class AdminController
             echo "<script>console.log('Serviço OK OK OK OK');</script>";
             
             if( $data !== null){
-                echo "<script>console.log('Serviço != Null');</script>";
                 try { 
                     foreach($data as $currentData){
                         if(!isset($currentData['Grade'])){
                             continue;
                         }
-                        //Criando as grades 
-                        if(!array_key_exists($currentData['Grade'], $grades) ){
+                        //Criando as grades caso n exista no banco  
+                        if( $this->container->gradeDAO->getByCodigo($currentData['Grade']) !== null ){
+                            $grade = $this->container->gradeDAO->getByCodigo($currentData['Grade']);
+
+                            if( !array_key_exists($currentData['Grade'], $grades) ){
+                                $grades[$currentData['Grade']] = $grade;
+                            }
+                            if( !array_key_exists($currentData['Grade'], $newData) ){
+                                $newData[$currentData['Grade']] = 0;
+                            }elseif ( !array_key_exists($currentData['Grade'], $refreshData) ){
+                                $refreshData[$currentData['Grade']] = 0;
+                            }
+                        }
+                        elseif( !array_key_exists($currentData['Grade'], $grades) ){
                             $grade = new Grade();
                             $grade->setCodigo($currentData['Grade']);
                             $grade->setCurso($c);
                             $this->container->gradeDAO->persist($grade);
                             $this->container->gradeDAO->flush();
                             $grades[$currentData['Grade']] = $grade;
-                            $affectedData[$currentData['Grade']] = 0;
+                            $newData[$currentData['Grade']] = 0;
+                            $refreshData[$currentData['Grade']] = 0;
                             echo "<script>console.log('Criando Grade');</script>";
                         }
                         $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
@@ -474,6 +486,7 @@ class AdminController
                             $disciplinasGrade->setPeriodo($currentData['Período']);
                             $disciplinasGrade->setTipo(0);
                             $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
+                            $refreshData[$currentData['Grade']] += 1;
                         }else{
                             $disciplina = new Disciplina();
                             $disciplina->setCodigo($currentData['Código']);
@@ -487,8 +500,8 @@ class AdminController
                             $disciplinasGrade->setTipo(0);
                             $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
                             echo "<script>console.log('Criando Disciplina');</script>";
+                            $newData[$currentData['Grade']] += 1;
                         }
-                        $affectedData[$currentData['Grade']] += 1;
                     }
 
                     $this->container->disciplinaDAO->flush(); //Commit the transaction
@@ -500,8 +513,13 @@ class AdminController
             }
         }
 
-        $this->container->view['keys'] = array_keys($affectedData);
-        $this->container->view['values'] = array_values($affectedData);
+        #Disciplinas atualizadas
+        $this->container->view['keys1'] = array_keys($refreshData);
+        $this->container->view['values1'] = array_values($refreshData);
+        #Novas disciplinas 
+        $this->container->view['keys2'] = array_keys($newData);
+        $this->container->view['values2'] = array_values($newData);
+        
         $this->container->view['success'] = true;
         
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
