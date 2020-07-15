@@ -101,4 +101,22 @@ class GradeDAO extends BaseDAO
         return $grades[0];
     }
 
+    public function deletaGrade($grade_id)
+    {
+        if($grade_id !== null){
+            try{
+                $sql = "DELETE FROM db_gamificacao.grade_disciplina WHERE grade = $grade_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
+                $sql = "DELETE FROM db_gamificacao.grade WHERE id = $grade_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
+    }
+
 }

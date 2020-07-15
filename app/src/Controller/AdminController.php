@@ -413,16 +413,18 @@ class AdminController
 
     public function gradeLoadAction(Request $request, Response $response, $args)
     {
+        
         #Array com os cursos do DCC para consultar nos serviços
         $arrayCursos = array("76A", "35A", "65B", "65C", "65AB");
         
         $affectedData = array();
         $grades = array(); 
+        $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
 
-        foreach( $arrayCursos as $c ){
+        foreach( $arrayCursos as $curso ){
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/grade/get/$c",
+                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/grade/get/$curso",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -439,33 +441,30 @@ class AdminController
             echo "<script>console.log('Serviço OK OK OK OK');</script>";
             
             if( $data !== null){
+                echo "<script>console.log('Serviço != Null');</script>";
                 try { 
                     foreach($data as $currentData){
-                        if(!isset($currentData['Grade'])){
-                            continue;
-                        }
-                        //Criando as grades caso n exista no banco  
-                        if( $this->container->gradeDAO->getByCodigo($currentData['Grade']) !== null ){
-                            $grade = $this->container->gradeDAO->getByCodigo($currentData['Grade']);
+                        //Se a grade ainda não foi criada, cria
+                        if(!array_key_exists($currentData['Grade'] . "-" . $curso, $grades) ){
+                            
+                            //Se a grade existe no banco, exclui (para atualizar)
+                            $grade_antiga = $this->container->gradeDAO->getByCodigoCurso($currentData['Grade'], $curso);
+                            if($grade_antiga !== null){
+                                $this->container->gradeDAO->deletaGrade($grade_antiga->getId());
+                            }
 
-                            if( !array_key_exists($currentData['Grade'], $grades) ){
-                                $grades[$currentData['Grade']] = $grade;
-                            }
-                            if( !array_key_exists($currentData['Grade'], $affectedData) ){
-                                $affectedData[$currentData['Grade']] = 0;
-                            }
-                        }
-                        elseif( !array_key_exists($currentData['Grade'], $grades) ){
                             $grade = new Grade();
                             $grade->setCodigo($currentData['Grade']);
-                            $grade->setCurso($c);
+                            $grade->setCurso($curso);
                             $this->container->gradeDAO->persist($grade);
                             $this->container->gradeDAO->flush();
-                            $grades[$currentData['Grade']] = $grade;
-                            $affectedData[$currentData['Grade']] = 0;
+                            $grades[$currentData['Grade'] . "-" . $curso] = $grade;
+                            $affectedData[$currentData['Grade'] . "-" . $curso] = 0;
                             echo "<script>console.log('Criando Grade');</script>";
                         }
-                        $disciplinas = Helper::convertToIdArray($this->container->disciplinaDAO->getAll());
+                        else{
+                            $grade = $grades[$currentData['Grade'] . "-" . $curso];
+                        }
                     
                         if($currentData['Tipo'] == "Eletiva") {
                             continue;
@@ -496,7 +495,7 @@ class AdminController
                             $this->container->gradeDisciplinaDAO->persist($disciplinasGrade);
                             echo "<script>console.log('Criando Disciplina');</script>";
                         }
-                        $affectedData[$currentData['Grade']] += 1;
+                        $affectedData[$currentData['Grade'] . "-" . $curso] += 1;
                     }
 
                     $this->container->disciplinaDAO->flush(); //Commit the transaction
