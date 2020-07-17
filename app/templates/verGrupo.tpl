@@ -4,20 +4,20 @@
 
     <div class="text-center mt-4">
         <a href="{base_url}/admin/create-grupo" class="btn btn-primary btn-lg">Criar Novo Grupo</a>
+        <a class="btn btn-outline-success btn-lg ml-4" style="width: 150px" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
     </div>
+    <hr>
 
-
-
+    <h5 class="text-center" style="font-style: italic"> Selecione uma grade para editar os grupos </h5>
     <form action="{base_url}/admin/store-disciplina-grupo" method="post">
-        <div class="form-row mt-4">
+        <div class="form-row mt-2 justify-content-center">
             <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                 {foreach $todasGrades as $grade}
-                    <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/ver-grupo?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
+                    <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo() && $grade->getCurso() == $gradeSelecionada->getCurso()} selected {/if} value="{base_url}/admin/ver-grupo?grade={$grade->getCodigo()}&curso={$grade->getCurso()}">{$grade->getCodigo()} - {$grade->getCurso()}</option>
                 {/foreach}
             </select>
         </div>
-        <a class="btn btn-success mt-4" href="{base_url}/admin/editar-grupos">Editar Grupos</a>
-
+        
         <table style="margin-top: 4%" id="tabela" class="table table-hover">
             <thead class="thead-light">
             <tr style="font-size: 13px;">
@@ -36,11 +36,11 @@
                     <td>{$disciplina->getNome()}</td>
                     <td>
                         <select class="form-control" name="{$disciplina->getCodigo()}" id="grupo">
-                            <option value="">Selecione um grupo</option>
+                            <option value="" disabled>Selecione um grupo</option>
                             {foreach $grupos as $grupo}
                                 <option value="{$grupo->getId()}"
-                                        {if isset($disciplina->getGrupo($container, $curso)) && $disciplina->getGrupo($container, $curso)->getId() == $grupo->getId() } selected {/if}>
-                                    {$grupo->getNome()}
+                                        {if isset($disciplina->getGrupo($container, $curso)) && $disciplina->getGrupo($container, $curso)->getId() == $grupo->getId()} selected {/if}>
+                                        {$grupo->getNome()}
                                 </option>
                             {/foreach}
                         </select>
@@ -50,7 +50,8 @@
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-success">Salvar</button>
-
+        <div align="center">
+            <button type="submit" style="width: 200px" class="btn btn-success">Salvar</button>
+        </div>
     </form>
 {/block}

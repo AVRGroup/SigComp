@@ -17,7 +17,7 @@
             <tbody>
                 {foreach $grupos as $index => $grupo}
                     <tr>
-                        <td>{$grupo->getNome()}</td>
+                        <td>{$grupo->getNome()} - Curso: <strong>{$grupo->getCurso()}</strong></td>
                         <td>
                             <select class="form-control" name="posicao-grupo-{$grupo->getId()}">
                                 <option value="1" {if 1 == $grupo->getOrdem()} selected {/if}>1º</option>
@@ -35,7 +35,9 @@
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-success">Salvar</button>
+        <div align="center">
+            <button type="submit" style="width: 200px" class="btn btn-success">Salvar</button>
+        </div>
     </form>
 
 </div>

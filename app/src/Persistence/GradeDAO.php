@@ -60,6 +60,17 @@ class GradeDAO extends BaseDAO
         return $grades;
     }
 
+    public function getCursos()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Grade AS u");
+            $cursos = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+        return $cursos;
+    }
+
      /**
      * @param $codigo
      * @return Grade|null

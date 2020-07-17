@@ -11,7 +11,7 @@
 
     {if $loggedUser->isAdmin()}
         <br>
-        <div class="form-row">
+        <div class="form-row justify-content-center">
             <select class="form-control col-6" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                 <option value="">Selecione o Curso</option>
                 <option value="{base_url}/admin/admin-dashboard?curso=35A">Ciência da Computação Noturno</option>
@@ -84,7 +84,9 @@
         </div>
     </div>
 
-    <a href="https://analytics.google.com/analytics/web/?authuser=6#/home/a131900774w191543714p187441079/"  class="btn btn-primary analytics">Google Analytics</a>
+    <div align="center">
+        <a href="https://analytics.google.com/analytics/web/?authuser=6#/home/a131900774w191543714p187441079/"  class="btn btn-primary analytics">Google Analytics</a>
+    </div>
 
 
 

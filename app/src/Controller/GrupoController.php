@@ -20,14 +20,15 @@ class GrupoController
     public function index(Request $request, Response $response, $args)
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $curso = $usuario->getCurso() ?: "35A";
+        $gradesExists = array();
 
         $codigoGrade = $request->getQueryParam('grade');
+        $codigoCurso = $request->getQueryParam('curso');
 
         if(isset($codigoGrade)) {
-            $grade = $this->container->gradeDAO->getByCodigoCurso($codigoGrade, $usuario->getCurso());
+            $grade = $this->container->gradeDAO->getByCodigoCurso($codigoGrade, $codigoCurso);
         } else {
-            $grade = $this->container->gradeDAO->getFirstByCurso($curso);
+            $grade = $this->container->gradeDAO->getFirstByCurso("35A");
         }
 
         if(!isset($grade)) {
@@ -35,27 +36,50 @@ class GrupoController
         }
 
         $disciplinas = $this->container->disciplinaDAO->getByGrade($grade->getId());
+        $todasGrades = $this->container->gradeDAO->getAll();
 
-        $todasGrades = $this->container->gradeDAO->getAllByCurso($curso);
+        #Verifica quais grades possuem grupo
+        foreach( $todasGrades as $tg ){
+            if( $this->container->grupoDAO->existsCourseWithGroup($tg->getCurso()) == true ){
+               $gradesExists[] = $tg;
+            }
+        }
 
-        $grupos = $this->container->grupoDAO->getAllByCurso($curso);
+        if(isset($codigoCurso)){
+            $grupos = $this->container->grupoDAO->getAllByCurso($codigoCurso);
+        } else {
+            $grupos = $this->container->grupoDAO->getAllByCurso("35A");
+        }
 
         $this->container->view['disciplinas'] = $disciplinas;
-        $this->container->view['todasGrades'] = $todasGrades;
+        $this->container->view['todasGrades'] = $gradesExists;
         $this->container->view['grupos'] = $grupos;
         $this->container->view['gradeSelecionada'] = $grade;
         $this->container->view['container'] = $this->container;
-        $this->container->view['curso'] = $curso;
+        $this->container->view['curso'] = $codigoCurso;
 
         return $this->container->view->render($response, 'verGrupo.tpl');
     }
 
     public function create(Request $request, Response $response, $args)
     {
+        $arrayCursos = array();
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
-        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+        $grupos = $this->container->grupoDAO->getAll();
 
+        $cursos = $this->container->gradeDAO->getCursos();
+        
+        foreach( $cursos as $cur ){
+            if( $cur['curso'] !== null ){
+                $arrayCursos[] = $cur['curso'];
+            }
+        }
+
+        $cursoSelecionado = $request->getQueryParam('cursoSelecionado') ?: '35A';
+
+        $this->container->view['cursos'] = $arrayCursos;
+        $this->container->view['cursoSelecionado'] = $cursoSelecionado;
         $this->container->view['grupos'] = $grupos;
 
         return $this->container->view->render($response, 'novoGrupo.tpl');
@@ -63,12 +87,17 @@ class GrupoController
 
     public function store(Request $request, Response $response, $args)
     {
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $nome = $request->getParsedBodyParam('nome');
+        if( $nome == '' ){
+            $this->container->view['error'] = "O nome do grupo não pode ficar vazio!";
+            return $this->create($request, $response, $args);
+        } 
+        
+        $curso = $_POST['dropDown'];
 
         $grupo = new Grupo();
         $grupo->setNome($nome);
-        $grupo->setCurso($usuario->getCurso());
+        $grupo->setCurso($curso);
 
         $this->container->grupoDAO->save($grupo);
 
@@ -119,14 +148,12 @@ class GrupoController
     {
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
 
-        $grupos = $this->container->grupoDAO->getAllByCurso($usuario->getCurso());
+        $grupos = $this->container->grupoDAO->getAll();
 
         $this->container->view['grupos'] = $grupos;
 
         return $this->container->view->render($response, 'editGrupo.tpl');
     }
-
-
 
     public function update(Request $request, Response $response, $args)
     {

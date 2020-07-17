@@ -1,24 +1,26 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h3 class="text-center">Editar Grade</h3>
-
-    <h5 class="text-center">(curso {$todasGrades[0]->getCurso()})</h5>
-
-    <div class="form-row mt-4">
+    
+    <div class="form-row mt-4 justify-content-center">
         <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
             {foreach $todasGrades as $grade}
-                <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo()} selected {/if} value="{base_url}/admin/ver-grade?grade={$grade->getCodigo()}">{$grade->getCodigo()}</option>
+                <option {if $grade->getCodigo() == $gradeSelecionada->getCodigo() && $grade->getCurso() == $gradeSelecionada->getCurso()} selected {/if} value="{base_url}/admin/ver-grade?grade={$grade->getCodigo()}&curso={$grade->getCurso()}">{$grade->getCodigo()} - {$grade->getCurso()} </option>
             {/foreach}
         </select>
     </div>
 
+    <h5 class="text-center mt-4">Você está editando a grade: {$gradeSelecionada->getCodigo()} - curso: {$gradeSelecionada->getCurso()} </h5>
+
     {if isset($sucesso) && $sucesso}
-        <div class="alert alert-success alert-dismissable show fade mt-4">
+    <div align="center">
+        <div class="alert alert-success alert-dismissable show fade mt-4 col-8">
             Disciplina alterada com sucesso
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+    </div>
     {/if}
 
     <table style="margin-top: 4%" id="tabela" class="table table-hover">

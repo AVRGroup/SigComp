@@ -40,6 +40,37 @@ class GrupoDAO extends BaseDAO
         return $grupo;
     }
 
+    public function existsCourseWithGroup($curso)
+    {
+        try {
+            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Grupo AS u");
+            $cursos = $query->getResult();
+        } catch (\Exception $e) {
+           var_dump( $e->getMessage());
+        }
+
+        foreach( $cursos as $cur ){
+            if( $cur['curso'] == $curso ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return Grupo[]|null
+     */
+    public function getAll()
+    {
+        try {
+            $query = $this->em->createQuery("SELECT g FROM App\Model\Grupo AS g");
+            $grupos = $query->getResult();
+        } catch (\Exception $e) {
+            $grupos = null;
+        }
+        return $grupos;
+    }
+
     public function getQuantidadeDeDisciplinasPorGrupoPorCurso($curso)
     {
         $sql = "SELECT grupo_id, COUNT(*) FROM disciplina GROUP_BY grupo_id";
