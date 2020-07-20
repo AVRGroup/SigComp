@@ -25,15 +25,17 @@
         </div>
     {/if}
 
-    <div style="padding: 10px 20px;">
-        Grades já cadastradas:
-        <ul style="margin-top: 10px">
-            {foreach $grades as $grade}
-                    <li style="margin-bottom: 10px"><b>{$grade->getCodigo()}</b> - {$grade->getCurso()}</li>
-            {foreachelse}
-                    <li>Nenhuma grade encontrada!</li>
-            {/foreach}
-        </ul>
+    <div align="center">
+        <div style="padding: 10px 20px;">
+            Grades já cadastradas:
+            <ul style="margin-top: 10px">
+                {foreach $grades as $grade}
+                        <p style="margin-bottom: 10px"><b>{$grade->getCodigo()}</b> - {$grade->getCurso()}</p>
+                {foreachelse}
+                        <li>Nenhuma grade encontrada!</li>
+                {/foreach}
+            </ul>
+        </div>
     </div>
 
     <form method="POST" action="{path_for name="home"}">  
