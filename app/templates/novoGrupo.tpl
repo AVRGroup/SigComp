@@ -22,16 +22,15 @@
         {/if}
     </div>
 
-    <p align="center">Selecione um curso</p>
-        <div align="center">
-            <div class="form-row col-md-4 mt-4 justify-content-center">
-                <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                    {foreach $cursos as $curso}
-                        <option {if $curso == $cursoSelecionado} selected {/if} value="{base_url}/admin/create-grupo?cursoSelecionado={$curso}">{$curso} </option>
-                    {/foreach}
-                </select>
-            </div>
+    <div align="center">
+        <div class="form-row col-md-4 mt-4 justify-content-center">
+            <select class="form-control col-6" name="grade-selecionada" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                {foreach $cursos as $curso}
+                    <option {if $curso == $cursoSelecionado} selected {/if} value="{base_url}/admin/create-grupo?cursoSelecionado={$curso}">{$curso} </option>
+                {/foreach}
+            </select>
         </div>
+    </div>
 
     <div align="center" class="mt-4">
         <h5>Grupos já cadastrados</h5>
@@ -55,8 +54,8 @@
                 <label for="nome" class="mt-4"><strong>Nome do grupo:</strong></label>
                 <input type="text" class="form-control col-sm-6 mb-3" name="nome" id="nome">
 
-                    <a style="font-size: 15px"><strong> Selecione o curso</strong> </a>
-                    <select class="form-control col-md-6 text-center" name="dropDown" id="grupo">
+                    <a style="font-size: 15px"><strong> Selecione o curso desse grupo:</strong> </a>
+                    <select class="form-control mt-2 col-md-2 text-center" name="dropDown" id="grupo">
                         <option value="" disabled>Selecione um grupo</option>
                         {foreach $cursos as $cur}
                             <option value="{$cur}" selected> {$cur} </option>
