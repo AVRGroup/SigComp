@@ -443,7 +443,6 @@ class UserController
         #Checa as exclusoes de coordenadores
         foreach( $coordenadores as $coordenador ){
             if( isset($_POST["exclui_" . $coordenador->getId()] )){
-                echo "<script>console.log('CHAMA ESCLUSAO');</script>";
                 $coordenador->setTipo(4);
                 $this->container->usuarioDAO->setProfessor($coordenador->getId());
             }

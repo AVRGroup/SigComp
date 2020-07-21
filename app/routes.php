@@ -113,6 +113,9 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'], '/manual-coordenador', '\App\Controller\AdminController:manualCoordenador')->setName('manualCoordenador');
 
+        $this->map(['GET', 'POST'], '/painel-coordenador', '\App\Controller\AdminController:painelCoordenador')->setName('painelCoord');
+        $this->map(['GET', 'POST'], '/store-painel-coordenador', '\App\Controller\AdminController:storePainelCoordenador')->setName('storePainelCoord');
+
         $this->get('/ver-grupo', '\App\Controller\GrupoController:index')->setName('verGrupo');
         $this->get('/create-grupo', '\App\Controller\GrupoController:create')->setName('createGrupo');
         $this->post('/store-grupo', '\App\Controller\GrupoController:store')->setName('storeGrupo');

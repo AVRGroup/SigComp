@@ -108,7 +108,7 @@
                     {/if}
 
                     {if $loggedUser->isAdmin()}
-                    <li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Dashboard</a></li>
+                    {*<li class="nav-item"><a class="nav-link" href="{path_for name="adminDashboard"}">Dashboard</a></li>*}
                     <li class="nav-item"><a class="nav-link" href="{path_for name="adminData"}">Carga de Dados</a></li>
 
 
@@ -118,7 +118,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{path_for name="editCoordenacao"}">Editar Coordenadores</a>
-{*                              <a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>*}
+                                <a class="dropdown-item" href="{path_for name="painelCoord"}">Painel Coordenador</a>
+                                {*<a class="dropdown-item" href="{path_for name="forum"}">Fórum</a>*}
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
                                 <a class="dropdown-item" href="{path_for name="compare"}">Comparar Alunos</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
@@ -148,6 +149,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{path_for name="adminListUsers"}">Gerenciar Usuários</a>
+                                <a class="dropdown-item" href="{path_for name="painelCoord"}">Painel Coordenador</a>
                                 <a class="dropdown-item" href="{path_for name="compare"}">Comparar Alunos</a>
                                 <a class="dropdown-item" href="{path_for name="adminListReviewCertificates"}">Gerenciar Certificados</a>
                                 <a class="dropdown-item" href="{path_for name="verGrupo"}">Editar Grupos</a>

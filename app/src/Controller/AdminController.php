@@ -946,4 +946,14 @@ class AdminController
     {
         return $this->container->view->render($response, 'manualCoordenador.tpl');
     }
+
+    public function painelCoordenador(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'painelCoordenador.tpl');
+    }
+
+    public function storePainelCoordenador(Request $request, Response $response, $args)
+    {
+        return $this->container->view->render($response, 'painelCoordenador.tpl');
+    }
 }
