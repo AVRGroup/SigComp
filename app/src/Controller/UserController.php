@@ -494,73 +494,9 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
-        /*
-         #Abaixo é feita a requisição do token pro serviço funcionar 
-         $curl = curl_init();
-
-         curl_setopt_array($curl, array(
-             CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
-             CURLOPT_RETURNTRANSFER => true,
-             CURLOPT_ENCODING => "",
-             CURLOPT_MAXREDIRS => 10,
-             CURLOPT_TIMEOUT => 0,
-             CURLOPT_FOLLOWLOCATION => true,
-             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-             CURLOPT_CUSTOMREQUEST => "POST",
-             CURLOPT_POSTFIELDS => array('grant_type' => 'client_credentials'),
-             CURLOPT_HTTPHEADER => array(
-                 "Authorization: Basic aGVkZXI6R2hnQCNkc2ZzZGYzNDM0M0RBU0QxMjNTQQ=="
-             ),
-         ));
-         $resultado = json_decode(curl_exec($curl), true);
-         curl_close($curl);
-
-         $token = $resultado['access_token'];
-
-         #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
-         $curl2 = curl_init();
-         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-         $matricula = 201876015;
-         $perPassado = str_split($this->getPeriodoPassado(), 1);
-
-         curl_setopt_array($curl2, array(
-             CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/201876015/2019/3/turmas",
-             CURLOPT_RETURNTRANSFER => true,
-             CURLOPT_ENCODING => "",
-             CURLOPT_MAXREDIRS => 10,
-             CURLOPT_TIMEOUT => 0,
-             CURLOPT_FOLLOWLOCATION => true,
-             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-             CURLOPT_CUSTOMREQUEST => "GET",
-             CURLOPT_HTTPHEADER => array(
-                 "Authorization: Bearer $token"
-             ),
-         ));
-        
-        $response = curl_exec($curl2);
-        curl_close($curl2);
-
-        var_dump(($response));
+        #Area reservada pra testes de algoritmos
+        var_dump('');
         die();
-
-        #Checa se a disciplina esxite e adiciona a turma 
-        $periodoAtual = $this->getPeriodoAtual();
-        foreach($servico as $service ){
-            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
-            if( $disc != null ){
-                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
-            }
-
-            #Checa se o professor existe, caso nao, cria
-            foreach($service['professores'] as $professor){
-                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
-                if( $prof == null ){
-                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
-                } 
-                $this->container->professorturmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
-            }
-        }*/
-
     }
 
     public function indexTesteServico(Request $request, Response $response, $args){	

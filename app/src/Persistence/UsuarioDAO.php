@@ -1183,9 +1183,10 @@ class UsuarioDAO extends BaseDAO
     }
     
     public function addMedalhaById($userId, $medalha){
-        $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (`usuario`, `medalha`) VALUES ({$userId}, {$medalha})";
+        $sql_insert = "INSERT INTO db_gamificacao.medalha_usuario (usuario, medalha) VALUES ('$userId', '$medalha')";
         $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
         $stmt_insert->execute();
+        echo "<script>console.log('OK');</script>";
     }
 
     public function getUsuariosComMesmoNome()
@@ -1208,18 +1209,32 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
+    public function deleteMedalhaUserById($userId, $medalhaId)
+    {
+        $query = "DELETE FROM db_gamificacao.medalha_usuario WHERE usuario = $userId AND medalha = $medalhaId";
+
+        $stmt = $this->em->getConnection()->prepare($query);
+
+        $stmt->execute();
+    }
+
     public function possuiMedalhaById($userId, $medalhaId){
-        try {
-            $query = $this->em->createQuery("SELECT u FROM App\Model\MedalhaUsuario AS u WHERE u.medalha = $medalhaId AND u.usuario = $userId");
-            $usuarioMedalha = $query->getResult();
+
+        try{
+            $sql = "SELECT medalha FROM medalha_usuario WHERE usuario = $userId";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $usuarioMedalha =  $stmt->fetchAll();
         } catch (\Exception $e) {
             var_dump( $e->getMessage());
         }
 
-        if( $usuarioMedalha == null){
-            return false;
-        } elseif ( $usuarioMedalha !== null){
-            return true;
+        foreach( $usuarioMedalha as $UM ){
+            if( $UM['medalha'] == $medalhaId ){
+                return true;
+            } 
         }
+
+        return false;
     }
 }

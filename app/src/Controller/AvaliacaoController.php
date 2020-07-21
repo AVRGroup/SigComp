@@ -29,10 +29,18 @@ class AvaliacaoController
         $periodoPassado = $this->getPeriodoPassado();
         $notas_usuario = $usuario->getNotas();
 
+        $perPassado = str_split($this->getPeriodoPassado(), 1);
+        $servico = $this->getServiceByPeriodo($perPassado);
+
+        #Verifica se o serviço não é null para o periodo passado (Graças ao COVID-19)
+        if( $servico[0] == null ){
+            $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
+        }
+
         $cont = 0;
         $cont2 = 0;
         foreach ( $notas_usuario as $nota){
-            if ( $nota->getPeriodo() == $periodoPassado){  
+            if ( $nota->getPeriodo() == $periodoPassado && $nota->getEstado() !== "Trancado"){  
                 #Cont que verifica quantas disciplinas o usuario teve no periodo passado
                 $cont = $cont + 1;
                 foreach ($disciplinas_avaliadas as $disci) {
@@ -43,6 +51,7 @@ class AvaliacaoController
                 }
             }
         }
+
         if( $cont == $cont2 ){
             $this->container->view['concluiu'] = "OK";
         }
@@ -50,7 +59,7 @@ class AvaliacaoController
         $this->container->view['disciplinas_avaliadas'] = $disciplinas_avaliadas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-        $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+        $this->container->view['periodoPassado'] = $periodoPassado;
         
         #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
@@ -227,7 +236,7 @@ class AvaliacaoController
     {
         $verificacao = $request->getParsedBodyParam("verificacao");
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $periodoPassado = $this->getPeriodoPassado();
+        $periodoPassado = $request->getParsedBodyParam("periodoPassado");
         $notas_usuario = $usuario->getNotas();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
         $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
@@ -236,7 +245,7 @@ class AvaliacaoController
         $cont = 0;
         $cont2 = 0;
         foreach ($notas_usuario as $nota){
-            if ($nota->getPeriodo() == $periodoPassado){  
+            if ($nota->getPeriodo() == $periodoPassado && $nota->getEstado() !== "Trancado"){  
                 #Cont que verifica quantas disciplinas o usuario teve no periodo passado
                 $cont = $cont + 1;
                 foreach ($disciplinas_avaliadas as $disci) {
@@ -247,57 +256,53 @@ class AvaliacaoController
                 }
             }
         }
+
         #Caso o usuário tenha concluido todas as avaliaçoes, a page com a medalha dele sera exibida
         #Essa $verificacao serve pra saber se o espertinho ta tentando acessar a page de medalha editando a URL!
         if( $cont == $cont2 && $verificacao == true){
-            $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
-            if($avaliacoes == null) { 
-                $this->container->usuarioDAO->setDefaultAvaliacoesUser($usuario->getId());
-                $avaliacoes = 0;
-            }
             $this->container->usuarioDAO->addAvaliacaoInUser($usuario->getId());
             $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
-
+        
            if( $avaliacoes > 0  && $avaliacoes <= 2 ){
-               $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 40);
+               $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), '40');
                if( $medalhasUser == true ){
                     $this->container->view['nomeMedalha'] = "AVALIADOR JÚNIOR";
                     $this->container->view['numImgMedalha'] = 1;
                 } else {
-                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 40);
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), '40');
                     $this->container->view['nomeMedalha'] = "AVALIADOR JÚNIOR";
                     $this->container->view['numImgMedalha'] = 1;
                 }
            } 
            elseif ( $avaliacoes > 2 && $avaliacoes <= 4){
-            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 41);
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), '41');
                 if( $medalhasUser == true ){
                     $this->container->view['nomeMedalha'] = "AVALIADOR PLENO";
                     $this->container->view['numImgMedalha'] = 2;
                 } else {
-                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 41);
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), '41');
                     $this->container->view['nomeMedalha'] = "AVALIADOR PLENO";
                     $this->container->view['numImgMedalha'] = 2;
                 }
            }  
            elseif ( $avaliacoes > 4 && $avaliacoes <= 6){
-            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 42);
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), '42');
                 if( $medalhasUser == true ){
                     $this->container->view['nomeMedalha'] = "AVALIADOR SENIOR";
                     $this->container->view['numImgMedalha'] = 3;
                 } else {
-                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 42);
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), '42');
                     $this->container->view['nomeMedalha'] = "AVALIADOR SENIOR";
                     $this->container->view['numImgMedalha'] = 3;
                 }
            } 
            elseif ( $avaliacoes > 6 ){
-            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), 43);
+            $medalhasUser = $this->container->usuarioDAO->possuiMedalhaById($usuario->getId(), '43');
                 if( $medalhasUser == true ){
                     $this->container->view['nomeMedalha'] = "AVALIADOR MASTER";
                     $this->container->view['numImgMedalha'] = 4;
                 } else {
-                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), 43);
+                    $this->container->usuarioDAO->addMedalhaById($usuario->getId(), '43');
                     $this->container->view['nomeMedalha'] = "AVALIADOR MASTER";
                     $this->container->view['numImgMedalha'] = 4;
                 }
@@ -353,57 +358,21 @@ class AvaliacaoController
   
         if(count($respostas3) == count($questoes3)){
 
-            #Abaixo é feita a requisição do token pro serviço funcionar 
-            $curl = curl_init();
+            $periodoPassadoArray = str_split($this->getPeriodoPassado(), 1);
+            $periodoPassado = $this->getPeriodoPassado();
+            $servico = $this->getServiceByPeriodo($periodoPassadoArray);
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => array('grant_type' => 'client_credentials'),
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Basic aGVkZXI6R2hnQCNkc2ZzZGYzNDM0M0RBU0QxMjNTQQ=="
-                ),
-            ));
-            $resultado = json_decode(curl_exec($curl), true);
-            curl_close($curl);
-
-            $token = $resultado['access_token'];
-
-            #Abaixo o serviço é executado, retornando as relações necessárias de turma-aluno-professor
-            $curl2 = curl_init();
-            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-            $matricula = $this->container->usuarioDAO->getMatricula($usuario->getId());
-            $perPassado = str_split($this->getPeriodoPassado(), 1);
-
-            curl_setopt_array($curl2, array(
-                CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $perPassado[0] . $perPassado[1] . $perPassado[2] . $perPassado[3] . "/" . $perPassado[4] . "/turmas",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Bearer $token"
-                ),
-            ));
-
-            $servico = json_decode(curl_exec($curl2), true);
-            curl_close($curl2);
+            if( $servico[0] == null ){
+                $periodoPassadoArray = str_split($this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1));
+                $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
+                $servico = $this->getServiceByPeriodo($periodoPassadoArray);
+             }
 
             #Checa se a disciplina existe e adiciona a turma 
-            $periodoAtual = $this->getPeriodoAtual();
             foreach($servico as $service ){
                 $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
                 if( $disc != null ){
-                    $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoAtual);
+                    $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
                 }
 
                 #Checa se o professor existe, caso nao, cria
@@ -411,7 +380,7 @@ class AvaliacaoController
                     $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
                     if( $prof == null ){
                         $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
-                    } 
+                    }
                     $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
                 }
             }
@@ -457,7 +426,7 @@ class AvaliacaoController
                 $usuario = $this->container->usuarioDAO->getUsuarioLogado();
                 $this->container->view['usuario'] = $usuario;
                 $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-                $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
+                $this->container->view['periodoPassado'] = $periodoPassado;
                 $this->container->view['versaoAtual'] = $versaoAtual;
 
                 return $this->storePageMedalhas($request, $response, $args);
@@ -465,6 +434,68 @@ class AvaliacaoController
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');
         }
+    }
+
+    public function getPeriodoPassadoByPeriodo($current){	
+        $periodoAtual = $current;
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 3;
+        }
+        else {
+            $periodoAnterior = $ano . 1;
+        }
+
+        return intval($periodoAnterior);
+    }
+
+    public function getServiceByPeriodo($periodo){	
+        #Abaixo é feita a requisição do token pro serviço funcionar 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://oauth.integra-h.nrc.ice.ufjf.br/oauth/token",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => array('grant_type' => 'client_credentials'),
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Basic aGVkZXI6R2hnQCNkc2ZzZGYzNDM0M0RBU0QxMjNTQQ=="
+            ),
+        ));
+        $resultado = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+
+        $token = $resultado['access_token'];
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $matricula = $usuario->getMatricula();
+        $curl2 = curl_init();
+
+        curl_setopt_array($curl2, array(
+            CURLOPT_URL => "https://apisiga.integra-h.nrc.ice.ufjf.br/aluno/" . $matricula . "/" . $periodo[0] . $periodo[1] . $periodo[2] . $periodo[3] . "/" . $periodo[4] . "/turmas",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $token"
+            ),
+         ));
+        
+        $response =  json_decode(curl_exec($curl2), true);
+        curl_close($curl2);
+
+        return $response;
     }
 
 }

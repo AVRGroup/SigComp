@@ -30,18 +30,20 @@
                     {foreach $notas_usuario as $nota}
                     {$show = true}
                         {if $nota->getPeriodo() == $periodoPassado}
-                            <div class="container">    
-                                {foreach $disciplinas_avaliadas as $disci}
-                                    {if $disci == $nota->getDisciplina()->getId()}
-                                        <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</button>
-                                         {$show = false}
-                                        {break}
-                                    {/if}
-                                {/foreach}
-                            {if $show}
-                                <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</a>
+                            {if $nota->getEstado() !== "Trancado"}
+                                <div class="container">    
+                                    {foreach $disciplinas_avaliadas as $disci}
+                                        {if $disci == $nota->getDisciplina()->getId()}
+                                            <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</button>
+                                             {$show = false}
+                                            {break}
+                                        {/if}
+                                    {/foreach}
+                                {if $show}
+                                    <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</a>
+                                {/if}
+                                </div>
                             {/if}
-                            </div>
                         {/if}
                     {/foreach}
                 <hr>
