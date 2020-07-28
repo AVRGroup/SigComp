@@ -27,8 +27,9 @@
     <input type="hidden" name="arrayPeriodos" value="{$arrayPeriodos}">
 
     <div>
+    <hr>
+        <h4 align="center" style="color: blue"> Período corrente: {$periodoCorrente} - {$digito}</h4>
         <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Selecione abaixo os períodos que deseja ser utilizados na avaliação</h5>
-        <h4 align="center"> Período corrente: {$periodoCorrente} - {$digito}</h4>
 
         {foreach $periodos as $per}
             <div align="center">
