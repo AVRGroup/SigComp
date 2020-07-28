@@ -719,17 +719,7 @@ class AdminController
 
     public function getPeriodoAtual()
     {
-        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
-        $ano = $ultimaCarga[0];
-        $mes = intval($ultimaCarga[1]);
-        
-        if($mes > 6) {
-            $periodo = $ano . 3;    
-        }
-        else {
-            $periodo = $ano . 1;
-        }
-
+        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
         return $periodo;
     }
 
@@ -949,6 +939,55 @@ class AdminController
 
     public function painelCoordenador(Request $request, Response $response, $args)
     {
+        $periodoAtual = $this->container->usuarioDAO->getPeriodCurrent();
+
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+        $periodos = array();
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 4;
+        } 
+        elseif ( $semestre == 2 ) {
+            $periodoAnterior = $ano . 1;
+        } 
+        elseif ( $semestre == 3 ) {
+            $periodoAnterior = $ano . 2;
+        }
+        elseif ( $semestre == 4 ) {
+            $periodoAnterior = $ano . 3;
+        }
+
+        $this->container->view['periodoCorrente'] = $ano;
+        $this->container->view['digito'] = $semestre;
+        
+        #Preenche o array de periodos anteriores
+        for( $i = 0; $i < 4; $i++ ){
+            $semestre2 = intval($periodoAnterior[4]);
+            $ano2 = substr($periodoAnterior, 0, 4);
+
+            if($semestre2 == 1) {
+                $periodos[] = $periodoAnterior;
+                $anoAnterior = $ano2 - 1;
+                $periodoAnterior = $anoAnterior . 4;
+            } 
+            elseif ( $semestre2 == 2 ) {
+                $periodos[] = $periodoAnterior;
+                $periodoAnterior = $ano2 . 1;
+            } 
+            elseif ( $semestre2 == 3 ) {
+                $periodos[] = $periodoAnterior;
+                $periodoAnterior = $ano2 . 2;
+            }
+            elseif ( $semestre2 == 4 ) {
+                $periodos[] = $periodoAnterior;
+                $periodoAnterior = $ano2 . 3;
+            }            
+        }
+
+        $this->container->view['arrayPeriodos'] = $periodos;
+        $this->container->view['periodos'] = $periodos;
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
 

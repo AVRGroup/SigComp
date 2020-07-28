@@ -959,7 +959,30 @@ class UsuarioDAO extends BaseDAO
             $stmt->execute();
         }
     }
-    
+
+    public function getPeriodCurrent(){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/periodo/get",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "token:  d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $response = json_decode(curl_exec($curl), true);
+        $response = $response['Período Atual'];
+        curl_close($curl);
+        
+        return $response;
+    }
 
     public function setPeriodoCorrente()
     {

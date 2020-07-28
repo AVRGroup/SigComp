@@ -162,17 +162,7 @@ class HomeController
 
     public function getPeriodoAtual()
     {
-        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
-        $ano = $ultimaCarga[0];
-        $mes = intval($ultimaCarga[1]);
-
-        if($mes > 6) {
-            $periodo = $ano . 3;
-        }
-        else {
-            $periodo = $ano . 1;
-        }
-
+        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
         return $periodo;
     }
 

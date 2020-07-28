@@ -99,17 +99,7 @@ class UserController
 
     public function getPeriodoAtual()
     {
-        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
-        $ano = $ultimaCarga[0];
-        $mes = intval($ultimaCarga[1]);
-
-        if($mes > 6) {
-            $periodo = $ano . 3;
-        }
-        else {
-            $periodo = $ano . 1;
-        }
-
+        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
         return $periodo;
     }
 
@@ -493,8 +483,10 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
+        $periodo = $this->getPeriodoPassado();
+        echo $periodo;
+
         #Area reservada pra testes de algoritmos
-        var_dump('');
         die();
     }
 
