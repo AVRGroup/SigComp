@@ -939,6 +939,7 @@ class AdminController
 
     public function painelCoordenador(Request $request, Response $response, $args)
     {
+
         $periodoAtual = $this->container->usuarioDAO->getPeriodCurrent();
 
         $semestre = intval($periodoAtual[4]);
@@ -986,13 +987,26 @@ class AdminController
             }            
         }
 
-        $this->container->view['arrayPeriodos'] = $periodos;
         $this->container->view['periodos'] = $periodos;
+        $this->container->view['index'] = 'ok';
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
 
     public function storePainelCoordenador(Request $request, Response $response, $args)
     {
+        $periodoCorrente = $request->getParsedBodyParam('periodoCorrente');
+        $digito = $request->getParsedBodyParam('digito');
+        $periodos = $request->getParsedBodyParam('periodos');
+        
+        var_dump($periodos);
+        die();
+
+        $this->container->view['periodoCorrente'] = $periodoCorrente;
+        $this->container->view['digito'] = $digito;
+        $this->container->view['completo'] = 'Alterações salvas com sucesso!';
+        $this->container->view['store'] = 'ok';
+        
+
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
 }
