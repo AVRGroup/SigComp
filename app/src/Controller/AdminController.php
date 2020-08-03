@@ -1025,6 +1025,15 @@ class AdminController
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
+                if( $_POST['professores_' . $ps] === "todos"){
+                    //selecionar todos os professores desse(s) período(s) para avaliação
+                    //olhar em professor_turma, quais turmas o prof ministra nos períodos selecionados
+                    //guardar em questionario_professor_turma
+                    
+                }
+                else{
+                    //selecionar só o professor escolhido para avaliação
+                }
                 
                echo $_POST['professores_' . $ps];
             }
