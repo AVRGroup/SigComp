@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
  * Model\Turma
  *
  * @ORM\Entity()
- * @ORM\Table(name="turma", uniqueConstraints={@UniqueConstraint(name="unique_turma", columns={"codigo", "disciplina"})})
+ * @ORM\Table(name="turma", uniqueConstraints={@UniqueConstraint(name="unique_turma", columns={"codigo", "disciplina", "periodo"})})
  */
 class Turma 
 {
@@ -22,12 +22,12 @@ class Turma
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=false)
      */
     protected $codigo;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=false)
      */
     protected $periodo;
 

@@ -103,18 +103,21 @@ class QuestaoDAO extends BaseDAO
             $query = $this->em->createQuery("SELECT qt FROM App\Model\Questionario as qt WHERE qt.versao = :versao");
             $query->setParameter('versao', $versao);
             $questionario = $query->getOneOrNullResult();
-            $id_questionario = $questionario->getId();
+            if($questionario !== null)
+                $id_questionario = $questionario->getId();
         } catch (\Exception $e) {
             $questionario = null;
             $id_questionario = null;
         }
 
-        try {
-            $query = $this->em->createQuery("SELECT q FROM App\Model\QuestaoQuestionario as q WHERE q.questionario = :id_questionario");
-            $query->setParameter('id_questionario', $id_questionario);
-            $questoes_questionario = $query->getResult();
-        } catch (\Exception $e) {
-            $id_questoes = null;
+        if($id_questionario !== null){
+            try {
+                $query = $this->em->createQuery("SELECT q FROM App\Model\QuestaoQuestionario as q WHERE q.questionario = :id_questionario");
+                $query->setParameter('id_questionario', $id_questionario);
+                $questoes_questionario = $query->getResult();
+            } catch (\Exception $e) {
+                $id_questoes = null;
+            }
         }
 
         $questoes = array(); 
