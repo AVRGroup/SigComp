@@ -38,6 +38,11 @@ class ProfessorTurma
      */
     protected $avaliacao;
 
+     /**
+     * @ORM\ManyToMany(targetEntity="Questionario", mappedBy="professor_turma")
+     */
+    protected $questionarios;
+
     public function __construct()
     {
     }
