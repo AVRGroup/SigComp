@@ -939,9 +939,7 @@ class AdminController
 
     public function painelCoordenador(Request $request, Response $response, $args)
     {
-
         $periodoAtual = $this->container->usuarioDAO->getPeriodCurrent();
-
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
         $periodos = array();
@@ -986,7 +984,7 @@ class AdminController
                 $periodoAnterior = $ano2 . 3;
             }            
         }
-
+        
         $this->container->view['periodos'] = $periodos;
         $this->container->view['index'] = 'ok';
         return $this->container->view->render($response, 'painelCoordenador.tpl');
@@ -996,17 +994,66 @@ class AdminController
     {
         $periodoCorrente = $request->getParsedBodyParam('periodoCorrente');
         $digito = $request->getParsedBodyParam('digito');
-        $periodos = $request->getParsedBodyParam('periodos');
-        
-        var_dump($periodos);
-        die();
+        $periodos = $request->getParsedBodyParam('periodosArray');
+        $periodosSelecionados = array();
 
+        foreach( $periodos as $per ){
+            if( $request->getParsedBodyParam('customRadio_' . $per) !== null){
+                $periodosSelecionados[] = $request->getParsedBodyParam('customRadio_' . $per);
+            }
+        }
+
+        if( empty($periodosSelecionados) ) {
+            $this->container->view['incompleto'] = 'Você não selecionou nenhum período!';
+            return $this->painelCoordenador($request, $response, $args);
+        }
+
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $this->container->view['professores'] = $professores;
         $this->container->view['periodoCorrente'] = $periodoCorrente;
         $this->container->view['digito'] = $digito;
-        $this->container->view['completo'] = 'Alterações salvas com sucesso!';
         $this->container->view['store'] = 'ok';
-        
+        $this->container->view['perSelecionados'] = $periodosSelecionados;
+        $this->container->view['periodos'] = $periodos;
 
+        return $this->container->view->render($response, 'painelCoordenador.tpl');
+    }
+
+    public function store2PainelCoordenador(Request $request, Response $response, $args)
+    {
+        $professores = $this->container->usuarioDAO->getProfessores();
+        $periodosSelecionados = $request->getParsedBodyParam('perSelectedArray');
+
+        #Esse array é usado pra verificar se o usuário deixou alguma checkbox em branco
+        $verificacao = array();
+
+        foreach( $periodosSelecionados as $ps ){
+            if( $request->getParsedBodyParam('todosProf_' . $ps) !== null ){
+                
+                #Aqui entra o codigo que registra no banco todos os professores avaliados pra aquele periodo
+                
+                $verificacao[] = $ps;
+                continue;
+            }
+            foreach( $professores as $prof ){
+                if( $request->getParsedBodyParam( $prof->getId() . 'and' . $ps) !== null ){
+                    if( !in_array($ps, $verificacao) ){
+                        $verificacao[] = $ps;
+                    }
+
+                    #Aqui entra o codigo que registra no banco esse professor = $prof a ser avaliado pra esse período = $ps
+                
+                }
+            }
+        }
+
+        if( count($periodosSelecionados) !== count($verificacao) ){
+            $this->container->view['incompleto'] = 'Você deve preencher ao menos uma opção em cada período!';
+            return $this->painelCoordenador($request, $response, $args);
+        }
+
+        $this->container->view['store2'] = 'ok'; 
+        $this->container->view['completo'] = 'Alterações salvas com sucesso!'; 
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
 }
