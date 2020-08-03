@@ -1021,20 +1021,12 @@ class AdminController
 
     public function store2PainelCoordenador(Request $request, Response $response, $args)
     {
-        $professores = $this->container->usuarioDAO->getProfessores();
         $periodosSelecionados = $request->getParsedBodyParam('perSelectedArray');
-
-        #Esse array é usado pra verificar se o usuário deixou alguma checkbox em branco
-        $verificacao = array();
-
-        
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
                 
-                #Aqui entra o codigo que registra no banco todos os professores avaliados pra aquele periodo
-
-                $verificacao[] = $ps;
+               echo $_POST['professores_' . $ps];
             }
         }
 
