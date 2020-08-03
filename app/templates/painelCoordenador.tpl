@@ -27,7 +27,7 @@
     {if isset($store)}
     <div align="center">
         <div class="alert alert-warning alert-dismissible fade show col-md-8" role="alert">
-            <b>Atenção!</b> Você deve selecionar ao menos um professor em cada período!
+            <b>Atenção!</b> Por padrão, todos os professores são selecionados para avaliação.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -75,24 +75,18 @@
             {foreach $perSelecionados as $ps}
                 <div align="center">
                     <h4 align="center">• {$ps} </h4>
+                    <a style="font-style: italic; font-weight: 500"><strong> Selecione o professor que deseja avaliar nesse período </strong></a>
 
-                    <a style="font-style: italic; font-weight: 500"><strong> Selecione os professores que deseja avaliar nesse período </strong></a>
-
-                        <div align="center" class="col-4" style="text-align: left; margin-top: 1%">
-                            <div class="custom-control custom-checkbox custom-control-inline" style="margin-left: 2%">
-                                <input type="checkbox" class="custom-control-input" onclick="hideProf({$ps})" name="todosProf_{$ps}" id="todosProf_{$ps}" >
-                                <label class="custom-control-label" for="todosProf_{$ps}"><strong>Todos os professores</strong></label>
-                            </div>
-
-                            <div id="listProfessores_{$ps}" style="display: block">
-                                {foreach $professores as $prof}
-                                    <div class="custom-control custom-checkbox custom-control-inline" style="margin-left: 2%">
-                                        <input type="checkbox" class="custom-control-input" name="{$prof->getId()}and{$ps}" id="{$prof->getId()}and{$ps}" >
-                                        <label class="custom-control-label" for="{$prof->getId()}and{$ps}">{$prof->getNome()}</label>
-                                    </div>
+                    <div align="center" class="col-8" style="text-align: left; margin-top: 1%">
+                        <div class="form-row ">
+                            <select class="form-control col-8 mx-auto" name="professores_{$ps}">
+                                <option value="todos" selected>Todos</option>
+                                {foreach $professores as $p}
+                                    <option value="{$p->getId()}/{$ps}">{$p->getNome()}</option>
                                 {/foreach}
-                            </div>
+                            </select>
                         </div>
+                    </div>
                 </div>
                 <hr>
             {/foreach}

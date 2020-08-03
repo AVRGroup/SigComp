@@ -1027,29 +1027,15 @@ class AdminController
         #Esse array é usado pra verificar se o usuário deixou alguma checkbox em branco
         $verificacao = array();
 
+        
+
         foreach( $periodosSelecionados as $ps ){
-            if( $request->getParsedBodyParam('todosProf_' . $ps) !== null ){
+            if( $_POST['professores_' . $ps] !== null ){
                 
                 #Aqui entra o codigo que registra no banco todos os professores avaliados pra aquele periodo
-                
+
                 $verificacao[] = $ps;
-                continue;
             }
-            foreach( $professores as $prof ){
-                if( $request->getParsedBodyParam( $prof->getId() . 'and' . $ps) !== null ){
-                    if( !in_array($ps, $verificacao) ){
-                        $verificacao[] = $ps;
-                    }
-
-                    #Aqui entra o codigo que registra no banco esse professor = $prof a ser avaliado pra esse período = $ps
-                
-                }
-            }
-        }
-
-        if( count($periodosSelecionados) !== count($verificacao) ){
-            $this->container->view['incompleto'] = 'Você deve preencher ao menos uma opção em cada período!';
-            return $this->painelCoordenador($request, $response, $args);
         }
 
         $this->container->view['store2'] = 'ok'; 
