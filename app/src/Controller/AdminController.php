@@ -1028,10 +1028,15 @@ class AdminController
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
-
-                
+                    //selecionar todos os professores desse(s) período(s) para avaliação
+                    //olhar em professor_turma, quais turmas o prof ministra nos períodos selecionados
+                    //guardar em questionario_professor_turma
+                    
+                }
+                else{
+                    //selecionar só o professor escolhido para avaliação
+                }  
             }
-        }
 
         $this->container->view['store2'] = 'ok'; 
         $this->container->view['completo'] = 'Alterações salvas com sucesso!'; 
