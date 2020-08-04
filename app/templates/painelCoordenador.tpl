@@ -71,6 +71,24 @@
                 <input type="hidden" name="perSelectedArray[]" value="{$p}">
             {/foreach}
 
+            <h5 align="center" style="color: darkred; font-style: italic; margin-top: 1%; margin-bottom: 1%">Escolha um questionário para ser usado na avaliação!</h5>
+            <div align="center">
+                <div align="center" class="col-6" >
+                    <div class="row">
+                        <select id="filtrar-data" name="selecao_questionario" class="form-control col-md-10 col-sm-12 mx-sm-auto">
+                            {foreach $questionarios as $questionario}
+                                {if $questionario != null}
+                                    <option value="{$questionario->getVersao()}" {if $questionario->getVersao() == '1'} selected {/if}>
+                                        {if !empty($questionario->getNome())}{$questionario->getNome()}
+                                        {else}{$questionario->getVersao()}{/if}
+                                    </option>
+                                {/if}
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Períodos Selecionados</h5>
             {foreach $perSelecionados as $ps}
                 <div align="center">
@@ -113,20 +131,4 @@
         
     </div>
 
-{/block}
-{block name="javascript"}
-    <script>
-        function hideProf(param){
-            var list = document.getElementById('listProfessores_' + param);
-            var check = document.getElementById('todosProf_' + param);
-
-            if( check.checked == true ){
-                list.style.display = "none";
-            } else {
-                list.style.display = "block";
-            }
-        }
-
-
-    </script>
 {/block}

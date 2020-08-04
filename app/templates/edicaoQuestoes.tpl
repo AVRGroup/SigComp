@@ -26,7 +26,7 @@
         {/if}
     </div>
 
-    <form name="formulario" method="POST" action="{base_url}/store-questoes">    <!-- Começa o formulario -->
+    <form name="formulario" method="POST" action="{base_url}/admin/store-questoes">    <!-- Começa o formulario -->
 
         <input type="hidden" name="versao" value="{$versao}">
         <input type="hidden" name="categoria" value="{$categoria}">

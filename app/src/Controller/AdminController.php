@@ -1008,6 +1008,8 @@ class AdminController
             return $this->painelCoordenador($request, $response, $args);
         }
 
+        $questionarios = $this->container->questionarioDAO->getAll();
+        $this->container->view['questionarios'] = $questionarios;
         $professores = $this->container->usuarioDAO->getProfessores();
         $this->container->view['professores'] = $professores;
         $this->container->view['periodoCorrente'] = $periodoCorrente;
@@ -1022,11 +1024,12 @@ class AdminController
     public function store2PainelCoordenador(Request $request, Response $response, $args)
     {
         $periodosSelecionados = $request->getParsedBodyParam('perSelectedArray');
+        $questionario = $_POST['selecao_questionario'];
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
+
                 
-               echo $_POST['professores_' . $ps];
             }
         }
 
