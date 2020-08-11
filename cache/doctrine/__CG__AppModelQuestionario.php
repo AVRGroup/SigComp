@@ -64,10 +64,10 @@ class Questionario extends \App\Model\Questionario implements \Doctrine\ORM\Prox
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario'];
+            return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario', 'professores_turmas'];
         }
 
-        return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario'];
+        return ['__isInitialized__', 'id', 'versao', 'nome', 'avaliacoes_questionario', 'questoes_questionario', 'professores_turmas'];
     }
 
     /**

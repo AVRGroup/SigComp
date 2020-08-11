@@ -124,15 +124,6 @@ class AvaliacaoController
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
-        /*
-        $pt = $this->container->professorTurmaDAO->getByTurma($turma->getId());
-        $p = $pt->getProfessor();
-        $professor = $this->container->usuarioDAO->getById($p);
-        echo "<script>console.log('Prof: " . $professor . "' );</script>";
-        $this->container->view['professor'] = $professor;
-        */
-
-
         //Salvando as respostas no vetor
         $respostas1 = array();
         $i = 1;
@@ -145,15 +136,6 @@ class AvaliacaoController
             $i = $i + 1;
         }
         
-        /*
-        $j = 0;
-        foreach ($respostas1 as $r)
-        {
-            echo "<script>console.log('Debug Objects: " . $respostas1[$j] . "' );</script>";
-            $j = $j + 1;
-        }
-        */
-
         if(count($respostas1) == count($questoes)){
             $this->container->view['respostas1'] = $respostas1;   
             $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 2);
@@ -185,36 +167,25 @@ class AvaliacaoController
         $this->container->view['respostas1'] = $respostas1;
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
               
-       //Salvando as respostas no vetor
-       $respostas2 = array();
-       $i = 1;
-       foreach ($questoes2 as $questao)
-       {
-           if($request->getParsedBodyParam("customRadio2_$i") !== null)
-           {
-               $respostas2[] = $request->getParsedBodyParam("customRadio2_$i");
-           }
-           $i = $i + 1;
-       }
-
-       $respostas1_2 = array_merge($respostas1, $respostas2);
-       
-       /*$respostas1_2 = $respostas1 + $respostas2;
-       $j = 0;
-       foreach($respostas1_2 as $r)
-       {
-        echo "<script>console.log('Debug Objects: " . $respostas1_2[$j] . "' );</script>";
-        $j = $j + 1;
-       }*/
-
+        //Salvando as respostas no vetor
+        $respostas2 = array();
+        $i = 1;
+        foreach ($questoes2 as $questao)
+        {
+            if($request->getParsedBodyParam("customRadio2_$i") !== null)
+            {
+                $respostas2[] = $request->getParsedBodyParam("customRadio2_$i");
+            }
+            $i = $i + 1;
+        }   
+        $respostas1_2 = array_merge($respostas1, $respostas2);
 
         if(count($respostas2) == count($questoes2)){
             $this->container->view['respostas1_2'] = $respostas1_2;
             $questoes3 = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 1);
             $this->container->view['questoes3'] = $questoes3;
             $this->container->view['verificacao'] = true;
-            return $this->container->view->render($response, 'avaliacaoPage3.tpl');
-
+            return $this->container->view->render($response, 'avaliacaoPage3.tpl'); 
         }   else {
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage2.tpl');
@@ -406,18 +377,17 @@ class AvaliacaoController
                         }
                     }
                 }
-                
             }
             if($gravou == 0){
                 echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
                 die();
             }
 
-                $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-                $this->container->view['usuario'] = $usuario;
-                $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
-                $this->container->view['periodoPassado'] = $periodoPassado;
-                $this->container->view['versaoAtual'] = $versaoAtual;
+            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            $this->container->view['usuario'] = $usuario;
+            $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+            $this->container->view['periodoPassado'] = $periodoPassado;
+            $this->container->view['versaoAtual'] = $versaoAtual;
 
                 return $this->storePageMedalhas($request, $response, $args);
         }else {
@@ -480,12 +450,11 @@ class AvaliacaoController
             CURLOPT_HTTPHEADER => array(
                 "Authorization: Bearer $token"
             ),
-         ));
+        ));
         
         $response =  json_decode(curl_exec($curl2), true);
         curl_close($curl2);
 
         return $response;
     }
-
 }
