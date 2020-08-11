@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use App\Model\Questionario;
 use App\Model\Avaliacao;
 use App\Model\QuestaoQuestionario;
+use App\Model\ProfessorTurma;
+use App\Model\Turma;
 
 class QuestionarioDAO extends BaseDAO
 {
@@ -183,5 +185,66 @@ class QuestionarioDAO extends BaseDAO
         }
         
         return $questionario;
+    }
+
+     /**
+     * @param $professor_id, $periodo, $questionario_id
+     * @return boolean
+     */
+    public function requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id){
+        $professores_turmas;
+        try {
+            $query = $this->em->createQuery("SELECT pt FROM App\Model\ProfessorTurma as pt WHERE pt.professor = :professor_id AND pt.turma IN (SELECT t.id FROM App\Model\Turma as t WHERE t.periodo = :periodo)");
+            $query->setParameter('professor_id', $professor_id);
+            $query->setParameter('periodo', $periodo);
+            $professores_turmas = $query->getResult();
+        } catch (\Exception $e) {
+            $professores_turmas = null;
+        }
+
+        if($professores_turmas){
+            foreach($professores_turmas as $pt){
+                $id = $pt->getId();
+                try {
+                    $sql_insert = "INSERT INTO db_gamificacao.questionario_professor_turma (`questionario_id`, `professorturma_id`) VALUES ({$questionario_id}, {$id});";
+                    $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                    $stmt_insert->execute();
+                } catch (\Exception $e) {
+                    return null;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $periodo, $questionario_id
+     * @return boolean
+     */
+    public function requisitarQuestionarioByPeriodo($periodo, $questionario_id){
+        $professores_turmas;
+        try {
+            $query = $this->em->createQuery("SELECT pt FROM App\Model\ProfessorTurma as pt WHERE pt.turma IN (SELECT t.id FROM App\Model\Turma as t WHERE t.periodo = :periodo)");
+            $query->setParameter('periodo', $periodo);
+            $professores_turmas = $query->getResult();
+        } catch (\Exception $e) {
+            $professores_turmas = null;
+        }
+
+        if($professores_turmas){
+            foreach($professores_turmas as $pt){
+                $id = $pt->getId();
+                try {
+                    $sql_insert = "INSERT INTO db_gamificacao.questionario_professor_turma (`questionario_id`, `professorturma_id`) VALUES ({$questionario_id}, {$id});";
+                    $stmt_insert = $this->em->getConnection()->prepare($sql_insert);
+                    $stmt_insert->execute();
+                } catch (\Exception $e) {
+                    return null;
+                }
+            }
+        }
+
+        return true;
     }
 }
