@@ -1008,6 +1008,8 @@ class AdminController
             return $this->painelCoordenador($request, $response, $args);
         }
 
+
+
         $questionarios = $this->container->questionarioDAO->getAll();
         $this->container->view['questionarios'] = $questionarios;
         $professores = $this->container->usuarioDAO->getProfessores();
@@ -1024,19 +1026,25 @@ class AdminController
     public function store2PainelCoordenador(Request $request, Response $response, $args)
     {
         $periodosSelecionados = $request->getParsedBodyParam('perSelectedArray');
-        $questionario = $_POST['selecao_questionario'];
+        $questionario_id = $_POST['selecao_questionario'];
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
+                if( $_POST['professores_' . $ps] === "todos"){
                     //selecionar todos os professores desse(s) período(s) para avaliação
                     //olhar em professor_turma, quais turmas o prof ministra nos períodos selecionados
                     //guardar em questionario_professor_turma
-                    
+                    $result = $this->container->questionarioDAO->requisitarQuestionarioByPeriodo($ps, $questionario_id);
                 }
                 else{
                     //selecionar só o professor escolhido para avaliação
-                }  
+                    list ($professor_id, $periodo) = explode("/", $_POST['professores_' . $ps]);
+                    echo "<script>console.log('UM PROF');</script>";
+                    $result = $this->container->questionarioDAO->requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id);
+                }
+                
             }
+        }
 
         $this->container->view['store2'] = 'ok'; 
         $this->container->view['completo'] = 'Alterações salvas com sucesso!'; 

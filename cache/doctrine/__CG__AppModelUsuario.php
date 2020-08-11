@@ -334,6 +334,17 @@ class Usuario extends \App\Model\Usuario implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getGradeId($container)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGradeId', [$container]);
+
+        return parent::getGradeId($container);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setGrade($grade)
     {
 
