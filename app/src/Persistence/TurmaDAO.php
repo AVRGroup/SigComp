@@ -47,15 +47,15 @@ class TurmaDAO extends BaseDAO
     }
 
     /**
-     * @param $disciplina, $codigo
+     * @param $disciplina, $codigo_turma
      * @return Turma |null
      */
-    public function getByDisciplinaCodigo($disciplina, $codigo)
+    public function getByDisciplinaCodigo($disciplina, $codigo_turma)
     {
         try {
-            $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.disciplina = :disciplina AND t.codigo = :codigo");
+            $query = $this->em->createQuery("SELECT t FROM App\Model\Turma AS t WHERE t.disciplina = :disciplina AND t.codigo = :codigo_turma");
             $query->setParameter('disciplina', $disciplina);
-            $query->setParameter('codigo', $codigo);
+            $query->setParameter('codigo_turma', $codigo_turma);
             $turmas = $query->getOneOrNullResult();
         } catch (\Exception $e) {
             $turmas = null;

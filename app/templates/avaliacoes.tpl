@@ -26,25 +26,21 @@
     <div class="container ">
         <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
             <div class="container">
-                {$notas_usuario = $usuario->getNotas()}
-                    {foreach $notas_usuario as $nota}
+                    {foreach $disciplinas_aluno as $disciplina}
                     {$show = true}
-                        {if $nota->getPeriodo() == $periodoPassado}
-                            {if $nota->getEstado() !== "Trancado"}
-                                <div class="container">    
-                                    {foreach $disciplinas_avaliadas as $disci}
-                                        {if $disci == $nota->getDisciplina()->getId()}
-                                            <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</button>
-                                             {$show = false}
-                                            {break}
-                                        {/if}
-                                    {/foreach}
-                                {if $show}
-                                    <a href="{path_for name="avaliacaoPage01"}?disciplina={$nota->getDisciplina()->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$nota->getDisciplina()->getCodigo()} - {$nota->getDisciplina()->getNome()}</a>
-                                {/if}
-                                </div>
+                        
+                    <div class="container">    
+                        {foreach $disciplinas_avaliadas as $disci}
+                            {if $disci == $disciplina->getId()}
+                                <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$disciplina->getCodigo()} - {$disciplina->getNome()}</button>
+                                    {$show = false}
+                                {break}
                             {/if}
-                        {/if}
+                        {/foreach}
+                    {if $show}
+                        <a href="{path_for name="avaliacaoPage01"}?disciplina={$disciplina->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$disciplina->getCodigo()} - {$disciplina->getNome()}</a>
+                    {/if}
+                    </div>
                     {/foreach}
                 <hr>
             </div>
@@ -52,6 +48,9 @@
     </div>
 
     <form method="POST" action="{path_for name="home"}">  
+
+        <input type="hidden" name="turma" value="{$turma}">
+
         <nav aria-label="navigation" class="pagination justify-content-center">
             <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-primary" type="submit">Página inicial</button>  
         </nav>

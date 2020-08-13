@@ -27,7 +27,11 @@ class AvaliacaoController
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
         $periodoPassado = $this->getPeriodoPassado();
-        $notas_usuario = $usuario->getNotas();
+
+        //Consumir o serviço do Integra, que retorna as turmas do aluno
+        $disciplinas_aluno =  $this->getDisciplinas($usuario->getId(), $periodoPassado);
+
+        //$notas_usuario = $usuario->getNotas();
 
         $perPassado = str_split($this->getPeriodoPassado(), 1);
         $servico = $this->getServiceByPeriodo($perPassado);
@@ -35,6 +39,33 @@ class AvaliacaoController
         #Verifica se o serviço não é null para o periodo passado (Graças ao COVID-19)
         if( $servico[0] == null ){
             $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
+         }
+
+        $disciplinas_aluno = array();
+        #Checa se a disciplina existe e adiciona a turma 
+        foreach($servico as $service ){
+            //Pega a disciplina no banco, se ela existe
+            $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+            if( $disc == null ){
+                //Cria disciplina
+                throw("Erro, disciplina não cadastrada na base");
+            }
+            //Pega a turma no banco, se ela existe
+            $turma = $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']);
+            if($turma == null){
+                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
+            }
+
+            $disciplinas_aluno[] = $disc;
+
+            #Checa se o professor existe, caso nao, cria
+            foreach($service['professores'] as $professor){
+                $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
+                if( $prof == null ){
+                    $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
+                }
+                $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+            }
         }
 
         $cont = 0;
@@ -56,10 +87,12 @@ class AvaliacaoController
             $this->container->view['concluiu'] = "OK";
         }
 
+        $this->container->view['disciplinas_aluno'] = $disciplinas_aluno;
         $this->container->view['disciplinas_avaliadas'] = $disciplinas_avaliadas;
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $periodoPassado;
+        $this->container->view['turma'] = $turma;
         
         #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
@@ -116,11 +149,13 @@ class AvaliacaoController
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
         $id_disciplina = $request->getParsedBodyParam("id_disciplina");
+        $turma = $request->getParsedBodyParam("turma");
         
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
         $this->container->view['id_disciplina'] = $id_disciplina;
-        $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
+        $this->container->view['turma'] = $turma;
+        //$turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
@@ -334,6 +369,9 @@ class AvaliacaoController
                 $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
                 if( $disc != null ){
                     $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
+                }
+                else{
+                    //Criar disciplina e turma
                 }
 
                 #Checa se o professor existe, caso nao, cria
