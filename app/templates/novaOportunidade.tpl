@@ -41,6 +41,7 @@
                         <option value="1">Treinamento Profissional</option>
                         <option value="2">Estágio</option>
                         <option value="3">CLT</option>
+                        <option value="4">Outra</option>
                     </select>
                 </div>
 

@@ -371,6 +371,9 @@ class Oportunidade implements ToIdArrayInterface
             case 3:
                 return "CLT";
                 break;
+            case 4:
+                return "Outra";
+                break;
             default:
                 return "Oportunidade";
         }
@@ -391,6 +394,9 @@ class Oportunidade implements ToIdArrayInterface
                 break;
             case 3:
                 return "clt";
+                break;
+            case 4:
+                return "outra";
                 break;
             default:
                 return "outro";

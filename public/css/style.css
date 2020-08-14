@@ -266,6 +266,10 @@ body {
     background-color: hsla(204, 69%, 61%, 0.15);
 }
 
+.card-oportunidade-outra {
+    background-color: hsla(0, 0%, 92%, 0.5);
+}
+
 .cor-aluno-comparacao {
     display: inline-block;
     width: 20px;
@@ -298,6 +302,14 @@ body {
     border-bottom: 2px solid #fae243;
 }
 
+.card-oportunidade .borda-titulo-clt {
+    border-bottom: 2px solid hsla(204, 69%, 61%, 0.80);
+}
+
+.card-oportunidade .borda-titulo-outra {
+    border-bottom: 2px solid hsla(228, 2%, 51%, 0.8);
+}
+
 .weight-600 {
     font-weight: 600;
 }
@@ -321,6 +333,11 @@ body {
 .card-oportunidade .btn-clt {
     background-color: hsla(204, 69%, 61%, 0.80);
 }
+
+.card-oportunidade .btn-outra {
+    background-color: hsla(228, 2%, 51%, 0.8);
+}
+
 
 .btn-radar-sobreposto {
     background-color: #0db2e0 !important;
