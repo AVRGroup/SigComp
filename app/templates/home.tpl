@@ -69,30 +69,32 @@
                             <span class="custom-tooltiptext">Compare as suas notas (em verde) com as do seu amigo</span>
                         </div>
                     {else}
-                        <button onclick="setRadarRealizadas()" class="btn btn-primary"
-                                data-toggle="popover" data-placement="top"  data-trigger="hover"
-                                data-content="Esse grafico leva em conta apenas as disciplinas que você já realizou"
-                        >
-                            Disciplinas já realizadas
-                        </button>
-
-                        <div class="custom-tooltip">
-                            <button onclick="setRadarTodas()" class="btn btn-success ml-4"
+                    <div>
+                        <div class="custom-tooltip" style="margin-top: 2%">
+                            <button onclick="setRadarRealizadas()" class="btn btn-primary col-sm-12 col-md-12"
+                                    data-toggle="popover" data-placement="top"  data-trigger="hover"
+                                    data-content="Esse grafico leva em conta apenas as disciplinas que você já realizou"
+                            >
+                                Disciplinas já realizadas
+                            </button>
+                        </div>
+                        <div class="custom-tooltip" style="margin-top: 2%">
+                            <button onclick="setRadarTodas()" class="btn btn-success col-sm-12 col-md-12"
                                     data-toggle="popover" data-placement="top"  data-trigger="hover"
                                     data-content="Esse gráfico mostra como estão suas notas levando em conta todas as disciplinas da grade. As que ainda não foram realizadas têm nota zero"
                             >
                                 Todas as disciplinas
                             </button>
                         </div>
-                        <div class="custom-tooltip">
-                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto ml-4"
+                        <div class="custom-tooltip" style="margin-top: 2%">
+                            <button onclick="setRadarSobreposto()" class="btn btn-radar-sobreposto col-sm-12 col-md-12"
                                     data-toggle="popover" data-placement="top"  data-trigger="hover"
                                     data-content="Sobreponha os dois gráficos para conseguir uma melhor comparação"
                             >
                                     Sobreposto
                             </button>
                         </div>
-                        </div>
+                    </div>
                     {/if}
                 </div>
 
@@ -304,10 +306,12 @@
             {if !isset($naoBarraPesquisa)}
                 <h4 class="text-center">Amigos</h4> <h6 class="text-center">Digite o nome da pessoa no campo abaixo para adicioná-lo como amigo!</h6>
 
-                <form class="form-row" method="post" style="margin-top: 30px;">
-                    <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-11 col-sm-10 col-xs-10" placeholder="Pesquisar">
-                    <button style="margin-left: 1%" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                </form>
+                <div align="center">
+                    <form class="form-row justify-content-center col-md-10" method="post" style="margin-top: 30px;">
+                        <input id="pesquisa" name="pesquisa" type="text" class="form-control col-md-11 col-sm-10 col-xs-10" placeholder="Pesquisar">
+                            <button style="margin-left: 1%; margin-top: 2%; width: 200px" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
 
                 {if isset($usuariosPesquisados)}
                     <table id="friends" style="margin-top: 4%" class="table table-hover">
