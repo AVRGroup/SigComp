@@ -17,6 +17,7 @@ use App\Model\ProfessorTurma;
 class AvaliacaoController
 {
     private $container;
+
     public function __construct(\Container $container)
     {
         $this->container = $container;
@@ -24,38 +25,35 @@ class AvaliacaoController
 
     public function index(Request $request, Response $response, $args)
     {
+        $disciplinas_aluno = array();
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
         $periodoPassado = $this->getPeriodoPassado();
 
-        //Consumir o serviço do Integra, que retorna as turmas do aluno
-        $disciplinas_aluno =  $this->getDisciplinas($usuario->getId(), $periodoPassado);
-
-        //$notas_usuario = $usuario->getNotas();
-
         $perPassado = str_split($this->getPeriodoPassado(), 1);
         $servico = $this->getServiceByPeriodo($perPassado);
 
-        #Verifica se o serviço não é null para o periodo passado (Graças ao COVID-19)
+        #Verifica se o serviço não é null para o periodo passado
         if( $servico[0] == null ){
             $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
          }
 
-        $disciplinas_aluno = array();
         #Checa se a disciplina existe e adiciona a turma 
         foreach($servico as $service ){
+
             //Pega a disciplina no banco, se ela existe
             $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
             if( $disc == null ){
                 //Cria disciplina
-                throw("Erro, disciplina não cadastrada na base");
-            }
-            //Pega a turma no banco, se ela existe
-            $turma = $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']);
-            if($turma == null){
-                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
+                continue;
             }
 
+            //Pega a turma no banco, se ela existe
+            if( $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']) == null){
+                $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
+            } else {
+                $turma = $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']);
+            }
             $disciplinas_aluno[] = $disc;
 
             #Checa se o professor existe, caso nao, cria
@@ -66,23 +64,25 @@ class AvaliacaoController
                 }
                 $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
             }
+
+            $arrayCodigoTurma[$disc->getCodigo()] = $turma->getId();
         }
 
         $cont = 0;
         $cont2 = 0;
-        foreach ( $notas_usuario as $nota){
-            if ( $nota->getPeriodo() == $periodoPassado && $nota->getEstado() !== "Trancado"){  
-                #Cont que verifica quantas disciplinas o usuario teve no periodo passado
-                $cont = $cont + 1;
-                foreach ($disciplinas_avaliadas as $disci) {
-                    if ($disci == $nota->getDisciplina()->getId()) {
-                        #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
-                        $cont2 = $cont2 + 1;
-                    }
+        foreach ( $disciplinas_aluno as $disciplina){ 
+            #Cont que verifica quantas disciplinas o usuario teve no periodo passado
+            $cont = $cont + 1;
+            foreach ($disciplinas_avaliadas as $disci) {
+                if ($disci == $disciplina->getId()) {
+                    #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
+                    $cont2 = $cont2 + 1;
                 }
             }
         }
 
+        echo $cont;
+        
         if( $cont == $cont2 ){
             $this->container->view['concluiu'] = "OK";
         }
@@ -92,7 +92,7 @@ class AvaliacaoController
         $this->container->view['usuario'] = $usuario;
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $periodoPassado;
-        $this->container->view['turma'] = $turma;
+        $this->container->view['turma'] = $arrayCodigoTurma;
         
         #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
@@ -101,8 +101,7 @@ class AvaliacaoController
     
     public function page1(Request $request, Response $response, $args)
     {
-        //$this->container->questaoDAO->inicializaQuestoes();
-        $id_disciplina = $request->getParam('disciplina');
+        list ($id_disciplina, $codigoTurma) = explode("/", $request->getParam('disciplinaCodigoTurma'));
         $disciplina = $this->container->disciplinaDAO->getById($id_disciplina);
         $this->container->view['disciplina'] = $disciplina->getNome();
         $codigo = $disciplina->getCodigo();
@@ -113,6 +112,7 @@ class AvaliacaoController
         $questoes = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 0);
         $this->container->view['questoes'] = $questoes;
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
+        $this->container->view['turma'] = $codigoTurma;
 
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
     }
@@ -155,7 +155,6 @@ class AvaliacaoController
         $this->container->view['codigo'] = $codigo;
         $this->container->view['id_disciplina'] = $id_disciplina;
         $this->container->view['turma'] = $turma;
-        //$turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, 'A');
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
@@ -175,13 +174,9 @@ class AvaliacaoController
             $this->container->view['respostas1'] = $respostas1;   
             $questoes2 = $this->container->questaoDAO->getAllByTipoQuestionario($versaoAtual, 2);
             $this->container->view['questoes2'] = $questoes2;
-
             return $this->container->view->render($response, 'avaliacaoPage2.tpl');
-                
-
         }   else {
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
-
             return $this->container->view->render($response, 'avaliacaoPage1.tpl');
         }
     }
@@ -195,6 +190,8 @@ class AvaliacaoController
         $codigo = $request->getParsedBodyParam("codigo");
         $disciplina = $request->getParsedBodyParam("disciplina");
         $id_disciplina = $request->getParsedBodyParam("id_disciplina");
+        $turma = $request->getParsedBodyParam("turma");
+        $this->container->view['turma'] = $turma;
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
         $this->container->view['id_disciplina'] = $id_disciplina;
@@ -233,22 +230,19 @@ class AvaliacaoController
         $verificacao = $request->getParsedBodyParam("verificacao");
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $periodoPassado = $request->getParsedBodyParam("periodoPassado");
-        $notas_usuario = $usuario->getNotas();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
         $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
         
         #Verificação e atribuição de medalhas 
         $cont = 0;
         $cont2 = 0;
-        foreach ($notas_usuario as $nota){
-            if ($nota->getPeriodo() == $periodoPassado && $nota->getEstado() !== "Trancado"){  
-                #Cont que verifica quantas disciplinas o usuario teve no periodo passado
-                $cont = $cont + 1;
-                foreach ($disciplinas_avaliadas as $disci) {
-                    if ($disci == $nota->getDisciplina()->getId()) {
-                        #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
-                        $cont2 = $cont2 + 1;
-                    }
+        foreach ($this->disciplinasPassadasAluno as $disci){
+            #Cont que verifica quantas disciplinas o usuario teve no periodo passado
+            $cont = $cont + 1;
+            foreach ($disciplinas_avaliadas as $disci) {
+                if ($disci == $disci->getId()) {
+                    #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
+                    $cont2 = $cont2 + 1;
                 }
             }
         }
@@ -335,7 +329,8 @@ class AvaliacaoController
         $this->container->view['id_disciplina'] = $id_disciplina;
         $respostas1_2 = $request->getParsedBodyParam("respostas1_2");
         $this->container->view['respostas1_2'] = $respostas1_2;
-        $codigoTurma = null;
+        $turmaId = $request->getParsedBodyParam("turma");
+        $turma = $this->container->turmaDAO->getById($turmaId);
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
 
@@ -358,53 +353,23 @@ class AvaliacaoController
             $periodoPassado = $this->getPeriodoPassado();
             $servico = $this->getServiceByPeriodo($periodoPassadoArray);
 
+            #Caso o período anterior n tenha nenhum registro, essa verificação serve pra pegar o anterior a ele 
             if( $servico[0] == null ){
                 $periodoPassadoArray = str_split($this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1));
                 $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
                 $servico = $this->getServiceByPeriodo($periodoPassadoArray);
-             }
-
-            #Checa se a disciplina existe e adiciona a turma 
-            foreach($servico as $service ){
-                $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
-                if( $disc != null ){
-                    $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
-                }
-                else{
-                    //Criar disciplina e turma
-                }
-
-                #Checa se o professor existe, caso nao, cria
-                foreach($service['professores'] as $professor){
-                    $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
-                    if( $prof == null ){
-                        $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
-                    }
-                    $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
-                }
             }
  
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $idUsuario = $usuario->getId();
             $gravou = 0;
-
-            #Loop pra pegar o codigo da turma do aluno
-            foreach( $servico as $service){
-                $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
-                if( $disc->getId() == $id_disciplina ){
-                    $codigoTurma = $service['turma'];
-                    break;
-                }
-            }
             
-            #Enviar as respostas
+            #Registrar as respostas
             if($idUsuario !== null){
                 $id_questionario = $this->container->questionarioDAO->getIdByVersao($versaoAtual);
-                $turma = $this->container->turmaDAO->getByDisciplinaCodigo($id_disciplina, $codigoTurma);                   
-               
                 if($turma !== null){
                     $avaliacao = $this->container->avaliacaoDAO->gravarAvaliacao($idUsuario, $turma->getId(), $id_questionario);
-                   
+
                     if($avaliacao !== null){
                         $questoes = $this->container->questaoDAO->getAllByVersaoQuestionario($versaoAtual);
                         $professor_turma = $this->container->professorTurmaDAO->getByTurma($turma->getId());
@@ -417,7 +382,7 @@ class AvaliacaoController
                 }
             }
             if($gravou == 0){
-                echo "<script>console.log('Erro ao gravar avaliação!' );</script>";
+                echo "Erro ao registrar respostas!";
                 die();
             }
 
@@ -427,7 +392,7 @@ class AvaliacaoController
             $this->container->view['periodoPassado'] = $periodoPassado;
             $this->container->view['versaoAtual'] = $versaoAtual;
 
-                return $this->storePageMedalhas($request, $response, $args);
+            return $this->storePageMedalhas($request, $response, $args);
         }else {
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');

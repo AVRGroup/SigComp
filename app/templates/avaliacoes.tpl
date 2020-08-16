@@ -27,20 +27,19 @@
         <div align="center" class="col-lg-12 col-sm-12 col-md-12" >
             <div class="container">
                     {foreach $disciplinas_aluno as $disciplina}
-                    {$show = true}
-                        
-                    <div class="container">    
-                        {foreach $disciplinas_avaliadas as $disci}
-                            {if $disci == $disciplina->getId()}
-                                <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$disciplina->getCodigo()} - {$disciplina->getNome()}</button>
-                                    {$show = false}
-                                {break}
+                    {$show = true}    
+                        <div class="container">    
+                            {foreach $disciplinas_avaliadas as $disci}
+                                {if $disci == $disciplina->getId()}
+                                    <button type="button" class="btn btn-lg btn-primary col-lg-6 col-sm-12 col-md-12 text-truncate" style="margin-top: 1%" disabled> {$disciplina->getCodigo()} - {$disciplina->getNome()}</button>
+                                        {$show = false}
+                                    {break}
+                                {/if}
+                            {/foreach}
+                            {if $show}
+                                <a href="{path_for name="avaliacaoPage01"}?disciplinaCodigoTurma={$disciplina->getId()}/{$turma[$disciplina->getCodigo()]}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$disciplina->getCodigo()} - {$disciplina->getNome()}</a>
                             {/if}
-                        {/foreach}
-                    {if $show}
-                        <a href="{path_for name="avaliacaoPage01"}?disciplina={$disciplina->getId()}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$disciplina->getCodigo()} - {$disciplina->getNome()}</a>
-                    {/if}
-                    </div>
+                        </div>
                     {/foreach}
                 <hr>
             </div>
@@ -48,9 +47,6 @@
     </div>
 
     <form method="POST" action="{path_for name="home"}">  
-
-        <input type="hidden" name="turma" value="{$turma}">
-
         <nav aria-label="navigation" class="pagination justify-content-center">
             <button style="margin-top: 2%; width: 300px; height: 45px" class="btn btn-outline-primary" type="submit">Página inicial</button>  
         </nav>

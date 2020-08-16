@@ -1,7 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h2 class="text-center"> Edição do Questionário </h2>
-    <!-- 01#!/79awQxVp -->
     <hr>
 
     <div align="center" style="margin-bottom: 4%;">

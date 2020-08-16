@@ -68,7 +68,6 @@ class AdminController
                     //Inserindo novas disciplinas 
                     $disciplinas = array();
                     foreach ($data as $disc) {
-                        //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
                         
                         if(array_key_exists($disc['Disciplina'], $disciplinas)){
                             continue;
@@ -76,13 +75,11 @@ class AdminController
 
                         $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
                         if ($disciplina_aux !== null) {
-                            //echo "<script>console.log('Já existe');</script>";
                             $disciplina_aux->setNome($disc['Nome Disciplina']);
                             $disciplinas[$disc['Disciplina']] = $disciplina_aux;
                             continue;
                         }
 
-                        //echo "<script>console.log('Criando disciplina');</script>";
                         $disciplina = new Disciplina();
                         $disciplina->setCodigo($disc['Disciplina']);
                         $disciplina->setCarga($disc['Carga Horária']);
@@ -104,8 +101,6 @@ class AdminController
                     foreach ($data as $user) {
                         $curso = $user['Curso'];
 
-                        //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
-
                         if(array_key_exists($user['Matrícula'], $usuarios)) {
                             $usuario = $usuarios[$user['Matrícula']];
                         }
@@ -113,13 +108,10 @@ class AdminController
                         else {
                             $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
                             if ($usuario_aux !== null) {
-                                //echo "<script>console.log('usuário já existe');</script>";
                                 $usuario = $usuario_aux;
                                 //Se não está no map, insere neste e atualiza
                                 foreach ($usuario->getNotas() as $userNota) {
-                                    //echo "<script>console.log('Removendo nota');</script>";
                                     $usuario->removeNota($userNota);
-                                    //echo "<script>console.log('notaDAO');</script>";
                                     $this->container->notaDAO->remove($userNota);
                                 }
                                 $usuario->setNome($user['Aluno']);
