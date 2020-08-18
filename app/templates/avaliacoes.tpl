@@ -1,7 +1,6 @@
 {extends 'layout.tpl'}
 {block name=content}
     <h2 class="text-center"> Avaliação </h2>
-    <!-- 01#!/79awQxVp -->
     <hr>
     {if isset($concluiu)}
         <div align="center" >
@@ -13,14 +12,14 @@
     {/if}
     
     {if isset($completo)}
-      <div align="center" style="margin-bottom: 3%;">
+        <div align="center" style="margin-bottom: 3%;">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {$completo}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-      </div>
-      </div>
+                {$completo}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
     {/if}
 
     <div class="container ">
@@ -37,7 +36,7 @@
                                 {/if}
                             {/foreach}
                             {if $show}
-                                <a href="{path_for name="avaliacaoPage01"}?disciplinaCodigoTurma={$disciplina->getId()}/{$turma[$disciplina->getCodigo()]}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$disciplina->getCodigo()} - {$disciplina->getNome()}</a>
+                                <a href="{path_for name="avaliacaoPage01"}?param={$disciplina->getId()}/{$turma[$disciplina->getCodigo()]}/{$discAvaliacao}" class="text-truncate btn btn-primary btn-lg active col-lg-6 col-sm-12 col-md-12" style="margin-top: 1%" role="button" aria-pressed="true"> {$disciplina->getCodigo()} - {$disciplina->getNome()}</a>
                             {/if}
                         </div>
                     {/foreach}

@@ -81,8 +81,6 @@ class AvaliacaoController
             }
         }
 
-        echo $cont;
-        
         if( $cont == $cont2 ){
             $this->container->view['concluiu'] = "OK";
         }
@@ -93,6 +91,7 @@ class AvaliacaoController
         $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $periodoPassado;
         $this->container->view['turma'] = $arrayCodigoTurma;
+        $this->container->view['discAvaliacao'] = $cont;
         
         #USAR SOMENTE PRA INICIALIZAR AS QUESTOES NO BANCO COM ACENTO
         //$this->container->questaoDAO->inicializaQuestoes();
@@ -101,11 +100,12 @@ class AvaliacaoController
     
     public function page1(Request $request, Response $response, $args)
     {
-        list ($id_disciplina, $codigoTurma) = explode("/", $request->getParam('disciplinaCodigoTurma'));
+        list ($id_disciplina, $codigoTurma, $discAvaliacao) = explode("/", $request->getParam('param'));
         $disciplina = $this->container->disciplinaDAO->getById($id_disciplina);
         $this->container->view['disciplina'] = $disciplina->getNome();
         $codigo = $disciplina->getCodigo();
         $this->container->view['codigo'] = $codigo;
+        $this->container->view['discAvaliacao'] = $discAvaliacao;
         $this->container->view['id_disciplina'] = $id_disciplina;
         $versaoAtual = $this->container->questionarioDAO->getUltimaVersao();
         $this->container->view['versaoAtual'] = $versaoAtual;
@@ -150,6 +150,8 @@ class AvaliacaoController
         $disciplina = $request->getParsedBodyParam("disciplina");
         $id_disciplina = $request->getParsedBodyParam("id_disciplina");
         $turma = $request->getParsedBodyParam("turma");
+        $discAvaliacao = $request->getParsedBodyParam("discAvaliacao");
+        $this->container->view['discAvaliacao'] = $discAvaliacao;
         
         $this->container->view['disciplina'] = $disciplina;
         $this->container->view['codigo'] = $codigo;
@@ -197,6 +199,8 @@ class AvaliacaoController
         $this->container->view['id_disciplina'] = $id_disciplina;
         $respostas1 = $request->getParsedBodyParam("respostas1");
         $this->container->view['respostas1'] = $respostas1;
+        $discAvaliacao = $request->getParsedBodyParam("discAvaliacao");
+        $this->container->view['discAvaliacao'] = $discAvaliacao;
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
               
         //Salvando as respostas no vetor
@@ -225,7 +229,7 @@ class AvaliacaoController
     }
 
     #Store da page que vai apresentar a medalha do usuario que fez as avaliaçoes
-    public function storePageMedalhas(Request $request, Response $response, $args)
+    public function storePageMedalhas(Request $request, Response $response, $args, $discAvaliacao)
     {
         $verificacao = $request->getParsedBodyParam("verificacao");
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
@@ -235,21 +239,13 @@ class AvaliacaoController
         
         #Verificação e atribuição de medalhas 
         $cont = 0;
-        $cont2 = 0;
-        foreach ($this->disciplinasPassadasAluno as $disci){
-            #Cont que verifica quantas disciplinas o usuario teve no periodo passado
+        foreach ($disciplinas_avaliadas as $disci) {
             $cont = $cont + 1;
-            foreach ($disciplinas_avaliadas as $disci) {
-                if ($disci == $disci->getId()) {
-                    #Cont pra ver quantas disciplinas do periodo passado foram avaliadas
-                    $cont2 = $cont2 + 1;
-                }
-            }
         }
 
         #Caso o usuário tenha concluido todas as avaliaçoes, a page com a medalha dele sera exibida
         #Essa $verificacao serve pra saber se o espertinho ta tentando acessar a page de medalha editando a URL!
-        if( $cont == $cont2 && $verificacao == true){
+        if( $cont == $discAvaliacao && $verificacao == true){
             $this->container->usuarioDAO->addAvaliacaoInUser($usuario->getId());
             $avaliacoes = $this->container->usuarioDAO->getNumAvaliacoes($usuario->getId());
         
@@ -330,6 +326,7 @@ class AvaliacaoController
         $respostas1_2 = $request->getParsedBodyParam("respostas1_2");
         $this->container->view['respostas1_2'] = $respostas1_2;
         $turmaId = $request->getParsedBodyParam("turma");
+        $discAvaliacao = $request->getParsedBodyParam("discAvaliacao");
         $turma = $this->container->turmaDAO->getById($turmaId);
 
         $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
@@ -392,7 +389,7 @@ class AvaliacaoController
             $this->container->view['periodoPassado'] = $periodoPassado;
             $this->container->view['versaoAtual'] = $versaoAtual;
 
-            return $this->storePageMedalhas($request, $response, $args);
+            return $this->storePageMedalhas($request, $response, $args, $discAvaliacao);
         }else {
             $this->container->view['incompleto'] = "Preencha todos os campos de resposta!";
             return $this->container->view->render($response, 'avaliacaoPage3.tpl');

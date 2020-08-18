@@ -1000,8 +1000,6 @@ class AdminController
             return $this->painelCoordenador($request, $response, $args);
         }
 
-
-
         $questionarios = $this->container->questionarioDAO->getAll();
         $this->container->view['questionarios'] = $questionarios;
         $professores = $this->container->usuarioDAO->getProfessores();
@@ -1031,7 +1029,6 @@ class AdminController
                 else{
                     //selecionar só o professor escolhido para avaliação
                     list ($professor_id, $periodo) = explode("/", $_POST['professores_' . $ps]);
-                    echo "<script>console.log('UM PROF');</script>";
                     $result = $this->container->questionarioDAO->requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id);
                 }
                 

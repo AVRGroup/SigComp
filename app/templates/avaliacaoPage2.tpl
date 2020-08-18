@@ -39,6 +39,7 @@
           <input type="hidden" name="disciplina" value="{$disciplina}">
           <input type="hidden" name="id_disciplina" value="{$id_disciplina}">
           <input type="hidden" name="turma" value="{$turma}">
+          <input type="hidden" name="discAvaliacao" value="{$discAvaliacao}">
 
           {foreach $questoes2 as $questao}
 

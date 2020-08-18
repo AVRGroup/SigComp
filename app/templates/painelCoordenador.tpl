@@ -128,7 +128,6 @@
                 </div>
             </div>
         {/if}
-        
     </div>
 
 {/block}

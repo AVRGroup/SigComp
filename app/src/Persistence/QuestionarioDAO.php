@@ -205,7 +205,6 @@ class QuestionarioDAO extends BaseDAO
         if($professores_turmas){
             foreach($professores_turmas as $pt){
                 $id = $pt->getId();
-                echo $id;
                 try {
                     $sql_insert = "INSERT INTO db_gamificacao.questionario_professor_turma (`questionario_id`, `professorturma_id`) VALUES ({$questionario_id}, {$id});";
                     $stmt_insert = $this->em->getConnection()->prepare($sql_insert);

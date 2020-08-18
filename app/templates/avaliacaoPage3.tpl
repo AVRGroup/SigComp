@@ -32,7 +32,8 @@
           <input type="hidden" name="disciplina" value="{$disciplina}">
           <input type="hidden" name="id_disciplina" value="{$id_disciplina}">
           <input type="hidden" name="verificacao" value="{$verificacao}">
-          <input type="hidden" name="turma" value="{$turma}">   
+          <input type="hidden" name="turma" value="{$turma}">
+          <input type="hidden" name="discAvaliacao" value="{$discAvaliacao}">   
           
           {foreach $respostas1_2 as $r}
             <input type="hidden" name="respostas1_2[]" value="{$r}">

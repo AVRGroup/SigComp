@@ -863,7 +863,4 @@ class Usuario implements ToIdArrayInterface
     {
         $this->password = $password;
     }
-
-
-
 }
