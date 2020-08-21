@@ -88,7 +88,7 @@ class AvaliacaoController
         $this->container->view['disciplinas_aluno'] = $disciplinas_aluno;
         $this->container->view['disciplinas_avaliadas'] = $disciplinas_avaliadas;
         $this->container->view['usuario'] = $usuario;
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $periodoPassado;
         $this->container->view['turma'] = $arrayCodigoTurma;
         $this->container->view['discAvaliacao'] = $cont;
@@ -116,16 +116,10 @@ class AvaliacaoController
 
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
     }
-    
-    public function getPeriodoAtual()
-    {
-        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
-        return $periodo;
-    }
 
     public function getPeriodoPassado()
     {
-        $periodoAtual = $this->getPeriodoAtual();
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
 
@@ -298,14 +292,14 @@ class AvaliacaoController
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $this->container->view['usuario'] = $usuario;
             $this->container->view['versaoAtual'] = $versaoAtual;
-            $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+            $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
             $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
             $this->container->view['completo'] = "Parabéns, você concluiu uma avaliação.";
             return $this->index($request, $response, $args);
         }
 
         $this->container->view['usuario'] = $usuario;
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['versaoAtual'] = $versaoAtual;
         return $this->container->view->render($response, 'avaliacaoPageMedalhas.tpl');
@@ -385,7 +379,7 @@ class AvaliacaoController
 
             $usuario = $this->container->usuarioDAO->getUsuarioLogado();
             $this->container->view['usuario'] = $usuario;
-            $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+            $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
             $this->container->view['periodoPassado'] = $periodoPassado;
             $this->container->view['versaoAtual'] = $versaoAtual;
 

@@ -87,7 +87,7 @@ class UserController
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotal();
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         $this->container->view['naoBarraPesquisa'] = true;
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($amigo->getGrade(), $amigo->getCurso()) * 100;
 
         $this->container->view['grupos'] = Helper::getGruposComPontuacao($this->container, $amigo);;
@@ -97,15 +97,9 @@ class UserController
         return $this->container->view->render($response, 'home.tpl');
     }
 
-    public function getPeriodoAtual()
-    {
-        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
-        return $periodo;
-    }
-
     public function getPeriodoPassado()
     {
-        $periodoAtual = $this->getPeriodoAtual();
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
 
@@ -314,7 +308,7 @@ class UserController
 
 
     public function teste(Request $request, Response $response, $args){
-        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
+        $periodoCorrente = $this->container->usuarioDAO->getUltimaCarga();
         $periodo = $this->container->usuarioDAO->getUsersPeriodoAtual(145, $periodoCorrente);
 
         die(var_dump($periodo));
@@ -389,7 +383,7 @@ class UserController
         $this->container->usuarioDAO->setBy100($this->container->usuarioDAO->getBy100(3, 4, 12018), 3, 12018);
 
         $allUserIds = $this->container->usuarioDAO->getAllUsersIds();
-        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
+        $periodoCorrente = $this->container->usuarioDAO->getUltimaCarga();
         foreach ($allUserIds as $userId) {
             $userId = $userId['id'];
             //ficou um pouco confuso, mas o get recebe o tipo do certificado (da model 'Certificado.php') e o set recebe o numero da primeira medalha (da tabela 'medalha')

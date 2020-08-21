@@ -10,6 +10,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+        <p style="font-weight: 500; font-size: 23px">Última carga: {$ultimaCarga}</p>
+
     </div>
     
     <div class="row text-center">

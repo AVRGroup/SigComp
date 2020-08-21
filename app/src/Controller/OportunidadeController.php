@@ -40,7 +40,7 @@ class OportunidadeController
         $this->container->view['oportunidades'] = $oportunidades;
         $this->container->view['disciplinasAprovadas'] = $disciplinasAprovadas;
 
-        $periodoCorrente = $this->container->usuarioDAO->getPeriodoCorrente();
+        $periodoCorrente = $this->container->usuarioDAO->getUltimaCarga();
         $this->container->view['periodo'] = $this->container->usuarioDAO->getUsersPeriodoAtual($idUsuario, $periodoCorrente);
 
         $this->container->view['oportunidadeSelecionada'] = $request->getParam('oportunidade');

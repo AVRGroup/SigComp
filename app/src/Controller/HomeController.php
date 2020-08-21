@@ -100,7 +100,7 @@ class HomeController
         $this->container->view['usuario'] = $usuario;
         $this->container->view['top10Ira'] = $top10Ira;
         $this->container->view['top10IraPeriodoPassado'] = $top10IraPeriodoPassado;
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($user->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($user->getGrade(), $user->getCurso()) * 100;
@@ -144,7 +144,7 @@ class HomeController
 
     public function getPeriodoPassado()
     {
-        $periodoAtual = $this->getPeriodoAtual();
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
 
@@ -157,13 +157,6 @@ class HomeController
         }
 
         return intval($periodoAnterior);
-    }
-
-
-    public function getPeriodoAtual()
-    {
-        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
-        return $periodo;
     }
 
     public function aboutAction(Request $request, Response $response, $args)

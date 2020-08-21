@@ -960,7 +960,7 @@ class UsuarioDAO extends BaseDAO
         }
     }
 
-    public function getPeriodCurrent(){
+    public function setPeriodoAtual(){
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -980,11 +980,15 @@ class UsuarioDAO extends BaseDAO
         $response = json_decode(curl_exec($curl), true);
         $response = $response['Período Atual'];
         curl_close($curl);
-        
+
+        $sql = "INSERT INTO periodo_corrente (periodo_atual) VALUES ('{$response}')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+
         return $response;
     }
 
-    public function setPeriodoCorrente()
+    public function setUltimaCarga()
     {
         try {
             $horaAtual = new \DateTime();
@@ -997,7 +1001,17 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
     }
 
-    public function getPeriodoCorrente()
+    public function getPeriodoAtual()
+    {
+        $sql = "SELECT * FROM periodo_corrente ORDER BY periodo_atual DESC LIMIT 1";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $periodoCorrente = $stmt->fetchAll();
+
+        return $periodoCorrente[0]['periodo_atual'];
+    }
+
+    public function getUltimaCarga()
     {
         $sql = "SELECT * FROM periodo_corrente ORDER BY ultima_carga DESC LIMIT 1";
         $stmt = $this->em->getConnection()->prepare($sql);

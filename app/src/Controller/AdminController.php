@@ -173,8 +173,9 @@ class AdminController
                 $this->abreviaTodosNomes(true, $curso);
             }
 
-            $this->container->usuarioDAO->setPeriodoCorrente();
-            $periodo = $this->getPeriodoAtual();
+            $this->container->usuarioDAO->setUltimaCarga();
+            $this->container->usuarioDAO->setPeriodoAtual();
+            $periodo = $this->container->usuarioDAO->getPeriodoAtual();
 
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
             foreach($arrayCursos as $c){
@@ -511,6 +512,8 @@ class AdminController
 
     public function adminData(Request $request, Response $response, $args)
     {
+        list( $ano, $mes, $dia ) =  explode("-", $this->container->usuarioDAO->getUltimaCarga());
+        $this->container->view['ultimaCarga'] = $dia . "/" . $mes . "/" . $ano;
         return $this->container->view->render($response, 'data.tpl');
     }
 
@@ -537,7 +540,7 @@ class AdminController
             $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodo();
         }
 
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
 
         return $this->container->view->render($response, 'adminDashboard.tpl');
@@ -681,7 +684,7 @@ class AdminController
 
         $this->container->view['top10Ira'] = $this->container->usuarioDAO->getTop10IraTotalPorCurso($usuario->getCurso());
         $this->container->view['top10IraPeriodoPassado'] = $this->container->usuarioDAO->getTop10IraPeriodoPorCurso($usuario->getCurso());
-        $this->container->view['periodoAtual'] = $this->getPeriodoAtual();
+        $this->container->view['periodoAtual'] = $this->container->usuarioDAO->getPeriodoAtual();
         $this->container->view['periodoPassado'] = $this->getPeriodoPassado();
         $this->container->view['posicaoGeral'] = $this->container->usuarioDAO->getPosicaoAluno($usuario->getId());
         $this->container->view['xpTotal'] = $this->container->usuarioDAO->getQuantidadeDisciplinasByGrade($usuario->getGrade(), $usuario->getCurso()) * 100;
@@ -694,7 +697,7 @@ class AdminController
 
     public function getPeriodoPassado()
     {
-        $periodoAtual = $this->getPeriodoAtual();
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
 
@@ -708,13 +711,6 @@ class AdminController
 
         return intval($periodoAnterior);
     }
-
-    public function getPeriodoAtual()
-    {
-        $periodo = $this->container->usuarioDAO->getPeriodCurrent();
-        return $periodo;
-    }
-
 
     public function listPeriodizadosAction(Request $request, Response $response, $args)
     {
@@ -931,7 +927,7 @@ class AdminController
 
     public function painelCoordenador(Request $request, Response $response, $args)
     {
-        $periodoAtual = $this->container->usuarioDAO->getPeriodCurrent();
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
         $semestre = intval($periodoAtual[4]);
         $ano = substr($periodoAtual, 0, 4);
         $periodos = array();
