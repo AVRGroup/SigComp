@@ -162,7 +162,7 @@ class AdminController
         if($consumo !== 0){
             $this->container->view['affectedData'] = $affectedData;
             $this->container->view['success'] = true;
-            //echo "<script>console.log('consumo !== 0');</script>";
+            echo "<script>console.log('consumo !== 0');</script>";
 
             $this->deletaUsuariosDuplicados();
 
@@ -173,8 +173,7 @@ class AdminController
                 $this->abreviaTodosNomes(true, $curso);
             }
 
-            $this->container->usuarioDAO->setUltimaCarga();
-            $this->container->usuarioDAO->setPeriodoAtual();
+            $this->container->usuarioDAO->setPeriodoAtualUltimaCarga();
             $periodo = $this->container->usuarioDAO->getPeriodoAtual();
 
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
@@ -182,12 +181,14 @@ class AdminController
                 $this->container->usuarioDAO->deleteAbsentUsers($curso);
             }
 
-            //return $response->withRedirect($this->container->router->pathFor('assignMedals'));
+            //return $response->withRedirect($this->container->router->pathFor('assignMedals'));   
+            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            $this->container->view['usuario'] = $usuario;
+            return $this->container->view->render($response, 'adminDataLoad.tpl');
+        } else {
+            $this->container->view['error'] = "Não foi possível fazer a carga de dados, tente novamente!";
+            return $this->container->view->render($response, 'adminDataLoad.tpl');
         }
-
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $this->container->view['usuario'] = $usuario;
-        return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
     public function deletaUsuariosDuplicados()
