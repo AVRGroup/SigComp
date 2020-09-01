@@ -24,17 +24,6 @@
         </div>
     {/if}
 
-    {if isset($store)}
-    <div align="center">
-        <div class="alert alert-warning alert-dismissible fade show col-md-8" role="alert">
-            <b>Atenção!</b> Por padrão, todos os professores são selecionados para avaliação.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-    {/if}
-
     <div>
         {if isset($index)}
         <form method="POST" action="{base_url}/admin/store-painel-coordenador">
@@ -71,8 +60,8 @@
                 <input type="hidden" name="perSelectedArray[]" value="{$p}">
             {/foreach}
 
-            <h5 align="center" style="color: darkred; font-style: italic; margin-top: 1%; margin-bottom: 1%">Escolha um questionário para ser usado na avaliação!</h5>
-            <div align="center">
+            <h5 align="center" style="color: darkblue; font-style: italic; margin-top: 1%; margin-bottom: 1%">Escolha um questionário para ser usado na avaliação!</h5>
+            <div align="center" class="row justify-content-center">
                 <div align="center" class="col-6" >
                     <div class="row">
                         <select id="filtrar-data" name="selecao_questionario" class="form-control col-md-10 col-sm-12 mx-sm-auto">
@@ -85,7 +74,11 @@
                                 {/if}
                             {/foreach}
                         </select>
+
                     </div>
+                </div>
+                <div>
+                    <a href="{path_for name="questionarios"}" style="width: 210px; height: 37px; " class="btn btn-outline-primary" type="submit"><span style="font-size: 15px">Criar questionário</span></a>
                 </div>
             </div>
 

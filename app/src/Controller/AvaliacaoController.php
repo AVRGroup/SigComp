@@ -36,7 +36,7 @@ class AvaliacaoController
         #Verifica se o serviço não é null para o periodo passado
         if( $servico[0] == null ){
             $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
-         }
+        }
 
         #Checa se a disciplina existe e adiciona a turma 
         foreach($servico as $service ){
@@ -44,7 +44,6 @@ class AvaliacaoController
             //Pega a disciplina no banco, se ela existe
             $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
             if( $disc == null ){
-                //Cria disciplina
                 continue;
             }
 
