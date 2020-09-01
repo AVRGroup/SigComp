@@ -26,6 +26,11 @@ class PeriodoCorrente implements toIdArrayInterface {
      */
     protected $ultima_carga;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $periodo_atual;
+
     public function getIdentifier()
     {
        return $this->id;

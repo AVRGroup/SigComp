@@ -43,12 +43,6 @@ class Questionario
      */
     protected $questoes_questionario;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="ProfessorTurma", inversedBy="questionario")
-     * @ORM\JoinTable(name="questionario_professor_turma")
-     */
-    protected $professores_turmas;
-
     public function __construct()
     {
     }
