@@ -1036,4 +1036,9 @@ class AdminController
         $this->container->view['completo'] = 'Alterações salvas com sucesso!'; 
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
+
+    public function sendEmail($email, $nome){
+        $mail = new MailSender();
+        return $mail->sendMailAlunos($email, $nome);
+    }
 }

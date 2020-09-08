@@ -93,6 +93,8 @@ $app->group('', function () {
 
         $this->map(['GET', 'POST'], '/edicao-questoes', '\App\Controller\QuestionarioController:listaQuestoes')->setName('edicao-questoes');
         $this->map(['GET', 'POST'], '/store-questoes', '\App\Controller\QuestionarioController:storeQuestoes')->setName('store-questoes');
+        $this->map(['GET', 'POST'], '/new-questionario', '\App\Controller\QuestionarioController:newQuestionario')->setName('new-questionario');
+        $this->map(['GET', 'POST'], '/store-new-questionario', '\App\Controller\QuestionarioController:storeNewQuestionario')->setName('store-new-questionario');
 
         //$this->map(['GET', 'POST'], '/list-users', '\App\Controller\UserController:adminListAction')->setName('adminListUsers');
         $this->map(['GET', 'POST'], '/teste', '\App\Controller\UserController:teste');

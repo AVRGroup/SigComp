@@ -44,7 +44,6 @@ class QuestionarioController
             $categoria = $request->getParsedBodyParam("filtro_categoria");
             $filtro = 1;
             echo "<script>console.log('entrou no if da versao ". $versao ."');</script>";
-            //die(var_dump($versao));
         }
 
         elseif($request->getParsedBodyParam("filtro_versao") == null){
@@ -80,21 +79,111 @@ class QuestionarioController
             $this->container->view['questaoQuestionarioDAO'] = $this->container->questaoQuestionarioDAO;
             $cursos = $this->container->usuarioDAO->getCursos();
             $this->container->view['cursos'] = $cursos; 
-            return $this->container->view->render($response, 'edicaoQuestoes.tpl'); 
-            #header("Location: $base_url/edicaoQuestoes.tpl");
+            return $this->container->view->render($response, 'edicaoQuestoes.tpl');
+        }
+    }
 
+    public function newQuestionario(Request $request, Response $response, $args){
+
+        return $this->container->view->render($response, 'criarNovoQuestionario.tpl');
+    }
+
+    public function storeNewQuestionario(Request $request, Response $response, $args){
+
+        $nova_versao = $this->container->questionarioDAO->getUltimaVersao();
+        $nova_versao = $nova_versao[1];
+        $nova_versao++;
+        echo "<script>console.log('nova_versao: " . $nova_versao . " ');</script>";
+
+        #Verifica se o nome do questionario nao esta em branco
+        if( $request->getParsedBodyParam("newNameQuestionario") !== "" ){
+            $novo_nome = $request->getParsedBodyParam("newNameQuestionario");
+        } else {
+            $this->container->view['incompleto'] = "O nome do questionário não pode ficar em branco!";
+            return $this->newQuestionario($request, $response, $args);
         }
-        /*
-        else{
-            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-            $this->container->view['usuario'] = $usuario;
-            $questionarios = $this->container->questionarioDAO->getAll();
-            $this->container->view['questionarios'] = $questionarios;
-            $this->container->view['incompleto'] = "Selecione um filtro!";
-            $this->container->view->render($response, 'edicaoQuestionario.tpl');
-            #header("Location: $base_url/edicaoQuestionario.tpl");
+
+        #Verifica se existe pelo menos uma questao em cada categoria pra criar o questionario
+        if( $request->getParsedBodyParam("add_pess_" . "1") && $request->getParsedBodyParam("add_turma_" . "1") && $request->getParsedBodyParam("add_prof_" . "1") ){
+            $questionario = $this->container->questionarioDAO->newQuestionario($nova_versao, $novo_nome);
         }
-        */
+        
+        $contPessoal = 1;
+        while($request->getParsedBodyParam("add_pess_" . $contPessoal)){
+            $enunciado = $request->getParsedBodyParam("add_pess_" . $contPessoal);
+            $numero = $contPessoal;
+             
+            $a = $this->container->questaoDAO->addQuestao($contPessoal, $enunciado, 0, 0, $nova_versao);
+            $questionario = $a[0];
+            $questao = $a[1];
+            if($questao !== null){
+                try {
+                    $q = new QuestaoQuestionario();
+                    $q->setQuestao($questao);
+                    $q->setQuestionario($questionario);
+                    $q->setNumero($numero);
+                    $this->container->questaoQuestionarioDAO->persist($q);
+                    $this->container->questaoQuestionarioDAO->flush();
+                } catch (\Exception $e) {
+                    throw $e;
+                }   
+            }
+            $contPessoal++;
+        }
+
+        $contProf = 1;
+        while($request->getParsedBodyParam("add_prof_" . $contProf)){
+            $enunciado = $request->getParsedBodyParam("add_prof_" . $contProf);
+            $numero = $contProf;
+             
+            $a = $this->container->questaoDAO->addQuestao($contProf, $enunciado, 0, 2, $nova_versao);
+            $questionario = $a[0];
+            $questao = $a[1];
+            if($questao !== null){
+                try {
+                    $q = new QuestaoQuestionario();
+                    $q->setQuestao($questao);
+                    $q->setQuestionario($questionario);
+                    $q->setNumero($numero);
+                    $this->container->questaoQuestionarioDAO->persist($q);
+                    $this->container->questaoQuestionarioDAO->flush();
+                } catch (\Exception $e) {
+                    throw $e;
+                }   
+            }
+            $contProf++;
+        }
+
+        $contTurma = 1;
+        while($request->getParsedBodyParam("add_turma_" . $contTurma)){
+            $enunciado = $request->getParsedBodyParam("add_turma_" . $contTurma);
+            $numero = $contTurma;
+             
+            $a = $this->container->questaoDAO->addQuestao($contTurma, $enunciado, 0, 1, $nova_versao);
+            $questionario = $a[0];
+            $questao = $a[1];
+            if($questao !== null){
+                try {
+                    $q = new QuestaoQuestionario();
+                    $q->setQuestao($questao);
+                    $q->setQuestionario($questionario);
+                    $q->setNumero($numero);
+                    $this->container->questaoQuestionarioDAO->persist($q);
+                    $this->container->questaoQuestionarioDAO->flush();
+                } catch (\Exception $e) {
+                    throw $e;
+                }   
+            }
+            $contTurma++;
+        }
+
+        if( $contPessoal == 1 || $contProf == 1 || $contTurma == 1  ){
+            $this->container->view['incompleto'] = "Você deve adicionar pelo menos uma questão em cada categoria para criar um questionário!";
+            return $this->newQuestionario($request, $response, $args);
+        } else {
+            $this->container->view['completo'] = "Você criou um novo questionário com sucesso!";
+            return $this->index($request, $response, $args);
+        }
     }
     
     public function storeQuestoes(Request $request, Response $response, $args)
