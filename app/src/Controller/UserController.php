@@ -478,12 +478,6 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
-        if( $this->sendEmail('', '') ){
-            echo "E-mail enviado!";
-        } else {
-            echo "Erro ao enviar e-mail";
-        }
-
         #Area reservada pra testes de algoritmos
         return $this->container->view->render($response, 'testeServico.tpl');
     }
@@ -491,11 +485,6 @@ class UserController
     public function indexTesteServico(Request $request, Response $response, $args){	
         
         return $this->container->view->render($response, 'testeServico.tpl');	
-    }
-
-    public function sendEmail($email, $nome){
-        $mail = new MailSender();
-        return $mail->sendMailAlunos($email, $nome);
     }
 }
 

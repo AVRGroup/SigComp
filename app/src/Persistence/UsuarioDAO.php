@@ -608,6 +608,16 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getAllEmailsUsers()
+    {
+        $sql = "SELECT email FROM usuario WHERE (usuario.email != 'null' && usuario.email != 'a@a.com')";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results =  $stmt->fetchAll();
+
+        return $results;
+    }
+
     public function setByIRA($results, $ira){
         switch ($ira){
             case 60: $medalha = 13;

@@ -1025,8 +1025,11 @@ class AdminController
                 }
                 else{
                     //selecionar só o professor escolhido para avaliação
+                    //$result = $this->container->questionarioDAO->requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id);
                     list ($professor_id, $periodo) = explode("/", $_POST['professores_' . $ps]);
-                    $result = $this->container->questionarioDAO->requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id);
+                    
+                    
+                
                 }
                 
             }
