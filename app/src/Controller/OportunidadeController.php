@@ -124,7 +124,6 @@ class OportunidadeController
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
         $preRequisitos = $request->getParsedBodyParam('pre_requisitos');
         $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
-        $imagem = $request->getUploadedFiles()['imagem_oportunidade'];
 
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
@@ -153,11 +152,6 @@ class OportunidadeController
         if($pdf->getSize() > 0) {
             $this->setArquivo($oportunidade, $pdf);
         }
-
-        if(isset($imagem) && $imagem->getSize() > 0) {
-            $this->setArquivoImagem($oportunidade, $imagem);
-        }
-
 
         if(isset($preRequisitos) && sizeof($preRequisitos >= 1)) {
             foreach ($preRequisitos as $preRequisito) {
@@ -231,6 +225,7 @@ class OportunidadeController
         $professor = $request->getParsedBodyParam('nome_professor');
         $descricao = $request->getParsedBodyParam('descricao');
         $validade = new \DateTime($request->getParsedBodyParam('validade'));
+        $pdf = $request->getUploadedFiles()['pdf_oportunidade'];
 
         $temRemuneracao = $request->getParsedBodyParam('tem_remuneracao');
         if($temRemuneracao == "nao_informado") {
@@ -253,6 +248,10 @@ class OportunidadeController
         $oportunidade->setCriadoEm(new \DateTime());
         $oportunidade->setPeriodoMinimo($periodoMinimo);
         $oportunidade->setPeriodoMaximo($periodoMaximo);
+
+        if($pdf->getSize() > 0) {
+            $this->setArquivo($oportunidade, $pdf);
+        }
 
         try {
             $this->container->oportunidadeDAO->save($oportunidade);
