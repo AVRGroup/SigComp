@@ -69,6 +69,31 @@ class ProfessorTurmaDAO extends BaseDAO
         return $professor;
     }
 
+    public function getTurmaByIdProfessor($prof_id)
+    {
+        
+        try {
+            $sql = "SELECT turma FROM professor_turma WHERE professor_turma.professor = $prof_id";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $results =  $stmt->fetchAll();
+        } catch(\Exception $e){
+            echo "Error";
+        }
+
+        foreach( $results as $r){
+            try {
+                $query = $this->em->createQuery("SELECT u FROM App\Model\Turma as u WHERE u.id = :id_turma");
+                $query->setParameter('id_turma', $r['turma']);
+                $turma = $query->getArrayResult();
+            } catch (\Exception $e) {
+                echo "Error";
+            }
+        }     
+
+        return $turma;
+    }
+
     /**
      * @param $id_professor, $id_turma
      * @return boolean

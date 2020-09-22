@@ -31,34 +31,19 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
-        #Array com os cursos do DCC para consultar nos serviços
-        $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
-
+        $arrayCursos = array();
         $consumo = 0;
         $curso = "";
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
-        foreach($arrayCursos as $c){
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$c",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
-                ),
-            ));
+        $cursos = $this->container->usuarioDAO->getCursos();
+        foreach($cursos as $cur){
+            $arrayCursos[] = $cur['curso'];
+        }
 
-            $data = json_decode(curl_exec($curl), true);
-            curl_close($curl);
+        foreach($arrayCursos as $c){
+            $data = $this->servicoHistoricoByCurso($c);
             echo "<script>console.log('Serviço OK');</script>";
-            
-            //$this->container->view['progresso'] = count($data)*2;
 
             if ($data !== null) {
                 $consumo++;
@@ -997,8 +982,6 @@ class AdminController
             return $this->painelCoordenador($request, $response, $args);
         }
 
-        $questionarios = $this->container->questionarioDAO->getAll();
-        $this->container->view['questionarios'] = $questionarios;
         $professores = $this->container->usuarioDAO->getProfessores();
         $this->container->view['professores'] = $professores;
         $this->container->view['periodoCorrente'] = $periodoCorrente;
@@ -1013,35 +996,62 @@ class AdminController
     public function store2PainelCoordenador(Request $request, Response $response, $args)
     {
         $periodosSelecionados = $request->getParsedBodyParam('perSelectedArray');
-        $questionario_id = $_POST['selecao_questionario'];
+        $arrayCursos = $this->container->usuarioDAO->getCursos();
 
         foreach( $periodosSelecionados as $ps ){
             if( $_POST['professores_' . $ps] !== null ){
                 if( $_POST['professores_' . $ps] === "todos"){
-                    //selecionar todos os professores desse(s) período(s) para avaliação
-                    //olhar em professor_turma, quais turmas o prof ministra nos períodos selecionados
-                    //guardar em questionario_professor_turma
-                    $result = $this->container->questionarioDAO->requisitarQuestionarioByPeriodo($ps, $questionario_id);
+                    //$result = $this->container->questionarioDAO->requisitarQuestionarioByPeriodo($ps, $questionario_id);
+                    foreach($arrayCursos as $ac){
+                        $servico = $this->servicoHistoricoByCurso($ac['curso']);
+                        foreach($servico as $ser){
+                            if( $ser['Semestre cursado'] == $ps ){
+                                $email = $this->container->usuarioDAO->getEmailByMatricula($ser['Matrícula']);
+
+                                #Enviando E-mails, descomente para funcionar
+                                $this->sendEmail($email, $ser['Aluno']);
+                            }
+                        }
+                    }
                 }
                 else{
-                    //selecionar só o professor escolhido para avaliação
                     //$result = $this->container->questionarioDAO->requisitarQuestionarioByProfessor($professor_id, $periodo, $questionario_id);
-                    list ($professor_id, $periodo) = explode("/", $_POST['professores_' . $ps]);
-                    
-                    
-                
+                    //list ($professor_id, $periodo) = explode("/", $_POST['professores_' . $ps]);
                 }
-                
             }
         }
 
         $this->container->view['store2'] = 'ok'; 
-        $this->container->view['completo'] = 'Alterações salvas com sucesso!'; 
+        $this->container->view['completo'] = 'E-mails enviados com sucesso!'; 
         return $this->container->view->render($response, 'painelCoordenador.tpl');
     }
 
     public function sendEmail($email, $nome){
         $mail = new MailSender();
         return $mail->sendMailAlunos($email, $nome);
+    }
+
+    public function servicoHistoricoByCurso($codigoCurso)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$codigoCurso",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => array('toke' => 'd6189421e0278587f113ca4b9e258c4a9f8de468'),
+            CURLOPT_HTTPHEADER => array(
+                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $response = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        return $response;
     }
 }

@@ -180,11 +180,10 @@
 
             if( r == true ){
             //Executa a ação de excluir o questionário
-            document.formulario.submit();
-
+                document.formulario.submit();
             } else {
             //Não faz nada
-
+                e.preventDefault();
             }
 
         })

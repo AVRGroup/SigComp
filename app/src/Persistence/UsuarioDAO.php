@@ -618,6 +618,25 @@ class UsuarioDAO extends BaseDAO
         return $results;
     }
 
+    public function getEmailByMatricula($matricula)
+    {
+        try{
+            $sql = "SELECT email FROM usuario WHERE usuario.matricula = $matricula";
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $results =  $stmt->fetchAll();
+        } catch(\Exception $e){
+            $results = null;
+        }
+
+        if($results[0]['email'] == ''){
+            return null;
+        }else{
+            return $results[0]['email'];
+        }
+
+    }
+
     public function setByIRA($results, $ira){
         switch ($ira){
             case 60: $medalha = 13;

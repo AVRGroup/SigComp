@@ -478,6 +478,13 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
+        $teste = $this->container->usuarioDAO->getAllEmailsUsers();
+
+        foreach($teste as $t){
+            echo $t['email'];
+        }
+        die();
+
         #Area reservada pra testes de algoritmos
         return $this->container->view->render($response, 'testeServico.tpl');
     }

@@ -26,6 +26,7 @@
 
     <div>
         {if isset($index)}
+        <p align="center" style="font-weight: 400; font-size: 20px">Essa página envia e-mails para os alunos que cursaram disciplinas no período e com o professor selecionado.</p>
         <form method="POST" action="{base_url}/admin/store-painel-coordenador">
 
             <input type="hidden" name="periodoCorrente" value="{$periodoCorrente}">
@@ -36,7 +37,7 @@
 
                 <h4 align="center" style="color: blue"> Período corrente: {$periodoCorrente} - {$digito}</h4>
 
-                <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Selecione abaixo os períodos que deseja utilizar na avaliação</h5>
+                <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Selecione abaixo os períodos que deseja reforçar a avaliação!</h5>
 
                 {foreach $periodos as $per}
                     <div align="center" style="margin-top: 1%">
@@ -53,6 +54,14 @@
         </form>
 
         {elseif isset($store)}
+        <div align="center">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <b>Atenção!</b> O processo de envio dos e-mails pode demorar um pouco!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <form method="POST" action="{base_url}/admin/store2-painel-coordenador">
             <input type="hidden" name="periodoCorrente" value="{$periodoCorrente}">
             <input type="hidden" name="digito" value="{$digito}">
@@ -60,33 +69,11 @@
                 <input type="hidden" name="perSelectedArray[]" value="{$p}">
             {/foreach}
 
-            <h5 align="center" style="color: darkblue; font-style: italic; margin-top: 1%; margin-bottom: 1%">Escolha um questionário para ser usado na avaliação!</h5>
-            <div align="center" class="row justify-content-center">
-                <div align="center" class="col-6" >
-                    <div class="row">
-                        <select id="filtrar-data" name="selecao_questionario" class="form-control col-md-10 col-sm-12 mx-sm-auto">
-                            {foreach $questionarios as $questionario}
-                                {if $questionario != null}
-                                    <option value="{$questionario->getVersao()}" {if $questionario->getVersao() == '1'} selected {/if}>
-                                        {if !empty($questionario->getNome())}{$questionario->getNome()}
-                                        {else}{$questionario->getVersao()}{/if}
-                                    </option>
-                                {/if}
-                            {/foreach}
-                        </select>
-
-                    </div>
-                </div>
-                <div>
-                    <a href="{path_for name="questionarios"}" style="width: 210px; height: 37px; " class="btn btn-outline-primary" type="submit"><span style="font-size: 15px">Criar questionário</span></a>
-                </div>
-            </div>
-
-            <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Períodos Selecionados</h5>
+            <h5 align="center" style="font-style: italic; margin-top: 2%; margin-bottom: 2%">Período(s) Selecionado(s)</h5>
             {foreach $perSelecionados as $ps}
-                <div align="center">
+                <div align="center" style="margin-top: 2%">
                     <h4 align="center">• {$ps} </h4>
-                    <a style="font-style: italic; font-weight: 500"><strong> Selecione o professor que deseja avaliar nesse período </strong></a>
+                    <a style="font-style: italic; font-weight: 500"><strong> Selecione o professor que deseja reforçar a avaliação nesse período! </strong></a>
 
                     <div align="center" class="col-8" style="text-align: left; margin-top: 1%">
                         <div class="form-row ">
@@ -99,9 +86,8 @@
                         </div>
                     </div>
                 </div>
-                <hr>
             {/foreach}
-                <div class=" text-center">
+                <div class=" text-center" style="margin-top: 2%">
                     <div>
                         <a href="{path_for name="painelCoord"}" style="margin-top: 1%; width: 170px; height: 37px; " class="btn btn-outline-dark" type="submit"><span style="font-size: 15px">Editar os períodos</span></a>
                     </div>
@@ -117,10 +103,21 @@
                     <a href="{path_for name="painelCoord"}" style="margin-top: 2%; width: 170px; height: 37px; " class="btn btn-outline-dark" type="submit"><span style="font-size: 15px">Editar novamente</span></a>
                 </div>
                 <div align="center">
-                    <a href="{path_for name="home"}" style="margin-top: 1%; width: 250px; height: 37px; " class="btn btn-success" type="submit"><span style="font-size: 15px">Concluído</span></a>
+                    <a href="{path_for name="home"}" style="margin-top: 1%; width: 250px; height: 37px;" id="btnConcluido" class="btn btn-success" type="submit"><span style="font-size: 15px">Concluído</span></a>
                 </div>
             </div>
         {/if}
     </div>
 
+{/block}
+{block name="javascript"}
+    <script>
+        var btnConcluido = document.getElementById('btnConcluido');
+
+        btnConcluido.addEventListener('click', function(event){
+            var result = confirm('Confirmar o envio dos e-mails?');
+            
+            result ? submit : event.preventDefault();
+        })
+    </script>
 {/block}
