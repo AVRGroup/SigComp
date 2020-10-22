@@ -10,7 +10,9 @@
         "dompdf/dompdf": "dev-master",
         "phpmailer/phpmailer": "^6.0",
         "ext-dom": "*",
-        "ext-soap": "*"
+        "ext-soap": "*",
+        "fpdf/fpdf": "^1.82",
+        "clegginabox/pdf-merger": "dev-master"
     },
     "autoload": {
         "psr-4": {

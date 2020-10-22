@@ -68,7 +68,12 @@
     <p class="text-center" style="margin: 0;">Você tem um total de <b>{$horasTotais}</b> horas validadas</p>
     <div class="text-center" style="margin-bottom: 20px">
         <small>Este número é apenas uma prévia, o valor real pode divergir</small>
+        <form action="{path_for name="mergepdfs"}" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <input type="hidden" name="id_usuario" value="$_SESSION['id']">
+            <button style="margin-top: 1%" class="btn btn-primary" type="submit">Imprimir todos os certificados</button>
+        </form>
     </div>
+    
 
     <div class="d-flex flex-wrap" id="certificates">
         {foreach $certificates as $certificate}

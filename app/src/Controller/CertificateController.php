@@ -8,6 +8,9 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 use App\Library\MailSender;
+use Dompdf\Dompdf;
+use Fpdf\Fpdf;
+use PdfMerger\PdfMerger;
 
 class CertificateController
 {
@@ -17,7 +20,7 @@ class CertificateController
     {
         $this->container = $container;
     }
-
+    
     public function listAction(Request $request, Response $response, $args)
     {
         if ($request->isPost() && isset($request->getUploadedFiles()['certificate'])) {
@@ -111,6 +114,24 @@ class CertificateController
         return $this->container->view->render($response, 'certificates.tpl');
     }
 
+    public function PdfMerge(Request $request, Response $response, $args)
+	{
+        $aluno = $this->container->usuarioDAO->getUsuarioLogado();
+        $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
+
+        $pdf = new PDFMerger();
+
+        foreach ($certificados as $certificado){
+
+            $pageCount = $pdf->setSourceFile($certificado->getNome());
+            $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
+
+            $pdf->addPage();
+            $pdf->useImportedPage($pageId, 10, 10, 90);
+        }
+        $pdf->Output('I', 'generated.pdf');
+	}
+
 
     public function horasTotais($certificados){
         $horas = 0;
@@ -196,10 +217,21 @@ class CertificateController
     public function adminListReviewAction(Request $request, Response $response, $args)
     {
         $certificates = $this->container->certificadoDAO->getAllToReview();
-        $this->container->view['certificates'] = $certificates;
+        
+        $curso = $this->container->usuarioDAO->getUsuarioLogado();
+        $curso = $curso->getCurso();
 
+        $certificadosFiltrados = [];
+        
+        foreach($certificates as $certificate)
+        {
+            if($certificate->getUsuario()->getCurso() == $curso)
+            {
+                $certificadosFiltrados[] = $certificate;
+            }
+        }
+        $this->container->view['certificates'] = $certificadosFiltrados;
         $this->container->view['certTypes'] = Certificado::getAllTipos();
-
         return $this->container->view->render($response, 'adminCertificates2.tpl');
     }
 

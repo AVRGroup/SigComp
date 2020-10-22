@@ -1,4 +1,6 @@
 <?php
+
+
 /*define('IN_MYBB', NULL);
 global $mybb, $lang, $query, $db, $cache, $plugins, $displaygroupfields;
 require_once 'myBB/global.php';
