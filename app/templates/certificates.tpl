@@ -70,7 +70,7 @@
         <small>Este número é apenas uma prévia, o valor real pode divergir</small>
         <form action="{path_for name="mergepdfs"}" method="post" enctype="multipart/form-data" name="form1" id="form1">
             <input type="hidden" name="id_usuario" value="$_SESSION['id']">
-            <button style="margin-top: 1%" class="btn btn-primary" type="submit">Imprimir todos os certificados</button>
+            <button style="margin-top: 1%" class="btn btn-primary" type="submit">Baixar comprovantes em PDF único</button>
         </form>
     </div>
     

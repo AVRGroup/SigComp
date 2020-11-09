@@ -10,7 +10,7 @@ use Slim\Http\UploadedFile;
 use App\Library\MailSender;
 use Dompdf\Dompdf;
 use Fpdf\Fpdf;
-use PdfMerger\PdfMerger;
+use Clegginabox\PDFMerger\PDFMerger;
 
 class CertificateController
 {
@@ -119,17 +119,16 @@ class CertificateController
         $aluno = $this->container->usuarioDAO->getUsuarioLogado();
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
 
-        $pdf = new PDFMerger();
+        $pdf = new PDFMerger;
 
-        foreach ($certificados as $certificado){
-
-            $pageCount = $pdf->setSourceFile($certificado->getNome());
-            $pageId = $pdf->importPage(1, PdfReader\PageBoundaries::MEDIA_BOX);
-
-            $pdf->addPage();
-            $pdf->useImportedPage($pageId, 10, 10, 90);
+        foreach ($certificados as $certificado)
+        {
+            if($certificado->getValido())
+            {
+                $pageCount = $pdf->addPDF("../public/upload/{$certificado->getNome()}");
+            }
         }
-        $pdf->Output('I', 'generated.pdf');
+        $pdf->merge('download', 'generated.pdf');
 	}
 
 
