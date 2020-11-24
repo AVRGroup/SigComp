@@ -11,6 +11,7 @@ use App\Model\Grade;
 use App\Model\GradeDisciplina;
 use App\Model\Nota;
 use App\Model\Usuario;
+use Dompdf\Options;
 use PHPMailer\PHPMailer\Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -555,7 +556,7 @@ class AdminController
         $aluno = $this->container->usuarioDAO->getById($args['id']);
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
 
-        $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf_2.jpg');
+        $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
         $horas = $this->horasTotais($certificados);
 
         $html =  '<head><meta charset="UTF-8"></head>';
@@ -587,11 +588,13 @@ class AdminController
         $html .= '</tbody>';
         $html .= '</table>';
 
-
-        $dompdf = new Dompdf();
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
+
         $dompdf->stream("aproveitamento.pdf",
             array(
                 "Attachment" => true //Para realizar o download somente alterar para true
