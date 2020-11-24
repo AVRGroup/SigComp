@@ -588,9 +588,21 @@ class AdminController
         $html .= '</tbody>';
         $html .= '</table>';
 
+        $contxt = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed'=> TRUE
+            ]
+        ]);
+
         $options = new Options();
         $options->setIsRemoteEnabled(true);
+        $options->setIsHtml5ParserEnabled(true);
+
         $dompdf = new Dompdf($options);
+        $dompdf->setHttpContext($contxt);
+
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
