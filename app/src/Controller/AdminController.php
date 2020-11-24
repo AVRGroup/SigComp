@@ -555,7 +555,7 @@ class AdminController
         $aluno = $this->container->usuarioDAO->getById($args['id']);
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
 
-        $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf.png');
+        $caminhoImagem = realpath(__DIR__ . '/../../../public/img/logo_ufjf_2.jpg');
         $horas = $this->horasTotais($certificados);
 
         $html =  '<head><meta charset="UTF-8"></head>';
