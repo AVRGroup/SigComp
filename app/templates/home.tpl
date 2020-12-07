@@ -300,7 +300,7 @@
 
         <hr>
         {if isset($isAdmin) && $isAdmin}
-            <a href="{path_for name="exportPDF" data=["id" => $usuario->getId()]}" class="btn btn-danger">Certificados do Aluno</a>
+            <a href="{path_for name="exportPDF" data=["id" => $usuario->getId()]}" class="btn btn-danger">Pré-parecer (Horas ACE)</a>
         {else}
 
             {if !isset($naoBarraPesquisa)}

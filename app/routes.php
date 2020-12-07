@@ -7,7 +7,7 @@ $app->post('/login-area-exclusiva', '\App\Controller\LoginController:loginAreaEx
 $app->get('/about', '\App\Controller\HomeController:aboutAction')->setName('about');
 $app->get('/phpInfo', '\App\Controller\HomeController:phpInfoAction')->setName('phpInfo');
 $app->map(['GET', 'POST' ],'/send-mail', '\App\Controller\CertificateController:sendMailAction')->setName('sendMail');
-$app->map(['GET', 'POST' ], '/pdf', 'App\Controller\CertificateController:PdfMerge')->setName('mergepdfs');
+$app->map(['GET', 'POST' ], '/zip', 'App\Controller\CertificateController:PdfMerge')->setName('mergepdfs');
 
 $app->get('/avaliacoes', '\App\Controller\AvaliacaoController:index')->setName('avaliacoes');
 
