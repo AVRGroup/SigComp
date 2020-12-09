@@ -143,18 +143,15 @@ class CertificateController
         );
 
         // Varre todos os arquivos da pasta
-        if(count($certificados) > 0)
+        if(isset($certificados))
         {
             foreach ($certificados as $certificado)
             {
             
                 if ($certificado->getValido())
-                {
-                    //$zip->addFile("../public/upload/{$certificado->getNome()}");
-                    
+                {                    
                     $filePath = "../public/upload/{$certificado->getNome()}";
-                    //$relativePath = substr($filePath, strlen($rootPath) + 1);
-    
+
                     // Adiciona os arquivos no pacote Zip.
                     $zip->addFile($filePath);
                 }
@@ -162,7 +159,7 @@ class CertificateController
         }
         else
         {
-            $redirect = $this->container->router->pathFor('adminListReviewCertificates');
+            $redirect = $this->container->router->pathFor('home');
             return $response->withRedirect($redirect);
         }
 
@@ -192,21 +189,6 @@ class CertificateController
             readfile($arquivo); // lê o arquivo
             exit; // aborta pós-ações
         }
-        /*
-        $aluno = $this->container->usuarioDAO->getUsuarioLogado();
-        $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
-
-        $pdf = new PDFMerger;
-
-        foreach ($certificados as $certificado)
-        {
-            if($certificado->getValido())
-            {
-                $pageCount = $pdf->addPDF("../public/upload/{$certificado->getNome()}");
-            }
-        }
-        $pdf->merge('download', 'generated.pdf');
-        */
 	}
 
 

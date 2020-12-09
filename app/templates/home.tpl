@@ -301,6 +301,8 @@
         <hr>
         {if isset($isAdmin) && $isAdmin}
             <a href="{path_for name="exportPDF" data=["id" => $usuario->getId()]}" class="btn btn-danger">Pré-parecer (Horas ACE)</a>
+            <a href="{path_for name="merge-pdfs" data=["id" => $usuario->getId()]}" class="btn btn-danger">Baixar Comprovantes (.zip)</a>
+            
         {else}
 
             {if !isset($naoBarraPesquisa)}

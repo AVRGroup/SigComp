@@ -39,7 +39,7 @@
             <th scope="col">Nome ↑↓</th>
             <th scope="col">IRA ↑↓</th>
             <th scope="col">Email ↑↓</th>
-            {if $loggedUser->isAdmin()}
+            {if $loggedUser->isAdmin() || $loggedUser->isCoordenador()}
                 <th scope="col"></th>
             {/if}
         </tr>
@@ -52,7 +52,7 @@
                     <td><a href="{path_for name="adminUser" data=["id" => $user['id']]}">{$user['nome']}</a></td>
                     <td>{number_format($user['ira'], 2)}</td>
                     <td>{$user['email']}</td>
-                    {if $loggedUser->isAdmin()}
+                    {if $loggedUser->isAdmin() || $loggedUser->isCoordenador()}
                         <td><a href="{base_url}/admin/impersonar-usuario/{$user['id']}"><i class="fa fa-eye"></i></a></td>
                     {/if}
                 </tr>
