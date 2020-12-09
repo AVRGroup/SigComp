@@ -61,7 +61,7 @@ $app->group('', function () {
     $this->get('/amigo/{id: [0-9]+}','\App\Controller\UserController:visualizarAmigoAction')->setName('visualizarAmigo');
 
     $this->get('/exportPDF/{id:[0-9]+}', '\App\Controller\AdminController:exportPDFAction')->setName('exportPDF');
-    $this->get('/merge-pdfs', 'App\Controller\CertificateController:PdfMerge')->setName('merge-pdfs');
+    $this->get('/merge-pdfs/{id:[0-9]+}', 'App\Controller\CertificateController:PdfMerge')->setName('merge-pdfs');
 
     $this->get('/todas-oportunidades', '\App\Controller\OportunidadeController:verOportunidades')->setName('verOportunidades');
     $this->get('/oportunidade/{id: [0-9]+}', '\App\Controller\OportunidadeController:mostrarOportunidade');

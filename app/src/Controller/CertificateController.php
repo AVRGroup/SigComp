@@ -130,6 +130,11 @@ class CertificateController
 
         // Certificados dos alunos
         $aluno = $this->container->usuarioDAO->getUsuarioLogado();
+        if($aluno->isCoordenador() || $aluno->isAdmin())
+        {
+            $aluno = $this->container->usuarioDAO->getById($args['id']);
+        }
+        
         $certificados = $this->container->certificadoDAO->getValidatedByUsuario($aluno);
         
         // Inicia o Módulo ZipArchive do PHP
