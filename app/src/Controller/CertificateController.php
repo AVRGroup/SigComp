@@ -143,7 +143,7 @@ class CertificateController
         );
 
         // Varre todos os arquivos da pasta
-        if(isset($certificados))
+        if(count($certificados) > 0)
         {
             foreach ($certificados as $certificado)
             {
