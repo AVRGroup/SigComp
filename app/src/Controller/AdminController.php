@@ -31,6 +31,7 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
+        //Importação dos históricos
         #Array com os cursos do DCC para consultar nos serviços
         $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
 
@@ -182,13 +183,56 @@ class AdminController
             }
 
             //return $response->withRedirect($this->container->router->pathFor('assignMedals'));   
-            $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-            $this->container->view['usuario'] = $usuario;
-            return $this->container->view->render($response, 'adminDataLoad.tpl');
+            //$usuario = $this->container->usuarioDAO->getUsuarioLogado();
+            //$this->container->view['usuario'] = $usuario;
+            //return $this->container->view->render($response, 'adminDataLoad.tpl');
         } else {
             $this->container->view['error'] = "Não foi possível fazer a carga de dados, tente novamente!";
             return $this->container->view->render($response, 'adminDataLoad.tpl');
         }
+
+        //Importação dos emails
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/email/get",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $data = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        echo "<script>console.log('Serviço OK');</script>";
+
+        if ($data !== null) {
+            try {
+                set_time_limit(60 * 60); //Should not Exit
+
+                foreach ($data as $user) {
+                    $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);    
+                    if ($usuario_aux !== null) {
+                        if($user['Email'] !== $usuario_aux->getEmail()){
+                            $usuario_aux->setEmail($user['Email']);
+                        }
+                        
+                    }
+                }
+                $this->container->usuarioDAO->flush(); //Commit the transaction
+            } catch (\Exception $e) {
+                $this->container->view['error'] = $e->getMessage();
+            }
+        }
+
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $this->container->view['usuario'] = $usuario;
+        return $this->container->view->render($response, 'adminDataLoad.tpl');
     }
 
     public function deletaUsuariosDuplicados()
