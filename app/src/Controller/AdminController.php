@@ -19,6 +19,9 @@ use Slim\Http\UploadedFile;
 use Dompdf\Dompdf;
 use App\Library\MailSender;
 use Doctrine\ORM\Query\AST\Functions\LengthFunction;
+use phpoffice\phpword\src\PhpWord;
+use PhpOffice\PhpWord\Shared\Converter;
+use PhpOffice\PhpWord\Style\TablePosition;
 
 class AdminController
 {
@@ -561,34 +564,75 @@ class AdminController
 
         $horas = $this->horasTotais($certificados);
 
-        $html =  '<head><meta charset="UTF-8"></head>';
-        $html .= '<img width="140"  height="80" align="right" src='. $imagemBase64. '><div align="left" style="font-size: 80%"><p><b>UNIVERSIDADE FEDERAL DE JUIZ DE FORA</b><br>DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO - DCC <br> INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br></p></div>';
-        $html .= '<div style="margin-top: 5%" align="center"><p>PARECER</p></div>';
-        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', e solicita cômputo de '. $horas .'<b> horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
-        $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
-        $html .= '<thead>';
-        $html .= '<tr>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Periodo</th>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Tipo</th>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Horas</th>';
-        $html .= '</tr>';
-        $html .= '</thead>';
-        $html .= '<tbody>';
+        $language = new \PhpOffice\PhpWord\Style\Language(\PhpOffice\PhpWord\Style\Language::PT_BR);
 
-        foreach ($certificados as $certificado){
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord->getSettings()->setThemeFontLang($language);
 
+        $fontStyle = array(
+            'name' => 'Arial',
+            'size' => 13,
+            'valign' =>'both'
+        );
+        $fontStyleTitle = array(
+            'name' => 'Arial',
+            'size' => 12,
+            'bold' => true
+        );
+        $fontStyleCommon = array(
+            'name' => 'Arial',
+            'size' => 12,
+            'align' => 'center'
+        );
+        $fontStyleCommon2 = array(
+            'name' => 'Arial',
+            'size' => 12,
+            'align' => 'both'
+        );
+        $styleTable = array(
+            'borderSize' => 8,
+            'borderColor' => '000000',
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+        );
+        $styleCell = array(
+            'vMerge' => 'restart', 
+            'valign' => 'center',
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+        );
+
+        $section = $phpWord->createSection();
+        $section->addText('Nome: '.$aluno->getNome(). '', $fontStyle);
+        $section->addText('Matrícula: ' .$aluno->getMatricula(). '', $fontStyle);
+        $section->addText('Horas computadas: ' . $horas . '', $fontStyle);
+        
+        $section->addText('Relação das atividades realizadas:', $fontStyleTitle);
+        $phpWord->addTableStyle('Arial', $styleTable);
+        $table = $section->addTable('Arial');
+
+        $row = $table->addRow();
+        $row->addCell(1200, $styleCell)->addText(' Períodos', $fontStyleCommon);
+        $row->addCell(6800)->addText(' Atividade', $fontStyleCommon);
+        $row->addCell(1000, $styleCell)->addText(' Horas', $fontStyleCommon);
+        
+        foreach ($certificados as $certificado)
+        {
             $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
             $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
-            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio;
-            if($periodoFim > $periodoInicio)
-                $html .= ' a ' . $periodoFim ."</td>";
-            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
-            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
-        }
+            $row = $table->addRow();
 
-        $html .= '</tbody>';
-        $html .= '</table>';
+            if($periodoFim > $periodoInicio)
+            {
+                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. 'a' .$periodoFim .'', 0, $fontStyleCommon);
+            }
+            else
+            {
+                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. '', 0, $fontStyleCommon);
+            }
+            $row->addCell(6800, $styleCell)->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', 0, $fontStyleCommon2);
+
+            $row->addCell(1000, $styleCell)->addText(''.$certificado->getNumHoras().'', 0, $fontStyleCommon);
+        }
 
         $contxt = stream_context_create([
             'ssl' => [
@@ -602,6 +646,41 @@ class AdminController
         $options->setIsRemoteEnabled(true);
         $options->setIsHtml5ParserEnabled(true);
 
+        $file = 'pre-parecer.docx';
+        header("Content-Description: File Transfer");
+        header('Content-Disposition: attachment; filename="' . $file . '"');
+        
+        $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $xmlWriter->save("php://output");
+
+                /*
+        $html =  '<head><meta charset="UTF-8"></head>';
+        $html .= '<img width="140"  height="80" align="right" src='. $imagemBase64. '><div align="left" style="font-size: 80%"><p><b>UNIVERSIDADE FEDERAL DE JUIZ DE FORA</b><br>DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO - DCC <br> INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br></p></div>';
+        $html .= '<div style="margin-top: 5%" align="center"><p>PARECER</p></div>';
+        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da 
+                                        Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', 
+                                        e solicita cômputo de '. $horas .'<b> horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
+        $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Periodo</th>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Tipo</th>';
+        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Horas</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+           /*
+
+            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio;
+            if($periodoFim > $periodoInicio)
+                $html .= ' a ' . $periodoFim ."</td>";
+            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
+            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
+        }
+
+        $html .= '</tbody>';
+        $html .= '</table>';*/
+        /* 
         $dompdf = new Dompdf($options);
         $dompdf->setHttpContext($contxt);
 
@@ -609,10 +688,11 @@ class AdminController
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $dompdf->stream("aproveitamento.pdf",
+        $dompdf->stream("aproveitamento.doc",
             array(
                 "Attachment" => true //Para realizar o download somente alterar para true
             ));
+*/
     }
 
     public function horasTotais($certificados){
