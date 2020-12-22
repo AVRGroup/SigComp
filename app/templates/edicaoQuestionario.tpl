@@ -54,9 +54,20 @@
             </div>
         </div>
 
-    <nav aria-label="navigation" class="pagination justify-content-center">
-        <button style="margin-top: 2%; width: 200px" class="btn btn-primary" type="submit">Editar</button>
+        <div class="row justify-content-center" style="margin-top: 2%">
+            <div class="">
+                <nav aria-label="navigation" class="pagination justify-content-center">
+                    <button style="margin-top: 2%; width: 200px" class="btn btn-primary" type="submit">Editar</button>
+                </nav>
+            </div>
     </form>
-    </nav>
+            <form method="POST" action="{base_url}/admin/new-questionario">
+                <div style="margin-left: 15%">
+                    <nav aria-label="navigation" class="pagination justify-content-center">
+                        <button style="margin-top: 2%; width: 200px" class="btn btn-outline-success" type="submit">Criar questionário</button>
+                    </nav>
+                </div>
+            </form>
+        </div>
 
 {/block}

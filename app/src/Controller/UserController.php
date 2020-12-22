@@ -22,6 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use GuzzleHttp\Client;
+use App\Library\MailSender;
 
 class UserController
 {
@@ -477,11 +478,15 @@ class UserController
 
     public function testeServico(Request $request, Response $response, $args){
 
-        $periodo = $this->getPeriodoPassado();
-        echo $periodo;
+        $teste = $this->container->usuarioDAO->getAllEmailsUsers();
+
+        foreach($teste as $t){
+            echo $t['email'];
+        }
+        die();
 
         #Area reservada pra testes de algoritmos
-        die();
+        return $this->container->view->render($response, 'testeServico.tpl');
     }
 
     public function indexTesteServico(Request $request, Response $response, $args){	

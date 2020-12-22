@@ -26,16 +26,52 @@ class AvaliacaoController
     public function index(Request $request, Response $response, $args)
     {
         $disciplinas_aluno = array();
+        $arrayCodigoTurma = array();
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $disciplinas_avaliadas = $this->container->avaliacaoDAO->getAvaliacoesByAluno($usuario->getId());
         $periodoPassado = $this->getPeriodoPassado();
 
         $perPassado = str_split($this->getPeriodoPassado(), 1);
+        $perPassadoPar = str_split($this->getPeriodoPassadoPar(), 1);
+
         $servico = $this->getServiceByPeriodo($perPassado);
+        $servicoPeriodoPar = $this->getServiceByPeriodo($perPassadoPar);
 
         #Verifica se o serviço não é null para o periodo passado
         if( $servico[0] == null ){
             $periodoPassado = $this->getPeriodoPassadoByPeriodo(strval($this->getPeriodoPassado()), 1);
+        }
+
+        #Verifica se o aluno teve disciplina no periodo par
+        if( $servicoPeriodoPar[0] !== null ){
+            foreach($servico as $service ){
+
+                //Pega a disciplina no banco, se ela existe
+                $disc = $this->container->disciplinaDAO->getByCodigo($service['disciplina']['codigo']);
+                if( $disc == null ){
+                    continue;
+                }
+    
+                //Pega a turma no banco, se ela existe
+                if( $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']) == null){
+                    $turma = $this->container->turmaDAO->addTurma($disc->getId(), $service['turma'], $periodoPassado);
+                } else {
+                    $turma = $this->container->turmaDAO->getByDisciplinaCodigo($disc, $service['turma']);
+                }
+                $disciplinas_aluno[] = $disc;
+    
+                #Checa se o professor existe, caso nao, cria
+                foreach($service['professores'] as $professor){
+                    $prof = $this->container->usuarioDAO->getUserByMatricula($professor['siape']);
+                    if( $prof == null ){
+                        $prof = $this->container->usuarioDAO->addProfessor($professor['nome'], $professor['siape']);
+                    }
+                    $this->container->professorTurmaDAO->addProfessorTurma($prof->getId(), $turma->getId());
+                }
+    
+                $arrayCodigoTurma[$disc->getCodigo()] = $turma->getId();
+            }
+    
         }
 
         #Checa se a disciplina existe e adiciona a turma 
@@ -114,6 +150,23 @@ class AvaliacaoController
         $this->container->view['turma'] = $codigoTurma;
 
         return $this->container->view->render($response, 'avaliacaoPage1.tpl');
+    }
+
+    public function getPeriodoPassadoPar()
+    {
+        $periodoAtual = $this->container->usuarioDAO->getPeriodoAtual();
+        $semestre = intval($periodoAtual[4]);
+        $ano = substr($periodoAtual, 0, 4);
+
+        if($semestre == 1) {
+            $anoAnterior = date('Y', strtotime($ano . " -1 year"));
+            $periodoAnterior = $anoAnterior . 4;
+        }
+        else {
+            $periodoAnterior = $ano . 2;
+        }
+
+        return intval($periodoAnterior);
     }
 
     public function getPeriodoPassado()
