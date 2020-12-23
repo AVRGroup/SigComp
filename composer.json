@@ -13,7 +13,6 @@
         "ext-soap": "*",
         "fpdf/fpdf": "^1.82",
         "clegginabox/pdf-merger": "dev-master",
-        "ziparchive/ziparchive": "^1.5",
         "phpoffice/phpword": "v0.16.*"
     },
     "autoload": {
