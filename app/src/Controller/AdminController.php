@@ -613,11 +613,12 @@ class AdminController
         $row->addCell(1200, $styleCell)->addText(' Períodos', $fontStyleCommon);
         $row->addCell(6800)->addText(' Atividade', $fontStyleCommon);
         $row->addCell(1000, $styleCell)->addText(' Horas', $fontStyleCommon);
-        
-        foreach ($certificados as $certificado)
+
+        /*
+        foreach ($i as $numero)
         {
-            $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
-            $periodoFim = $this->getPeriodoFimLegivel($certificado);
+            $periodoInicio = $this->getPeriodoInicioLegivel($certificados->getById($i));
+            $periodoFim = $this->getPeriodoFimLegivel($certificados->getById($i));
 
             $row = $table->addRow();
 
@@ -629,9 +630,55 @@ class AdminController
             {
                 $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '', $fontStyleCommon);
             }
-            $row->addCell(6800, $styleCell)->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', $fontStyleCommon);
+            
+            $row->addCell(6800, $styleCell)->addText(''.$certificados->getById($i)->getNomeTipo().   ': ' . $certificados->getById($i)->getNomeImpresso() .'', $fontStyleCommon);
 
-            $row->addCell(1000, $styleCell)->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+            $row->addCell(1000, $styleCell)->addText('     '.$certificados->getById($i)->getNumHoras().'', $fontStyleCommon);
+
+            foreach($i as $numero)
+            {
+                $i++;
+                $periodoInicio2 = $this->getPeriodoInicioLegivel($certificados->getById($i));
+                $periodoFim2 = $this->getPeriodoFimLegivel($certificados->getById($i));
+                if($periodoInicio == $periodoInicio2)
+                {
+                    $row->addText(''.$certificados->getById($i)->getNomeTipo().   ': ' . $certificados->getById($i)->getNomeImpresso() .'', $fontStyleCommon);
+                    $row->addText('     '.$certificados->getById($i)->getNumHoras().'', $fontStyleCommon);
+                }
+            }
+
+        }*/
+        $periodoAnteriorInicio = '2009.3';
+        foreach ($certificados as $certificado)
+        {
+            $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
+            $periodoFim = $this->getPeriodoFimLegivel($certificado);
+
+            
+            if($periodoAnteriorInicio != $periodoInicio)
+            {
+                $table->addRow();
+                if($periodoFim > $periodoInicio)
+                {
+                    $row = $table->addCell(1200, $styleCell);
+                    $row->addText('   ' .$periodoInicio. '   a   ' .$periodoFim .'', $fontStyleCommon);
+                }
+                else
+                {
+                    $row = $table->addCell(1200, $styleCell);
+                    $row->addText('   ' .$periodoInicio. '', $fontStyleCommon);
+                }
+                $row2 = $table->addCell(6800, $styleCell);
+                $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                $row3 = $table->addCell(1000, $styleCell);
+                $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+            }
+            else 
+            {
+                $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+            }
+            $periodoAnteriorInicio = $periodoInicio;            
         }
 
         $contxt = stream_context_create([
@@ -649,7 +696,10 @@ class AdminController
         $file = 'pre-parecer.docx';
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="' . $file . '"');
-        
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
         $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $xmlWriter->save("php://output");
 
