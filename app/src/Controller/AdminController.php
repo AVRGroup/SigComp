@@ -623,15 +623,15 @@ class AdminController
 
             if($periodoFim > $periodoInicio)
             {
-                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. 'a' .$periodoFim .'', 0, $fontStyleCommon);
+                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. ' a    ' .$periodoFim .'', $fontStyleCommon);
             }
             else
             {
-                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. '', 0, $fontStyleCommon);
+                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '', $fontStyleCommon);
             }
-            $row->addCell(6800, $styleCell)->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', 0, $fontStyleCommon2);
+            $row->addCell(6800, $styleCell)->addText(' '.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', $fontStyleCommon);
 
-            $row->addCell(1000, $styleCell)->addText(''.$certificado->getNumHoras().'', 0, $fontStyleCommon);
+            $row->addCell(1000, $styleCell)->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
         }
 
         $contxt = stream_context_create([
