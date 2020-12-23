@@ -623,15 +623,15 @@ class AdminController
 
             if($periodoFim > $periodoInicio)
             {
-                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. 'a' .$periodoFim .'', 0, $fontStyleCommon);
+                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '   a   ' .$periodoFim .'', $fontStyleCommon);
             }
             else
             {
-                $row->addCell(1200, $styleCell)->addText('' .$periodoInicio. '', 0, $fontStyleCommon);
+                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '', $fontStyleCommon);
             }
-            $row->addCell(6800, $styleCell)->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', 0, $fontStyleCommon2);
+            $row->addCell(6800, $styleCell)->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .'', $fontStyleCommon);
 
-            $row->addCell(1000, $styleCell)->addText(''.$certificado->getNumHoras().'', 0, $fontStyleCommon);
+            $row->addCell(1000, $styleCell)->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
         }
 
         $contxt = stream_context_create([
@@ -646,11 +646,11 @@ class AdminController
         $options->setIsRemoteEnabled(true);
         $options->setIsHtml5ParserEnabled(true);
 
-        $file = 'pre-parecer.odt';
+        $file = 'pre-parecer.docx';
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="' . $file . '"');
         
-        $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'ODText');
+        $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $xmlWriter->save("php://output");
 
                 /*
