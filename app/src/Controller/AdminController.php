@@ -648,7 +648,7 @@ class AdminController
             }
 
         }*/
-        $periodoAnteriorInicio = '2009.3';
+        $periodoAnteriorInicio = '1990.1';
         foreach ($certificados as $certificado)
         {
             if($certificado->getValido())
@@ -657,8 +657,8 @@ class AdminController
                 $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
                 
-                if($periodoAnteriorInicio != $periodoInicio)
-                {
+                //if($periodoAnteriorInicio != $periodoInicio)
+                //{
                     $table->addRow();
                     if($periodoFim > $periodoInicio)
                     {
@@ -674,13 +674,13 @@ class AdminController
                     $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
                     $row3 = $table->addCell(1000, $styleCell);
                     $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
-                }
-                else 
-                {
-                    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
-                    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
-                }
-                $periodoAnteriorInicio = $periodoInicio;   
+                //}
+                //else 
+                //{
+                //    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                //    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+                //}
+                //$periodoAnteriorInicio = $periodoInicio;   
             }
                      
         }
