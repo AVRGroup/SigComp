@@ -614,40 +614,6 @@ class AdminController
         $row->addCell(6800)->addText(' Atividade', $fontStyleCommon);
         $row->addCell(1000, $styleCell)->addText(' Horas', $fontStyleCommon);
 
-        /*
-        foreach ($i as $numero)
-        {
-            $periodoInicio = $this->getPeriodoInicioLegivel($certificados->getById($i));
-            $periodoFim = $this->getPeriodoFimLegivel($certificados->getById($i));
-
-            $row = $table->addRow();
-
-            if($periodoFim > $periodoInicio)
-            {
-                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '   a   ' .$periodoFim .'', $fontStyleCommon);
-            }
-            else
-            {
-                $row->addCell(1200, $styleCell)->addText('   ' .$periodoInicio. '', $fontStyleCommon);
-            }
-            
-            $row->addCell(6800, $styleCell)->addText(''.$certificados->getById($i)->getNomeTipo().   ': ' . $certificados->getById($i)->getNomeImpresso() .'', $fontStyleCommon);
-
-            $row->addCell(1000, $styleCell)->addText('     '.$certificados->getById($i)->getNumHoras().'', $fontStyleCommon);
-
-            foreach($i as $numero)
-            {
-                $i++;
-                $periodoInicio2 = $this->getPeriodoInicioLegivel($certificados->getById($i));
-                $periodoFim2 = $this->getPeriodoFimLegivel($certificados->getById($i));
-                if($periodoInicio == $periodoInicio2)
-                {
-                    $row->addText(''.$certificados->getById($i)->getNomeTipo().   ': ' . $certificados->getById($i)->getNomeImpresso() .'', $fontStyleCommon);
-                    $row->addText('     '.$certificados->getById($i)->getNumHoras().'', $fontStyleCommon);
-                }
-            }
-
-        }*/
         $periodoAnteriorInicio = '1990.1';
         foreach ($certificados as $certificado)
         {
@@ -657,13 +623,13 @@ class AdminController
                 $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
                 
-                //if($periodoAnteriorInicio != $periodoInicio)
-                //{
+                if($periodoAnteriorInicio != $periodoInicio)
+                {
                     $table->addRow();
                     if($periodoFim > $periodoInicio)
                     {
                         $row = $table->addCell(1200, $styleCell);
-                        $row->addText('   ' .$periodoInicio. '          a          ' .$periodoFim .'', $fontStyleCommon);
+                        $row->addText('   ' .$periodoInicio. ' a ' .$periodoFim .'', $fontStyleCommon);
                     }
                     else
                     {
@@ -674,28 +640,16 @@ class AdminController
                     $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
                     $row3 = $table->addCell(1000, $styleCell);
                     $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
-                //}
-                //else 
-                //{
-                //    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
-                //    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
-                //}
-                //$periodoAnteriorInicio = $periodoInicio;   
+                }
+                else 
+                {
+                    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+                }
+                $periodoAnteriorInicio = $periodoInicio;   
             }
                      
         }
-
-        $contxt = stream_context_create([
-            'ssl' => [
-                'verify_peer' => FALSE,
-                'verify_peer_name' => FALSE,
-                'allow_self_signed'=> TRUE
-            ]
-        ]);
-
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-        $options->setIsHtml5ParserEnabled(true);
 
         $file = 'pre-parecer.docx';
         header("Content-Description: File Transfer");
@@ -706,47 +660,6 @@ class AdminController
         header('Expires: 0');
         $xmlWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $xmlWriter->save("php://output");
-
-                /*
-        $html =  '<head><meta charset="UTF-8"></head>';
-        $html .= '<img width="140"  height="80" align="right" src='. $imagemBase64. '><div align="left" style="font-size: 80%"><p><b>UNIVERSIDADE FEDERAL DE JUIZ DE FORA</b><br>DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO - DCC <br> INSTITUTO DE CIÊNCIAS EXATAS-ICE<br>CAMPUS UNIVERSITÁRIO – SÃO PEDRO – JUIZ DE FORA – MG<br></p></div>';
-        $html .= '<div style="margin-top: 5%" align="center"><p>PARECER</p></div>';
-        $html .= '<div align="justify"><p>Com base na Resolução 03/2014 do Colegiado do Curso de Ciência da Computação, a Coordenação do Curso Noturno de Ciência da 
-                                        Computação apresenta parecer FAVORÁVEL ao pedido do discente '.$aluno->getNome().', matrícula '.$aluno->getMatricula().', 
-                                        e solicita cômputo de '. $horas .'<b> horas em atividades curriculares eletivas </b>, referente às atividades a seguir:</p></div>';
-        $html .= '<table align="center" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; ">';
-        $html .= '<thead>';
-        $html .= '<tr>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Periodo</th>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Tipo</th>';
-        $html .= '<th style="border: 1px solid #dddddd; text-align: left; padding: 8px">Horas</th>';
-        $html .= '</tr>';
-        $html .= '</thead>';
-        $html .= '<tbody>';
-           /*
-
-            $html .= '<tr><td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'. $periodoInicio;
-            if($periodoFim > $periodoInicio)
-                $html .= ' a ' . $periodoFim ."</td>";
-            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNomeTipo(). ": " . $certificado->getNomeImpresso() . "</td>";
-            $html .= '<td style="border: 1px solid #dddddd; text-align: left; padding: 8px">'.$certificado->getNumHoras(). "</td>" . "</tr>";
-        }
-
-        $html .= '</tbody>';
-        $html .= '</table>';*/
-        /* 
-        $dompdf = new Dompdf($options);
-        $dompdf->setHttpContext($contxt);
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        $dompdf->stream("aproveitamento.doc",
-            array(
-                "Attachment" => true //Para realizar o download somente alterar para true
-            ));
-*/
     }
 
     public function horasTotais($certificados){
