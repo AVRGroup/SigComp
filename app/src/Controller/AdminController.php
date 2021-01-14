@@ -651,34 +651,38 @@ class AdminController
         $periodoAnteriorInicio = '2009.3';
         foreach ($certificados as $certificado)
         {
-            $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
-            $periodoFim = $this->getPeriodoFimLegivel($certificado);
+            if($certificado->getValido())
+            {
+                $periodoInicio = $this->getPeriodoInicioLegivel($certificado);
+                $periodoFim = $this->getPeriodoFimLegivel($certificado);
 
-            
-            if($periodoAnteriorInicio != $periodoInicio)
-            {
-                $table->addRow();
-                if($periodoFim > $periodoInicio)
+                
+                if($periodoAnteriorInicio != $periodoInicio)
                 {
-                    $row = $table->addCell(1200, $styleCell);
-                    $row->addText('   ' .$periodoInicio. '   a   ' .$periodoFim .'', $fontStyleCommon);
+                    $table->addRow();
+                    if($periodoFim > $periodoInicio)
+                    {
+                        $row = $table->addCell(1200, $styleCell);
+                        $row->addText('   ' .$periodoInicio. '          a          ' .$periodoFim .'', $fontStyleCommon);
+                    }
+                    else
+                    {
+                        $row = $table->addCell(1200, $styleCell);
+                        $row->addText('   ' .$periodoInicio. '', $fontStyleCommon);
+                    }
+                    $row2 = $table->addCell(6800, $styleCell);
+                    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                    $row3 = $table->addCell(1000, $styleCell);
+                    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
                 }
-                else
+                else 
                 {
-                    $row = $table->addCell(1200, $styleCell);
-                    $row->addText('   ' .$periodoInicio. '', $fontStyleCommon);
+                    $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
+                    $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
                 }
-                $row2 = $table->addCell(6800, $styleCell);
-                $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
-                $row3 = $table->addCell(1000, $styleCell);
-                $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
+                $periodoAnteriorInicio = $periodoInicio;   
             }
-            else 
-            {
-                $row2->addText(''.$certificado->getNomeTipo().   ': ' . $certificado->getNomeImpresso() .';', $fontStyleCommon);
-                $row3->addText('     '.$certificado->getNumHoras().'', $fontStyleCommon);
-            }
-            $periodoAnteriorInicio = $periodoInicio;            
+                     
         }
 
         $contxt = stream_context_create([
