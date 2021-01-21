@@ -156,9 +156,8 @@ class CertificateController
                 if ($certificado->getValido())
                 {                    
                     $filePath = "../public/upload/{$certificado->getNome()}";
-
                     // Adiciona os arquivos no pacote Zip.
-                    $zip->addFile($filePath);
+                    $zip->addFile($filePath, "{$certificado->getNome()}");
                 }
             }
         }
