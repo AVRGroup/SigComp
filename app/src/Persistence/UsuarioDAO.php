@@ -1150,10 +1150,17 @@ class UsuarioDAO extends BaseDAO
     public function getCursos()
     {
         try {
-            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Usuario AS u");
-            $cursos = $query->getResult();
+            $query = $this->em->createQuery("SELECT DISTINCT u.curso FROM App\Model\Usuario AS u WHERE u.curso IS NOT NULL");
+            $cursosAux = $query->getResult();
         } catch (\Exception $e) {
            var_dump( $e->getMessage());
+        }
+
+        $cursos = array();
+        if($cursosAux !== null && (sizeof($cursosAux) > 0)){
+            foreach($cursosAux as $c){
+                $cursos[] = $c['curso'];
+            }
         }
 
         return $cursos;

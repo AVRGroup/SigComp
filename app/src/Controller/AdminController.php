@@ -36,35 +36,14 @@ class AdminController
     public function dataLoadAction(Request $request, Response $response, $args)
     {
         #Array com os cursos do DCC para consultar nos serviços
-        //TODO - pegar cursos automaticamente
-        $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
+        //TODO - pegar cursos de outra tabela (está pegando de uduario)
+        $arrayCursos = $this->container->usuarioDAO->getCursos();
 
         $consumo = 0;
-        $curso = "";
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
         foreach($arrayCursos as $c){
-            //TODO - criar função para preencher parâmetros e cabeçalho da requisição
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$c",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
-                ),
-            ));
-
-            $data = json_decode(curl_exec($curl), true);
-            curl_close($curl);
-            echo "<script>console.log('Serviço OK');</script>";
-            
-            //$this->container->view['progresso'] = count($data)*2;
+            $data = $this->importarAlunos($c);
 
             if ($data !== null) {
                 $consumo++;
@@ -74,7 +53,6 @@ class AdminController
                     //Inserindo novas disciplinas 
                     $disciplinas = array();
                     foreach ($data as $disc) {
-                        //echo "<script>console.log('disc = " .$disc['Disciplina']. "');</script>";
                         
                         if(array_key_exists($disc['Disciplina'], $disciplinas)){
                             continue;
@@ -82,13 +60,11 @@ class AdminController
 
                         $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
                         if ($disciplina_aux !== null) {
-                            //echo "<script>console.log('Já existe');</script>";
                             $disciplina_aux->setNome($disc['Nome Disciplina']);
                             $disciplinas[$disc['Disciplina']] = $disciplina_aux;
                             continue;
                         }
 
-                        //echo "<script>console.log('Criando disciplina');</script>";
                         $disciplina = new Disciplina();
                         $disciplina->setCodigo($disc['Disciplina']);
                         $disciplina->setCarga($disc['Carga Horária']);
@@ -100,17 +76,11 @@ class AdminController
                     }
 
                     $this->container->disciplinaDAO->flush(); //Commit the transaction
-                    //$this->container->usuarioDAO->flush();
-                    //$this->container->notaDAO->flush();
 
                     // Inserindo/atualizando usuários e adicionando suas notas
                     $usuarios = array();
-                    //$notas = array();
-                    echo "<script>console.log('Adicionando usuários');</script>";
                     foreach ($data as $user) {
                         $curso = $user['Curso'];
-
-                        //echo "<script>console.log('User: " .$user["Aluno"]."');</script>";
 
                         if(array_key_exists($user['Matrícula'], $usuarios)) {
                             $usuario = $usuarios[$user['Matrícula']];
@@ -119,13 +89,10 @@ class AdminController
                         else {
                             $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
                             if ($usuario_aux !== null) {
-                                //echo "<script>console.log('usuário já existe');</script>";
                                 $usuario = $usuario_aux;
                                 //Se não está no map, insere neste e atualiza
                                 foreach ($usuario->getNotas() as $userNota) {
-                                    //echo "<script>console.log('Removendo nota');</script>";
                                     $usuario->removeNota($userNota);
-                                    //echo "<script>console.log('notaDAO');</script>";
                                     $this->container->notaDAO->remove($userNota);
                                 }
                                 $usuario->setNome($user['Aluno']);
@@ -155,14 +122,10 @@ class AdminController
                             $nota->setPeriodo($user['Semestre cursado']);
                             $nota->setDisciplina($this->container->disciplinaDAO->getByCodigo($user['Disciplina']));
                             $usuario->addNota($nota);
-                            //$notas[] = $nota;
                             $this->container->notaDAO->persist($nota);
                         }
                         
                     }
-                    //$this->container->notaDAO->salvarNotas($notas);
-
-                    echo "<script>console.log('Importção OK');</script>";
 
                     $this->container->usuarioDAO->flush(); //Commit the transaction
                     $this->container->notaDAO->flush();
@@ -176,7 +139,6 @@ class AdminController
         if($consumo !== 0){
             $this->container->view['affectedData'] = $affectedData;
             $this->container->view['success'] = true;
-            //echo "<script>console.log('consumo !== 0');</script>";
 
             $this->deletaUsuariosDuplicados();
 
@@ -195,12 +157,33 @@ class AdminController
                 $this->container->usuarioDAO->deleteAbsentUsers($curso);
             }
 
-            //return $response->withRedirect($this->container->router->pathFor('assignMedals'));
         }
 
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
         $this->container->view['usuario'] = $usuario;
         return $this->container->view->render($response, 'adminDataLoad.tpl');
+    }
+
+    public function importarAlunos($curso){
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$curso",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "token: d6189421e0278587f113ca4b9e258c4a9f8de468"
+            ),
+        ));
+
+        $result = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+
+        return $result;
     }
 
     public function deletaUsuariosDuplicados()
