@@ -14,11 +14,27 @@
     
     <ul class="nav nav-pills nav-fill">
         <li class="nav-item">
-            <a href="{path_for name="adminDataLoad"}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Atualizar dados de alunos</a>
+            <a href="{path_for name="adminDataLoad"}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onClick="showLoader();">Atualizar dados de alunos</a>
         </li>
         <li class="nav-item">
             <a href="{path_for name="gradeLoadAction"}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Cadastrar nova grade</a>
         </li>
     </ul>
 
+    <div align="center">
+        <img id="loader" style="display:none;" src="{base_url}/img/carregando.gif"/>
+    </div>
+
+{/block}
+{block name=javascript}
+<script type="text/javascript">
+    function showLoader() {
+        document.getElementById("loader").style.display = 'block';
+        for (let e of document.getElementsByTagName("a")) { 
+            e.classList.remove('active');
+            e.classList.add('disabled');
+        }
+    }
+
+</script>
 {/block}

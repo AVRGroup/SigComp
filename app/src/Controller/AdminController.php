@@ -36,6 +36,7 @@ class AdminController
     public function dataLoadAction(Request $request, Response $response, $args)
     {
         #Array com os cursos do DCC para consultar nos serviços
+        //TODO - pegar cursos automaticamente
         $arrayCursos = array("76A", "35A", "65B", "65C", "35C");
 
         $consumo = 0;
@@ -43,6 +44,7 @@ class AdminController
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
         foreach($arrayCursos as $c){
+            //TODO - criar função para preencher parâmetros e cabeçalho da requisição
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$c",
