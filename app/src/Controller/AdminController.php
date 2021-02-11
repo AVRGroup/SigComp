@@ -221,7 +221,7 @@ class AdminController
 
             /** @var Nota $nota */
             foreach ($usuario->getNotas() as $nota) {
-                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
+                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado" || $nota->getEstado() == "Cancelado") {
                     continue;
                 }
 
@@ -271,7 +271,7 @@ class AdminController
                     continue;
                 }
 
-                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado") {
+                if ($nota->getEstado() == "Matriculado" || $nota->getEstado() == "Trancado" || $nota->getEstado() == "Dispensado" || $nota->getEstado() == "Cancelado") {
                     continue;
                 }
 
