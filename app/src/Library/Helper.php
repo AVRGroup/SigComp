@@ -157,7 +157,7 @@ class Helper
             $disciplina = $nota->getDisciplina();
             $estado = $nota->getEstado();
 
-            if($estado == "Matriculado" || $estado == "Trancado" || $estado == "Sem Conceito") {
+            if($estado == "Matriculado" || $estado == "Trancado" || $estado == "Sem Conceito" || $estado == "Cancelado") {
                 continue;
             }
 
