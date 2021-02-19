@@ -35,104 +35,173 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
-        #Array com os cursos do DCC para consultar nos serviços
-        //TODO - pegar cursos de outra tabela (está pegando de uduario)
-        $arrayCursos = $this->container->usuarioDAO->getCursos();
-
         $consumo = 0;
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
-        foreach($arrayCursos as $c){
-            $data = $this->importarAlunos($c);
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        $curso = $usuario->getCurso();
+        $data = $this->importarAlunos($curso);
+        $disciplinas = array();
 
-            if ($data !== null) {
-                $consumo++;
-                try {
-                    set_time_limit(60 * 60); //Should not Exit
-                    
-                    //Inserindo novas disciplinas 
-                    $disciplinas = array();
-                    foreach ($data as $disc) {
+        if ($data !== null) {
+            $consumo++;
+            try {
+                set_time_limit(60 * 60); //Should not Exit
+                 
+                $disciplinas = array();
+                // Inserindo/atualizando usuários e adicionando suas notas
+                foreach ($data as $user) {
+                    $curso = $user['Curso'];
+
+                    //Atualiza/adiciona usuário
+                    $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
+                    if ($usuario_aux !== null) {
+                        $usuario = $usuario_aux;
+                        //Se não está no map, insere neste e atualiza
+                        /*foreach ($usuario->getNotas() as $userNota) {
+                            $usuario->removeNota($userNota);
+                            $this->container->notaDAO->remove($userNota);
+                        }*/
+                        $usuarioAffected = false;
+                        if($usuario->getNome() != $user['Nome Aluno']){
+                            $usuario->setNome($user['Nome Aluno']);
+                            $usuarioAffected = true;
+                        }
+                        if($usuario->getGrade() != $user['Grade']){
+                            $usuario->setGrade($user['Grade']);
+                            $usuarioAffected = true;
+                        }
+
+                        if($usuarioAffected){
+                            $this->container->usuarioDAO->save($usuario); 
+                        }
+                        $affectedData['usuariosUpdated']++;
                         
-                        if(array_key_exists($disc['Disciplina'], $disciplinas)){
-                            continue;
-                        }
+                    } else {
+                        $usuario = new Usuario();
+                        $usuario->setNome($user['Nome Aluno']);
+                        $usuario->setGrade($user['Grade']);
+                        $usuario->setCurso($user['Curso']);
+                        $usuario->setMatricula($user['Matrícula']);
 
-                        $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($disc['Disciplina']);
-                        if ($disciplina_aux !== null) {
-                            $disciplina_aux->setNome($disc['Nome Disciplina']);
-                            $disciplinas[$disc['Disciplina']] = $disciplina_aux;
-                            continue;
-                        }
-
-                        $disciplina = new Disciplina();
-                        $disciplina->setCodigo($disc['Disciplina']);
-                        $disciplina->setCarga($disc['Carga Horária']);
-                        $disciplina->setNome($disc['Nome Disciplina']);
-                        $this->container->disciplinaDAO->persist($disciplina);
-
-                        $disciplinas[$disc['Disciplina']] = $disciplina;
-                        $affectedData['disciplinasAdded']++;
+                        $this->container->usuarioDAO->persist($usuario);
+                        $affectedData['usuariosAdded']++;
                     }
 
-                    $this->container->disciplinaDAO->flush(); //Commit the transaction
-
-                    // Inserindo/atualizando usuários e adicionando suas notas
-                    $usuarios = array();
-                    foreach ($data as $user) {
-                        $curso = $user['Curso'];
-
-                        if(array_key_exists($user['Matrícula'], $usuarios)) {
-                            $usuario = $usuarios[$user['Matrícula']];
-                        }
-
-                        else {
-                            $usuario_aux = $this->container->usuarioDAO->getUserByMatricula($user['Matrícula']);
-                            if ($usuario_aux !== null) {
-                                $usuario = $usuario_aux;
-                                //Se não está no map, insere neste e atualiza
-                                foreach ($usuario->getNotas() as $userNota) {
-                                    $usuario->removeNota($userNota);
-                                    $this->container->notaDAO->remove($userNota);
+                    //Atualiza histórico e adiciona novas disciplinas
+                    $historicoAluno = $user['Histórico'];
+                    if($historicoAluno !== null && (sizeof($historicoAluno) > 0)){
+                        foreach ($historicoAluno as $historico) {
+                            
+                            //Adiciona disciplinas
+                            $disciplinaAffected = false;
+                            if(!array_key_exists($historico['Código Disciplina'], $disciplinas)){
+                                $disciplina_aux = $this->container->disciplinaDAO->getByCodigo($historico['Código Disciplina']);
+                                if ($disciplina_aux !== null) {
+                                    if($disciplina_aux->getNome() != $historico['Nome Disciplina']){
+                                        $disciplina_aux->setNome($historico['Nome Disciplina']);
+                                        $this->container->disciplinaDAO->save($disciplina_aux);
+                                        $disciplinaAffected = true;
+                                    }
                                 }
-                                $usuario->setNome($user['Aluno']);
-                                $usuario->setGrade($user['Grade']);
-        
-                                $affectedData['usuariosUpdated']++;
-                                
-                            } else {
-                                $usuario = new Usuario();
-                                $usuario->setNome($user['Aluno']);
-                                $usuario->setGrade($user['Grade']);
-                                $usuario->setCurso($user['Curso']);
-                                $usuario->setMatricula($user['Matrícula']);
-        
-                                $this->container->usuarioDAO->persist($usuario);
-                                $affectedData['usuariosAdded']++;
+                                else{
+                                    $disciplina = new Disciplina();
+                                    $disciplina->setCodigo($historico['Código Disciplina']);
+                                    $disciplina->setCarga($historico['Carga Horária']);
+                                    $disciplina->setNome($historico['Nome Disciplina']);
+                                    $this->container->disciplinaDAO->persist($disciplina);
+    
+                                    $affectedData['disciplinasAdded']++;
+                                    $disciplinaAffected = true;
+                                }
+
+                                $disciplinas[$historico['Código Disciplina']] = true;
+                            }
+                            if($disciplinaAffected){
+                                $this->container->disciplinaDAO->flush(); //Commit the transaction
                             }
 
-                            $usuarios[$user['Matrícula']] = $usuario;
-                        }
+                            //Atualiza histórico
+                            //----------------------------------------------------------------
+                            if($historico['Situação'] !== null && $historico['Semestre Cursado'] !== null && $historico['Nota'] !== null){
+                                $create = true;
+                                $notas = $usuario->getNotas();
+                                if($notas !== null && sizeof($notas)){
+                                    foreach ($notas as $nota) {
+                                        if(($nota->getPeriodo() == $historico['Semestre Cursado']) && ($nota->getDisciplina()->getCodigo() == $historico['Código Disciplina'])){
+                                            $create = false;
+                                            $notaAffected = false;
+                                            if($nota->getEstado() !== $historico['Situação']){
+                                                $nota->setEstado($historico['Situação']);
+                                                $notaAffected = true;
+                                            }
+                                            if($nota->getValor() != $historico['Nota']){
+                                                $nota->setValor($historico['Nota']);
+                                                $notaAffected = true;
+                                            }
 
+                                            if($notaAffected){
+                                                $this->container->notaDAO->save($nota);
+                                            }
+                                        }
+                                    }
+                                }
+                                if($create){
+                                    $nota = new Nota();
+                                    $nota->setEstado($historico['Situação']);
+                                    $nota->setValor($historico['Nota']);
+                                    $nota->setPeriodo($historico['Semestre Cursado']);
+                                    $nota->setDisciplina($this->container->disciplinaDAO->getByCodigo($historico['Código Disciplina']));
+                                    $usuario->addNota($nota);
+                                    $this->container->notaDAO->persist($nota); 
+                                }
+                            }
+                            //----------------------------------------------------------------
 
-                        if($user['Situação'] !== null && $user['Semestre cursado'] !== null && $user['Nota'] !== null){
-                            $nota = new Nota();
-                            $nota->setEstado($user['Situação']);
-                            $nota->setValor($user['Nota']);
-                            $nota->setPeriodo($user['Semestre cursado']);
-                            $nota->setDisciplina($this->container->disciplinaDAO->getByCodigo($user['Disciplina']));
-                            $usuario->addNota($nota);
-                            $this->container->notaDAO->persist($nota);
+                            /*if($historico['Situação'] !== null && $historico['Semestre Cursado'] !== null && $historico['Nota'] !== null){
+                                $nota = new Nota();
+                                $nota->setEstado($historico['Situação']);
+                                $nota->setValor($historico['Nota']);
+                                $nota->setPeriodo($historico['Semestre Cursado']);
+                                $nota->setDisciplina($this->container->disciplinaDAO->getByCodigo($historico['Código Disciplina']));
+                                $usuario->addNota($nota);
+                                $this->container->notaDAO->persist($nota);
+                            }*/
+
                         }
-                        
                     }
 
-                    $this->container->usuarioDAO->flush(); //Commit the transaction
-                    $this->container->notaDAO->flush();
+                    $usuarioAffected = false;
+                    //Atualiza IRA do aluno
+                    $IRA = $user['IRA Acumulado'];
+                    if($usuario->getIra() != $user['IRA Acumulado']){
+                        $usuario->setIra($user['IRA Acumulado']);
+                        $usuarioAffected = true;
+                    }
 
-                } catch (\Exception $e) {
-                    $this->container->view['error'] = $e->getMessage();
+                    //IRA período passado
+                    $IRAs = $user['IRAs Semestre'];
+                    if($IRAs !== null && (sizeof($IRAs) > 0)){
+                        foreach ($IRAs as $iraPassado){
+                            if($this->getPeriodoPassado() == $iraPassado['Semestre'] &&
+                               $usuario->getIraPeriodoPassado() != $iraPassado['IRA']){
+                                
+                                $usuario->setIraPeriodoPassado($iraPassado['IRA']);
+                                $usuarioAffected = true;
+                            }
+                        }
+                    }
+
+                    if($usuarioAffected){
+                        $this->container->usuarioDAO->save($usuario); 
+                    } 
                 }
+
+                $this->container->usuarioDAO->flush(); //Commit the transaction
+                $this->container->notaDAO->flush();
+
+            } catch (\Exception $e) {
+                $this->container->view['error'] = $e->getMessage();
             }
         }
 
@@ -142,21 +211,20 @@ class AdminController
 
             $this->deletaUsuariosDuplicados();
 
-            $this->calculaIra();
-            $this->calculaIraPeriodoPassado();
-            foreach($arrayCursos as $curso){
-                $this->abreviaTodosNomes(false, $curso);
-                $this->abreviaTodosNomes(true, $curso);
-            }
+            //$this->calculaIra();
+            //$this->calculaIraPeriodoPassado();
+            $this->abreviaTodosNomes(false, $curso);
+            $this->abreviaTodosNomes(true, $curso);
 
             $this->container->usuarioDAO->setPeriodoCorrente();
             $periodo = $this->getPeriodoAtual();
 
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
-            foreach($arrayCursos as $c){
-                $this->container->usuarioDAO->deleteAbsentUsers($curso);
-            }
+            $this->container->usuarioDAO->deleteAbsentUsers($curso);
 
+        }
+        else{
+            $this->container->view['error'] = "Não foi possível realizar a carga";
         }
 
         $usuario = $this->container->usuarioDAO->getUsuarioLogado();
@@ -167,7 +235,7 @@ class AdminController
     public function importarAlunos($curso){
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$curso",
+            CURLOPT_URL => "http://localhost:8080/GestaoCurso/services/historico/get/$curso", //"200.131.219.214:8080/GestaoCurso/services/historico/get/$curso",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -240,7 +308,7 @@ class AdminController
             } else {
                 $ira = 0;
             }
-
+            
             $usuario->setIra($ira);
 
             try {
@@ -303,6 +371,7 @@ class AdminController
                 echo $e;
             }
         }
+        $this->container->usuarioDAO->flush(); //Commit the transaction
     }
 
     public function calculaNotaVezesCarga($nota){
