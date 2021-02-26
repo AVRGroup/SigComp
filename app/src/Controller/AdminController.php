@@ -35,12 +35,37 @@ class AdminController
 
     public function dataLoadAction(Request $request, Response $response, $args)
     {
+        $curso = null;
+        $arrayCurso = array();
+        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
+        if($request->getParam('curso') == "todos"){
+            $arrayCurso[] = "35A";
+            $arrayCurso[] = "65C";
+            $arrayCurso[] = "76A";
+            $arrayCurso[] = "65B";
+        } 
+        else if($request->getParam('curso') !== null && $request->getParam('curso') !== "none"){
+            $curso = $request->getParam('curso');
+        }
+        else {
+            $curso = $usuario->getCurso(); 
+        }
+
         $consumo = 0;
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
-        $usuario = $this->container->usuarioDAO->getUsuarioLogado();
-        $curso = $usuario->getCurso();
-        $data = $this->importarAlunos($curso);
+        $data = null;
+        if(sizeof($arrayCurso) > 0){
+            $data = array();
+            foreach($arrayCurso as $curso){
+                $dataAux = $this->importarAlunos($curso);
+                $data = array_merge($data, $dataAux);
+            }
+        }
+        else{
+            $data = $this->importarAlunos($curso);
+        }
+
         $disciplinas = array();
 
         if ($data !== null) {
@@ -235,7 +260,7 @@ class AdminController
     public function importarAlunos($curso){
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://localhost:8080/GestaoCurso/services/historico/get/$curso", //"200.131.219.214:8080/GestaoCurso/services/historico/get/$curso",
+            CURLOPT_URL => "200.131.219.214:8080/GestaoCurso/services/historico/get/$curso",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
