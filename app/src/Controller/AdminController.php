@@ -879,7 +879,6 @@ class AdminController
 
             return $periodo;
         }
-        
         return $ultimaCarga;
         
     }
