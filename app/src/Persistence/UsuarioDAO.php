@@ -901,19 +901,28 @@ class UsuarioDAO extends BaseDAO
         $anoMatricula = substr($matricula, 0, 4);
         $anoMatricula = intval($anoMatricula);
 
-        $dataPeriodoCorrente = explode('-', $periodoCorrente);
-        $anoPeriodoCorrente = intval($dataPeriodoCorrente[0]);
-        $mesPeriodoCorrente = intval($dataPeriodoCorrente[1]);
+        if(strpos($periodoCorrente, "-")){
+            $dataPeriodoCorrente = explode('-', $periodoCorrente);
+            $anoPeriodoCorrente = intval($dataPeriodoCorrente[0]);
+            $mesPeriodoCorrente = intval($dataPeriodoCorrente[1]);
 
+            $periodo = ($anoPeriodoCorrente - $anoMatricula) * 2;
 
-        $periodo = ($anoPeriodoCorrente - $anoMatricula) * 2;
+            if($mesPeriodoCorrente > 7) {
+                $periodo += 1;
+            }
+            return $periodo;
+        } else {
+            $anoPeriodoCorrente = intval(substr($periodoCorrente, 0, 4));
+            $numeroPeriodo = intval(substr($periodoCorrente, 4, 5));
 
-        if($mesPeriodoCorrente > 7) {
-            $periodo += 1;
+            $periodo = ($anoPeriodoCorrente - $anoMatricula) * 2;
+
+            if($numeroPeriodo > 2) {
+                $periodo += 1;
+            }
+            return $periodo;
         }
-
-
-        return $periodo;
     }
 
     public function getMatricula($userId)
@@ -976,12 +985,13 @@ class UsuarioDAO extends BaseDAO
 
     public function getPeriodoCorrente()
     {
-        $sql = "SELECT * FROM periodo_corrente ORDER BY ultima_carga DESC LIMIT 1";
+        //$sql = "SELECT * FROM periodo_corrente ORDER BY ultima_carga DESC LIMIT 1";
+        $sql = "SELECT * FROM nota ORDER BY periodo DESC LIMIT 1";
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->execute();
         $periodoCorrente = $stmt->fetchAll();
 
-        return $periodoCorrente[0]['ultima_carga'];
+        return $periodoCorrente[0]['periodo'];
     }
 
     public function getPosicaoAluno($id)

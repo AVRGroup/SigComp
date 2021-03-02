@@ -44,13 +44,15 @@ class AdminController
             $arrayCurso[] = "76A";
             $arrayCurso[] = "65B";
         } 
-        else if($request->getParam('curso') !== null && $request->getParam('curso') !== "none"){
+        else if($request->getParam('curso') !== null && 
+        $request->getParam('curso') !== "none" && 
+        $request->getParam('curso') !== ""){
             $curso = $request->getParam('curso');
         }
         else {
             $curso = $usuario->getCurso(); 
         }
-
+        
         $consumo = 0;
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
@@ -862,18 +864,23 @@ class AdminController
 
     public function getPeriodoAtual()
     {
-        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
-        $ano = $ultimaCarga[0];
-        $mes = intval($ultimaCarga[1]);
-        
-        if($mes > 6) {
-            $periodo = $ano . 3;    
-        }
-        else {
-            $periodo = $ano . 1;
-        }
+        $ultimaCarga = $this->container->usuarioDAO->getPeriodoCorrente();
+        if(strpos($ultimaCarga, "-")){
+            $ultimaCarga = explode("-", $ultimaCarga);
+            $ano = $ultimaCarga[0];
+            $mes = intval($ultimaCarga[1]);
+            
+            if($mes > 6) {
+                $periodo = $ano . 3;    
+            }
+            else {
+                $periodo = $ano . 1;
+            }
 
-        return $periodo;
+            return $periodo;
+        }
+        return $ultimaCarga;
+        
     }
 
 

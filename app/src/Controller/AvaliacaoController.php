@@ -77,18 +77,23 @@ class AvaliacaoController
     
     public function getPeriodoAtual()
     {
-        $ultimaCarga = explode("-", $this->container->usuarioDAO->getPeriodoCorrente());
-        $ano = $ultimaCarga[0];
-        $mes = intval($ultimaCarga[1]);
+        $ultimaCarga = $this->container->usuarioDAO->getPeriodoCorrente();
+        if(strpos($ultimaCarga, "-")){
+            $ultimaCarga = explode("-", $ultimaCarga);
+            $ano = $ultimaCarga[0];
+            $mes = intval($ultimaCarga[1]);
+            
+            if($mes > 6) {
+                $periodo = $ano . 3;    
+            }
+            else {
+                $periodo = $ano . 1;
+            }
 
-        if($mes > 6) {
-            $periodo = $ano . 3;
+            return $periodo;
         }
-        else {
-            $periodo = $ano . 1;
-        }
-
-        return $periodo;
+        
+        return $ultimaCarga;
     }
 
     public function getPeriodoPassado()
