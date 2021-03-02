@@ -30,7 +30,7 @@
     
     <ul class="nav nav-pills nav-fill">
         <li class="nav-item">
-            <a id="a" href="{path_for name="adminDataLoad"}?curso=" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onClick="showLoader();">Atualizar dados de alunos</a>
+            <a id="a" href="{path_for name="adminDataLoad"}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" onClick="showLoader();">Atualizar dados de alunos</a>
         </li>
         <li class="nav-item">
             <a href="{path_for name="gradeLoadAction"}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Cadastrar nova grade</a>
@@ -45,7 +45,10 @@
 {block name=javascript}
 <script type="text/javascript">
     function showLoader() {
-        document.getElementById("a").href += document.getElementById("curso").value; 
+        var curso = document.getElementById("curso").value;
+        if(curso != null){
+            document.getElementById("a").href += "?curso=" + curso; 
+        }
         document.getElementById("loader").style.display = 'block';
         for (let e of document.getElementsByTagName("a")) { 
             e.classList.remove('active');
