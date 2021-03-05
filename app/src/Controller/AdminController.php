@@ -290,11 +290,31 @@ class AdminController
             return;
         }
 
-        foreach($usuarioDuplicados as $usuario) {
+        for($i = 0; $i < sizeof($usuarioDuplicados); $i++) {
+            $usuario = $usuarioDuplicados[$i];
             $final = substr($usuario['matricula'], -2);
 
             if ($final === "AC") {
                 $idsParaDeletar[] = $usuario['id'];
+            } 
+            
+            else {
+                for($j = $i + 1; $j < sizeof($usuarioDuplicados); $j++){
+                    $usuarioAux = $usuarioDuplicados[$j];
+                    if($usuario['nome'] == $usuarioAux['nome'] && 
+                    $usuario['matricula'] != $usuarioAux['matricula']){
+                        $anoMatriculaUsuario = intval(substr($usuario['matricula'],0,4));
+                        $anoMatriculaUsuarioAux = intval(substr($usuarioAux['matricula'],0,4));
+                        
+                        if($anoMatriculaUsuario < $anoMatriculaUsuarioAux){
+                            $idsParaDeletar[] = $usuario['id'];
+                        } else if($anoMatriculaUsuario > $anoMatriculaUsuarioAux){
+                            $idsParaDeletar[] = $usuarioAux['id'];
+                        } else{
+                            echo "<script>alert('O ano das matrículas do usuário ". $usuario['nome'] ." é o mesmo (1 - ". $usuario['matricula'] .", 2 - ". $usuarioAux['matricula'] ."). Favor informar ao suporte qual é a matrícula ativa')</script>";
+                        }
+                    }
+                }
             }
         }
 
@@ -599,7 +619,7 @@ class AdminController
                 }
             }
         }
-        die();
+
     }
 
     public function adminData(Request $request, Response $response, $args)
