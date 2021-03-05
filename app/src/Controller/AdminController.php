@@ -240,14 +240,28 @@ class AdminController
 
             //$this->calculaIra();
             //$this->calculaIraPeriodoPassado();
-            $this->abreviaTodosNomes(false, $curso);
-            $this->abreviaTodosNomes(true, $curso);
+            
+            if(sizeof($arrayCurso) > 0){
+                foreach($arrayCurso as $curso){
+                    $this->abreviaTodosNomes(false, $curso);
+                    $this->abreviaTodosNomes(true, $curso);
+                }
+            } else{
+                $this->abreviaTodosNomes(false, $curso);
+                $this->abreviaTodosNomes(true, $curso);
+            }
 
             $this->container->usuarioDAO->setPeriodoCorrente();
             $periodo = $this->getPeriodoAtual();
 
             $this->container->usuarioDAO->setActiveUsers($this->container->usuarioDAO->getUsersPeriodo($periodo));
-            $this->container->usuarioDAO->deleteAbsentUsers($curso);
+            if(sizeof($arrayCurso) > 0){
+                foreach($arrayCurso as $curso){
+                    $this->container->usuarioDAO->deleteAbsentUsers($curso);
+                }
+            } else{
+                $this->container->usuarioDAO->deleteAbsentUsers($curso);
+            }
 
         }
         else{
