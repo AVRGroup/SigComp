@@ -133,8 +133,16 @@ class UsuarioDAO extends BaseDAO
     {
         $queryCurso = isset($curso) ? "AND u.curso = '$curso'" : "";
 
+        // try {
+        //     $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 $queryCurso ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
+        //     $usuarios = $query->getResult();
+        // } catch (\Exception $e) {
+        //     var_dump($e->getMessage());
+        //     $usuarios = null;
+        // }
+
         try {
-            $query = $this->em->createQuery("SELECT u,c,n, nd FROM App\Model\Usuario AS u LEFT JOIN u.certificados AS c LEFT JOIN u.notas AS n LEFT JOIN n.disciplina AS nd WHERE u.situacao = 0 $queryCurso ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
+            $query = $this->em->createQuery("SELECT u FROM App\Model\Usuario AS u WHERE u.situacao = 0 $queryCurso ORDER BY u.ira_periodo_passado DESC")->setMaxResults(500);
             $usuarios = $query->getResult();
         } catch (\Exception $e) {
             var_dump($e->getMessage());
@@ -444,6 +452,36 @@ class UsuarioDAO extends BaseDAO
         $stmt->execute();
         $results = $stmt->fetchAll();
         return $results;
+    }
+
+    public function getAllMatriculasByCurso($curso = null)
+    {
+        $queryCurso = "";
+        if($curso && $curso != 'todos') {
+            $queryCurso = "WHERE curso = '$curso'";
+
+            if($curso == "65B") {
+                $queryCurso .= ' OR curso = "65AB"';
+            }
+
+            if($curso == "65C") {
+                $queryCurso .= ' OR curso = "65AC"';
+            }
+        }
+
+        $sql = "SELECT matricula FROM usuario $queryCurso";
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $matriculas = array();
+
+        if($results != null && sizeof($results) > 0){
+            foreach($results as $result){
+                $matriculas[] = $result["matricula"];
+            }
+        }
+
+        return $matriculas;
     }
 
     public function getCountNaoLogaram($curso = null)
@@ -1083,6 +1121,10 @@ class UsuarioDAO extends BaseDAO
             foreach($result as $user){
                 $user_id = $user->getId();
 
+                $sql = "DELETE FROM db_gamificacao.certificado WHERE usuario = $user_id";
+                $stmt = $this->em->getConnection()->prepare($sql);
+                $stmt->execute();
+
                 $sql = "DELETE FROM db_gamificacao.nota WHERE usuario = $user_id";
                 $stmt = $this->em->getConnection()->prepare($sql);
                 $stmt->execute();
@@ -1211,6 +1253,11 @@ class UsuarioDAO extends BaseDAO
 
     public function deleteById($id)
     {
+
+        $query = "DELETE FROM db_gamificacao.certificado WHERE usuario = $id";
+        $stmt = $this->em->getConnection()->prepare($query);
+        $stmt->execute();
+
         $query = "DELETE FROM medalha_usuario WHERE usuario = $id";
         $stmt = $this->em->getConnection()->prepare($query);
         $stmt->execute();
@@ -1222,6 +1269,18 @@ class UsuarioDAO extends BaseDAO
         $query = "DELETE FROM usuario WHERE id = $id";
         $stmt = $this->em->getConnection()->prepare($query);
         $stmt->execute();
+    }
+
+    public function deleteByMatriculas($matriculas)
+    {
+        if($matriculas != null && sizeof($matriculas) > 0){
+            foreach($matriculas as $matricula){
+                $usuario = $this->getUserByMatricula($matricula);
+                if($usuario != null){
+                    $this->deleteById($usuario->getId());
+                }
+            }
+        }
     }
 
     public function possuiMedalhaById($userId, $medalhaId){
