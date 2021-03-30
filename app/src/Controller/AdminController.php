@@ -57,15 +57,20 @@ class AdminController
         $affectedData = ['disciplinasAdded' => 0, 'usuariosAdded' => 0, 'usuariosUpdated' => 0];
 
         $data = null;
+        $matriculas = array();
+        $matriculasImportadas = array();
         if(sizeof($arrayCurso) > 0){
             $data = array();
             foreach($arrayCurso as $curso){
                 $dataAux = $this->importarAlunos($curso);
                 $data = array_merge($data, $dataAux);
+                $matriculasAux = $this->container->usuarioDAO->getAllMatriculasByCurso($curso);
+                $matriculas = array_merge($matriculas, $matriculasAux);
             }
         }
         else{
             $data = $this->importarAlunos($curso);
+            $matriculas = $this->container->usuarioDAO->getAllMatriculasByCurso($curso);
         }
 
         $disciplinas = array();
@@ -78,6 +83,9 @@ class AdminController
                 $disciplinas = array();
                 // Inserindo/atualizando usuários e adicionando suas notas
                 foreach ($data as $user) {
+                    if(!in_array($user['Matrícula'], $matriculasImportadas)){
+                        $matriculasImportadas[] = $user['Matrícula'];    
+                    }
                     $curso = $user['Curso'];
 
                     //Atualiza/adiciona usuário
@@ -227,6 +235,28 @@ class AdminController
                 $this->container->usuarioDAO->flush(); //Commit the transaction
                 $this->container->notaDAO->flush();
 
+                //Exclui usuários com matrícula inativa
+                if($matriculas != null && sizeof($matriculas) > 0){
+                    $invalidos = array();
+                    foreach($matriculas as $matricula){
+                        $achou = false;
+                        foreach($data as $user){
+                            if($matricula == $user['Matrícula']){
+                                $achou = true;
+                                break;
+                            }
+                        }
+                        if(!$achou){
+                            $invalidos[] = $matricula;
+                        }
+                    }
+
+                    if(sizeof($invalidos) > 0){
+                        $this->container->usuarioDAO->deleteByMatriculas($invalidos);
+                        $this->container->usuarioDAO->flush();
+                    }
+                }
+
             } catch (\Exception $e) {
                 $this->container->view['error'] = $e->getMessage();
             }
@@ -236,7 +266,14 @@ class AdminController
             $this->container->view['affectedData'] = $affectedData;
             $this->container->view['success'] = true;
 
-            $this->deletaUsuariosDuplicados();
+            /*Se fez a carga para todos os cursos, já excluiu usuários com matrícula inativa,
+            senão, manter usuário com matrícula válida, ou seja, que veio na carga do curso em questão*/
+            if(sizeof($arrayCurso) > 0){
+                $this->deletaUsuariosDuplicados(null, $matriculasImportadas);
+            } else {
+                $this->deletaUsuariosDuplicados($curso, $matriculasImportadas);
+            }
+            
 
             //$this->calculaIra();
             //$this->calculaIraPeriodoPassado();
@@ -295,7 +332,7 @@ class AdminController
         return $result;
     }
 
-    public function deletaUsuariosDuplicados()
+    public function deletaUsuariosDuplicados($curso, $matriculasImportadas)
     {
         $usuarioDuplicados = $this->container->usuarioDAO->getUsuariosComMesmoNome();
         $idsParaDeletar = [];
@@ -324,6 +361,20 @@ class AdminController
                             $idsParaDeletar[] = $usuario['id'];
                         } else if($anoMatriculaUsuario > $anoMatriculaUsuarioAux){
                             $idsParaDeletar[] = $usuarioAux['id'];
+                        } else if(!in_array($usuario['matricula'], $matriculasImportadas) && 
+                            in_array($usuarioAux['matricula'], $matriculasImportadas)){
+                                $idsParaDeletar[] = $usuario['id'];
+                        } else if(in_array($usuario['matricula'], $matriculasImportadas) && 
+                            !in_array($usuarioAux['matricula'], $matriculasImportadas)){
+                                $idsParaDeletar[] = $usuarioAux['id'];
+                        } else if($curso != null){
+                            if($usuario['curso'] == $curso){
+                                $idsParaDeletar[] = $usuarioAux['id'];
+                            } else if($usuarioAux['curso'] == $curso){
+                                $idsParaDeletar[] = $usuario['id'];
+                            } else {
+                                echo "<script>alert('O ano das matrículas do usuário ". $usuario['nome'] ." é o mesmo (1 - ". $usuario['matricula'] .", 2 - ". $usuarioAux['matricula'] ."). Favor informar ao suporte qual é a matrícula ativa')</script>";
+                            }
                         } else{
                             echo "<script>alert('O ano das matrículas do usuário ". $usuario['nome'] ." é o mesmo (1 - ". $usuario['matricula'] .", 2 - ". $usuarioAux['matricula'] ."). Favor informar ao suporte qual é a matrícula ativa')</script>";
                         }
